@@ -1,0 +1,8 @@
+.progress-bar {
+  /* position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0.9; */
+  @apply fixed mt-16 z-40 bg-white w-full h-full opacity-80;
+}

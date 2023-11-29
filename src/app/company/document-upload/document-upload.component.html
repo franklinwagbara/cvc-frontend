@@ -1,0 +1,71 @@
+<section class="flex flex-col justify-center mt-10">
+  <div class="upload-heading"><h1>UPLOAD APPLICATION DOCUMENTS</h1></div>
+  <div class="mx-5">
+    <div class="guidlines">
+      <h3>Please Note:</h3>
+      <ul>
+        <li>
+          All documents listed below are required and must be uploaded.
+          Subsequently, other documents may be needed and will be added to this
+          list.
+        </li>
+        <li>
+          The Maximum file size allowed is 20MB per document, any file size
+          greater than this value will not be uploaded.
+        </li>
+        <li>
+          Only JPEG, PNG, JPG, and PDF file types are allowed on this platform.
+        </li>
+      </ul>
+    </div>
+
+    <div class="required"><h3>* Required Documents</h3></div>
+    <generic-table
+      [noTitle]="true"
+      [noFilter]="true"
+      [title-color]="'teal'"
+      [table_controls_horizontal]="true"
+      [table_keysMappedToHeaders]="applicationTableKeysMappedToHeaders"
+      [table_content]="documents$ | async"
+      [noEditControl]="true"
+      [noCheckControls]="true"
+      [noAddOrDeleteButton]="true"
+      (onFileUpload)="uploadFile($event)"
+    >
+    </generic-table>
+
+    <!-- <div class="required-blue"><h3>Additional Documents</h3></div> -->
+    <div class="mt-10 ml-3">
+      <button
+        mat-raised-button
+        class="bg-teal-200 p-2 px-4"
+        (click)="getListOfAdditionalDocuments()"
+      >
+        Add Additional Documents
+      </button>
+    </div>
+    <generic-table
+      *ngIf="additionalDocuments$ | async"
+      [noTitle]="true"
+      [noFilter]="true"
+      [title-color]="'teal'"
+      [table_controls_horizontal]="true"
+      [table_keysMappedToHeaders]="applicationTableKeysMappedToHeaders"
+      [table_content]="additionalDocuments"
+      [noEditControl]="true"
+      [noCheckControls]="true"
+      [noAddOrDeleteButton]="true"
+      (onFileUpload)="uploadAdditionalFile($event)"
+    >
+    </generic-table>
+  </div>
+
+  <button
+    (click)="submitApplication()"
+    mat-raised-button
+    color="primary"
+    class="upload-button"
+  >
+    Upload Document(s)
+  </button>
+</section>

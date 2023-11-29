@@ -1,0 +1,22 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { FlatTableComponent } from './flat-table.component';
+
+describe('FlatTableComponent', () => {
+  let component: FlatTableComponent;
+  let fixture: ComponentFixture<FlatTableComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [FlatTableComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(FlatTableComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

@@ -1,0 +1,41 @@
+/** dashboard css*/
+.dashboard {
+  @apply flex flex-col;
+}
+
+.top-nav {
+  width: calc(100vw - 289px);
+  @apply fixed z-50 h-16 shadow-md flex items-center px-10 justify-between backdrop-blur-sm bg-white/30 transition-all ease-in-out delay-75 duration-700;
+}
+
+.expand-top-nav {
+  width: calc(100vw - 100px);
+  @apply transition-all ease-in-out delay-75 duration-700;
+}
+
+.avatar img {
+  width: 90px;
+  @apply -mr-4;
+}
+
+.avatar {
+  @apply flex gap-0 items-center justify-around;
+}
+
+.account-info {
+  @apply py-6 leading-tight;
+}
+
+h4 {
+  @apply font-bold text-lg flex flex-col my-0;
+}
+
+.account-info h5 {
+  @apply text-gray-500 text-sm;
+}
+
+.logout {
+  @apply flex ml-5 items-center gap-2 justify-center bg-primary hover:sepia fill-white text-white cursor-pointer px-4 py-1 rounded-xl;
+}
+
+/** Dashboard css ends here */

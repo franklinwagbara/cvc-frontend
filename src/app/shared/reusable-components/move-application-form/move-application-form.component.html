@@ -1,0 +1,69 @@
+<h1 mat-dialog-title>Move Application</h1>
+<div mat-dialog-content class="w-[1200px] h-screen">
+  <div class="flex flex-row">
+    <div class="w-[70%]">
+      <div class="table-group">
+        <div class="table-wrapper">
+          <flat-table
+            [noAddOrDeleteButton]="true"
+            [noFilter]="true"
+            [noEditControl]="true"
+            [table_title]="tableTitles.applications"
+            [title-color]="'black'"
+            [table_keysMappedToHeaders]="userKeysMappedToHeaders"
+            [table_content]="appsOnStaffDesk"
+            [table_controls_horizontal]="true"
+            (onSelect)="onSelectApp($event)"
+          >
+          </flat-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-[30%]">
+      <form [formGroup]="form" (ngSubmit)="rerouteApplication()">
+        <div class="fomr-group" style="margin-bottom: 10px">
+          <label>New Staff</label>
+          <ng-multiselect-dropdown
+            [placeholder]="'Select Staff'"
+            [settings]="staffsDropdownSettings"
+            [data]="staffs"
+            formControlName="id"
+            (onSelect)="onItemSelect($event)"
+            (onSelectAll)="onSelectAll($event)"
+            (onDeSelect)="onDeSelect($event)"
+          >
+          </ng-multiselect-dropdown>
+        </div>
+
+        <div class="fomr-group" style="margin-bottom: 10px">
+          <label>Comment</label>
+          <textarea
+            name="comment"
+            formControlName="comment"
+            class="form-control"
+            multiple
+            rows="12"
+          >
+          </textarea>
+          <div
+            *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
+            class="alert alert-danger"
+          >
+            Comment is required!
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+  <button
+    mat-raised-button
+    (click)="rerouteApplication()"
+    [disabled]="form.invalid"
+  >
+    Create
+  </button>
+</div>

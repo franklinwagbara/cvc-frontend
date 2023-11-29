@@ -1,0 +1,16 @@
+export enum ApplicationActionType {
+  Initiated = 'Initiated',
+  GenerateRRR = 'GenerateRRR',
+  PaymentPending = 'PaymentPending',
+  ConfirmPayment = 'ConfirmPayment',
+  UploadDocument = 'UploadDocument',
+  Submit = 'Submit',
+  ReSubmit = 'ReSubmit',
+  Delegate = 'Delegate',
+  ScehduleMeeting = 'ScehduleMeeting',
+  ApproveSchedule = 'ApproveSchedule',
+  AcceptSchedule = 'AcceptSchedule',
+  Approve = 'Approve',
+  Reject = 'Reject',
+  FinalApproval = 'FinalApproval',
+}

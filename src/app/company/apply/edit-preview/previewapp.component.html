@@ -1,0 +1,396 @@
+<div
+  style="
+    width: 85%;
+    border: solid 2px rgb(128, 128, 128);
+    margin-top: 35%;
+    background-color: rgb(253, 253, 253);
+    border-radius: 15px;
+    box-shadow: 6px 6px 8px rgb(0, 0, 0, 0.3);
+    margin-bottom: 5%;
+    margin-top: 7%;
+    margin-left: 10%;
+  "
+>
+  <br />
+  <div class="container">
+    <h1
+      style="
+        padding: 10px 20px;
+        border: none;
+        background-color: teal;
+        color: white;
+      "
+    >
+      Preview Application
+    </h1>
+
+    <hr />
+
+    <form
+      [formGroup]="previewForm"
+      (ngSubmit)="submit()"
+      (click)="toggleActive()"
+    >
+      <div>
+        <div style="display: flex; width: 100%; justify-content: space-between">
+          <div style="width: 30%">
+            <label style="font-size: 18px">Category</label>
+            <div
+              style="
+                box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                width: 100%;
+                padding: 5px;
+                border-radius: 5px 5px;
+                outline: none;
+              "
+            >
+              <select
+                class="inpute"
+                style="width: 100%; border: none; outline: none"
+                formControlName="categoryId"
+                (change)="getPhases($event)"
+                [(ngModel)]="previewBody.categoryId"
+              >
+                <option disabled>---- Please Select Category ----</option>
+                <option *ngFor="let val of categoryList" [value]="val.id">
+                  {{ val.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div style="width: 30%">
+            <label style="font-size: 18px">Permit Type</label>
+
+            <div
+              style="
+                box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                width: 100%;
+                border: none;
+                outline: none;
+                padding: 5px 5px;
+                border-radius: 10px;
+              "
+            >
+              <select
+                formControlName="phaseId"
+                style="width: 100%; border: none; outline: none"
+                class="inpute"
+                name="phaseId"
+                [(ngModel)]="phaseId"
+              >
+                <option disabled>---- Please Select Permit ----</option>
+                <option *ngFor="let val of phaseList" [value]="val.id">
+                  {{ val.shortName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div style="width: 30%">
+            <label style="font-size: 18px">Stages</label>
+
+            <div
+              style="
+                box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                width: 100%;
+                border: none;
+                outline: none;
+                padding: 10px 10px;
+                border-radius: 10px;
+              "
+            >
+              <select
+                formControlName="phaseStageId"
+                style="width: 100%; border: none; outline: none"
+                class="inpute"
+                name="phaseStageId"
+                [(ngModel)]="previewBody.phaseStageId"
+              >
+                <option disabled>---- Please select Stage ----</option>
+                <option *ngFor="let val of phasestages" [value]="val.id">
+                  {{ val.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; width: 100%; justify-content: space-between">
+          <div style="width: 30%">
+            <label style="font-size: 18px">State</label>
+            <div
+              style="
+                box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                width: 100%;
+                padding: 5px;
+                border-radius: 20px;
+                outline: none;
+              "
+            >
+              <select
+                class="inpute"
+                style="width: 100%; border: none; outline: none"
+                name="stateId"
+                formControlName="stateId"
+                (change)="getLgaByState($event)"
+                [(ngModel)]="previewBody.stateId"
+              >
+                <option disabled></option>
+                <option *ngFor="let val of stateList" [value]="val.id">
+                  {{ val.stateName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div style="width: 30%">
+            <label style="font-size: 18px">Local Government</label>
+            <div
+              style="
+                box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                width: 100%;
+                padding: 5px;
+                border-radius: 20px;
+              "
+            >
+              <select
+                formControlName="lgaId"
+                nmae="lgaId"
+                style="width: 100%; border: none; outline: none"
+                class="inpute"
+                [(ngModel)]="previewBody.lgaId"
+              >
+                <option selected>---- Please Select LGA ----</option>
+                <option *ngFor="let val of lgaList" [value]="val.id">
+                  {{ val.lgaName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div style="width: 30%">
+            <label style="font-size: 18px">Address</label>
+            <div style="display: flex">
+              <div
+                style="
+                  box-shadow: 1px 1px 2px 1px rgb(0, 0, 0, 0.3);
+                  width: 100%;
+                  border-radius: 5px;
+                  padding: 5px 5px;
+                "
+              >
+                <input
+                  formControlName="location"
+                  name="location"
+                  [(ngModel)]="previewBody.location"
+                  style="width: 100%; border: none; outline: none"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; width: 100%; justify-content: space-between">
+          <div style="width: 30%">
+            <label style="font-size: 18px">Upload File/Document</label>
+            <div style="display: flex">
+              <div
+                style="
+                  box-shadow: 1px 1px 4px 1px rgb(0, 0, 0, 0.3);
+                  width: 100%;
+                  border-radius: 20px;
+                  padding: 5px 5px;
+                "
+              >
+                <input
+                  type="file"
+                  formControlName="doc"
+                  name="uploadFile"
+                  (change)="onFileChange($event)"
+                  class="inpute"
+                  accept=".xlsx"
+                  (change)="saveTemplate($event)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr
+          style="
+            margin: 1rem 0;
+            color: inherit;
+            border: 0;
+            border-top: 1px solid;
+            opacity: 0.25;
+          "
+        />
+        <div
+          #divTable
+          style="
+            overflow: hidden;
+            overflow-x: auto;
+            column-fill: inherit;
+            box-shadow: 4px 4px 12px 2px rgb(0, 0, 0, 0.3);
+          "
+        >
+          <table
+            #codeTable
+            class="apptable"
+            cellPadding="10px"
+            table
+            class="wptable"
+          >
+            <thead class="wptablebox">
+              <tr>
+                <th *ngFor="let h of columns">
+                  {{ h.header }}
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              #codeTbody
+              style="box-shadow: 4px 4px 12px 2px rgba(4, 4, 4, 0.3)"
+            >
+              <tr *ngFor="let row of previewBody.applicationforms">
+                <td
+                  *ngFor="let h of columns"
+                  [ngStyle]="{
+                    color: row[h.columnDef] == 'NO' ? 'red' : 'black'
+                  }"
+                >
+                  {{ row[h.columnDef] }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Well Location Category</th>
+                                <th>Well Name</th>
+                                <th>Nature of Operation</th>
+                                <th>Plugback Interval (m) MD</th>
+                                <th>Rig/Hoist for Operation</th>
+                                <th>Last Production Rate (BOPD)</th>
+                                <th>Initial Reserves Allocation for the Well (MMB)</th>
+                                <th>Cumulative Production for the Well (MMB)</th>
+                                <th>AFE (US$MM)</th>
+                                <th>Estimated Operations Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+                <div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Well Location Category</th>
+                                <th>Well Name</th>
+                                <th>Nature of Operation</th>
+                                <th>Well Completetion Interval (m) MD</th>
+                                <th>Rig/Hoist for Operation</th>
+                                <th>Pre-Operation Production Rate (ROPD)</th>
+                                <th>Post-Operation Production Rate (ROPD)</th>
+                                <th>Intitial Reserves Allocation for the Well (MMB)</th>
+                                <th>Cumulative Production for the Well (MMB)</th>
+                                <th>Targeted Reserves (MMB)</th>
+                                <th>AFE (US$MMB)</th>
+                                <th>Estimated Operation Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+        <br />
+
+        <!-- <div>
+                <p *ngFor="let item of items; let i=index;">
+                    <b>{{i+1}}.</b>&nbsp;&nbsp;{{item.title}} &nbsp; ({{item.type}})
+                </p>
+            </div> -->
+
+        <!-- <div>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Well Location Category</th>
+                            <th>Well Name</th>
+                            <th>Block (OPL/OML)</th>
+                            <th>Terrain</th>
+                            <th>Well Pre-Spud Name</th>
+                            <th>Spud Date</th>
+                            <th>Well Spud Name</th>
+                            <th>Well Class Applied</th>
+                            <th>Well Surface Coordinates (m)</th>
+                            <th>Proposed Rig</th>
+                            <th>Expected Volumes (Production) (BOPD)</th>
+                            <th>Target Reserves (MMB)</th>
+                            <th>AFE (US$MM)</th>
+                            <th>Estimated Operation Days</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div> -->
+      </div>
+    </form>
+    <br /><br /><br />
+    <div style="display: flex; width: 100%; margin-left: 30%">
+      <div style="text-align: center; margin-right: 10%; flex-wrap: wrap">
+        <button
+          [disabled]="canSubmit"
+          [class]="canSubmit ? 'disa divmid' : 'tilbtn divmid'"
+          style="
+            padding: 20px;
+            border: none;
+            border-radius: 2px;
+            background-color: teal;
+            color: white;
+          "
+          (click)="submit()"
+        >
+          Update Application
+        </button>
+      </div>
+      <div style="text-align: center">
+        <button
+          type="button"
+          [disabled]="!canSubmit"
+          [class]="!canSubmit ? 'disa divmid' : 'tilbtn divmid'"
+          style="
+            padding: 20px;
+            border: none;
+            border-radius: 3px;
+            background-color: rgb(8, 38, 207);
+            text-shadow: 1px;
+            color: white;
+          "
+          (click)="displayPayment()"
+        >
+          Proceed to Make Payment
+        </button>
+      </div>
+    </div>
+  </div>
+  <br /><br /><br />
+</div>

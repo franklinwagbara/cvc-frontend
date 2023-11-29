@@ -1,0 +1,50 @@
+<h1 mat-dialog-title>Approve Application</h1>
+<div mat-dialog-content class="modal-width">
+  <div class="card-list">
+    <div class="card-item">
+      <div class="item-title">Reference No.</div>
+      <div class="item-content">{{ application.reference }}</div>
+    </div>
+    <div class="card-item">
+      <div class="item-title">Vessel Name</div>
+      <div class="item-content">{{ application.vessel.name }}</div>
+    </div>
+    <div class="card-item">
+      <div class="item-title">Vessel Type</div>
+      <div class="item-content">{{ application.vessel.vesselType }}</div>
+    </div>
+    <!-- <div class="card-item">
+      <div class="item-title">Stage</div>
+      <div class="item-content">{{ application.permitType }}</div>
+    </div> -->
+    <div class="card-item">
+      <div class="item-title">Status</div>
+      <div class="item-content">{{ application.status }}</div>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="approve()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Remark</label>
+      <textarea
+        name="comment"
+        formControlName="comment"
+        class="form-control"
+        aria-multiline="true"
+        rows="7"
+      ></textarea>
+      <div
+        *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
+        class="alert alert-danger"
+      >
+        Remark is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button (click)="approve()" [disabled]="form.invalid">
+    Approve
+  </button>
+</div>

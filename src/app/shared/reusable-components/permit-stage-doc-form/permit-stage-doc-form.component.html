@@ -1,0 +1,92 @@
+<h1 mat-dialog-title>Add New Permit Stage Document</h1>
+<div mat-dialog-content class="w-[1000px] h-screen">
+  <form [formGroup]="form" (ngSubmit)="createPermitStageDoc()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Vessel Type</label>
+      <select
+        name="vesselTypeId"
+        formControlName="vesselTypeId"
+        class="form-control"
+      >
+        <option
+          *ngFor="let vesselType of vesselTypes"
+          [ngValue]="vesselType.id"
+        >
+          {{ vesselType.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('vesselTypeId')?.touched && form.get('vesselTypeId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Vessel Type is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Application Type</label>
+      <select
+        name="applicationTypeId"
+        formControlName="applicationTypeId"
+        class="form-control"
+      >
+        <option *ngFor="let at of applicationTypes" [ngValue]="at.id">
+          {{ at.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('applicationTypeId')?.touched &&
+          form.get('applicationTypeId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Application Type is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Required Document(s)</label>
+      <ng-multiselect-dropdown
+        [placeholder]="'Select document(s)'"
+        [settings]="docsDropdownSettings"
+        [data]="docs"
+        formArrayName="documentTypeId"
+        (onSelect)="onItemSelect($event)"
+        (onSelectAll)="onSelectAll($event)"
+        (onDeSelect)="onDeSelect($event)"
+      >
+      </ng-multiselect-dropdown>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>
+        <input
+          name="isMandatory"
+          formControlName="isMandatory"
+          type="checkbox"
+        />
+        Mandatory?
+      </label>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>
+        <input name="status" formControlName="status" type="checkbox" />
+        Active?
+      </label>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+  <button
+    mat-raised-button
+    (click)="createPermitStageDoc()"
+    [disabled]="form.invalid"
+  >
+    Create
+  </button>
+</div>

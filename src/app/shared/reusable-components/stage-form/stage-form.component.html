@@ -1,0 +1,128 @@
+<h1 mat-dialog-title *ngIf="!currentValue; else edit">Add New Permit Stage</h1>
+<ng-template #edit>
+  <h1 mat-dialog-title>Edit Permit Stage</h1>
+</ng-template>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="createPermitStage()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Code</label>
+      <input name="Code" formControlName="code" class="form-control" />
+      <div
+        *ngIf="form.get('code')?.touched && form.get('code')?.invalid"
+        class="alert alert-danger"
+      >
+        Code is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Name</label>
+      <input name="name" formControlName="name" class="form-control" />
+      <div
+        *ngIf="form.get('name')?.touched && form.get('name')?.invalid"
+        class="alert alert-danger"
+      >
+        Name is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Description</label>
+      <input
+        name="description"
+        formControlName="description"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          form.get('description')?.touched && form.get('description')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Description is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Phase</label>
+      <select name="phaseId" formControlName="phaseId" class="form-control">
+        <option *ngFor="let phase of phases" [ngValue]="phase.id">
+          {{ phase.shortName }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('phaseId')?.touched && form.get('phaseId')?.invalid"
+        class="alert alert-danger"
+      >
+        Phase is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Fee</label>
+      <input
+        type="number"
+        step="0.01"
+        name="fee"
+        formControlName="fee"
+        class="form-control"
+      />
+      <div
+        *ngIf="form.get('fee')?.touched && form.get('fee')?.invalid"
+        class="alert alert-danger"
+      >
+        Fee is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Service Charge</label>
+      <input
+        type="number"
+        step="0.01"
+        name="serviceCharge"
+        formControlName="serviceCharge"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          form.get('serviceCharge')?.touched &&
+          form.get('serviceCharge')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        ServiceCharge is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Sort</label>
+      <input
+        name="sort"
+        type="number"
+        formControlName="sort"
+        class="form-control"
+      />
+      <div
+        *ngIf="form.get('sort')?.touched && form.get('sort')?.invalid"
+        class="alert alert-danger"
+      >
+        Sort is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button
+    mat-raised-button
+    (click)="createPermitStage()"
+    [disabled]="form.invalid"
+    *ngIf="!currentValue"
+  >
+    Create
+  </button>
+
+  <button
+    mat-raised-button
+    (click)="editPermitStage()"
+    [disabled]="form.invalid"
+    *ngIf="currentValue"
+  >
+    Edit
+  </button>
+</div>

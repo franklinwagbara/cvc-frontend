@@ -1,0 +1,45 @@
+<div class="application h-full">
+  <div class="pl-2 pr-6">
+    <div class="title">
+      <h1>APPLICATION REPORT</h1>
+    </div>
+    <div class="filterWrapper">
+      <app-filterleft
+        [applications]="applications"
+        (sortedApps)="onSortApps($event)"
+        (onChecked)="onCheck($event)"
+      ></app-filterleft>
+
+      <div class="flex flex-col">
+        <app-filterright
+          (searchValueChanged)="onSearchValueEntered1($event)"
+          [applications]="applications"
+        ></app-filterright>
+        <app-filterright
+          (searchValueChanged)="onSearchValueEntered2($event)"
+          [applications]="filteredApps1"
+        ></app-filterright>
+      </div>
+    </div>
+    <app-extras
+      (onPrint)="printPage()"
+      (onExport)="exportPage()"
+      (onGenerateGraph)="generateGraph()"
+    ></app-extras>
+  </div>
+
+  <generic-table
+    [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+    [table_content]="checked ? sortedApps : filteredApps2"
+    [noAddOrDeleteButton]="true"
+    [noCheckControls]="true"
+    [noEditControl]="true"
+    [noFilter]="true"
+    [noTitle]="true"
+  >
+  </generic-table>
+  <app-graph-modal
+    *ngIf="showModal"
+    (onClose)="closeGraphModal()"
+  ></app-graph-modal>
+</div>

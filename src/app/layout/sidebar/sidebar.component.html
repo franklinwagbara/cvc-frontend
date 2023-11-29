@@ -1,0 +1,27 @@
+<div
+  class="side-nav"
+  [ngClass]="{
+    'collapse-sidenav': isCollapsed,
+    'unCollapse-sidenav': !isCollapsed
+  }"
+>
+  <div class="logo-title">
+    <img src="../../../assets/img/brand/logo.png" alt="NUPRC" />
+    <h4 class="text-slate-200">BUNKERING</h4>
+  </div>
+
+  <div class="nav-items">
+    <app-nav-item
+      *ngFor="let menu of menuItems"
+      [is-sidebar-collapsed]="isCollapsed"
+      [title]="menu.title"
+      [sub-items]="menu.subRoutes"
+      [icon-name_svg]="menu.iconName"
+      [icon-id_svg]="menu.iconId"
+      [icon-color]="menu.iconColor"
+      [active]="menu.active"
+      [sub-menu-active]="menu.subMenuActive"
+      (onActive)="setActiveNavItem(menu.title)"
+    ></app-nav-item>
+  </div>
+</div>

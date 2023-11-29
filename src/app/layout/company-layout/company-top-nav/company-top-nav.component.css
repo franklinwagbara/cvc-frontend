@@ -1,0 +1,34 @@
+#company-top-nav {
+  background-color: #aaefdf;
+  height: 60px;
+  @apply flex justify-evenly items-center;
+}
+
+.brand-logo {
+  @apply flex items-center;
+}
+.brand-logo img {
+  height: 60px;
+}
+.brand-logo span {
+  @apply text-2xl font-bold -ml-2;
+}
+
+.nav-list {
+  @apply flex  font-semibold gap-5 text-sm -mb-[14px];
+}
+
+.user,
+.logout {
+  transition: all 0.3s ease-in-out;
+  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer;
+}
+
+.logout:hover {
+  background-color: #6aad9e;
+  color: white;
+}
+
+.user-group {
+  @apply flex gap-2 -mb-[14px];
+}/*# sourceMappingURL=company-top-nav.component.css.map */

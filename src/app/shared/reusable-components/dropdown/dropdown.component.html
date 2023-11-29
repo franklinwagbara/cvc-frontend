@@ -1,0 +1,51 @@
+<span
+  #menu_item
+  (click)="toggleOpen()"
+  [ngClass]="{ dark: isOpen$ | async, active: isActive }"
+  (click)="navigateToUrl(path)"
+>
+  {{ title }}
+  <ng-container *ngIf="menuItems && menuItems.length > 0">
+    <svg-icon
+      *ngIf="!(isOpen$ | async)"
+      [icon]="'angle_up'"
+      fill="#035024"
+      [size]="10"
+    ></svg-icon>
+    <svg-icon
+      *ngIf="isOpen$ | async"
+      [icon]="'angle_down'"
+      fill="#035024"
+      [size]="10"
+    ></svg-icon>
+  </ng-container>
+</span>
+<div class="dropdown" [ngClass]="{ show: isOpen$ | async }">
+  <ul id="dropdown" #dropdown class="submenu">
+    <li
+      *ngFor="let item of menuItems"
+      (click)="navigateTo(item)"
+      routerLinkActive="router-link-active"
+    >
+      {{ item.name }}
+      <ul *ngIf="item.subMenu" class="submenu submenu-2">
+        <li
+          *ngFor="let sub of item.subMenu"
+          (click)="navigateTo(sub)"
+          routerLinkActive="router-link-active"
+        >
+          {{ sub.name }}
+          <ul *ngIf="sub.subMenu" class="submenu submenu-2 submenu-3">
+            <li
+              *ngFor="let sub2 of sub.subMenu"
+              (click)="navigateTo(sub2)"
+              routerLinkActive="router-link-active"
+            >
+              {{ sub2.name }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

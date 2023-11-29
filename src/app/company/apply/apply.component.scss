@@ -1,0 +1,57 @@
+:host {
+  flex: 1;
+  display: flex;
+}
+
+.apply-container {
+  position: relative;
+  margin: auto;
+  padding: 2rem;
+  @apply flex flex-col justify-center
+  items-center;
+}
+
+.apply-wrapper {
+  @apply flex flex-col gap-5
+  border-[1px] border-slate-200
+  p-10 pb-16;
+
+  & > h1 {
+    font-size: larger;
+    text-align: center;
+    font-weight: bolder;
+  }
+}
+
+.option-wrapper {
+  @apply flex gap-5;
+
+  & h3 {
+    font-size: large;
+  }
+}
+
+.option {
+  @apply border border-gray-400
+      p-5 flex flex-col gap-10
+      justify-center text-center
+      rounded-t-lg
+      shadow-md
+      hover:bg-slate-100;
+
+  & > h3 {
+    @apply bg-slate-200 p-3;
+  }
+
+  & > button {
+    @apply bg-blue-200 p-2 border;
+  }
+}
+
+.input {
+  @apply border border-gray-300 rounded p-2 hover:border-blue-500 focus:outline-none focus:border-blue-500;
+}
+
+.input-label {
+  @apply flex items-center text-center px-3 border-l border-t border-r rounded-t bg-slate-300;
+}

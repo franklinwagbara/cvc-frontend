@@ -1,0 +1,143 @@
+<div class="st-desk">
+  <h2 class="text-center">Permit Stage Document(s) Configuration</h2>
+  <span style="float: right">
+    <button class="btn btn-success btn-sm" (click)="open(myNewPhaseDoc)">
+      <i class="fa fa-user-plus"></i>
+      Create New
+    </button>
+    <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(mymodal)">Open My Modal</button> -->
+  </span>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>App. Type</th>
+        <th>Permit Type</th>
+        <th>Permit Stage</th>
+        <th>Doc. Type</th>
+        <th>Is Mandatory</th>
+        <th>Status</th>
+        <th>Sort Id</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <div *ngIf="users.length == 0; else displapUserList">
+                <tr>
+                    <td [attr.colspan]="9">No pending app(s) for the past 5 days</td>
+                </tr>
+            </div>
+            <ng-template #displapUserList>
+                
+            </ng-template>     -->
+    </tbody>
+  </table>
+  <ng-template #edutDoc let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">EditDocument</h4>
+      <button
+        type="button"
+        class="close btn-danger"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <!-- <form [formGroup] = "form" (ngSubmit)="onSubmit()">
+
+            </form> -->
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button> -->
+    </div>
+  </ng-template>
+
+  <ng-template #myNewPhaseDoc let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">New Document</h4>
+      <button
+        type="button"
+        class="close btn-danger"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="form-group" style="margin-bottom: 10px">
+          <label>Application type</label>
+          <select
+            type="text"
+            name="search"
+            class="form-control"
+            formControlName="ApplicationTypeId"
+          >
+            <option disabled selected>Select App. type</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px">
+          <label>Category</label>
+          <select
+            type="text"
+            name="search"
+            class="form-control"
+            formControlName="CategoryId"
+          >
+            <option disabled selected>Select Category</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px">
+          <label>Permit Stage</label>
+          <select
+            type="text"
+            name="search"
+            class="form-control"
+            formControlName="PhaseId"
+          >
+            <option disabled selected>Select Permit Stage</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px">
+          <label>Company Documents</label>
+          <select
+            type="text"
+            name="search"
+            class="form-control"
+            id="compDocIds"
+            formControlName="CompDocIds"
+            multiple
+          >
+            <option disabled selected>Select document(s)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px">
+          <label>Facility Documents</label>
+          <select
+            type="text"
+            name="search"
+            class="form-control"
+            id="facDocIds"
+            formControlName="FacDocIds"
+            multiple
+          >
+            <option disabled selected>Select document(s)</option>
+          </select>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Ok</button> -->
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-xs"
+        (click)="onSubmit()"
+      >
+        Add
+      </button>
+    </div>
+  </ng-template>
+</div>

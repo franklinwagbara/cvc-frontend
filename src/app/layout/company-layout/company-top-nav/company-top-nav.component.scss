@@ -1,0 +1,46 @@
+$primary: #aaefdf;
+$primary-dark: #6aad9e;
+$text-dark: #035024;
+$nav-height: 60px;
+$logo-height: 60px;
+
+#company-top-nav {
+  background-color: $primary;
+  min-height: $nav-height;
+  @apply flex justify-evenly items-center flex-wrap;
+}
+
+.brand-logo {
+  @apply flex items-center;
+
+  img {
+    height: $logo-height;
+  }
+
+  span {
+    @apply text-2xl font-bold -ml-2;
+  }
+}
+
+.nav-wrapper {
+  @apply flex flex-nowrap;
+}
+
+.nav-list {
+  @apply flex  font-semibold gap-5 text-sm -mb-[14px] flex-nowrap;
+}
+
+.user,
+.logout {
+  transition: all 0.3s ease-in-out;
+  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer;
+}
+
+.logout:hover {
+  background-color: $primary-dark;
+  color: white;
+}
+
+.user-group {
+  @apply flex gap-2 -mb-[14px];
+}

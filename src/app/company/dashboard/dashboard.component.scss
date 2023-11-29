@@ -1,0 +1,137 @@
+.card {
+  display: flex;
+  flex: 1;
+  border-radius: 30px;
+  background: linear-gradient(
+    270deg,
+    #ffca43 0%,
+    rgba(255, 242, 207, 0.94) 100%
+  );
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  min-width: 15rem;
+  @apply h-40 p-2 flex justify-center;
+}
+
+.card h1 {
+  color: #234a41;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.card p {
+  font-weight: bold;
+  padding-left: 5px;
+}
+
+.card div {
+  @apply flex justify-between items-start;
+
+  & > img {
+    height: 30px;
+    @apply mr-3 mt-6;
+  }
+}
+
+.dashboard-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: #6aad9e;
+  box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.25) inset;
+  @apply min-h-[18rem] flex items-center p-4;
+}
+
+.purple-card {
+  background: linear-gradient(
+    270deg,
+    #ff43ec 0%,
+    rgba(255, 207, 244, 0.94) 100%
+  );
+}
+
+.orange-card {
+  background: linear-gradient(
+    270deg,
+    #ff5a43 0%,
+    rgba(255, 219, 207, 0.94) 100%
+  );
+}
+
+.green-card {
+  background: linear-gradient(
+    270deg,
+    #43ff56 0%,
+    rgba(222, 255, 207, 0.94) 100%
+  );
+}
+
+.notification-wrapper {
+  line-height: 0.7rem;
+  @apply pl-5 pr-5 pt-5 mb-5;
+}
+
+.apply {
+  border-radius: 10px;
+  background: rgba(170, 239, 223, 0.37);
+  display: flex;
+  align-items: center;
+  height: 3rem;
+  padding: 5px;
+}
+
+.apply-button {
+  border-radius: 5px;
+  background: #378270;
+  color: white;
+  padding: 8px;
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+}
+
+.messages-wrapper {
+  @apply flex gap-3 flex-1 flex-wrap p-4;
+}
+
+.message-container {
+  width: 70%;
+}
+
+.news-container {
+  @apply flex-1;
+}
+
+.message-container h3 {
+  font-size: medium;
+}
+
+.data-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table td,
+.data-table th {
+  border: 1px solid #aae3d6;
+  padding: 8px;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.data-table tr:hover {
+  background-color: #aae3d6;
+}
+
+.data-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2d8a75;
+  color: white;
+}

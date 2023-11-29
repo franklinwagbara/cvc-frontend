@@ -1,0 +1,16 @@
+<div class="filter">
+  <div>
+    <input
+      type="text"
+      placeholder="Search..."
+      (input)="onSearchValueChanged($event)"
+    />
+  </div>
+  <div>
+    <select [(ngModel)]="selectedHeader1">
+      <option *ngFor="let ch of columnsHeaders" [value]="ch.header">
+        {{ ch.columDef }}
+      </option>
+    </select>
+  </div>
+</div>

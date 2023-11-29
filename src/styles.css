@@ -1,0 +1,86 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  min-width: fit-content;
+  overflow-x: hidden;
+}
+
+.collapsible-header {
+  margin: 1rem;
+}
+
+.ni {
+  padding-right: 1rem;
+}
+
+.st-desk {
+  background-color: rgb(255, 255, 255);
+  min-height: 35rem;
+  padding: 2rem;
+  border-radius: 5px;
+  margin: 0 1.5rem 0 1.5rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.success {
+  background-color: #40a64a;
+  color: rgb(255, 255, 255);
+}
+
+.warning {
+  background-color: #fcbf1f;
+  color: rgb(255, 255, 255);
+}
+
+.error {
+  background-color: #d53343;
+  color: rgb(255, 255, 255);
+}
+
+.hidden {
+  @apply invisible opacity-0 transition-all ease-in-out delay-75 duration-300;
+}
+
+.block {
+  @apply visible opacity-100 transition-all ease-in-out delay-1000 duration-1000;
+}
+
+.page-title {
+  box-shadow: 1px 3px 4px 0px #9fa4c2;
+  color: wheat !important;
+  @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#48ACF0] to-[#255e85];
+}
+
+.setting-desk {
+  min-height: fit-content;
+  padding: 2rem;
+  border-radius: 5px;
+  margin: 0 1.5rem 0 1.5rem;
+  @apply bg-background;
+}
+
+.table-wrapper {
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.row-container {
+  @apply flex flex-col lg:flex-row gap-3;
+}
+
+.chart-title {
+  text-align: center;
+  @apply pt-4;
+}
+
+.chart-title span {
+  @apply py-3 px-7 font-semibold rounded-full bg-gradient-to-r from-yellow-200 to-yellow-400;
+}

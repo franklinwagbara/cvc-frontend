@@ -1,0 +1,26 @@
+.modal-width {
+  min-width: fit-content;
+}
+
+.card-list {
+  @apply border-2 border-slate-200 px-3 py-4 rounded-md w-full;
+}
+
+.card-item {
+  @apply bg-slate-500  min-h-[20px] pr-1 flex flex-row m-1 gap-2 w-full rounded-lg;
+}
+
+.item-title {
+  @apply w-52 text-lg px-3 py-2 flex justify-center items-center text-white;
+}
+
+.item-content {
+  @apply px-3 py-2 text-base bg-slate-100 w-full;
+}
+.show-more {
+  @apply bg-slate-400 text-xs text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
+}
+
+.title {
+  @apply text-center text-xl;
+}

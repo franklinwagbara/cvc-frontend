@@ -1,0 +1,31 @@
+<nav class=" navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+  <div class="container-fluid">
+    <ul class="navbar-nav align-items-center nav-item-top">
+      <li class="nav-item" ngbDropdown placement="bottom-right">
+        <a class="nav-link pr-0" role="button" >
+          <div class="media">
+            <div class="media-body ml-2 d-none d-lg-block" style="display: inline-block;">
+              <i class="fa fa-user"></i>&nbsp;
+              <span class="mb-0 text-sm  font-weight-bold" ngbDropdownToggle>{{user.firstName}} {{ user.lastName}}</span>
+            </div>
+          </div>
+        </a>
+        <div class="dropdown-menu-arrow dropdown-menu-right" style="font-family: Candara;" ngbDropdownMenu>
+          <div class=" dropdown-header noti-title text-center">
+            <b>Welcome!</b>
+          </div>
+          <hr />
+          <a routerLinkActive="active" [routerLink]="['/user-profile']" class="dropdown-item">
+            <i class="ni ni-support-16"></i>
+            <span>Change Password</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#!" class="dropdown-item" (click)="logout()">
+            <i class="ni ni-user-run"></i>
+            <span>Logout</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

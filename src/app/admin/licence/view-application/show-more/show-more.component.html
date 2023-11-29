@@ -1,0 +1,20 @@
+<h1 mat-dialog-title class="title">{{ tableTitle }}</h1>
+<div mat-dialog-content class="modal-width">
+  <div class="table-group">
+    <div class="table-wrapper">
+      <flat-table
+        [table_controls_horizontal]="true"
+        [table_keysMappedToHeaders]="dataKeysMappedToHeaders$ | async"
+        [table_content]="dataToDisplay"
+        [noAddOrDeleteButton]="true"
+        [noCheckControls]="true"
+        [noEditControl]="true"
+        [noTitle]="true"
+      >
+      </flat-table>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+</div>

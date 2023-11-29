@@ -1,0 +1,61 @@
+<h1 mat-dialog-title>Add New Field Office</h1>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="createOffice()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Office Name</label>
+      <input name="name" formControlName="name" class="form-control" />
+      <div
+        *ngIf="form.get('name')?.touched && form.get('name')?.invalid"
+        class="alert alert-danger"
+      >
+        Office Name is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>State</label>
+      <select name="stateId" formControlName="stateId" class="form-control">
+        <option *ngFor="let st of stateList" [ngValue]="st.id">
+          {{ st.stateName }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('stateId')?.touched && form.get('stateId')?.invalid"
+        class="alert alert-danger"
+      >
+        State is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Office</label>
+      <select name="office" formControlName="office" class="form-control">
+        <option *ngFor="let office of offices" [ngValue]="office">
+          {{ office }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('office')?.touched && form.get('office')?.invalid"
+        class="alert alert-danger"
+      >
+        Office is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Address</label>
+      <input name="address" formControlName="address" class="form-control" />
+      <div
+        *ngIf="form.get('address')?.touched && form.get('address')?.invalid"
+        class="alert alert-danger"
+      >
+        Address is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button (click)="createOffice()" [disabled]="form.invalid">
+    Create
+  </button>
+</div>

@@ -1,0 +1,46 @@
+kljkjjkjkjjkjjkjkj
+<div class="payment h-full">
+  <div class="pl-2 pr-6">
+    <div class="title">
+      <h1>PAYMENT REPORT</h1>
+    </div>
+    <div class="filterWrapper">
+      <app-paymentfilterleft
+        [applications]="applications"
+        (sortedApps)="onSortApps($event)"
+        (onChecked)="onCheck($event)"
+      ></app-paymentfilterleft>
+
+      <div class="flex flex-col">
+        <app-paymentfilterright
+          (searchValueChanged)="onSearchValueEntered1($event)"
+          [applications]="applications"
+        ></app-paymentfilterright>
+        <app-paymentfilterright
+          (searchValueChanged)="onSearchValueEntered2($event)"
+          [applications]="filteredApps1"
+        ></app-paymentfilterright>
+      </div>
+    </div>
+    <app-paymentextras
+      (onPrint)="printPage()"
+      (onExport)="exportPage()"
+      (onGenerateGraph)="generateGraph()"
+    ></app-paymentextras>
+  </div>
+
+  <generic-table
+    [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+    [table_content]="checked ? sortedApps : filteredApps2"
+    [noAddOrDeleteButton]="true"
+    [noCheckControls]="true"
+    [noEditControl]="true"
+    [noFilter]="true"
+    [noTitle]="true"
+  >
+  </generic-table>
+  <app-paymentgraph-modal
+    *ngIf="showModal"
+    (onClose)="closeGraphModal()"
+  ></app-paymentgraph-modal>
+</div>

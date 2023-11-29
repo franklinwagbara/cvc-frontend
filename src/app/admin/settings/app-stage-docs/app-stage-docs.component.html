@@ -1,0 +1,22 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-purple-500 text-purple-800">
+    APPLICATION STAGE DOCUMENTS
+  </h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.facilityTypeDoc"
+          [title-color]="'purple'"
+          [table_keysMappedToHeaders]="facilityTypeDocKeysMappedToHeaders"
+          [table_content]="facilityTypeDocs"
+          [noTitle]="true"
+          [table_controls_horizontal]="true"
+          (onAddData)="onAddData($event, 'permitStageDocument')"
+          (onDeleteData)="onDeleteData($event, 'permitStageDocument')"
+          (onEditData)="onEditData($event, 'permitStageDocument')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

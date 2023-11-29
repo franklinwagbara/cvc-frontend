@@ -1,0 +1,27 @@
+.extras {
+  background-color: #0d2357ed;
+  margin-bottom: 40px;
+}
+
+.extrasWrapper {
+  width: 50%;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 0px;
+}
+
+.extrasItem {
+  color: #fff;
+  background-color: #051438ed;
+  font-size: 17px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.extrasItem:hover {
+  background-color: #122351ed;
+}

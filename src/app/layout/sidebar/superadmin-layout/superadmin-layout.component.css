@@ -1,0 +1,55 @@
+.side-nav .collapsible ul {
+  padding: 0;
+  list-style-type: none;
+}
+.mdb-skin-custom .side-nav .collapsible li .collapsible-header.active {
+  color: #4285f4;
+  background-color: transparent;
+}
+.side-nav .collapsible {
+  padding: 0;
+  margin: 0;
+  margin-top: 1rem;
+}
+.mdb-skin-custom .side-nav .collapsible li .collapsible-header {
+  color: #424242;
+  -webkit-transition: all .3s linear;
+  transition: all .3s linear;
+}
+.mdb-skin-custom .side-nav .collapsible li a {
+  font-weight: 400;
+}
+li {
+  /* display: list-item; */
+  list-style-type: none;
+  text-decoration: none;
+  text-align: -webkit-match-parent;
+}
+.side-nav ul {
+  padding-left: 0;
+  list-style: none;
+  list-style-type: none;
+}
+.mdb-skin-custom .side-nav .collapsible li .collapsible-body a {
+  font-size: .78rem;
+}
+.collapsible-body {
+  display: none;
+}
+.active-body{
+  display: block;
+}
+.collapsible-header{
+  margin: 1.0rem;
+}
+.nav-item-link{
+  background-color: rgb(230, 248, 228) !important;
+  min-width: 13.5rem;
+  border-radius: 5px;
+  font-size: 12px !important;
+  box-shadow: 1px 1.5px;
+  font-weight: bold;
+}
+.current-menu-item{
+  border-bottom: 1px solid white;
+}

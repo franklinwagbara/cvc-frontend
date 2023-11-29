@@ -1,0 +1,101 @@
+<h1 mat-dialog-title>Add New Phase</h1>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="createPhase()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Short Code</label>
+      <input name="Code" formControlName="Code" class="form-control" />
+      <div
+        *ngIf="form.get('Code')?.touched && form.get('Code')?.invalid"
+        class="alert alert-danger"
+      >
+        Code is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>ShortName</label>
+      <input
+        name="ShortName"
+        formControlName="ShortName"
+        class="form-control"
+      />
+      <div
+        *ngIf="form.get('ShortName')?.touched && form.get('ShortName')?.invalid"
+        class="alert alert-danger"
+      >
+        ShortName is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Description</label>
+      <input
+        name="Description"
+        formControlName="Description"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          form.get('Description')?.touched && form.get('Description')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Description is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Category</label>
+      <select
+        name="CategoryId"
+        formControlName="CategoryId"
+        class="form-control"
+      >
+        <option *ngFor="let cat of categories" [ngValue]="cat.id">
+          {{ cat.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('CategoryId')?.touched && form.get('CategoryId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Category is required!
+      </div>
+    </div>
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Sort</label>
+      <input
+        name="Sort"
+        type="number"
+        formControlName="Sort"
+        class="form-control"
+      />
+      <div
+        *ngIf="form.get('Sort')?.touched && form.get('Sort')?.invalid"
+        class="alert alert-danger"
+      >
+        Sort is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button
+    mat-raised-button
+    *ngIf="!currentValue"
+    (click)="createPhase()"
+    [disabled]="form.invalid"
+  >
+    Create
+  </button>
+
+  <button
+    mat-raised-button
+    color="primary"
+    *ngIf="currentValue"
+    (click)="editPhase()"
+    [disabled]="form.invalid"
+  >
+    Update
+  </button>
+</div>

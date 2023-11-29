@@ -1,0 +1,41 @@
+<nav id="company-top-nav">
+  <div class="brand-logo">
+    <img src="../../../../assets/img/brand/logo.png" />
+    <span>BUNKERING</span>
+  </div>
+
+  <div class="nav-wrapper">
+    <div class="nav-list">
+      <app-dropdown
+        title="DASHBOARD"
+        path="company/dashboard"
+        [menu-items]="dashboardMenuItems"
+      >
+      </app-dropdown>
+      <app-dropdown title="APPLICATIONS" [menu-items]="applicationsMenuItems">
+      </app-dropdown>
+      <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">
+      </app-dropdown>
+      <app-dropdown title="MY PERMITS"> </app-dropdown>
+      <!-- <app-dropdown title="TEMPLATES" [menu-items]="templateMenuItems">
+      </app-dropdown> -->
+    </div>
+
+    <div class="user-group">
+      <div class="user">
+        <svg-icon [icon]="'user'" fill="black" [size]="32"></svg-icon>
+        <span>{{ currentUsername.lastName }}</span>
+      </div>
+
+      <div class="logout" (click)="auth.logout()">
+        <svg-icon
+          [icon]="'logout'"
+          fill="none"
+          stroke="black"
+          [size]="20"
+        ></svg-icon>
+        <span>logout</span>
+      </div>
+    </div>
+  </div>
+</nav>

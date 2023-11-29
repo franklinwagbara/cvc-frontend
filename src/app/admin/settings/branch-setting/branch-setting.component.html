@@ -1,0 +1,20 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-blue-500 text-blue-800">BRANCHES SETTINGS</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.branches"
+          [title-color]="'blue'"
+          [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
+          [table_content]="branches"
+          [noTitle]="true"
+          [table_controls_horizontal]="true"
+          (onAddData)="onAddData($event, 'branches')"
+          (onDeleteData)="onDeleteData($event, 'branches')"
+          (onEditData)="onEditData($event, 'branches')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+// .tab {
+//   @apply flex min-w-[700px] mt-5 ml-5;
+
+//   & div {
+//     @apply border border-yellow-500 pr-5 p-4 pt-3 pb-3;
+//   }
+// }
+
+.active {
+  background-color: rgb(4, 92, 4);
+  font-size: 18px;
+  font-weight: 500;
+}
+.nav {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+li {
+  border: 1px solid green;
+  border-radius: 20px;
+}
+
+.active a {
+  text-decoration: none;
+  color: white;
+}

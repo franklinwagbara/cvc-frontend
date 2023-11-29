@@ -1,0 +1,18 @@
+.table {
+  width: 100%;
+  @apply shadow-lg;
+}
+
+.table tr:nth-child(odd) {
+  background-color: white;
+}
+
+.table th,
+td {
+  @apply p-4 rounded-md;
+}
+
+.table th {
+  background-color: #3e4e50;
+  @apply text-slate-100;
+}

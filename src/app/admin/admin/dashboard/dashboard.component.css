@@ -1,0 +1,59 @@
+.card-area {
+  @apply relative mt-1 px-10  mb-28 pb-8 xl:mb-0 xl:h-card_area grid sm:grid-cols-2 grid-cols-1 md:grid-cols-2  xl:grid-cols-4  gap-1 lg:gap-4 2xl:gap-8 pt-14;
+}
+
+.card {
+  /* box-shadow: 11px 14px 0px 0px #84690f; */
+  /* box-shadow: 11px 14px 0px 0px #cab262; */
+  box-shadow: 3px 5px 1px 0px #9b884a;
+  border-radius: 60px;
+  border-color: transparent !important;
+  @apply p-10 pb-16 h-52  flex flex-col gap-3 bg-gradient-to-r from-yellow-200 to-yellow-400;
+}
+
+.card-red {
+  box-shadow: 3px 5px 1px 0px #9b4a4a;
+  border-color: transparent !important;
+  @apply bg-gradient-to-r from-red-200 to-red-400;
+}
+
+.card-green {
+  box-shadow: 3px 5px 1px 0px #519b4a;
+  border-color: transparent !important;
+  @apply bg-gradient-to-r from-green-200 to-green-400;
+}
+
+.card-blue {
+  box-shadow: 3px 5px 1px 0px #4a4f9b;
+  border-color: transparent !important;
+  @apply bg-gradient-to-r from-blue-200 to-blue-400;
+}
+
+.card-purple {
+  box-shadow: 3px 5px 1px 0px #814a9b;
+  border-color: transparent !important;
+  @apply bg-gradient-to-r from-purple-200 to-purple-400;
+}
+
+.card-data {
+  @apply flex justify-between;
+}
+
+.card-title {
+  @apply self-end font-bold text-gray-600 text-sm;
+}
+
+.card-data span {
+  @apply text-8xl font-semibold text-gray-800 lg:text-8xl;
+}
+
+.card-data div {
+  @apply flex-1;
+}
+
+.content {
+  /* box-shadow: 0px 4px 5px #888888; */
+  @apply relative mx-5 -mt-content_mt bg-content_area min-h-[1000px] p-6;
+}
+
+/** Dashboard css ends here */

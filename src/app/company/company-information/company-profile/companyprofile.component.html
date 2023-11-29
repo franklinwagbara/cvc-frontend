@@ -1,0 +1,206 @@
+<div class="max-w-screen-lg mx-auto mt-8">
+  <div>
+    <h2 class="font-semibold text-xl text-gray-600">Company Profile</h2>
+    <p class="text-gray-500 mb-6">Complete the company profile information.</p>
+
+    <div
+      [formGroup]="profileForm"
+      class="bg-white rounded shadow-lg px-4 md:p-8 mb-6"
+    >
+      <div class="lg:col-span-2">
+        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-7">
+          <div class="md:col-span-3">
+            <label for="zipcode">Company Name</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                type="text"
+                formControlName="name"
+                [(ngModel)]="companyProfile.name"
+                id="name"
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label for="zipcode">Business Type</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                type="text"
+                formControlName="business_Type"
+                [(ngModel)]="companyProfile.business_Type"
+                id="business_Type"
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label for="zipcode">Company Email</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                type="text"
+                formControlName="email"
+                [(ngModel)]="companyProfile.user_Id"
+                id="email"
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+                placeholder=""
+              />
+            </div>
+          </div>
+          <div class="md:col-span-4">
+            <label for="address_1">Contact Person's First Name</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                formControlName="contact_FirstName"
+                [(ngModel)]="companyProfile.contact_FirstName"
+                id="contact_FirstName"
+                placeholder=""
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              />
+            </div>
+          </div>
+
+          <div class="md:col-span-3">
+            <label for="state">Contact Person's Telephone</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                formControlName="contact_Phone"
+                [(ngModel)]="companyProfile.contact_Phone"
+                id="contact_Phone"
+                placeholder=""
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              />
+            </div>
+          </div>
+          <div class="md:col-span-2">
+            <label for="city">Registration Number</label>
+            <input
+              type="text"
+              formControlName="rC_Number"
+              [(ngModel)]="companyProfile.rC_Number"
+              id="rC_Number"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label for="address">TIN Number</label>
+            <input
+              type="text"
+              formControlName="tin_Number"
+              id="tin_Number"
+              [(ngModel)]="companyProfile.tin_Number"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+          <div class="md:col-span-1">
+            <label for="city">Year Incorporated</label>
+            <input
+              type="text"
+              formControlName="year_Incorporated"
+              [(ngModel)]="companyProfile.year_Incorporated"
+              id="year_Incorporated"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label for="country">Country</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <select
+                formControlName="nationality"
+                [ngModel]="companyProfile.nationality"
+                id="countryName"
+                placeholder=""
+                class="px-1 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              >
+                <option selected value="{{ companyProfile.nationality }}">
+                  {{ companyProfile.nationality }}
+                </option>
+                <option
+                  *ngFor="let country of countries"
+                  value="{{ country.value }}"
+                >
+                  {{ country.text }}
+                </option>
+                >
+              </select>
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
+            <label for="city">Total Assets</label>
+            <input
+              type="text"
+              formControlName="total_Asset"
+              [(ngModel)]="companyProfile.total_Asset"
+              id="total_Asset"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label for="city">No. of Staff</label>
+            <input
+              type="text"
+              formControlName="no_Staff"
+              [(ngModel)]="companyProfile.no_Staff"
+              id="no_Staff"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+
+          <div class="md:col-span-1">
+            <label for="city">Yearly Revenue</label>
+            <input
+              type="text"
+              formControlName="yearly_Revenue"
+              [(ngModel)]="companyProfile.yearly_Revenue"
+              id="yearly_Revenue"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+          <div class="md:col-span-2">
+            <label for="city">No. of Expertriates</label>
+            <input
+              type="text"
+              formControlName="no_Expatriate"
+              [(ngModel)]="companyProfile.no_Expatriate"
+              id="no_Expatriate"
+              class="h-10 border mt-1 rounded px-2 w-full bg-gray-50"
+              placeholder=""
+            />
+          </div>
+
+          <div class="md:col-span-7 text-right">
+            <div class="inline-flex items-end">
+              <button
+                (click)="save()"
+                class="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded"
+              >
+                Update Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br /><br /><br /><br />

@@ -1,0 +1,159 @@
+<div class="container" style="box-shadow:0 0 5px #c5c5c5; padding: 0 15px 20px 15px; background:white;">
+    <div class="panel-body">
+        <br><br>
+        <p></p>
+
+
+
+        <div class="">
+
+            <div class="row" id="BackImage">
+
+                <br>
+                <h3 class="DashCompanyName"> My Schedule </h3>
+                <hr>
+            </div>
+
+            <br>
+
+            <div>
+
+                <div id="MyFacilityTable_wrapper" class="dataTables_wrapper no-footer">
+                    <div class="dt-buttons"> <button class="dt-button buttons-collection buttons-page-length"
+                            tabindex="0" aria-controls="MyFacilityTable" aria-haspopup="true"><span>Show 1000
+                                rows</span></button> <button class="dt-button buttons-copy buttons-html5" tabindex="0"
+                            aria-controls="MyFacilityTable"><span>Copy</span></button> <button
+                            class="dt-button buttons-csv buttons-html5" tabindex="0"
+                            aria-controls="MyFacilityTable"><span>CSV</span></button> <button
+                            class="dt-button buttons-excel buttons-html5" tabindex="0"
+                            aria-controls="MyFacilityTable"><span>Excel</span></button> <button
+                            class="dt-button buttons-pdf buttons-html5" tabindex="0"
+                            aria-controls="MyFacilityTable"><span>PDF</span></button> <button
+                            class="dt-button buttons-print" tabindex="0" aria-controls="MyFacilityTable"><span>Print
+                                all</span></button> <button class="dt-button buttons-collection buttons-colvis"
+                            tabindex="0" aria-controls="MyFacilityTable" aria-haspopup="true"><span>Change
+                                columns</span></button> </div>
+                    <div id="MyFacilityTable_filter" class="dataTables_filter"><label>Search:<input type="search"
+                                class="" placeholder="" aria-controls="MyFacilityTable"></label></div>
+                    <div id="MyFacilityTable_processing" class="dataTables_processing" style="display: none;">
+                        Processing...</div>
+                    <table class="table table-bordered table-hover dataTable no-footer" id="MyFacilityTable"
+                        style="font-size:small" role="grid" aria-describedby="MyFacilityTable_info">
+                        <thead>
+                            <tr role="row">
+                                <th class="sorting_desc" tabindex="0" aria-controls="MyFacilityTable" rowspan="1"
+                                    colspan="1" aria-sort="descending"
+                                    aria-label=" Ref No.: activate to sort column ascending"> Ref No.</th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" Schedule Type : activate to sort column ascending"
+                                    style="width: 134.575px;"> Schedule Type </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" Schedule Location : activate to sort column ascending"
+                                    style="width: 166.45px;"> Schedule Location </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" Schedule Date : activate to sort column ascending"
+                                    style="width: 133.887px;"> Schedule Date </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" Scheduler's Comment : activate to sort column ascending"
+                                    style="width: 195.9px;"> Scheduler's Comment </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" My Response : activate to sort column ascending"
+                                    style="width: 124.762px;"> My Response </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" My Comment : activate to sort column ascending"
+                                    style="width: 127.9px;"> My Comment </th>
+                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
+                                    aria-label=" Action : activate to sort column ascending" style="width: 68.7875px;">
+                                    Action </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd">
+                                <td valign="top" colspan="8" class="dataTables_empty">No data available in table</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="dataTables_info" id="MyFacilityTable_info" role="status" aria-live="polite">Showing 0 to
+                        0 of 0 entries</div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="MyFacilityTable_paginate"><a
+                            class="paginate_button previous disabled" aria-controls="MyFacilityTable" data-dt-idx="0"
+                            tabindex="0" id="MyFacilityTable_previous">Previous</a><span></span><a
+                            class="paginate_button next disabled" aria-controls="MyFacilityTable" data-dt-idx="1"
+                            tabindex="0" id="MyFacilityTable_next">Next</a></div>
+                </div>
+                <input type="text" id="txtScheduleID" hidden="">
+            </div>
+
+        </div>
+
+
+
+        <div class="modal" id="ModalAcceptSchedule">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" id="DivAcceptSchedule">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-success"> Accept schedule with comment </h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="btn btn-dark btn-sm">Close</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <br>
+                            <textarea id="txtAcceptComment" style="max-width:100%; resize:none" rows="5" cols="68"
+                                placeholder="Some comment here...Max(100)"></textarea>
+                        </div>
+
+                        <button class="btn btn-success" id="btnAcceptSchedule"> Accept Schedule </button>
+                        <p></p>
+                        <div id="ScheduleModalInfo"> </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal" id="ModalRejectSchedule">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content" id="DivRejectSchedule">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-danger"> Reject Schedule with comment </h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="btn btn-dark btn-sm">Close</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <br>
+                            <textarea id="txtRejectComment" style="max-width:100%; resize:none" rows="5" cols="68"
+                                placeholder="Some comment here...Max(100)"></textarea>
+                        </div>
+
+                        <button class="btn btn-danger" id="btnRejectSchedule"> Reject Schedule </button>
+                        <p></p>
+                        <div id="ScheduleRejectModalInfo" class="text-danger"> </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <br>
+    </div>
+</div>
+
+<br><br>
+
+<br><br>

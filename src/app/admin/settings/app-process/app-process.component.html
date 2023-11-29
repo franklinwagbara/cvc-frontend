@@ -1,0 +1,24 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-teal-500 text-teal-800">
+    APPLICATION PROCESS CONFIGURATION
+  </h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.branches"
+          [title-color]="'teal'"
+          [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
+          [table_content]="applicationProcesses"
+          [table_controls_horizontal]="true"
+          [noDeleteButton]="true"
+          [noCheckControls]="true"
+          [noTitle]="true"
+          (onAddData)="onAddData($event, 'applicationProcesses')"
+          (onDeleteData)="onDeleteData($event, 'applicationProcesses')"
+          (onEditData)="onEditData($event, 'applicationProcesses')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

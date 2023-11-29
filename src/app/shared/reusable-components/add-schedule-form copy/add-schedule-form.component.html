@@ -1,0 +1,108 @@
+<h1 mat-dialog-title>Add Schedule</h1>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="addSchedule()" class="form">
+    <div class="datetime-control">
+      <label for="date">Date</label>
+      <mat-card id="selectedDate" class="calendar-card">
+        <mat-calendar
+          [selected]="form.get('selectedDate').value"
+          (selectedChange)="updateFormDate($event)"
+        ></mat-calendar>
+      </mat-card>
+
+      <div class="time-control">
+        <label for="time">Time</label>
+        <ngx-timepicker-field
+          id="time"
+          name="time"
+          formControlName="time"
+          [(ngModel)]="time"
+          [controlOnly]="true"
+        ></ngx-timepicker-field>
+      </div>
+      <div
+        *ngIf="form.get('time')?.touched && form.get('time')?.invalid"
+        class="alert alert-danger"
+      >
+        Time is required!
+      </div>
+    </div>
+
+    <div class="top-half">
+      <mat-form-field appearance="fill">
+        <mat-label>Type of Appointment</mat-label>
+        <mat-select name="typeOfAppoinment" formControlName="typeOfAppoinment">
+          <mat-option *ngFor="let type of typeOfAppointment" [value]="type">
+            {{ type }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Staff</mat-label>
+        <mat-select name="nominatedStaffId" formControlName="nominatedStaffId">
+          <mat-option *ngFor="let staff of staffs" [value]="staff.id">
+            {{ staff.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Venue</mat-label>
+        <mat-select name="venue" formControlName="venue">
+          <mat-option *ngFor="let venue of venues" [value]="venue">
+            {{ venue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="fomr-group" style="margin-bottom: 10px">
+        <label>Remark</label>
+        <textarea
+          name="comment"
+          formControlName="comment"
+          class="form-control"
+          aria-multiline="true"
+          rows="7"
+        ></textarea>
+        <div
+          *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
+          class="alert alert-danger"
+        >
+          Remark is required!
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+  <button
+    *ngIf="!schedule"
+    mat-raised-button
+    (click)="addSchedule()"
+    [disabled]="form.invalid"
+  >
+    Schedule
+  </button>
+
+  <button
+    *ngIf="schedule && !isSupervisor"
+    mat-raised-button
+    color="primary"
+    (click)="editSchedule()"
+    [disabled]="form.invalid"
+  >
+    Edit Schedule
+  </button>
+
+  <button
+    *ngIf="schedule && isSupervisor"
+    mat-raised-button
+    color="primary"
+    (click)="approveSchedule()"
+    [disabled]="form.invalid"
+  >
+    Approve Schedule
+  </button>
+</div>

@@ -1,0 +1,317 @@
+<h1 mat-dialog-title>Add New Application Process</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form" (ngSubmit)="createProcessFlow()">
+    <!-- <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Permit Stage</label>
+      <select
+        name="permitStageId"
+        formControlName="permitStageId"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option
+          *ngFor="let permitStage of permitStages"
+          [ngValue]="permitStage.id"
+        >
+          {{ permitStage.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('permitStageId')?.touched &&
+          form.get('permitStageId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Permit Stage is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Branch</label>
+      <select name="branchId" formControlName="branchId" class="form-control">
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let branch of branches" [ngValue]="branch.id">
+          {{ branch.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('branchId')?.touched && form.get('branchId')?.invalid"
+        class="alert alert-danger"
+      >
+        Application Type is required!
+      </div>
+    </div> -->
+
+    <!-- <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Facility Type</label>
+      <select
+        name="facilityTypeId"
+        formControlName="facilityTypeId"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option
+          *ngFor="let facilityType of facilityTypes"
+          [ngValue]="facilityType.id"
+        >
+          {{ facilityType.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('facilityTypeId')?.touched &&
+          form.get('facilityTypeId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        (Facility Type) is required!
+      </div>
+    </div> -->
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Vessel Type</label>
+      <select
+        name="vesselTypeId"
+        formControlName="vesselTypeId"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option
+          *ngFor="let vesselType of vesselTypes"
+          [ngValue]="vesselType.id"
+        >
+          {{ vesselType.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('vesselTypeId')?.touched && form.get('vesselTypeId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        (Facility Type) is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Application Type</label>
+      <select
+        name="applicationTypeId"
+        formControlName="applicationTypeId"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option
+          *ngFor="let applicationType of applicationTypes"
+          [ngValue]="applicationType.id"
+        >
+          {{ applicationType.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('applicationTypeId')?.touched &&
+          form.get('applicationTypeId')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Application Type is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Triggered By (Role)</label>
+      <select
+        name="triggeredByRole"
+        formControlName="triggeredByRole"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let role of roles" [ngValue]="role.id">
+          {{ role.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('triggeredByRole')?.touched &&
+          form.get('triggeredByRole')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        (Triggered By) is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Target (Role)</label>
+      <select
+        name="targetRole"
+        formControlName="targetRole"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let role of roles" [ngValue]="role.id">
+          {{ role.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('targetRole')?.touched && form.get('targetRole')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Target (Role) is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Trigger Location</label>
+      <select
+        name="fromLocation"
+        formControlName="fromLocation"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let role of roles" [ngValue]="role.id">
+          {{ role.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('fromLocation')?.touched && form.get('fromLocation')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Trigger Location is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Target Location</label>
+      <select
+        name="toLocation"
+        formControlName="toLocation"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let role of roles" [ngValue]="role.id">
+          {{ role.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          form.get('toLocation')?.touched && form.get('toLocation')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Target Location is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Action</label>
+      <select name="action" formControlName="action" class="form-control">
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let action of actions" [ngValue]="action">
+          {{ action }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('action')?.touched && form.get('action')?.invalid"
+        class="alert alert-danger"
+      >
+        Action is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Status</label>
+      <select name="status" formControlName="status" class="form-control">
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let status of statuses" [ngValue]="status">
+          {{ status }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('status')?.touched && form.get('status')?.invalid"
+        class="alert alert-danger"
+      >
+        Status is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Archive Application Process</label>
+      <select
+        name="isArchived"
+        formControlName="isArchived"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option [ngValue]="false">No</option>
+        <option [ngValue]="true">Yes</option>
+      </select>
+      <div
+        *ngIf="
+          form.get('isArchived')?.touched && form.get('isArchived')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Archive Application Process is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>State</label>
+      <select name="rate" formControlName="rate" class="form-control">
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let rate of rates" [ngValue]="rate">
+          {{ rate }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('rate')?.touched && form.get('rate')?.invalid"
+        class="alert alert-danger"
+      >
+        State is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+  <button
+    mat-raised-button
+    (click)="createProcessFlow()"
+    [disabled]="form.invalid"
+  >
+    Create
+  </button>
+</div>

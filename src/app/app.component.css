@@ -1,0 +1,3 @@
+.loader {
+  @apply absolute z-50 bg-slate-400 opacity-40 w-full max-h-fit -mt-[23px] -mb-[23px];
+}

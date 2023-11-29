@@ -1,0 +1,103 @@
+/** Side nav css */
+.side-nav {
+  box-shadow: 5px 3px 4px 0px gray;
+  border-color: transparent !important;
+  @apply relative z-50 bg-primary w-full sm:w-side_nav pt-9 min-h-full bg-gradient-to-r from-[#076969] to-[#032e36];
+}
+
+.logo-title {
+  @apply flex items-center;
+}
+
+.logo-title h2 {
+  @apply pt-3 text-3xl text-slate-50;
+}
+
+.logo-title h4 {
+  @apply pt-3 text-2xl text-slate-50;
+}
+
+.logo-title img {
+  @apply w-32;
+}
+
+.nav-items {
+  @apply ml-8 mt-20 overflow-hidden;
+}
+
+.nav-items:hover + .dashboard {
+  @apply w-full sm:w-side_nav;
+}
+
+// remove from here
+.nav-item {
+  @apply relative z-10 mt-10 py-4 pl-14 flex items-center  font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
+}
+
+.nav-item-control {
+  @apply flex gap-5;
+}
+
+.nav-item-active {
+  width: 300px;
+  @apply bg-slate-50  rounded-tl-full rounded-bl-full text-black fill-black;
+}
+
+// to here
+
+/** Side nav css end here */
+
+/** Toggle side nav css */
+.collapse-sidenav {
+  width: 100px;
+  @apply transition-all ease-in-out delay-150 duration-500;
+
+  & > .logo-title {
+    & > img {
+      @apply w-32 mt-0 transition-all ease-in-out delay-150 duration-500;
+    }
+
+    & > h2 {
+      @apply invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+    }
+  }
+
+  & > .nav-items {
+    @apply ml-3  transition-all ease-in-out delay-150 duration-500;
+  }
+
+  & > .nav-items .nav-item {
+    @apply pl-7  transition-all ease-in-out delay-150 duration-500;
+  }
+
+  & > .nav-items .nav-item-control span {
+    @apply invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+  }
+}
+
+.unCollapse-sidenav {
+  width: 0px;
+  @apply sm:w-side_nav transition-all ease-in-out delay-150 duration-500;
+
+  & > .logo-title {
+    & > img {
+      @apply mt-0 transition-all ease-in-out delay-75 duration-300;
+    }
+
+    & > h2 {
+      @apply visible opacity-100 transition-all ease-in-out delay-700 duration-500;
+    }
+  }
+
+  & > .nav-items {
+    @apply transition-all ease-in-out delay-150 duration-500;
+  }
+
+  & > .nav-items .nav-item {
+    @apply transition-all ease-in-out delay-150 duration-500;
+  }
+
+  & > .nav-items .nav-item-control span {
+    @apply visible opacity-100 transition-all ease-in-out delay-700 duration-500;
+  }
+}

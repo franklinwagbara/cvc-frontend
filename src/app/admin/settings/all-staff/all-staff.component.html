@@ -1,0 +1,22 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-yellow-500 text-yellow-800">USERS SETTINGS</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [enableMoveApplication]="true"
+          [table_title]="tableTitles.users"
+          [title-color]="'yellow'"
+          [table_keysMappedToHeaders]="userKeysMappedToHeaders"
+          [table_content]="users"
+          [noTitle]="true"
+          [table_controls_horizontal]="true"
+          (onAddData)="onAddData($event, 'users')"
+          (onDeleteData)="onDeleteData($event, 'users')"
+          (onEditData)="onEditData($event, 'users')"
+          (onMoveApplication)="onMoveApplication($event, 'users')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

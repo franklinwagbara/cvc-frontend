@@ -1,0 +1,61 @@
+span {
+  min-width: 100px;
+  transition: all 0.4s ease-in-out;
+  @apply py-3 px-3 rounded-t-lg cursor-pointer;
+}
+span:hover {
+  background-color: #6aad9e;
+  color: white;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  position: absolute;
+  transition: all 0.5s ease-in-out;
+  background-color: #6aad9e;
+  min-width: 200px;
+  max-width: 600px;
+  opacity: 0;
+  color: white;
+  text-align: center;
+}
+ul li {
+  transition: all 0.3s ease-in-out;
+  @apply p-3 rounded-lg mx-2 my-1;
+}
+ul li:hover {
+  color: #035024;
+  @apply hover:bg-[#aaefdf] cursor-pointer;
+}
+
+div {
+  position: absolute;
+  transition: height 0.6s ease-in-out;
+  margin-top: 10px;
+  min-width: 200px;
+  max-width: 600px;
+  height: 0px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.show {
+  opacity: 1;
+  height: 600px;
+}
+.show ul {
+  opacity: 1;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  background-color: #035024;
+}
+
+.dark {
+  background-color: #035024;
+  color: white;
+}
+.dark:hover {
+  background-color: #035024;
+}/*# sourceMappingURL=dropdown.component.css.map */

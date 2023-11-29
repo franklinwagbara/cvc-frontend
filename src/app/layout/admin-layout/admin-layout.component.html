@@ -1,0 +1,17 @@
+<div class="flex flex-row w-screen">
+  <app-sidebar [isCollapsed]="isCollapse"></app-sidebar>
+  <div
+    class="dashboard overflow-hidden"
+    [ngClass]="{
+      'collapse-dashboard': isCollapse,
+      'unCollapse-dashboard': !isCollapse
+    }"
+  >
+    <app-top-nav (onMenuOpen)="onMenuOpen($event)"> </app-top-nav>
+    <spinner></spinner>
+    <progress-bar></progress-bar>
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

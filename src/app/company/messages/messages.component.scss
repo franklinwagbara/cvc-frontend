@@ -1,0 +1,222 @@
+/* Adjust table width and center it */
+#MyFacilityTable_wrapper {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .dt-buttons{
+    float: right;
+    // padding-left: 20px;
+  }
+//   .buttons-collection{
+//     float: left;
+//   }
+  .dataTables_filter{
+    float: left;
+  }
+
+  .buttons-html5{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .buttons-page-length{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .buttons-pdf{
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  .buttons-excel {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .buttons-csv{
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .buttons-copy{
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  .buttons-print{
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  
+
+.buttons-collection {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .buttons-colvis{
+    background-color: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .dataTables_filter{
+    // float: right;
+    border: #6c757d;
+  }
+  .paginate_button{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+
+  }
+
+  .paging_simple_numbers {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .dataTables_info{
+        float: left;
+        
+    }
+
+    .dataTables_paginate{
+        float: right;
+    }
+    .paginate_button:hover{
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.3s ease-in-out;
+    
+    }
+
+    .current{
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.3s ease-in-out;
+    }
+    .next{
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.3s ease-in-out;
+    }
+    a {
+        // color: #007bff;
+        text-decoration: none;
+        // background-color: transparent;
+    }
+  /* Add horizontal scroll for small screens */
+  @media screen and (max-width: 768px) {
+    #MyFacilityTable_wrapper {
+      overflow-x: auto;
+    }
+  }
+  

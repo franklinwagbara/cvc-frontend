@@ -1,0 +1,26 @@
+<div class="container wrapper">
+  <div class="table-group">
+    <div class="table-wrapper">
+      <generic-table
+        [enableGenerateRRR]="true"
+        [enableConfirmPayment]="true"
+        [enableUploadDocument]="true"
+        [EnableViewControl]="true"
+        [table_title]="tableTitles.app"
+        [title-color]="'teal'"
+        [table_controls_horizontal]="true"
+        [table_keysMappedToHeaders]="applicationTableKeysMappedToHeaders"
+        [table_content]="applications$ | async"
+        [noEditControl]="true"
+        [noCheckControls]="true"
+        [noAddOrDeleteButton]="true"
+        (onGenerateRRR)="generateRRR($event)"
+        (onConfirmPayment)="confirmPayment($event)"
+        (onUploadDocument)="uploadDocument($event)"
+        (onViewData)="viewApplication($event, 'applications')"
+        [flat]="true"
+      >
+      </generic-table>
+    </div>
+  </div>
+</div>

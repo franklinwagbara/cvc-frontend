@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Add New Branch</h1>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="createBranch()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Branch Name</label>
+      <input name="name" formControlName="name" class="form-control" />
+      <div
+        *ngIf="form.get('name')?.touched && form.get('name')?.invalid"
+        class="alert alert-danger"
+      >
+        Branch name is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button (click)="createBranch()" [disabled]="form.invalid">
+    Create
+  </button>
+</div>
