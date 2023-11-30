@@ -1,43 +1,33 @@
-* {
-  margin: 0px;
-}
-
 .homeContainer {
-  width: 100%;
-  height: 100%;
   background-image: url("/assets/image/background.jpg");
   background-size: cover;
   background-position: center;
-  /* font-family: Arial, Helvetica, sans-serif; */
+  @apply w-full flex justify-center items-center min-h-screen;
 }
 
 .overlay {
-  width: 100%;
-  height: 100vh;
+  @apply flex flex-row flex-wrap w-full min-h-screen p-6;
   background: rgba(23, 65, 29, 0.29);
   backdrop-filter: blur(7px);
-  display: flex;
-  flex-direction: row;
   justify-content: center;
   align-items: center;
   gap: 3rem;
 }
 
 .main-area {
-  width: 443px;
   height: 562px;
   left: 34px;
   top: 136px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  flex: 0.4;
   background: #E6DADA;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #274046, #E6DADA);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #274046, #E6DADA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
+  padding-bottom: 4rem;
 }
 
 .logo-wrapper img {
@@ -122,18 +112,17 @@
 }
 
 .side-area {
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col;
+  flex: 0.6;
   gap: 2.5rem;
 }
 
 .title-wrapper {
-  width: 750px;
+  width: 100%;
   height: 87px;
   background: #5C258D;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #4389A2, #5C258D);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #4389A2, #5C258D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.8));
   border-radius: 30px;
   display: flex;
@@ -144,6 +133,7 @@
 
 .cards-wrapper {
   display: flex;
+  justify-content: space-between;
   gap: 2rem;
 }
 
@@ -181,6 +171,7 @@
 }
 
 .footer-wrapper {
+  width: 100%;
   height: 180px;
   background: #614385;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #516395, #614385);  /* Chrome 10-25, Safari 5.1-6 */

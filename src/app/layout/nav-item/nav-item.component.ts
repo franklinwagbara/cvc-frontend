@@ -34,7 +34,7 @@ export class NavItemComponent implements OnInit, OnChanges {
   @Input('icon-id_svg') iconId: string;
   @Input('icon-color') iconColor: string = 'black';
 
-  @Output('onActive') onActive = new EventEmitter();
+  @Output() onActive = new EventEmitter();
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(

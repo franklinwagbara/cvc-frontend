@@ -5,7 +5,9 @@
 }
 
 .expand-top-nav {
-  @apply transition-all w-full ease-in-out delay-75 duration-700;
+  width: calc(100% - 100px);
+  margin-left: 100px;
+  @apply transition-all ease-in-out delay-75 duration-700;
 }
 
 .avatar img {

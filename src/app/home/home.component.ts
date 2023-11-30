@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnInit,
+  HostListener
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GuardsCheckEnd, Router, ActivatedRoute } from '@angular/router';
@@ -27,6 +28,7 @@ export class homeComponent implements OnInit {
   genk: GenericService;
   appid: string;
   elpsbase: string;
+  windowScreenSize: number;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -43,6 +45,7 @@ export class homeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.windowScreenSize = window.innerWidth;
     if (this.auth.isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
 
@@ -82,6 +85,11 @@ export class homeComponent implements OnInit {
           });
       }
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowScreenSize = window.innerWidth;
   }
 
   // toggleEmailModal() {

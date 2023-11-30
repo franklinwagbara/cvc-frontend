@@ -6,8 +6,10 @@ import {
   PipeTransform,
   OnChanges,
   SimpleChanges,
+  HostListener,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
   id: number;
@@ -224,7 +226,10 @@ export class SidebarComponent implements OnInit {
 
   @Input() isCollapsed = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private pageManagerService: PageManagerService
+  ) {}
 
   ngOnInit() {
     this.menuItems = [...ROUTES];
@@ -245,5 +250,21 @@ export class SidebarComponent implements OnInit {
       return menu;
     });
     this.menuItems = [...this.menuItems];
+  }
+
+  @HostListener('mouseover', ['$event'])
+  onMouseover(event: Event) {
+    if (!this.pageManagerService.adminSidebarMenuOpen) {
+      this.isCollapsed = false;
+      this.pageManagerService.adminSidebarHover.emit(true);
+    }
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  onMouseLeave(event: Event) {
+    if (!this.pageManagerService.adminSidebarMenuOpen) {
+      this.isCollapsed = true;
+      this.pageManagerService.adminSidebarHover.emit(false);
+    }
   }
 }

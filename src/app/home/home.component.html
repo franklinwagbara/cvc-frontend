@@ -1,41 +1,48 @@
-<div class="homeContainer">
+<div class="homeContainer flex flex-wrap">
   <div class="overlay">
-    <div class="main-area">
-      <div class="logo-wrapper">
-        <img src="assets/image/nmdpraLogo.png" alt="logo" />
-        <h1>NMDPRA</h1>
-      </div>
-      <div class="buttons-wrapper">
-        <div>
-          <button class="green">
-            <a href="{{ elpsbase }}/Account/Login?appId={{ appid }}"
-              >PORTAL LOGIN</a
-            >
-          </button>
-          <button class="yellow">
-            <a href="{{ elpsbase }}/Account/register?appId={{ appid }}"
-              >REGISTRATION</a
-            >
-          </button>
+ 
+    <ng-template #mainArea>
+      <div class="main-area">
+        <div class="logo-wrapper">
+          <img src="assets/image/nmdpraLogo.png" alt="logo" />
+          <h1>NMDPRA</h1>
         </div>
-        <div>
-          <button class="blue">
-            <a href="{{ elpsbase }}/Account/forgotPassword?appId={{ appid }}"
-              >VERIFY PERMIT</a
-            >
-          </button>
-          <button class="red">
-            <a href="{{ elpsbase }}/permit/verifyPermit?appId={{ appid }}"
-              >FORGOT PASSWORD</a
-            >
-          </button>
+        <div class="buttons-wrapper">
+          <div>
+            <button class="green">
+              <a href="{{ elpsbase }}/Account/Login?appId={{ appid }}"
+                >PORTAL LOGIN</a
+              >
+            </button>
+            <button class="yellow">
+              <a href="{{ elpsbase }}/Account/register?appId={{ appid }}"
+                >REGISTRATION</a
+              >
+            </button>
+          </div>
+          <div>
+            <button class="blue">
+              <a href="{{ elpsbase }}/Account/forgotPassword?appId={{ appid }}"
+                >VERIFY PERMIT</a
+              >
+            </button>
+            <button class="red">
+              <a href="{{ elpsbase }}/permit/verifyPermit?appId={{ appid }}"
+                >FORGOT PASSWORD</a
+              >
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </ng-template>
+
+    <div *ngIf="windowScreenSize <= 1216; else mainArea"></div>
+
     <div class="side-area">
       <div class="title-wrapper">
         <h2>CVC PORTAL</h2>
       </div>
+      <div *ngIf="windowScreenSize > 1216; else mainArea"></div>
       <div class="cards-wrapper">
         <div class="card">
           <p>User Guide</p>
@@ -67,6 +74,7 @@
           </ul>
         </div>
       </div>
+      
       <div class="footer-wrapper">
         <div class="images-container">
           <img
