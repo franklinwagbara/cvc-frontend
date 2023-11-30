@@ -215,23 +215,18 @@ const ROUTES: RouteInfo[] = [
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit, OnChanges {
+export class SidebarComponent implements OnInit {
   user: any[];
   public menuItems: RouteInfo[];
   public submenuItems: SubRouteInfo[];
-  public isCollapsed = false;
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
 
-  @Input('isCollapsed') isCollapsedInput;
+  @Input() isCollapsed = false;
 
   constructor(private router: Router) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    this.isCollapsed = this.isCollapsedInput;
-  }
 
   ngOnInit() {
-    this.isCollapsed = this.isCollapsedInput;
     this.menuItems = [...ROUTES];
     this.user = JSON.parse(localStorage.getItem('currentUser'));
   }

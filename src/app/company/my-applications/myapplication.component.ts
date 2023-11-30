@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { GenericService } from 'src/app/shared/services';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { PaymentSummary } from '../paymnet-summary/paymentsum.component';
+import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { PopupService } from 'src/app/shared/services/popup.service';

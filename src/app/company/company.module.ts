@@ -23,7 +23,7 @@ import { CompanyComponent } from './company.component';
 import { UploadComponent } from './apply/upload.component';
 import { PreviewAppComponent } from './apply/edit-preview/previewapp.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { PaymentSumComponent } from './paymnet-summary/paymentsum.component';
+import { PaymentSumComponent } from './payment-summary/paymentsum.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LayoutModule } from '../layout/layout.module';
 import { SharedModule } from '../shared/shared.module';

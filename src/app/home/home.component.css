@@ -7,6 +7,7 @@
   height: 100%;
   background-image: url("/assets/image/background.jpg");
   background-size: cover;
+  background-position: center;
   /* font-family: Arial, Helvetica, sans-serif; */
 }
 
@@ -14,7 +15,7 @@
   width: 100%;
   height: 100vh;
   background: rgba(23, 65, 29, 0.29);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(7px);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -31,11 +32,10 @@
   flex-direction: column;
   align-items: center;
 
-  background: linear-gradient(
-    180deg,
-    #edf8ef 0%,
-    rgba(209, 223, 211, 0.24) 100%
-  );
+  background: #E6DADA;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #274046, #E6DADA);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #274046, #E6DADA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
 }
@@ -62,12 +62,21 @@
 .buttons-wrapper button {
   width: 170px;
   height: 43px;
-  background: #008a71;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.6);
   border: 0px;
-  color: white;
-  border-radius: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 14px;
+  padding: 4px;
   cursor: pointer;
+}
+
+.buttons-wrapper button a {
+  color: black;
+}
+
+.buttons-wrapper button:hover > a {
+  color: white;
 }
 
 .buttons-wrapper div {
@@ -76,16 +85,40 @@
   gap: 40px;
 }
 
+.buttons-wrapper .green {
+  border-color: #02a083;
+  background-color: white;
+}
+
+.buttons-wrapper .green:hover {
+  background: #02a083;
+}
+
 .buttons-wrapper .blue {
-  background-color: #00618a;
+  border-color: #056d99;
+  background-color: white;
+}
+
+.buttons-wrapper .blue:hover {
+  background-color: #056d99;
 }
 
 .buttons-wrapper .yellow {
-  background-color: #8a7c00;
+  border-color: #a19102;
+  background-color: white;
+}
+
+.buttons-wrapper .yellow:hover {
+  background-color: #a19102;
 }
 
 .buttons-wrapper .red {
-  background-color: #8a003a;
+  border-color: #9c0443;
+  background-color: white;
+}
+
+.buttons-wrapper .red:hover {
+  background-color: #9c0443;
 }
 
 .side-area {
@@ -97,12 +130,10 @@
 .title-wrapper {
   width: 750px;
   height: 87px;
+  background: #5C258D;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #4389A2, #5C258D);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #4389A2, #5C258D); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-  background: linear-gradient(
-    180deg,
-    rgba(119, 217, 133, 0.6499) 0%,
-    rgba(38, 124, 51, 0) 100%
-  );
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.8));
   border-radius: 30px;
   display: flex;
@@ -119,11 +150,12 @@
 .card {
   width: 225px;
   height: 314px;
-  background: linear-gradient(180deg, #3a7242 0%, rgba(23, 65, 29, 0) 100%);
+  background: #ff00cc; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #ff00cc, #333399); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #ff00cc, #333399); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   font-weight: bold;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -150,11 +182,9 @@
 
 .footer-wrapper {
   height: 180px;
-  background: linear-gradient(
-    180deg,
-    rgba(58, 114, 66, 0.6499) 0%,
-    rgba(38, 124, 51, 0.18) 100%
-  );
+  background: #614385;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #516395, #614385);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #516395, #614385); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.8));
   border-radius: 5px;
   display: flex;

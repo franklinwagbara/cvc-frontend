@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
@@ -7,13 +7,12 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
   styleUrls: ['./admin-layout.component.css'],
 })
 export class AdminLayoutComponent implements OnInit {
-  public isCollapse: boolean = false;
+  public isCollapse = false;
 
-  constructor() {}
+  ngOnInit(): void {
+  }
 
-  ngOnInit(): void {}
-
-  onMenuOpen(open: Event) {
-    this.isCollapse = !this.isCollapse;
+  onMenuOpen(open: boolean) {
+    this.isCollapse = !open;
   }
 }

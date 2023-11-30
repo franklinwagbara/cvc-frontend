@@ -11,7 +11,7 @@ export class TopNavComponent implements OnInit {
   public menuOpen: boolean = true;
   public currentUserInfo: LoginModel;
 
-  @Output('onMenuOpen') onMenuOpen = new EventEmitter();
+  @Output() onMenuOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private authService: AuthenticationService) {}
 

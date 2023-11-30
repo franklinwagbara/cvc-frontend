@@ -1,8 +1,9 @@
 /** Side nav css */
 .side-nav {
+  width: 300px;
   box-shadow: 5px 3px 4px 0px gray;
   border-color: transparent !important;
-  @apply relative z-50 bg-primary w-full sm:w-side_nav pt-9 min-h-full bg-gradient-to-r from-[#076969] to-[#032e36];
+  @apply fixed top-0 left-0 z-50 bg-primary pt-9 h-full overflow-y-auto bg-gradient-to-r from-[#076969] to-[#032e36];
 }
 
 .logo-title {
@@ -31,7 +32,7 @@
 
 // remove from here
 .nav-item {
-  @apply relative z-10 mt-10 py-4 pl-14 flex items-center  font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
+  @apply relative z-10 mt-10 py-4 pl-14 flex items-center font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
 }
 
 .nav-item-control {
@@ -40,7 +41,7 @@
 
 .nav-item-active {
   width: 300px;
-  @apply bg-slate-50  rounded-tl-full rounded-bl-full text-black fill-black;
+  @apply bg-slate-50 rounded-tl-full rounded-bl-full text-black fill-black;
 }
 
 // to here
@@ -49,7 +50,7 @@
 
 /** Toggle side nav css */
 .collapse-sidenav {
-  width: 100px;
+  width: 0px;
   @apply transition-all ease-in-out delay-150 duration-500;
 
   & > .logo-title {
@@ -75,8 +76,7 @@
   }
 }
 
-.unCollapse-sidenav {
-  width: 0px;
+.uncollapse-sidenav {
   @apply sm:w-side_nav transition-all ease-in-out delay-150 duration-500;
 
   & > .logo-title {
