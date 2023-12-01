@@ -38,7 +38,7 @@ import { ApplicationProcessFormComponent } from './reusable-components/applicati
 import { MoveApplicationFormComponent } from './reusable-components/move-application-form/move-application-form.component';
 import { ApproveFormComponent } from './reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from './reusable-components/send-back-form/send-back-form.component';
-import { AddScheduleFormComponent } from './reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { AddScheduleFormComponent } from './reusable-components/add-schedule-form/add-schedule-form.component';
 import { FlatTableComponent } from './reusable-components/flat-table/flat-table.component';
 import { SpinnerComponent } from './reusable-components/spinner/spinner.component';
 import { AssignApplicationFormComponent } from './reusable-components/assign-application-form/assign-application-form.component';

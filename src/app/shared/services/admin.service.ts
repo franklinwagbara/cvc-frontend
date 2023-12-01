@@ -6,7 +6,7 @@ import { map, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
-import { Schedule } from '../reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {

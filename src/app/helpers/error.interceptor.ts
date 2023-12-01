@@ -32,7 +32,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       // retry(2),
-      catchError((err: unknown) => {
+      catchError((err: any) => {
         // if (err.status === 401 || err.status === 403) {
         //   // auto logout if 401 response returned from api
         //   this.authenticationService.logout();
@@ -43,13 +43,13 @@ export class ErrorInterceptor implements HttpInterceptor {
         //   });
         //   //window.location.reload();
         // }
-        if (err.status === 400) {
+        if (err?.status === 400) {
           return throwError(() => new BadRequestException());
         } else if (err.status === 409) {
           return throwError(
             () =>
               new ConflictException(
-                err.message ? err?.error.data.message : null
+                err?.message ? err?.error.data.message : null
               )
           );
         } else if (err.status === 404) {

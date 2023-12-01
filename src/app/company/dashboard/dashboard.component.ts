@@ -49,8 +49,8 @@ export class DashboardComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
-        this.popUp.open(error.message, 'error');
+      error: (error: any) => {
+        this.popUp.open(error?.message, 'error');
         this.progress.close();
       },
     });
@@ -65,8 +65,8 @@ export class DashboardComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
-        this.popUp.open(error.message, 'error');
+      error: (error: any) => {
+        this.popUp.open(error?.message, 'error');
         this.progress.close();
       },
     });

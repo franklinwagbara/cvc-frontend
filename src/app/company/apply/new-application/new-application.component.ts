@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
+import { AppException } from 'src/app/shared/exceptions/AppException';
 import { IVesselType } from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
@@ -202,7 +203,7 @@ export class NewApplicationComponent implements OnInit {
 
         this.router.navigate(['paymentsum', appId]);
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -273,7 +274,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -292,7 +293,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -307,7 +308,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -322,7 +323,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -338,7 +339,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },
@@ -354,7 +355,7 @@ export class NewApplicationComponent implements OnInit {
         this.progress.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.progress.close();
       },

@@ -12,7 +12,6 @@ import {
   IFacilityType,
   IVessel,
 } from 'src/app/company/apply/new-application/new-application.component';
-import { AppException } from '../../exceptions/AppException';
 import { IAction } from '../../interfaces/IAction';
 import { IApplicationProcess } from '../../interfaces/IApplicationProcess';
 import { IBranch } from '../../interfaces/IBranch';
@@ -171,9 +170,9 @@ export class ApplicationProcessFormComponent implements OnInit {
         this.vesselTypes = res.data;
         this.progressBar.close();
       },
-      error: (err: unknown) => {
+      error: (err: any) => {
         this.progressBar.close();
-        this.popUp.open(err.message, 'error');
+        this.popUp.open(err?.message, 'error');
       },
     });
   }
@@ -197,8 +196,8 @@ export class ApplicationProcessFormComponent implements OnInit {
 
         this.progressBar.close();
       },
-      error: (error: AppException) => {
-        this.snackBar.open(error.message, null, {
+      error: (error: any) => {
+        this.snackBar.open(error?.message, null, {
           panelClass: ['error'],
         });
         this.progressBar.close();

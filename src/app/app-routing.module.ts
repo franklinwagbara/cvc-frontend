@@ -15,7 +15,7 @@ const routes: Routes = [
     component: CompanyComponent,
     loadChildren: () =>
       import('./company/company.module').then((m) => m.CompanyModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'home',
@@ -26,13 +26,13 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'account',
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
   },
 ];
 

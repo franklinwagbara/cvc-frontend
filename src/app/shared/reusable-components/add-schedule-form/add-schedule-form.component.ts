@@ -143,7 +143,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
         this.snackBar.open(error?.message, null, {
           panelClass: ['error'],
         });

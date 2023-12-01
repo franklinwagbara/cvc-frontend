@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from 'src/app/shared/services';

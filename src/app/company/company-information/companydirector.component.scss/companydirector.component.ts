@@ -101,7 +101,7 @@ export class CompanyDirectorComponent implements OnInit {
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
         console.log(error);
         this.popupService.open(error.error, 'error');
       },

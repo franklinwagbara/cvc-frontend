@@ -25,6 +25,10 @@ button {
   @apply text-sm;
 }
 
+.mat-flat-button.mat-accent {
+  background-color: #0077b6;
+}
+
 .mat-row {
   @apply hover:bg-slate-300;
 }
