@@ -9,13 +9,13 @@ import { ApplicationProcessFormComponent } from 'src/app/shared/reusable-compone
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { PermitStage } from '../modules-setting/modules-setting.component';
 import { ApplicationProcessesService } from 'src/app/shared/services/application-processes.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import {
   IApplicationType,
   IFacilityType,
 } from 'src/app/company/apply/new-application/new-application.component';
+import { PermitStage } from '../modules-setting/modules-setting.component';
 
 @Component({
   selector: 'app-app-process',
@@ -95,7 +95,7 @@ export class AppProcessComponent implements OnInit {
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -126,7 +126,7 @@ export class AppProcessComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -189,7 +189,7 @@ export class AppProcessComponent implements OnInit {
         this.cd.markForCheck();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });
@@ -217,7 +217,7 @@ export class AppProcessComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },

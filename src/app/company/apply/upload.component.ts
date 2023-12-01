@@ -6,11 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 import { uploadFile } from '../../shared/models/apply.model';
 import { GenericService } from '../../shared/services';
 import { ApplyService } from '../../shared/services/apply.service';
 import { ModalService } from '../../shared/services/modal.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   templateUrl: 'upload.component.html',
@@ -23,7 +23,7 @@ export class UploadComponent implements OnInit {
   phaseList: any;
   phaseId: number;
   sizePerPage = 10;
-  categoryId: string = '';
+  categoryId = '';
   uploadForm: FormGroup;
   state: string;
   lga: string;
@@ -39,9 +39,9 @@ export class UploadComponent implements OnInit {
   lgalist = [];
   statelist = [];
   category: string;
-  address: string = '';
+  address = '';
   phase: string;
-  applicationTypeId: string = '';
+  applicationTypeId = '';
   stagelist = [];
   phasestages: any;
 

@@ -166,7 +166,7 @@
               </button>
 
               <button
-                *ngIf="!(rrr$ | async)"
+                *ngIf="(rrr$ | async) === null || (rrr$ | async) === ''"
                 class="submitbtn"
                 style="
                   padding: 10px 20px;

@@ -4,9 +4,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
 import { environment } from 'src/environments/environment';
-import { LoginModel } from '../models/login-model';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { tokenNotExpired } from 'src/app/helpers/tokenNotExpired';
+import { LoginModel } from '../models/login-model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {

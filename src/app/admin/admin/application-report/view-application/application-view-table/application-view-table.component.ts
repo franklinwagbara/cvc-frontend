@@ -7,7 +7,7 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
   styleUrls: ['./application-view-table.component.scss'],
 })
 export class ApplicationViewTableComponent implements OnInit {
-  @Input('application') application: IApplication;
+  @Input() application: IApplication;
 
   constructor() {}
 

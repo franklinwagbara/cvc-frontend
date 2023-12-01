@@ -9,15 +9,15 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
 import { PopupService } from '../../services/popup.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-approve-form',
@@ -59,7 +59,7 @@ export class ApproveFormComponent implements OnInit {
         this.progressBarService.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.popup.open(
           'Operation failed! Could not user information!',
           'error'
@@ -75,7 +75,7 @@ export class ApproveFormComponent implements OnInit {
 
   approve() {
     this.progressBarService.open();
-    debugger;
+
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Approve,
@@ -96,7 +96,7 @@ export class ApproveFormComponent implements OnInit {
         this.cd.markForCheck();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.popup.open(
           'Operation failed! Could not user information!',
           'error'

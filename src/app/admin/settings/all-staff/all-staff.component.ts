@@ -6,10 +6,10 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { forkJoin } from 'rxjs';
 import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
-import { FieldOffice } from '../field-zonal-office/field-zonal-office.component';
 import { IBranch } from 'src/app/shared/interfaces/IBranch';
 import { MoveApplicationFormComponent } from 'src/app/shared/reusable-components/move-application-form/move-application-form.component';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { FieldOffice } from '../field-zonal-office/field-zonal-office.component';
 
 @Component({
   selector: 'app-all-staff',
@@ -76,7 +76,7 @@ export class AllStaffComponent implements OnInit {
         // this.progressBar.close();
         this.spinner.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -105,7 +105,7 @@ export class AllStaffComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -176,7 +176,7 @@ export class AllStaffComponent implements OnInit {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });
@@ -201,7 +201,7 @@ export class AllStaffComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -233,7 +233,7 @@ export class AllStaffComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },

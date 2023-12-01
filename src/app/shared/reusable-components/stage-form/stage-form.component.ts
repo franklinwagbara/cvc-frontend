@@ -118,7 +118,7 @@ export class StageFormComponent {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not create the Permit Stage.',
           null,

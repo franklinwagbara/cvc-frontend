@@ -5,10 +5,10 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplyService } from 'src/app/shared/services/apply.service';
-import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 
 @Component({
   selector: 'app-document-upload',
@@ -73,7 +73,7 @@ export class DocumentUploadComponent implements OnInit {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
@@ -96,7 +96,6 @@ export class DocumentUploadComponent implements OnInit {
     const formdata = new FormData();
     formdata.append('file', file);
 
-    debugger;
     this.applicationService
       .uploadCompanyFileToElps(
         doc.docId,
@@ -131,7 +130,7 @@ export class DocumentUploadComponent implements OnInit {
             panelClass: ['success'],
           });
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
@@ -188,7 +187,7 @@ export class DocumentUploadComponent implements OnInit {
             panelClass: ['success'],
           });
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
@@ -208,7 +207,7 @@ export class DocumentUploadComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(
+    const dialogRef = this.dialog.open(
       operationsConfiguration['additionalDocuments'].form,
       {
         data: {
@@ -238,7 +237,7 @@ export class DocumentUploadComponent implements OnInit {
         this.popUp.open('Document(s) upload was successfull.', 'success');
         this.router.navigate(['/company/apply']);
       },
-      error: (res) => {
+      error: (res: unknown) => {
         this.progressBar.close();
         this.popUp.open('Document(s) upload failed!', 'error');
       },

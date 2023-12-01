@@ -7,6 +7,11 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PermitStage } from 'src/app/admin/settings/modules-setting/modules-setting.component';
+import {
+  IApplicationType,
+  IFacilityType,
+  IVessel,
+} from 'src/app/company/apply/new-application/new-application.component';
 import { AppException } from '../../exceptions/AppException';
 import { IAction } from '../../interfaces/IAction';
 import { IApplicationProcess } from '../../interfaces/IApplicationProcess';
@@ -17,11 +22,6 @@ import { AdminService } from '../../services/admin.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PermitStageDocFormComponent } from '../permit-stage-doc-form/permit-stage-doc-form.component';
 import { ApplicationProcessesService } from '../../services/application-processes.service';
-import {
-  IApplicationType,
-  IFacilityType,
-  IVessel,
-} from 'src/app/company/apply/new-application/new-application.component';
 import { LibaryService } from '../../services/libary.service';
 import { PopupService } from '../../services/popup.service';
 
@@ -171,7 +171,7 @@ export class ApplicationProcessFormComponent implements OnInit {
         this.vesselTypes = res.data;
         this.progressBar.close();
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.progressBar.close();
         this.popUp.open(err.message, 'error');
       },

@@ -122,7 +122,7 @@ export class CompanyTopNavComponent implements OnInit {
 
         this.spinner.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving navigation data.',
           null,

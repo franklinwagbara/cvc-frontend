@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { GuardsCheckEnd, Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService, GenericService } from '../shared/services';
 import { environment as envr } from 'src/environments/environment';
-import { UserType } from '../shared/constants/userType';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { AuthenticationService, GenericService } from '../shared/services';
+import { UserType } from '../shared/constants/userType';
 
 @Component({
   selector: 'app-root',
@@ -49,7 +49,7 @@ export class homeComponent implements OnInit {
     if (this.auth.isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
 
-      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
       if (user.userType === UserType.Company)
         this.router.navigate([returnUrl || '/company/dashboard']);
@@ -61,7 +61,6 @@ export class homeComponent implements OnInit {
       // this.email = params['email'];
       this.userId = params['id'];
 
-      // debugger;
       if (!this.auth.isLoggedIn && this.userId) {
         this.isLoading$.next(true);
 
@@ -72,7 +71,7 @@ export class homeComponent implements OnInit {
           )
           .subscribe((user) => {
             if (user) {
-              let returnUrl =
+              const returnUrl =
                 this.route.snapshot.queryParamMap.get('returnUrl');
               if (user.userRoles === UserType.Company) {
                 this.router.navigate([returnUrl || '/company/dashboard']);

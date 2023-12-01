@@ -13,11 +13,11 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { Category } from '../settings/modules-setting/modules-setting.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { LicenceService } from 'src/app/shared/services/licence.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { environment } from 'src/environments/environment';
+import { Category } from '../settings/modules-setting/modules-setting.component';
 
 @Component({
   selector: 'app-licence',
@@ -65,7 +65,7 @@ export class LicenceComponent implements OnInit, AfterViewInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.popup.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();

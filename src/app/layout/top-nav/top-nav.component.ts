@@ -9,7 +9,7 @@ import { PageManagerService } from 'src/app/shared/services/page-manager.service
   styleUrls: ['./top-nav.component.css'],
 })
 export class TopNavComponent implements OnInit {
-  menuOpen: boolean = true;
+  menuOpen = true;
   currentUserInfo: LoginModel;
 
   @Output() onMenuOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -25,7 +25,7 @@ export class TopNavComponent implements OnInit {
       next: (value: boolean) => {
         this.menuOpen = value;
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         console.error(err);
       }
     })

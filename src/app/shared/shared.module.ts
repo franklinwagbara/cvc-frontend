@@ -22,6 +22,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
 } from '@angular/material/snack-bar';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormDialogComponent } from './reusable-components/form-dialog/form-dialog.component';
 import { PhaseFormComponent } from './reusable-components/phase-form/phase-form.component';
 import { TableComponent } from './reusable-components/table/table.component';
@@ -30,7 +31,6 @@ import { StageFormComponent } from './reusable-components/stage-form/stage-form.
 import { ProgressBarComponent } from './reusable-components/progress-bar/progress-bar.component';
 import { PermitStageFormComponent } from './reusable-components/permit-stage-form/permit-stage-form.component';
 import { PermitStageDocFormComponent } from './reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FieldOfficeFormComponent } from './reusable-components/field-office-form/field-office-form.component';
 import { BranchFormComponent } from './reusable-components/branch-form/branch-form.component';
 import { UserFormComponent } from './reusable-components/user-form/user-form.component';

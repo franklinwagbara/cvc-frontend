@@ -8,8 +8,7 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
-  ElementRef,
-  ChangeDetectorRef,
+  ElementRef
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -35,48 +34,48 @@ const PAGESIZE = 10;
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input('flat') flat = false;
-  @Input('enableMoveApplication') enableMoveApplication: boolean = false;
-  @Input('enableGenerateRRR') enableGenerateRRR: boolean = false;
-  @Input('enableConfirmPayment') enableConfirmPayment: boolean = false;
-  @Input('enableUploadDocument') enableUploadDocument: boolean = false;
+  @Input() flat = false;
+  @Input() enableMoveApplication = false;
+  @Input() enableGenerateRRR = false;
+  @Input() enableConfirmPayment = false;
+  @Input() enableUploadDocument = false;
   @Input('title-color') titleColorProp?: string = 'slate';
-  @Input('noTitle') noTitle: boolean = false;
-  @Input('noControls') noControls?: boolean = false;
-  @Input('noFilter') noFilter?: boolean = false;
-  @Input('noAddOrDeleteButton') noAddOrDeleteButton?: boolean = false;
-  @Input('noAddButton') noAddButton?: boolean = false;
-  @Input('noDeleteButton') noDeleteButton?: boolean = false;
-  @Input('noCheckControls') noCheckControls?: boolean = false;
-  @Input('noEditControl') noEditControl?: boolean = false;
+  @Input() noTitle = false;
+  @Input() noControls?: boolean = false;
+  @Input() noFilter?: boolean = false;
+  @Input() noAddOrDeleteButton?: boolean = false;
+  @Input() noAddButton?: boolean = false;
+  @Input() noDeleteButton?: boolean = false;
+  @Input() noCheckControls?: boolean = false;
+  @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders = {};
-  @Input('table_controls_horizontal') table_controls_horizontal: boolean =
+  @Input() table_controls_horizontal =
     false;
-  @Input('table_title') title: string = 'Title';
+  @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
-  @Output('onAddData') onAddData = new EventEmitter<any>();
-  @Output('onDeleteData') onDeleteData = new EventEmitter<any>();
-  @Output('onEditData') onEditData = new EventEmitter<any>();
-  @Output('onViewData') onViewData = new EventEmitter<any>();
-  @Output('onGenerateRRR') onGenerateRRR = new EventEmitter<any>();
-  @Output('onConfirmPayment') onConfirmPayment = new EventEmitter<any>();
-  @Output('onUploadDocument') onUploadDocument = new EventEmitter<any>();
-  @Output('onFileUpload') onFileUpload = new EventEmitter<any>();
-  @Output('onMoveApplication') onMoveApplication = new EventEmitter<any>();
-  @Output('onSelect') onSelect = new EventEmitter<any>();
+  @Output() onAddData = new EventEmitter<any>();
+  @Output() onDeleteData = new EventEmitter<any>();
+  @Output() onEditData = new EventEmitter<any>();
+  @Output() onViewData = new EventEmitter<any>();
+  @Output() onGenerateRRR = new EventEmitter<any>();
+  @Output() onConfirmPayment = new EventEmitter<any>();
+  @Output() onUploadDocument = new EventEmitter<any>();
+  @Output() onFileUpload = new EventEmitter<any>();
+  @Output() onMoveApplication = new EventEmitter<any>();
+  @Output() onSelect = new EventEmitter<any>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
-  public titleColor: string = 'slate';
+  public titleColor = 'slate';
 
-  public divFlexDirection: string = 'column';
+  public divFlexDirection = 'column';
 
   public headers: string[];
   public keys: string[];

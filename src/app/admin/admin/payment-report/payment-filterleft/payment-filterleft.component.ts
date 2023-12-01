@@ -8,7 +8,7 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
 })
 export class PaymentFilterleftComponent implements OnInit {
   @Input() applications: IApplication[];
-  checked: boolean = false;
+  checked = false;
   @Output() sortedApps: EventEmitter<IApplication[]> = new EventEmitter<
     IApplication[]
   >();

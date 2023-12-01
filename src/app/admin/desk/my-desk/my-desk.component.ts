@@ -11,10 +11,10 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
 
 @Component({
   selector: 'app-my-desk',
@@ -107,7 +107,7 @@ export class MyDeskComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -127,7 +127,6 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type: string) {
-    debugger;
     this.router.navigate([`/admin/view-application/${event.id}`], {
       queryParams: { id: event.id, appSource: AppSource.MyDesk },
     });
@@ -147,7 +146,7 @@ export class MyDeskComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration['users'].form, {
+    const dialogRef = this.dialog.open(operationConfiguration['users'].form, {
       data: {
         data: operationConfiguration['users'].data,
       },

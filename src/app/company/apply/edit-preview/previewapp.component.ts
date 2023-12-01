@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 import { PreviewModel, uploadFile } from '../../../shared/models/apply.model';
 import {
   AuthenticationService,
@@ -13,7 +14,6 @@ import {
 } from '../../../shared/services';
 import { ApplyService } from '../../../shared/services/apply.service';
 import { ModalService } from '../../../shared/services/modal.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   templateUrl: 'previewapp.component.html',
@@ -28,7 +28,7 @@ export class PreviewAppComponent {
   phaseId: number;
   phaseStageId: number;
   sizePerPage = 10;
-  categoryId: string = '';
+  categoryId = '';
   uploadForm: FormGroup;
   state: string;
   lga: string;
@@ -45,9 +45,9 @@ export class PreviewAppComponent {
   lgalist = [];
   statelist = [];
   category: string;
-  address: string = '';
+  address = '';
   phase: string;
-  applicationTypeId: string = '';
+  applicationTypeId = '';
   companyDetail: any;
   previewBody: PreviewModel = {} as PreviewModel;
   canSubmit = true;
@@ -205,7 +205,6 @@ export class PreviewAppComponent {
         .getApplicationPhases(this.phasestages[0].phaseId)
         .subscribe((res) => {
           this.phaseList = res.data.data;
-          debugger;
           this.columns();
           this.cd.markForCheck();
         });
@@ -248,8 +247,8 @@ export class PreviewAppComponent {
 
   submit() {
     // let addr = this.f['address'].value;
-    let a = this.categoryId;
-    let b = this.phaseId;
+    const a = this.categoryId;
+    const b = this.phaseId;
 
     const formDat: FormData = new FormData();
     formDat.append('categoryId', this.previewForm.get('categoryId').value);

@@ -17,7 +17,7 @@ export class AdminLayoutComponent implements OnInit {
       next: (value: boolean) => {
         this.isCollapse = !value;
       },
-      error: (err: any) => {
+      error: (err: unknown) => {
         console.error(err);
       }
     })

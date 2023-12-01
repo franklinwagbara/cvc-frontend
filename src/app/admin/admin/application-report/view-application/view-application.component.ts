@@ -104,7 +104,7 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -151,7 +151,7 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(ShowMoreComponent, {
+    const dialogRef = this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },

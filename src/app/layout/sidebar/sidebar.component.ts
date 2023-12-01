@@ -49,7 +49,7 @@ const ROUTES: RouteInfo[] = [
   {
     id: 2,
     title: 'DESK',
-    iconName: 'home',
+    iconName: 'desk',
     iconId: 'Outline',
     iconColor: 'yellow',
     active: false,
@@ -123,7 +123,7 @@ const ROUTES: RouteInfo[] = [
     id: 4,
     title: 'PAYMENTS',
     iconName: 'money-bill-wave',
-    iconId: 'Layer_1',
+    iconId: 'Outline',
     iconColor: 'green',
     active: false,
     subMenuActive: false,

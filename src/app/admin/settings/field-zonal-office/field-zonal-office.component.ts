@@ -57,7 +57,7 @@ export class FieldZonalOfficeComponent implements OnInit {
         // this.progressBarService.close();
         this.spinner.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -80,7 +80,7 @@ export class FieldZonalOfficeComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -137,7 +137,7 @@ export class FieldZonalOfficeComponent implements OnInit {
         }
         this.progressBarService.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });

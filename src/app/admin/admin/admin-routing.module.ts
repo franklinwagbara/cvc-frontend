@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { AdminComponent } from './admin.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { TestComponent } from 'src/app/company/test/test.component';
 import { StaffdeskComponent } from '../staffdesk/staffdesk.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AllStaffComponent } from '../settings/all-staff/all-staff.component';
@@ -14,11 +13,12 @@ import { BranchSettingComponent } from '../settings/branch-setting/branch-settin
 import { AppProcessComponent } from '../settings/app-process/app-process.component';
 import { MyDeskComponent } from '../desk/my-desk/my-desk.component';
 import { ViewApplicationComponent } from '../application/view-application/view-application.component';
-import { TestComponent } from 'src/app/company/test/test.component';
-import { ApplicationReportComponent } from './application-report/application-report.component';
-import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { LicenceComponent } from '../licence/licence.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
+import { ApplicationReportComponent } from './application-report/application-report.component';
+import { PaymentReportComponent } from './payment-report/payment-report.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminComponent } from './admin.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },

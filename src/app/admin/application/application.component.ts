@@ -13,8 +13,8 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { Category } from '../settings/modules-setting/modules-setting.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
+import { Category } from '../settings/modules-setting/modules-setting.component';
 
 @Component({
   selector: 'app-application',
@@ -66,7 +66,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,

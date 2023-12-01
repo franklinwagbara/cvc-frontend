@@ -7,8 +7,8 @@ import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { environment } from 'src/environments/environment';
 
-import { AuthenticationService, GenericService } from '../../shared/services';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { AuthenticationService, GenericService } from '../../shared/services';
 
 @Component({
   templateUrl: 'paymentsum.component.html',
@@ -70,7 +70,7 @@ export class PaymentSumComponent implements OnInit {
         this.progressbar.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.progressbar.close();
         this.cd.markForCheck();
       },
@@ -97,7 +97,7 @@ export class PaymentSumComponent implements OnInit {
             this.cd.markForCheck();
           }
         },
-        error: (error) => {
+        error: (error: unknown) => {
           //todo: display error dialog
           this.popUp.open('RRR generation failed!', 'error');
           this.progressbar.close();
@@ -120,17 +120,17 @@ export class PaymentSumComponent implements OnInit {
 }
 
 export class PaymentSummary {
-  appReference: string = '';
-  permitType: string = '';
+  appReference = '';
+  permitType = '';
   docList: string[] = [];
-  facilityAddress: string = '';
-  fee: string = '';
-  rrr: string = '';
-  serviceCharge: string = '';
+  facilityAddress = '';
+  fee = '';
+  rrr = '';
+  serviceCharge = '';
   serciveCharge: number;
-  totalAmount: string = '';
+  totalAmount = '';
   // status: string = '';
-  paymentStatus: string = '';
+  paymentStatus = '';
 
   applicationType: string;
   accreditationFee: number;

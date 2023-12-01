@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ViewApplicationComponent } from '../admin/application/view-application/view-application.component';
 import { ApplyComponent } from './apply/apply.component';
 import { ChangePasswordComponent } from './changepassword/changepassword.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -16,7 +17,6 @@ import { DocumentUploadComponent } from './document-upload/document-upload.compo
 import { TestComponent } from './test/test.component';
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
-import { ViewApplicationComponent } from '../admin/application/view-application/view-application.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },

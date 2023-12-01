@@ -10,17 +10,17 @@ import {
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import {
-  Category,
-  PermitStage,
-  Phase,
-} from '../modules-setting/modules-setting.component';
 import { AppStageDocumentService } from 'src/app/shared/services/app-stage-document.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import {
   IApplicationType,
   IFacilityType,
 } from 'src/app/company/apply/new-application/new-application.component';
+import {
+  Category,
+  PermitStage,
+  Phase,
+} from '../modules-setting/modules-setting.component';
 
 @Component({
   selector: 'app-app-stage-docs',
@@ -107,7 +107,7 @@ export class AppStageDocsComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while retrieve data!', null, {
           panelClass: ['error'],
         });
@@ -136,7 +136,7 @@ export class AppStageDocsComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationsConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationsConfiguration[type].form, {
       data: {
         data: operationsConfiguration[type].data,
       },
@@ -160,7 +160,7 @@ export class AppStageDocsComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Deletion failed.', null, {
           panelClass: ['error'],
         });

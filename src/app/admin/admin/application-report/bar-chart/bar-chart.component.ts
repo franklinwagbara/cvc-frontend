@@ -119,15 +119,15 @@ export class ApplicationReportBarChartComponent
       am4core.useTheme(am4themes_animated);
       am4core.useTheme(am4themes_kelly);
 
-      let chart = am4core.create('chartdiv', am4charts.XYChart3D);
-      let chart2 = am4core.create('chartdiv2', am4charts.PieChart3D);
+      const chart = am4core.create('chartdiv', am4charts.XYChart3D);
+      const chart2 = am4core.create('chartdiv2', am4charts.PieChart3D);
       chart.hiddenState.properties.opacity = 0;
       chart2.hiddenState.properties.opacity = 0;
 
       chart.paddingRight = 20;
       chart2.paddingRight = 20;
 
-      let data = [];
+      const data = [];
       let visits = 10;
       for (let i = 1; i < 366; i++) {
         visits += Math.round(
@@ -218,21 +218,21 @@ export class ApplicationReportBarChartComponent
       ];
 
       // Create axes
-      var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      const categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = 'country';
       categoryAxis.title.text = 'Countries';
 
-      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
       valueAxis.title.text = 'Litres sold (M)';
 
       // Create series
-      var series = chart.series.push(new am4charts.ColumnSeries3D());
+      const series = chart.series.push(new am4charts.ColumnSeries3D());
       series.dataFields.valueY = 'litres';
       series.dataFields.categoryX = 'country';
       series.name = 'Sales';
       series.tooltipText = '{name}: [bold]{valueY}[/]';
 
-      var series2 = chart.series.push(new am4charts.ColumnSeries3D());
+      const series2 = chart.series.push(new am4charts.ColumnSeries3D());
       series2.dataFields.valueY = 'units';
       series2.dataFields.categoryX = 'country';
       series2.name = 'Units';
@@ -241,7 +241,7 @@ export class ApplicationReportBarChartComponent
       // Add cursor
       chart.cursor = new am4charts.XYCursor();
 
-      let scrollbarX = new am4charts.XYChartScrollbar();
+      const scrollbarX = new am4charts.XYChartScrollbar();
       scrollbarX.series.push(series);
       chart.scrollbarX = scrollbarX;
 
@@ -252,7 +252,7 @@ export class ApplicationReportBarChartComponent
       chart.legend = new am4charts.Legend();
       chart.legend.position = 'right';
 
-      var series3 = chart2.series.push(new am4charts.PieSeries3D());
+      const series3 = chart2.series.push(new am4charts.PieSeries3D());
       series3.dataFields.value = 'litres';
       series3.dataFields.depthValue = 'litres';
       series3.dataFields.category = 'country';

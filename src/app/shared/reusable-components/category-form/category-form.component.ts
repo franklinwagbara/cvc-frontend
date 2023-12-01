@@ -68,7 +68,7 @@ export class CategoryFormComponent {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not create the Category!',
           null,
@@ -98,7 +98,7 @@ export class CategoryFormComponent {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not create the Category!',
           null,

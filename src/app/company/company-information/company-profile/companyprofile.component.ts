@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
 import { CompanyService } from 'src/app/shared/services/company.service';
@@ -15,7 +15,7 @@ import { companyProfile } from 'src/app/shared/models/apply.model';
 export class CompanyProfileComponent implements OnInit {
   profileForm: FormGroup;
   public currentUsername: LoginModel;
-  private email: string = '';
+  private email = '';
 
   private cd: ChangeDetectorRef;
   countries: any;
@@ -84,7 +84,7 @@ export class CompanyProfileComponent implements OnInit {
   save() {
     //this.isSubmitted = true;
     //if (this.profileForm.invalid) return;
-    let userData = this.profileForm.value;
+    const userData = this.profileForm.value;
     if (userData.nationality == this.currentValue.text)
       userData.nationality = this.currentValue.value;
     console.log(userData);
@@ -92,7 +92,7 @@ export class CompanyProfileComponent implements OnInit {
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },
-      error: (error) => {
+      error: (error: unknown) => {
         console.log(error);
         this.popupService.open(error.error, 'error');
       },

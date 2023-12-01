@@ -7,12 +7,12 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { convertTimeToMilliseconds } from 'src/app/helpers/convertTimeToMilliseconds';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
-import { convertTimeToMilliseconds } from 'src/app/helpers/convertTimeToMilliseconds';
 import { AdminService } from '../../services/admin.service';
 import { ISchedule } from '../../interfaces/ISchedule';
 import { ScheduleService } from '../../services/schedule.service';
@@ -109,7 +109,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not user information!',
           null,
@@ -143,7 +143,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(error?.message, null, {
           panelClass: ['error'],
         });
@@ -191,7 +191,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not perform operation!',
           null,
@@ -246,7 +246,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not perform operation!',
           null,
@@ -301,7 +301,7 @@ export class AddScheduleFormComponent implements OnInit {
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not perform operation!',
           null,

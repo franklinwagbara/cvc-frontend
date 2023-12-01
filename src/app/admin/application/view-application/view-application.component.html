@@ -103,9 +103,9 @@
             <div class="item-title">Approval Status</div>
             <div class="item-content">
               {{
-                schedule.isApproved == true
+                schedule.isApproved
                   ? "Approved"
-                  : schedule.isApproved == null
+                  : schedule.isApproved === null
                   ? "Approval Pending"
                   : "Disapproved"
               }}
@@ -115,9 +115,9 @@
             <div class="item-title">Approval Accepted</div>
             <div class="item-content">
               {{
-                schedule.isApproved == true
+                schedule.isApproved
                   ? "Approved"
-                  : schedule.isApproved == null
+                  : schedule.isApproved === null
                   ? "Approval Pending"
                   : "Disapproved"
               }}

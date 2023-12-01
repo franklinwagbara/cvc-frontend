@@ -91,7 +91,7 @@
               >
                 <option
                   *ngFor="let country of countries"
-                  [selected]="address.country_Id == country.value"
+                  [selected]="address.country_Id === country.value"
                   [ngValue]="country"
                 >
                   {{ country.text }}
@@ -113,7 +113,7 @@
               >
                 <option
                   *ngFor="let state of states"
-                  [selected]="state.id == address.stateId"
+                  [selected]="state.id === address.stateId"
                 >
                   {{ state.name }}
                 </option>

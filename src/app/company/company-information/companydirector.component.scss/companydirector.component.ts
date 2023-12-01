@@ -15,7 +15,7 @@ export class CompanyDirectorComponent implements OnInit {
   directorForm: FormGroup;
   companyDirector: companyProfile = new companyProfile();
   public currentUsername: LoginModel;
-  private email: string = '';
+  private email = '';
 
   private cd: ChangeDetectorRef;
   countries: any;
@@ -94,14 +94,14 @@ export class CompanyDirectorComponent implements OnInit {
   save() {
     //this.isSubmitted = true;
     //if (this.directorForm.invalid) return;
-    let userData = this.directorForm.value;
+    const userData = this.directorForm.value;
     userData.countryName = this.companyDirector.countryName;
     console.log(userData);
     this.companyService.saveCompanyProfile(userData).subscribe({
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },
-      error: (error) => {
+      error: (error: unknown) => {
         console.log(error);
         this.popupService.open(error.error, 'error');
       },

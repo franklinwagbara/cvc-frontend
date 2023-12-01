@@ -7,7 +7,7 @@
   {{ title }}
   <ng-container *ngIf="menuItems && menuItems.length > 0">
     <svg-icon
-      *ngIf="!(isOpen$ | async)"
+      *ngIf="(isOpen$ | async) === false"
       [icon]="'angle_up'"
       fill="#035024"
       [size]="10"

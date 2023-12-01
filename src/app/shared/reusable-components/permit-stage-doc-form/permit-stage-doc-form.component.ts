@@ -22,14 +22,14 @@ import {
   PermitStage,
   Phase,
 } from 'src/app/admin/settings/modules-setting/modules-setting.component';
-import { AppException } from '../../exceptions/AppException';
-import { AdminService } from '../../services/admin.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { ProgressBarService } from '../../services/progress-bar.service';
 import {
   IApplicationType,
   IFacilityType,
 } from 'src/app/company/apply/new-application/new-application.component';
+import { AppException } from '../../exceptions/AppException';
+import { AdminService } from '../../services/admin.service';
+import { ProgressBarService } from '../../services/progress-bar.service';
 import { AppStageDocumentService } from '../../services/app-stage-document.service';
 
 @Component({

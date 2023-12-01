@@ -6,10 +6,10 @@ import { Subject } from 'rxjs';
 import { GenericService } from 'src/app/shared/services';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
   IFacility,
   ITankDTO,
@@ -78,7 +78,7 @@ export class MyApplicationComponent implements OnInit {
           this.cd.markForCheck();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         //todo: display error dialog
         this.progressbar.close();
         this.cd.markForCheck();
@@ -104,7 +104,7 @@ export class MyApplicationComponent implements OnInit {
           this.cd.markForCheck();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.popUp.open('RRR generation failed!', 'error');
         this.progressbar.close();
         this.cd.markForCheck();
@@ -120,7 +120,7 @@ export class MyApplicationComponent implements OnInit {
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Payment confirmation not successfull. Please contact support or proceed to pay online.',
           null,

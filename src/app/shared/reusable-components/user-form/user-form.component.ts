@@ -13,12 +13,12 @@ import {
 } from '@angular/material/dialog';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminService } from '../../services/admin.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { ProgressBarService } from '../../services/progress-bar.service';
 
 import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
 import { FieldOffice } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
+import { ProgressBarService } from '../../services/progress-bar.service';
+import { AdminService } from '../../services/admin.service';
 import { IBranch } from '../../interfaces/IBranch';
 
 @Component({
@@ -110,7 +110,6 @@ export class UserFormComponent implements OnInit {
 
   createUser() {
     this.progressBar.open();
-    debugger;
 
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
 
@@ -138,7 +137,7 @@ export class UserFormComponent implements OnInit {
           this.dialogRef.close();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not create the Staff account.',
           null,
@@ -181,7 +180,7 @@ export class UserFormComponent implements OnInit {
           this.dialogRef.close();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not update the Staff account.',
           null,
