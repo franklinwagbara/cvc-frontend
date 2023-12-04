@@ -32,9 +32,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 1,
     title: 'DASHBOARD',
-    iconName: 'home',
-    iconId: 'Outline',
-    iconColor: 'yellow',
+    iconName: 'dashboard',
+    iconId: 'dashboard',
+    iconColor: 'white',
     active: true,
     subMenuActive: false,
 
@@ -49,9 +49,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 2,
     title: 'DESK',
-    iconName: 'app_desk',
-    iconId: 'Outline',
-    iconColor: 'yellow',
+    iconName: 'app-desk',
+    iconId: 'app_desk',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -72,8 +72,8 @@ const ROUTES: RouteInfo[] = [
     id: 3,
     title: 'APPLICATIONS',
     iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'red',
+    iconId: 'dashboard_outline',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -88,9 +88,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 3,
     title: 'LICENCES',
-    iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'blue',
+    iconName: 'licence-outline',
+    iconId: 'licence_outline',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -105,9 +105,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 3,
     title: 'SCHEDULES',
-    iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'blue',
+    iconName: 'schedules',
+    iconId: 'schedules',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -122,9 +122,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 4,
     title: 'PAYMENTS',
-    iconName: 'money-bill-wave',
-    iconId: 'Outline',
-    iconColor: 'green',
+    iconName: 'payment',
+    iconId: 'payment_fluent',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -171,8 +171,8 @@ const ROUTES: RouteInfo[] = [
   {
     id: 6,
     title: 'SETTINGS',
-    iconName: 'settings',
-    iconId: 'Layer_1',
+    iconName: 'setting',
+    iconId: 'setting',
     iconColor: 'white',
     active: false,
     subMenuActive: false,
