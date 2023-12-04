@@ -19,8 +19,16 @@
     @apply shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none;
   }
 
-  .table .table-striped > tr:nth-child(odd) {
+  .row-stripe {
     background-color: #c0efd5;
+  }
+
+  .table td {
+    padding-top: 8px;
+  }
+
+  .table th {
+    @apply text-lg text-gray-700;
   }
 
   .buttons-html5{
