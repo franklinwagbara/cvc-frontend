@@ -49,8 +49,6 @@ export class NavItemComponent implements OnInit, OnChanges {
     this.active = this.activeProp || false;
     this.isSubMenuActive = this.subMenuActiveProp;
     this.subItems = this.subItemsProp;
-
-    console.log('iscollapsed', this.isSideBarCollapsedProp);
   }
 
   ngOnInit(): void {

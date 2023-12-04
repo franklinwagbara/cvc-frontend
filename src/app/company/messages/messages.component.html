@@ -209,21 +209,12 @@
 
         </table>
         <div *ngIf="dataSource.paginator" class="dataTables_info" id="MyFacilityTable_info" role="status" aria-live="polite">
-          {{ 'Showing ' + (dataSource.paginator.pageIndex * dataSource.paginator.pageSize + 1) + ' to ' + (dataSource.paginator.hasNextPage() ? (dataSource.paginator.pageIndex + 1) * 
+          {{ 'Showing ' + (dataSource.paginator.pageIndex * dataSource.paginator.pageSize + (dataSource.filteredData.length > 0 ? 1 : 0)) + ' to ' + (dataSource.paginator.hasNextPage() ? (dataSource.paginator.pageIndex + 1) * 
           (dataSource.paginator.pageSize >= dataSource.filteredData.length ? dataSource.filteredData.length : dataSource.paginator.pageSize) : dataSource.filteredData.length) + ' of ' + dataSource.filteredData.length }} entries
         </div>
         <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons aria-label="Select page of messages">
         </mat-paginator>
-        <!-- <div class="dataTables_paginate paging_simple_numbers" id="MyFacilityTable_paginate"
-          <a class="paginate_button previous disabled" aria-controls="MyFacilityTable" data-dt-idx="0"
-              tabindex="0" id="MyFacilityTable_previous">
-              Previous
-          </a>
-          <span><a class="paginate_button current" aria-controls="MyFacilityTable" data-dt-idx="1" tabindex="0">1</a></span>
-          <a class="paginate_button next disabled" aria-controls="MyFacilityTable" data-dt-idx="2" tabindex="0" id="MyFacilityTable_next">Next</a>
-        </div> -->
       </div>
-
     </div>
 
     <br />
