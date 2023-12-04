@@ -49,7 +49,7 @@ const ROUTES: RouteInfo[] = [
   {
     id: 2,
     title: 'DESK',
-    iconName: 'desk',
+    iconName: 'app_desk',
     iconId: 'Outline',
     iconColor: 'yellow',
     active: false,

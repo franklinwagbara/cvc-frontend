@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CompanyProfileComponent } from './company-profile/companyprofile.component';
 import { CompanyInformationComponent } from './companyinformation.component';
 import { CompanyAddressComponent } from './company-address/companyaddress.component';
-import { CompanyDirectorComponent } from './companydirector.component.scss/companydirector.component';
+import { CompanyDirectorComponent } from './companydirector/companydirector.component';
 import { CompanyInformationRoutingModule } from './company-information.routing';
 
 @NgModule({

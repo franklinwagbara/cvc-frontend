@@ -27,7 +27,7 @@
               >
                 <input
                   formControlName="firstName"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.firstName"
                   id="firstName"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -42,7 +42,7 @@
               >
                 <input
                   formControlName="lastName"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.lastName"
                   id="lastName"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -57,7 +57,7 @@
               >
                 <input
                   formControlName="nationality"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.nationality"
                   id="nationality"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -72,7 +72,7 @@
               >
                 <input
                   formControlName="telephone"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.telephone"
                   id="telephone"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -87,7 +87,7 @@
               >
                 <input
                   formControlName="address_1"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.address_1"
                   id="address_1"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -101,7 +101,7 @@
               >
                 <input
                   formControlName="address_2"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.address_2"
                   id="address_2"
                   placeholder=""
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
@@ -116,7 +116,7 @@
                 <input
                   type="text"
                   formControlName="type"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.type"
                   id="type"
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
                   placeholder=""
@@ -131,7 +131,7 @@
                 <input
                   type="text"
                   formControlName="postal_code"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.postal_code"
                   id="postal_code"
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
                   placeholder=""
@@ -147,7 +147,7 @@
                   type="text"
                   formControlName="city"
                   id="city"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.city"
                   class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
                   placeholder=""
                 />
@@ -161,7 +161,7 @@
               >
                 <select
                   formControlName="countryName"
-                  [(ngModel)]="companyDirector"
+                  [(ngModel)]="companyDirector.countryName"
                   (change)="getId(companyDirector)"
                   id="countryName"
                   placeholder=""

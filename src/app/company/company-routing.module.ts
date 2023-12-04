@@ -4,7 +4,7 @@ import { ViewApplicationComponent } from '../admin/application/view-application/
 import { ApplyComponent } from './apply/apply.component';
 import { ChangePasswordComponent } from './changepassword/changepassword.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MessagesComponent } from './messages/messeges.component';
+import { MessagesComponent } from './messages/messages.component';
 import { MyApplicationComponent } from './my-applications/myapplication.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
 import { MypermitsComponent } from './permits/mypermits.component';

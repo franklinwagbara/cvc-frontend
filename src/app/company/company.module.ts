@@ -19,7 +19,7 @@ import { CompanyRoutingModule } from './company-routing.module';
 
 
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { MessagesComponent } from './messages/messeges.component';
+import { MessagesComponent } from './messages/messages.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
 import { MypermitsComponent } from './permits/mypermits.component';
 import { ApplyComponent } from './apply/apply.component';

@@ -1,8 +1,8 @@
 /* Adjust table width and center it */
 #MyFacilityTable_wrapper {
-    width: 100%;
-    margin: 0 auto;
-  }
+  width: 100%;
+  margin: 0 auto;
+}
 
   .dt-buttons{
     float: right;
@@ -13,6 +13,14 @@
 //   }
   .dataTables_filter{
     float: left;
+  }
+
+  .table-search {
+    @apply shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none;
+  }
+
+  .table .table-striped > tr:nth-child(odd) {
+    background-color: #c0efd5;
   }
 
   .buttons-html5{
@@ -53,6 +61,7 @@
     border: 1px solid transparent;
     transition: all 0.3s ease-in-out;
   }
+
   .buttons-excel {
     background-color: #28a745;
     border-color: #28a745;
@@ -91,6 +100,7 @@
     border: 1px solid transparent;
     transition: all 0.3s ease-in-out;
   }
+
   .buttons-print{
     background-color: #6c757d;
     border-color: #6c757d;
@@ -103,9 +113,8 @@
     border: 1px solid transparent;
     transition: all 0.3s ease-in-out;
   }
-  
 
-.buttons-collection {
+  .buttons-collection {
     background-color: #007bff;
     border-color: #007bff;
     color: #fff;
@@ -150,69 +159,72 @@
   }
 
   .paging_simple_numbers {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 0.3s ease-in-out;
-    }
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
 
-    .dataTables_info{
-        float: left;
-        
-    }
+  .dataTables_info{
+      float: left;    
+  }
 
-    .dataTables_paginate{
-        float: right;
-    }
-    .paginate_button:hover{
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 0.3s ease-in-out;
-    
-    }
+  .table-striped>tbody>tr:nth-child(odd) {
+    background:#c0efd5;
+  }
 
-    .current{
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 0.3s ease-in-out;
-    }
-    .next{
-        background-color: #007bff;
-        border-color: #007bff;
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 5px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: all 0.3s ease-in-out;
-    }
-    a {
-        // color: #007bff;
-        text-decoration: none;
-        // background-color: transparent;
-    }
+  .dataTables_paginate{
+      float: right;
+  }
+  .paginate_button:hover{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out; 
+  }
+
+  .current{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  .next{
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+  }
+
+  a {
+    // color: #007bff;
+    text-decoration: none;
+    // background-color: transparent;
+  }
   /* Add horizontal scroll for small screens */
   @media screen and (max-width: 768px) {
     #MyFacilityTable_wrapper {

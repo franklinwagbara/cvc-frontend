@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { companyProfile } from 'src/app/shared/models/apply.model';
 import { LoginModel } from 'src/app/shared/models/login-model';
@@ -26,7 +26,8 @@ export class CompanyDirectorComponent implements OnInit {
     private companyService: CompanyService,
     private popupService: PopupService,
     private auth: AuthenticationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder
   ) {
     this.cd = cdr;
     this.currentUsername = this.auth.currentUser;
@@ -42,22 +43,19 @@ export class CompanyDirectorComponent implements OnInit {
   }
 
   createForm() {
-    this.directorForm = new FormGroup(
-      {
-        firstName: new FormControl('', [Validators.required]),
-        lastName: new FormControl('', [Validators.required]),
-        telephone: new FormControl('', [Validators.required]),
-        nationality: new FormControl('', [Validators.required]),
-        address_1: new FormControl('', [Validators.required]),
-        address_2: new FormControl('', [Validators.required]),
-        city: new FormControl('', [Validators.required]),
-        postal_code: new FormControl('', [Validators.required]),
-        type: new FormControl('', [Validators.required]),
-        countryName: new FormControl('', [Validators.required]),
-        stateName: new FormControl('', [Validators.required]),
-      },
-      {}
-    );
+    this.directorForm = this.formBuilder.group({
+      firstName: ['', [Validators.required]],
+      lastName: ['', [Validators.required]],
+      telephone: ['', [Validators.required]],
+      nationality: ['', [Validators.required]],
+      address_1: ['', [Validators.required]],
+      address_2: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      postal_code: ['', [Validators.required]],
+      type: ['', [Validators.required]],
+      countryName: ['', [Validators.required]],
+      stateName: ['', [Validators.required]],
+    })
   }
 
   getCompanyProfile(email) {

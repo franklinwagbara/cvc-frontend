@@ -6,7 +6,7 @@ import { PreviewAppComponent } from '../apply/edit-preview/previewapp.component'
 import { CompanyProfileComponent } from './company-profile/companyprofile.component';
 import { CompanyInformationComponent } from './companyinformation.component';
 import { CompanyAddressComponent } from './company-address/companyaddress.component';
-import { CompanyDirectorComponent } from './companydirector.component.scss/companydirector.component';
+import { CompanyDirectorComponent } from './companydirector/companydirector.component';
 
 const routes: Routes = [
   { path: '', component: CompanyProfileComponent },
