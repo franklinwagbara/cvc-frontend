@@ -12,6 +12,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { AuthenticationService, GenericService } from '../shared/services';
 import { UserType } from '../shared/constants/userType';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'home.component.html',
@@ -48,12 +49,11 @@ export class homeComponent implements OnInit {
     this.windowScreenSize = window.innerWidth;
     if (this.auth.isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
-
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-
-      if (user.userType === UserType.Company)
+      
+      if (user.userType === UserType.Company) {
         this.router.navigate([returnUrl || '/company/dashboard']);
-      else this.router.navigate([returnUrl || '/admin']);
+      } else this.router.navigate([returnUrl || '/admin']);
       return;
     }
 

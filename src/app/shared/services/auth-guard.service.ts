@@ -14,7 +14,7 @@ import { AuthenticationService } from './authentication.service';
 })
 export class AuthGuard implements CanActivate {
   constructor(
-    private authSerive: AuthenticationService,
+    private authService: AuthenticationService,
     private router: Router
   ) {}
 
@@ -26,7 +26,7 @@ export class AuthGuard implements CanActivate {
     | UrlTree
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
-    if (this.authSerive.isLoggedIn) return true;
+    if (this.authService.isLoggedIn) return true;
 
     this.router.navigate(['/home'], { queryParams: { returnUrl: state.url } });
     return false;
