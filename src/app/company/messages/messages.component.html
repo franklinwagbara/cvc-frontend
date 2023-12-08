@@ -91,7 +91,7 @@
           {{ 'Showing ' + (dataSource.paginator.pageIndex * dataSource.paginator.pageSize + (dataSource.filteredData.length > 0 ? 1 : 0)) + ' to ' + (dataSource.paginator.hasNextPage() ? (dataSource.paginator.pageIndex + 1) * 
           (dataSource.paginator.pageSize >= dataSource.filteredData.length ? dataSource.filteredData.length : dataSource.paginator.pageSize) : dataSource.filteredData.length) + ' of ' + dataSource.filteredData.length }} entries
         </div>
-        <mat-paginator [pageSizeOptions]="[5, 10, 20, 30]" showFirstLastButtons aria-label="Select page of messages">
+        <mat-paginator [pageSizeOptions]="[10, 20, 30, 40, 50, 60, 70]" showFirstLastButtons aria-label="Select page of messages">
         </mat-paginator>
       </div>
     </div>
