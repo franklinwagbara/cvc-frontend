@@ -9,9 +9,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
-    "clean:cvcfrontend-sdk": "rimraf *.tgz ./sdk/cvcfrontend-sdk",
+    "clean:cvcfrontend-sdk": "rimraf ./sdk/cvcfrontend-sdk",
     "generate-core-api-sdk:local": "npm run clean:cvcfrontend-sdk && openapi-generator-cli generate -g typescript-angular -i http://localhost:3000/swagger/v1/swagger.json -o ./sdk/cvcfrontend-sdk",
-    "generate-core-api-sdk:staging": "openapi-generator-cli generate -g typescript-angular -i https://cvcdemo.azurewebsites.net/swagger/v1/swagger.json -o ./sdk/cvcfrontend-sdk",
+    "generate-core-api-sdk:staging": "npm run clean:cvcfrontend-sdk && openapi-generator-cli generate -g typescript-angular -i https://cvcdemo.azurewebsites.net/swagger/v1/swagger.json -o ./sdk/cvcfrontend-sdk",
     "generate-core-api-sdk:prod": "npm run clean:cvcfrontend-sdk && openapi-generator-cli generate -g typescript-angular -i https://cvc.azurewebsites.net/swagger/v1/swagger.json -o ./sdk/cvcfrontend-sdk"
   },
   "private": true,
