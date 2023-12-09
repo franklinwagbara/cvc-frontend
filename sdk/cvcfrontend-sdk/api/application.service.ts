@@ -31,7 +31,7 @@ import { Configuration }                                     from '../configurat
 })
 export class ApplicationService {
 
-    protected basePath = 'http://localhost';
+    protected basePath = 'https://localhost';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;

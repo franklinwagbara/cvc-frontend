@@ -15,12 +15,14 @@ import { AdminModule } from './admin/admin.module';
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
 import { LayoutModule } from './layout/layout.module';
 import { ProgressBarService } from './shared/services/progress-bar.service';
+import { ApiModule } from '../../sdk/cvcfrontend-sdk';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     // NgbModule,
+    ApiModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     RouterModule,

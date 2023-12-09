@@ -1,4 +1,5 @@
 import { HttpParameterCodec } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 export interface ConfigurationParameters {
     /**
@@ -43,7 +44,7 @@ export class Configuration {
      */
     credentials: {[ key: string ]: string | (() => string | undefined)};
 
-    constructor(configurationParameters: ConfigurationParameters = {}) {
+    constructor(configurationParameters: ConfigurationParameters = { basePath: environment.basePath }) {
         this.apiKeys = configurationParameters.apiKeys;
         this.username = configurationParameters.username;
         this.password = configurationParameters.password;
