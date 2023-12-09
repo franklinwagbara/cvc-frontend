@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { TestComponent } from 'src/app/company/test/test.component';
 import { StaffdeskComponent } from '../staffdesk/staffdesk.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AllStaffComponent } from '../settings/all-staff/all-staff.component';
@@ -34,7 +33,6 @@ const routes: Routes = [
   { path: 'application-process', component: AppProcessComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'test', component: TestComponent },
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
   { path: 'licences', component: LicenceComponent },
