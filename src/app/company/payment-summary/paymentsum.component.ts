@@ -1,6 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { ApplyService } from 'src/app/shared/services/apply.service';
@@ -121,6 +119,7 @@ export class PaymentSumComponent implements OnInit {
 
 export class PaymentSummary {
   appReference = '';
+  vesselName = '';
   permitType = '';
   docList: string[] = [];
   facilityAddress = '';
@@ -140,4 +139,6 @@ export class PaymentSummary {
   inspectionFee: number;
   total: number;
   vesselLicenseFee: number;
+  coqFee: number;
+  noaFee: number;
 }

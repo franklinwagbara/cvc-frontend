@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompanyComponent } from './company/company.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
-import { AuthGuard } from './shared/services/auth-guard.service';
+import { AuthGuard } from './shared/guards/auth-guard.service';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { CompanyGuard } from './shared/guards/company.guard';
+import { AdminGuard } from './shared/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -15,7 +18,7 @@ const routes: Routes = [
     component: CompanyComponent,
     loadChildren: () =>
       import('./company/company.module').then((m) => m.CompanyModule),
-    canActivate: [AuthGuard],
+    canActivate: [CompanyGuard],
   },
   {
     path: 'home',
@@ -26,13 +29,17 @@ const routes: Routes = [
     component: AdminLayoutComponent,
     loadChildren: () =>
       import('./admin/admin.module').then((m) => m.AdminModule),
-    canActivate: [AuthGuard],
+    canActivate: [AdminGuard],
   },
   {
     path: 'account',
     loadChildren: () =>
       import('./account/account.module').then((m) => m.AccountModule),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent,
   },
 ];
 

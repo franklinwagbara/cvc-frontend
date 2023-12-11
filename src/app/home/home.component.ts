@@ -1,17 +1,14 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
-  HostListener
+  HostListener,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GuardsCheckEnd, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment as envr } from 'src/environments/environment';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService, GenericService } from '../shared/services';
 import { UserType } from '../shared/constants/userType';
-
 
 @Component({
   selector: 'app-root',
@@ -23,7 +20,6 @@ export class homeComponent implements OnInit {
   public isLoading$ = new BehaviorSubject<boolean>(false);
   title = 'AUS2FrontEnd';
   emailModal = false;
-  loginForm: FormGroup;
   email: string;
   public userId: string;
   genk: GenericService;
@@ -50,7 +46,7 @@ export class homeComponent implements OnInit {
     if (this.auth.isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-      
+
       if (user.userType === UserType.Company) {
         this.router.navigate([returnUrl || '/company/dashboard']);
       } else this.router.navigate([returnUrl || '/admin']);
@@ -90,13 +86,4 @@ export class homeComponent implements OnInit {
   onResize(event: Event) {
     this.windowScreenSize = window.innerWidth;
   }
-
-  // toggleEmailModal() {
-  //   if (!this.emailModal) {
-  //     this.emailModal = true;
-  //   } else {
-  //     this.emailModal = false;
-  //   }
-  //   this.cd.markForCheck();
-  // }
 }
