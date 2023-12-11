@@ -2,7 +2,7 @@
   <div class="apply-wrapper">
     <h1>NEW LICENCE</h1>
     <div class="form-wrapper">
-      <div class="form">
+      <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
         <form [formGroup]="vesselForm" class="main-form">
           <div class="first-segment" *ngIf="activateFirstSegment">
             <div class="flex flex-col">
@@ -16,84 +16,38 @@
             </div>
 
             <div class="flex flex-col">
-              <span class="input-label"> Dead Weight </span>
-              <input
-                type="number"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Dead Weight "
-                formControlName="deadWeight"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Capacity </span>
-              <input
-                type="number"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Capacity "
-                formControlName="capacity"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Operator </span>
+              <span class="input-label"> Loading Port </span>
               <input
                 type="text"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Operator"
-                formControlName="operator"
+                placeholder="Loading Port"
+                formControlName="loadingPort"
               />
             </div>
 
             <div class="flex flex-col">
-              <span class="input-label"> Place of Build </span>
+              <span class="input-label"> Discharge Port </span>
               <input
                 type="text"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Place of Build"
-                formControlName="placeOfBuild"
+                placeholder="Discharge Port"
+                formControlName="dischargePort"
               />
             </div>
 
-            <div class="flex flex-col">
-              <span class="input-label"> Year of Build </span>
-              <input
-                type="number"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Year of Build"
-                formControlName="yearOfBuild"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Flag </span>
-              <input
+            <!-- <div class="flex flex-col">
+              <span class="input-label"> Product </span>
+              <select
                 type="text"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Flag"
-                formControlName="flag"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Call Sign </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Call Sign"
-                formControlName="callSIgn"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> IMO Number </span>
-              <input
-                type="number"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="IMO Number"
-                formControlName="imoNumber"
-              />
-            </div>
+                formControlName="productId"
+              >
+                <option disabled>--select--</option>
+                <option *ngFor="let p of products" [ngValue]="p.id">
+                  {{ p.name }}
+                </option>
+              </select>
+            </div> -->
 
             <div class="flex flex-col">
               <span class="input-label"> Vessel Type </span>
@@ -103,10 +57,20 @@
                 formControlName="vesselTypeId"
               >
                 <option disabled>--select--</option>
-                <option *ngFor="let v of vesselTypes" [ngValue]="v.id">
-                  {{ v.name }}
+                <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
+                  {{ vt.name }}
                 </option>
               </select>
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> IMO Number </span>
+              <input
+                type="text"
+                class="border border-t border-b rounded-r p-2"
+                placeholder="IMO Number"
+                formControlName="imoNumber"
+              />
             </div>
 
             <button
@@ -152,6 +116,7 @@
               <span class="input-label"> Capacity </span>
               <input
                 type="number"
+                min="0"
                 class="border border-t border-b rounded-r p-2"
                 placeholder="Capacity"
                 formControlName="capacity"
@@ -219,32 +184,25 @@
               </button>
 
               <button
-                class="btn-back"
+                *ngIf="selectedTanks.length > 0"
                 mat-raised-button
-                (click)="updateState(3)"
+                color="primary"
+                class="primary"
+                (click)="submit()"
               >
-                Next
+                Continue
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      <div class="form" *ngIf="activateThirdSegment">
+      <!-- <div class="form" *ngIf="activateThirdSegment">
         <form class="tankForm" [formGroup]="facilityForm">
           <div class="second-segment">
             <div class="flex flex-col">
               <span class="input-label"> Source of Products </span>
-              <!-- <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="sourceOfProducts"
-              >
-                <option disabled>--select--</option>
-                <option *ngFor="let ft of facilityTypes" [ngValue]="ft.id">
-                  {{ ft.name }}
-                </option>
-              </select> -->
+
               <input
                 type="text"
                 class="border border-t border-b rounded-r p-2"
@@ -372,7 +330,7 @@
             </button>
           </div>
         </form>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -3,11 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  basePath: 'https://cvcdemo.azurewebsites.net',
-  apiUrl: 'https://cvcdemo.azurewebsites.net/api/bunkering',
-  // apiUrl: 'https://localhost:7097/api/bunkering',
+  // apiUrl: 'https://cvcdemo.azurewebsites.net/api',
+  apiUrl: 'https://localhost:7097/api',
   elpsBase: 'https://celpsnmdpra-dev.azurewebsites.net',
-  appid: 'f1d86f79-3e0f-4b10-9c06-5df478bfeab8',
+  appid: '945b2625-60aa-404d-99a8-c9aaedb661e4',
 };
 
 /*

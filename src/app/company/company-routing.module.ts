@@ -14,7 +14,6 @@ import { UploadComponent } from './apply/upload.component';
 import { PreviewAppComponent } from './apply/edit-preview/previewapp.component';
 import { PaymentSumComponent } from './payment-summary/paymentsum.component';
 import { DocumentUploadComponent } from './document-upload/document-upload.component';
-import { TestComponent } from './test/test.component';
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
 
@@ -35,8 +34,6 @@ const routes: Routes = [
   { path: 'new', component: NewApplicationComponent },
   { path: 'renew', component: RenewApplicationComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
-  // { path: 'test', component: TestComponent },
-
   {
     path: 'companyinformation',
     component: CompanyInformationComponent,
