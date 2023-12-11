@@ -119,6 +119,7 @@ export class PaymentSumComponent implements OnInit {
 
 export class PaymentSummary {
   appReference = '';
+  vesselName = '';
   permitType = '';
   docList: string[] = [];
   facilityAddress = '';
@@ -138,4 +139,6 @@ export class PaymentSummary {
   inspectionFee: number;
   total: number;
   vesselLicenseFee: number;
+  coqFee: number;
+  noaFee: number;
 }

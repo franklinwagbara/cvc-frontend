@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { tokenNotExpired } from 'src/app/helpers/tokenNotExpired';
 import { LoginModel } from '../models/login-model';
+import { UserRole } from '../constants/userRole';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -59,6 +60,18 @@ export class AuthenticationService {
     this._isLoggedIn = false;
 
     window.location.assign(`${environment.apiUrl}/auth/log-out`);
+  }
+
+  public get isCompany() {
+    const user = this.currentUser as LoginModel;
+    if (user.userRoles == UserRole.Company) return true;
+    else return false;
+  }
+
+  public get isStaff() {
+    const user = this.currentUser as LoginModel;
+    if (user.userRoles != UserRole.Company) return true;
+    else return false;
   }
 
   public get isLoggedIn() {

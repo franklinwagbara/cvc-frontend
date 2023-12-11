@@ -15,9 +15,10 @@ import { AdminModule } from './admin/admin.module';
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
 import { LayoutModule } from './layout/layout.module';
 import { ProgressBarService } from './shared/services/progress-bar.service';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AccessDeniedComponent],
   imports: [
     BrowserModule,
     // NgbModule,

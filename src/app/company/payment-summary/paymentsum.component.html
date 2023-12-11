@@ -33,37 +33,53 @@
                 <tbody>
                   <tr>
                     <td class="col-title">Reference No</td>
-                    <td>{{ paymentSummary?.appReference }}</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.appReference }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Vessel Name</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.vesselName }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="col-title">RRR</td>
-                    <td>
+                    <td class="font-bold">
                       {{ rrr$ | async }}
                     </td>
                   </tr>
                   <tr>
-                    <td class="col-title">Address / Location</td>
-                    <td>{{ paymentSummary?.facilityAddress }}</td>
+                    <td class="col-title">Application Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.applicationFee }}
+                    </td>
                   </tr>
                   <tr>
-                    <td class="col-title">Permit Type</td>
-                    <td>{{ paymentSummary?.permitType }}</td>
+                    <td class="col-title">NOA Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.noaFee }}
+                    </td>
                   </tr>
                   <tr>
-                    <td class="col-title">Fee</td>
-                    <td>{{ paymentSummary?.fee }}</td>
+                    <td class="col-title">CoQ Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.coqFee }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="col-title">Service Charge</td>
-                    <td>{{ paymentSummary?.serviceCharge }}</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.serviceCharge }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="col-title">Total Amount</td>
-                    <td>{{ paymentSummary?.totalAmount }}</td>
+                    <td class="font-bold">{{ paymentSummary?.total }}</td>
                   </tr>
                   <tr>
                     <td class="col-title">Documents</td>
-                    <td>
+                    <td class="font-bold">
                       <ul>
                         <li *ngFor="let doc of paymentSummary?.docList">
                           {{ doc }}
