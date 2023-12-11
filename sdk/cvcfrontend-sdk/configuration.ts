@@ -44,7 +44,7 @@ export class Configuration {
      */
     credentials: {[ key: string ]: string | (() => string | undefined)};
 
-    constructor(configurationParameters: ConfigurationParameters = { basePath: environment.basePath }) {
+    constructor(configurationParameters: ConfigurationParameters = { basePath: 'https://cvcdemo.azurewebsites.net' }) {
         this.apiKeys = configurationParameters.apiKeys;
         this.username = configurationParameters.username;
         this.password = configurationParameters.password;

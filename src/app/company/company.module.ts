@@ -38,6 +38,10 @@ import { DocumentUploadComponent } from './document-upload/document-upload.compo
 import { AdditionalDocListFormComponent } from './document-upload/additional-doc-list-form/additional-doc-list-form.component';
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
+import { ViewApplicationComponent } from './view-application/view-application.component';
+import { ApplicationViewTableComponent } from './view-application/application-view-table/application-view-table.component';
+
+
 
 @NgModule({
   imports: [
@@ -80,6 +84,8 @@ import { RenewApplicationComponent } from './apply/renew-application/renew-appli
     AdditionalDocListFormComponent,
     NewApplicationComponent,
     RenewApplicationComponent,
+    ViewApplicationComponent,
+    ApplicationViewTableComponent
   ],
   providers: [],
 })

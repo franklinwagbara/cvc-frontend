@@ -12,7 +12,7 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ShowMoreComponent } from './show-more/show-more.component';
+import { ShowMoreComponent } from '../../../../shared/reusable-components/show-more/show-more.component';
 
 @Component({
   selector: 'app-view-application',

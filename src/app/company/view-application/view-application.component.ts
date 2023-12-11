@@ -8,13 +8,14 @@ import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add
 import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from 'src/app/shared/services';
-import { AdminService } from 'src/app/shared/services/admin.service';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
+import { LicenceService } from 'src/app/shared/services/licence.service';
+import { ShowMoreComponent } from 'src/app/shared/reusable-components/show-more/show-more.component';
+
 
 @Component({
   selector: 'app-view-application',
@@ -26,6 +27,8 @@ export class ViewApplicationComponent implements OnInit {
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
+  public licence: any;
+  public currentUser: any;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -37,7 +40,8 @@ export class ViewApplicationComponent implements OnInit {
     private spinner: SpinnerService,
     public route: ActivatedRoute,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private licenceService: LicenceService
   ) {}
 
   ngOnInit(): void {
@@ -46,31 +50,15 @@ export class ViewApplicationComponent implements OnInit {
       this.appId = parseInt(params['id']);
       this.appSource = params['appSource'];
 
-      this.getApplication().subscribe({
-        next: (res) => {
-          if (res.success) {
-            this.application = res.data;
-          }
-
-          this.progressBar.close();
-          this.spinner.close();
-          this.cd.markForCheck();
-        },
-        error: (error: unknown) => {
-          this.snackBar.open(
-            'Something went wrong while retrieving data.',
-            null,
-            {
-              panelClass: ['error'],
-            }
-          );
-
-          this.progressBar.close();
-          this.spinner.close();
-          this.cd.markForCheck();
-        },
-      });
+      if (this.appSource != AppSource.Licence) this.getApplication();
+      else this.getLicence();
     });
+
+    this.currentUser = this.auth.currentUser;
+  }
+
+  public get isSupervisor() {
+    return (this.currentUser as any).userRoles === 'Supervisor';
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -79,7 +67,57 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getApplication() {
-    return this.applicationService.viewApplication(this.appId);
+    this.applicationService.viewApplication(this.appId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.application = res.data;
+        }
+
+        this.progressBar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.snackBar.open(
+          'Something went wrong while retrieving data.',
+          null,
+          {
+            panelClass: ['error'],
+          }
+        );
+
+        this.progressBar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  getLicence() {
+    this.licenceService.getLicence(this.appId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.licence = res.data;
+        }
+
+        this.progressBar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: unknown) => {
+        this.snackBar.open(
+          'Something went wrong while retrieving data.',
+          null,
+          {
+            panelClass: ['error'],
+          }
+        );
+
+        this.progressBar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+    });
   }
 
   public get isStaffDesk() {
@@ -124,12 +162,7 @@ export class ViewApplicationComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       this.progressBar.open();
 
-      this.getApplication().subscribe((res) => {
-        this.application = res.data.data;
-
-        this.progressBar.close();
-        this.cd.markForCheck();
-      });
+      this.getApplication();
     });
   }
 
@@ -171,12 +204,7 @@ export class ViewApplicationComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       this.progressBar.open();
 
-      this.getApplication().subscribe((res) => {
-        this.application = res.data.data;
-
-        this.progressBar.close();
-        this.cd.markForCheck();
-      });
+      this.getApplication();
     });
   }
 
