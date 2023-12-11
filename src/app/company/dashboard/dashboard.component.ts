@@ -7,6 +7,7 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 import { GenericService } from '../../shared/services/generic.service';
 import { AuthenticationService } from '../../shared/services';
 import { LoginModel } from '../../shared/models/login-model';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -29,7 +30,8 @@ export class DashboardComponent implements OnInit {
     private progress: ProgressBarService,
     private cd: ChangeDetectorRef,
     private popUp: PopupService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private spinner: SpinnerService
   ) {
     this.generic = gen;
     this.currentUsername = auth.currentUser;
@@ -42,31 +44,37 @@ export class DashboardComponent implements OnInit {
 
   public getCompanyDashboard() {
     this.progress.open();
+    this.spinner.open();
 
     this.adminService.getStaffDashboard().subscribe({
       next: (res) => {
         this.dashboard = res.data;
         this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: any) => {
         this.popUp.open(error?.message, 'error');
         this.progress.close();
+        this.spinner.close();
       },
     });
   }
 
   public getCompanyMessages() {
     this.progress.open();
+    this.spinner.open();
 
     this.companyService.getCompanyMessages().subscribe({
       next: (res) => {
         this.messages = res.data;
         this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: any) => {
         this.popUp.open(error?.message, 'error');
+        this.spinner.close();
         this.progress.close();
       },
     });
