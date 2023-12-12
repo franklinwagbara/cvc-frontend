@@ -15,7 +15,8 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 // import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Category } from '../settings/modules-setting/modules-setting.component';
-import { ApplicationService } from '../../../../sdk/cvcfrontend-sdk';
+import { ApplicationService } from 'src/app/shared/services/application.service';
+
 
 @Component({
   selector: 'app-application',
@@ -55,7 +56,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
     this.spinner.open();
 
     forkJoin([
-      this.applicationService.apiBunkeringApplicationAllApplicationsGet(),
+      this.applicationService.getAllApplications(),
       // this.adminService.getModule(),
     ]).subscribe({
       next: (res) => {
