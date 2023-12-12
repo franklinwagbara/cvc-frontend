@@ -23,6 +23,7 @@ import { PermitStageDocFormComponent } from '../permit-stage-doc-form/permit-sta
 import { ApplicationProcessesService } from '../../services/application-processes.service';
 import { LibaryService } from '../../services/libary.service';
 import { PopupService } from '../../services/popup.service';
+import { ILocation } from 'src/app/admin/settings/all-staff/all-staff.component';
 
 const RATES = [
   '0%',
@@ -62,10 +63,12 @@ export class ApplicationProcessFormComponent implements OnInit {
   public roles: IRole[];
   public actions: IAction[];
   public statuses: IStatus[];
+  public locations: ILocation[];
   public rates: string[] = RATES;
   public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
   public vesselTypes: IVessel[];
+  public editMode: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -78,6 +81,8 @@ export class ApplicationProcessFormComponent implements OnInit {
     private libService: LibaryService,
     private popUp: PopupService
   ) {
+    debugger;
+    this.editMode = data.data?.editMode;
     this.permitStages = data.data.permitStages;
     this.branches = data.data.branches;
     this.roles = data.data.roles;
@@ -86,24 +91,9 @@ export class ApplicationProcessFormComponent implements OnInit {
     this.applicationProccess = data.data?.applicationProcess;
     this.facilityTypes = data.data?.facilityTypes;
     this.applicationTypes = data.data?.applicationTypes;
+    this.locations = data.data?.locations;
 
     this.form = this.formBuilder.group({
-      // permitStageId: [
-      //   this.applicationProccess
-      //     ? this.applicationProccess.permitStageId
-      //     : 'none',
-      //   Validators.required,
-      // ],
-      // branchId: [
-      //   this.applicationProccess ? this.applicationProccess.branchId : 'none',
-      //   Validators.required,
-      // ],
-      // facilityTypeId: [
-      //   this.applicationProccess
-      //     ? this.applicationProccess.facilityTypeId
-      //     : 'none',
-      //   Validators.required,
-      // ],
       vesselTypeId: [
         this.applicationProccess
           ? this.applicationProccess.vesselTypeId
@@ -116,9 +106,9 @@ export class ApplicationProcessFormComponent implements OnInit {
           : 'none',
         Validators.required,
       ],
-      triggeredByRole: [
+      triggeredByRoleId: [
         this.applicationProccess
-          ? this.applicationProccess.triggeredByRole
+          ? this.applicationProccess.triggeredByRoleId
           : 'none',
         Validators.required,
       ],
@@ -126,18 +116,22 @@ export class ApplicationProcessFormComponent implements OnInit {
         this.applicationProccess ? this.applicationProccess.action : 'none',
         Validators.required,
       ],
-      targetRole: [
-        this.applicationProccess ? this.applicationProccess.targetRole : 'none',
-        Validators.required,
-      ],
-      fromLocation: [
+      targetRoleId: [
         this.applicationProccess
-          ? this.applicationProccess.fromLocation
+          ? this.applicationProccess.targetRoleId
           : 'none',
         Validators.required,
       ],
-      toLocation: [
-        this.applicationProccess ? this.applicationProccess.toLocation : 'none',
+      fromLocationId: [
+        this.applicationProccess
+          ? this.applicationProccess.fromLocationId
+          : 'none',
+        Validators.required,
+      ],
+      toLocationId: [
+        this.applicationProccess
+          ? this.applicationProccess.toLocationId
+          : 'none',
         Validators.required,
       ],
       status: [
@@ -205,5 +199,31 @@ export class ApplicationProcessFormComponent implements OnInit {
     });
   }
 
-  get;
+  editProcessFlow() {
+    this.progressBar.open();
+    const payload = { id: this.applicationProccess.id, ...this.form.value };
+    this.processFlow.editApplicationProcess(payload).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.snackBar.open(
+            'Application Process was created successfully!',
+            null,
+            {
+              panelClass: ['success'],
+            }
+          );
+
+          this.dialogRef.close();
+        }
+
+        this.progressBar.close();
+      },
+      error: (error: any) => {
+        this.snackBar.open(error?.message, null, {
+          panelClass: ['error'],
+        });
+        this.progressBar.close();
+      },
+    });
+  }
 }

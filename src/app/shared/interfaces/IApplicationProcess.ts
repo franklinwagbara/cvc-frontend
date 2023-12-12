@@ -4,10 +4,14 @@ export interface IApplicationProcess {
   facilityTypeId: number;
   applicationTypeId: number;
   triggeredByRole: string;
+  triggeredByRoleId: string;
   action: string;
   targetRole: string;
+  targetRoleId: string;
   toLocation: string;
+  toLocationId: string;
   fromLocation: string;
+  fromLocationId: string;
   status: string;
   rate: string;
   isArchived: boolean;

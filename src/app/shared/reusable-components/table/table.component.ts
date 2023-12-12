@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
-  ElementRef
+  ElementRef,
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -54,8 +54,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders = {};
-  @Input() table_controls_horizontal =
-    false;
+  @Input() table_controls_horizontal = false;
   @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
   @Output() onAddData = new EventEmitter<any>();
@@ -92,6 +91,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   public selection = new SelectionModel<any>(true, []);
 
   ngOnInit(): void {
+    debugger;
     this.headers = Object.values(this.keysMappedToHeaders);
     this.keys = Object.keys(this.keysMappedToHeaders);
 
@@ -113,6 +113,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -122,10 +123,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'action_controls',
         header: 'Action Controls',
         cell: (item: Application) => {
-          if (item.rrr && item.status === 'Processing') return '';
-          else if (item.rrr && item.status === 'PaymentConfirmed')
+          if (item.rrr && item.paymentStatus === 'Processing') return '';
+          else if (item.rrr && item.paymentStatus === 'Payment confirmed')
             return 'uploadDocument_control';
-          else if (item.rrr && item.status !== 'PaymentConfirmed')
+          else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
             return 'confirmPayment_control';
           else if (!item.rrr) return 'rrr_control';
           else return '';
