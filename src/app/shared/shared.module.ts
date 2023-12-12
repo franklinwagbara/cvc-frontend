@@ -44,6 +44,8 @@ import { SpinnerComponent } from './reusable-components/spinner/spinner.componen
 import { AssignApplicationFormComponent } from './reusable-components/assign-application-form/assign-application-form.component';
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
+import { FirstNPipe } from './pipes/first-n.pipe';
+import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     AssignApplicationFormComponent,
     SvgIconComponent,
     DropdownComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe,
   ],
   imports: [
     CommonModule,
@@ -103,6 +107,8 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     ProgressBarComponent,
     SvgIconComponent,
     DropdownComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe
   ],
 })
 export class SharedModule {}
