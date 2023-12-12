@@ -13,8 +13,10 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+// import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Category } from '../settings/modules-setting/modules-setting.component';
+import { ApplicationService } from 'src/app/shared/services/application.service';
+
 
 @Component({
   selector: 'app-application',

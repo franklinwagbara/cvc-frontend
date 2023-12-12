@@ -15,7 +15,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
 import { LicenceService } from 'src/app/shared/services/licence.service';
-import { ShowMoreComponent } from './show-more/show-more.component';
+import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 
 @Component({
   selector: 'app-view-application',
