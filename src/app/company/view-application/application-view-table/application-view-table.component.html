@@ -42,15 +42,15 @@
     </tr>
     <tr>
       <th>Payment Date</th>
-      <td>{{ application?.paymnetDate }}</td>
+      <td>{{ application?.paymnetDate | formatTimeAmPm }} </td>
     </tr>
     <tr>
       <th>Initiated On</th>
-      <td>{{ application?.createdDate }}</td>
+      <td>{{ application?.createdDate | formatTimeAmPm }} </td>
     </tr>
     <tr>
       <th>Submitted On</th>
-      <td>{{ application?.submittedDate }}</td>
+      <td>{{ application?.submittedDate | formatTimeAmPm }} </td>
     </tr>
   </tbody>
 </table>

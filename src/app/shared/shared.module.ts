@@ -45,6 +45,7 @@ import { AssignApplicationFormComponent } from './reusable-components/assign-app
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
 import { FirstNPipe } from './pipes/first-n.pipe';
+import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { FirstNPipe } from './pipes/first-n.pipe';
     SvgIconComponent,
     DropdownComponent,
     FirstNPipe,
+    FormatTimeAmPmPipe,
   ],
   imports: [
     CommonModule,
@@ -105,7 +107,8 @@ import { FirstNPipe } from './pipes/first-n.pipe';
     ProgressBarComponent,
     SvgIconComponent,
     DropdownComponent,
-    FirstNPipe
+    FirstNPipe,
+    FormatTimeAmPmPipe
   ],
 })
 export class SharedModule {}
