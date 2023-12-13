@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
 import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
+import { IAppFee } from 'src/app/company/apply/new-application/new-application.component';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -362,5 +363,35 @@ export class AdminService {
       `${environment.apiUrl}/admin/schedule-meeting`,
       model
     );
+  }
+
+  public getAppFees() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-all-fees`)
+      .pipe(retry(this.num));
+  }
+
+  public addAppFees(data: IAppFee) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/AppFee/add-fee`, data)
+      .pipe(retry(this.num));
+  }
+
+  public editAppFees(data: IAppFee) {
+    return this.http
+      .put<any>(`${environment.apiUrl}/AppFee/edit-fee`, data)
+      .pipe(retry(this.num));
+  }
+
+  public getAppFeeById(id: IAppFee) {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-fee-byId?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public deleteAppFee(id: IAppFee) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .pipe(retry(this.num));
   }
 }

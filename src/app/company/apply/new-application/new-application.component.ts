@@ -388,6 +388,16 @@ export interface IApplicationType {
   name: string;
 }
 
+export interface IAppFee {
+  id: number;
+  applicationTypeId: number;
+  applicationFee: number;
+  processingFee: number;
+  serciveCharge: number;
+  noaFee: number;
+  coqFee: number;
+}
+
 export interface IApplicationFormDTO {
   vesselName: string;
   loadingPort: string;

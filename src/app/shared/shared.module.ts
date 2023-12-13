@@ -44,6 +44,7 @@ import { SpinnerComponent } from './reusable-components/spinner/spinner.componen
 import { AssignApplicationFormComponent } from './reusable-components/assign-application-form/assign-application-form.component';
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
+import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-form.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     AssignApplicationFormComponent,
     SvgIconComponent,
     DropdownComponent,
+    AppFeeFormComponent,
   ],
   imports: [
     CommonModule,
