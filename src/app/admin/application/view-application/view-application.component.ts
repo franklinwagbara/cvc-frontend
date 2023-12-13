@@ -224,4 +224,10 @@ export class ViewApplicationComponent implements OnInit {
 
     return imageTypes.includes(fileType);
   }
+
+  viewApplicationInFull() {
+    this.router.navigate([`/admin/view-application-in-full/${this.appId}`], {
+      queryParams: { id: this.appId, appSource: this.appSource },
+    });
+  }
 }

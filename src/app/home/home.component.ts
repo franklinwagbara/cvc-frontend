@@ -18,7 +18,7 @@ import { UserType } from '../shared/constants/userType';
 })
 export class homeComponent implements OnInit {
   public isLoading$ = new BehaviorSubject<boolean>(false);
-  title = 'AUS2FrontEnd';
+  title = 'CVCFrontEnd';
   emailModal = false;
   email: string;
   public userId: string;
@@ -47,7 +47,7 @@ export class homeComponent implements OnInit {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
-      if (user.userType === UserType.Company) {
+      if (user.userRoles.includes(UserType.Company)) {
         this.router.navigate([returnUrl || '/company/dashboard']);
       } else this.router.navigate([returnUrl || '/admin']);
       return;

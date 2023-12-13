@@ -15,6 +15,7 @@ import { ApplicationService } from 'src/app/shared/services/application.service'
 import { Application } from 'src/app/company/my-applications/myapplication.component';
 import { LicenceService } from 'src/app/shared/services/licence.service';
 import { ShowMoreComponent } from 'src/app/shared/reusable-components/show-more/show-more.component';
+import { Util } from 'src/app/shared/lib/Util';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class ViewApplicationComponent implements OnInit {
   public appSource: AppSource;
   public licence: any;
   public currentUser: any;
+  util: Util
 
   constructor(
     private snackBar: MatSnackBar,
@@ -208,20 +210,9 @@ export class ViewApplicationComponent implements OnInit {
     });
   }
 
-  isPDF(filePath: string) {
-    if (!filePath) return false;
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return fileType == 'pdf';
-  }
-
-  isIMG(filePath) {
-    if (!filePath) return false;
-    const imageTypes = ['png', 'jpg', 'jpeg', 'tiff'];
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return imageTypes.includes(fileType);
+  viewApplicationInFull() {
+    this.router.navigate([`/company/view-application-in-full/${this.appId}`], {
+      queryParams: { id: this.appId, appSource: this.appSource },
+    });
   }
 }

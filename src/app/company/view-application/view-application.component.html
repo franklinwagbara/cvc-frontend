@@ -105,21 +105,21 @@
             <div class="item-title">
               <a [href]="applicationDoc.docSource" target="_blank">
                 <img
-                  *ngIf="isPDF(applicationDoc.docSource)"
+                  *ngIf="util.isPDF(applicationDoc.docSource)"
                   src="../../../../assets/image/pdfIcon.png"
                   alt="open file"
                 />
 
                 <img
-                  *ngIf="isIMG(applicationDoc.docSource)"
+                  *ngIf="util.isIMG(applicationDoc.docSource)"
                   src="../../../../assets/image/imageIcon.png"
                   alt="open file"
                 />
 
                 <img
                   *ngIf="
-                    !isIMG(applicationDoc.docSource) &&
-                    !isPDF(applicationDoc.docSource)
+                    !util.isIMG(applicationDoc.docSource) &&
+                    !util.isPDF(applicationDoc.docSource)
                   "
                   src="../../../../assets/image/otherFileType.png"
                   alt="open file"
@@ -163,7 +163,6 @@
       </div>
     </div>
   </div>
-  <!-- <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-</div> -->
+
+  <button class="btn" (click)="viewApplicationInFull()">View Application Details In Full</button>
 </div>
