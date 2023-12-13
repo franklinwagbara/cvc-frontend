@@ -68,7 +68,7 @@ export class AppFeeFormComponent implements OnInit {
         this.appFees = res.data;
         this.form.get('noaFee').setValue(this.appFees.noaFee);
         this.form.get('coqFee').setValue(this.appFees.coqFee);
-        this.form.get('processingFee').setValue(this.appFees.serciveCharge);
+        this.form.get('processingFee').setValue(this.appFees.processingFee);
         this.form.get('serciveCharge').setValue(this.appFees.serciveCharge);
         this.form
           .get('applicationTypeId')

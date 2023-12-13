@@ -45,6 +45,8 @@ import { AssignApplicationFormComponent } from './reusable-components/assign-app
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
 import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-form.component';
+import { FirstNPipe } from './pipes/first-n.pipe';
+import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,8 @@ import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-
     SvgIconComponent,
     DropdownComponent,
     AppFeeFormComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe,
   ],
   imports: [
     CommonModule,
@@ -105,6 +109,8 @@ import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-
     ProgressBarComponent,
     SvgIconComponent,
     DropdownComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe,
   ],
 })
 export class SharedModule {}

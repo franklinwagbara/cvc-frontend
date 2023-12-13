@@ -26,7 +26,6 @@ export class CompanyGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    debugger;
     if (this.authService.isCompany) return true;
     this.router.navigate(['/access-denied'], {
       queryParams: { returnUrl: state.url },

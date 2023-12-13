@@ -31,8 +31,7 @@ import { AppProcessComponent } from './settings/app-process/app-process.componen
 import { ApplicationsFilteredByCategoryPipe } from './application/applications-filtered-by-category.pipe';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
-import { FirstNPipe } from './application/view-application/first-n.pipe';
-import { ShowMoreComponent } from './application/view-application/show-more/show-more.component';
+import { ShowMoreComponent } from '../shared/reusable-components/show-more/show-more.component';
 import { PhasedocumentsComponent } from './settings/phasedocuments/phasedocuments.component';
 import { FilterleftComponent } from './admin/application-report/filterleft/filterleft.component';
 import { PaymentFilterleftComponent } from './admin/payment-report/payment-filterleft/payment-filterleft.component';
@@ -68,7 +67,6 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     ApplicationsFilteredByCategoryPipe,
     MyDeskComponent,
     BarChartComponent,
-    FirstNPipe,
     ShowMoreComponent,
     FilterleftComponent,
     GraphModalComponent,
