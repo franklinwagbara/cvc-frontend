@@ -290,7 +290,7 @@ export class AdminService {
 
   getOffices() {
     return this.http
-      .get<any>(`${environment.apiUrl}/configuration/field-offices`)
+      .get<any>(`${environment.apiUrl}/Library/All-Offices`)
       .pipe(retry(this.num));
   }
 
@@ -316,7 +316,7 @@ export class AdminService {
 
   getBranches() {
     return this.http
-      .get<any>(`${environment.apiUrl}/configuration/branches`)
+      .get<any>(`${environment.apiUrl}/Library/All-Locations`)
       .pipe(retry(this.num));
   }
 

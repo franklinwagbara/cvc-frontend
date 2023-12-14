@@ -60,11 +60,12 @@ export class UserFormComponent implements OnInit {
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
     this.usersFromElps = this.usersFromElps?.map((user) => {
       user.name = `${user?.lastName}, ${user?.firstName} (${user?.email})`;
-
       if (this.currentValue && user.email === this.currentValue.email)
         currentUserId = user.id;
       return user;
     });
+
+    console.log(data);
 
     this.selectedUserFromElps = this.usersFromElps[0];
 
@@ -79,20 +80,22 @@ export class UserFormComponent implements OnInit {
       ],
       phone: [this.currentValue ? this.currentValue.phoneNo : ''],
       userType: [this.currentValue ? this.currentValue.userType : ''],
-      roleId: [
-        this.currentValue ? this.currentValue.role : '',
+      roleId: ['', Validators.required],
+      officeId: [this.currentValue ? this.currentValue.officeId : ''],
+      locationId: [
+        this.currentValue ? this.currentValue.locationId : '',
         Validators.required,
       ],
-      // officeId: [this.currentValue ? this.currentValue.officeId : ''],
-      // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
         this.currentValue ? this.currentValue.status : '',
         Validators.required,
       ],
-      signatureImage: [
-        this.currentValue ? this.currentValue.signatureImage : '',
-      ],
+      // signatureImage: [
+      //   this.currentValue ? this.currentValue.signatureImage : '',
+      // ],
     });
+    console.log(this.currentValue);
+    this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
@@ -109,10 +112,8 @@ export class UserFormComponent implements OnInit {
   }
 
   createUser() {
-    this.progressBar.open();
-
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
-
+    this.progressBar.open();
     const formDataToSubmit = new FormData();
 
     formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
@@ -122,11 +123,10 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    formDataToSubmit.append('locationId', this.form.get('locationId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
-    formDataToSubmit.append('signatureImage', this.file);
-
+    //formDataToSubmit.append('signatureImage', this.file);
     this.adminService.createStaff(this.form.value).subscribe({
       next: (res) => {
         if (res.success) {
@@ -139,7 +139,7 @@ export class UserFormComponent implements OnInit {
       },
       error: (error: unknown) => {
         this.snackBar.open(
-          'Operation failed! Could not create the Staff account.',
+          'Operation failed! Could not create the Staff account.' + error,
           null,
           {
             panelClass: ['error'],
@@ -165,10 +165,10 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    formDataToSubmit.append('locationId', this.form.get('locationId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
-    formDataToSubmit.append('signatureImage', this.file);
+    //formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
       next: (res) => {

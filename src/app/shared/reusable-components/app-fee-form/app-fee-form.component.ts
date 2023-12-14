@@ -20,6 +20,7 @@ import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { AdminService } from '../../services/admin.service';
 import { Chain } from '@angular/compiler';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-app-fee-form',
@@ -42,7 +43,8 @@ export class AppFeeFormComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private progressBar: ProgressBarService,
     private popUp: PopupService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private spinner: SpinnerService
   ) {
     this.applicationTypes = data.data.applicationTypes;
 
@@ -87,12 +89,13 @@ export class AppFeeFormComponent implements OnInit {
   createFee() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
+    this.progressBar.open();
     this.adminService.addAppFees(this.form.value).subscribe({
       next: (res) => {
+        this.progressBar.close();
         this.snackBar.open('Application fee was created successfully!', null, {
           panelClass: ['success'],
         });
-
         this.dialogRef.close();
       },
       error: (err) => {
@@ -107,21 +110,23 @@ export class AppFeeFormComponent implements OnInit {
   EditFee() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
+    this.progressBar.open();
+
     let formData = this.form.value;
     formData.id = this.data.data.appFeeId;
     this.adminService.editAppFees(formData).subscribe({
       next: (res) => {
+        this.progressBar.close();
         this.snackBar.open('Application fee was modified successfully!', null, {
           panelClass: ['success'],
         });
-
         this.dialogRef.close();
       },
       error: (err) => {
+        this.progressBar.close();
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
-        this.progressBar.close();
       },
     });
   }
