@@ -44,8 +44,12 @@ import { SpinnerComponent } from './reusable-components/spinner/spinner.componen
 import { AssignApplicationFormComponent } from './reusable-components/assign-application-form/assign-application-form.component';
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
+import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-form.component';
 import { FirstNPipe } from './pipes/first-n.pipe';
 import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
+import { ViewApplicationInFullComponent } from './view-application-in-full/view-application-in-full.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -70,8 +74,10 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
     AssignApplicationFormComponent,
     SvgIconComponent,
     DropdownComponent,
+    AppFeeFormComponent,
     FirstNPipe,
     FormatTimeAmPmPipe,
+    ViewApplicationInFullComponent,
   ],
   imports: [
     CommonModule,
@@ -82,6 +88,8 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatExpansionModule,
+    MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
@@ -108,7 +116,7 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
     SvgIconComponent,
     DropdownComponent,
     FirstNPipe,
-    FormatTimeAmPmPipe
+    FormatTimeAmPmPipe,
   ],
 })
 export class SharedModule {}

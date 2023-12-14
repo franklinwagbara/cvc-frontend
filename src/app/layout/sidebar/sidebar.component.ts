@@ -208,6 +208,11 @@ const ROUTES: RouteInfo[] = [
         title: 'APPLICATION PROCESS',
         url: '/admin/application-process',
       },
+      {
+        id: 7,
+        title: 'APPLICATION FEE',
+        url: '/admin/app-fees',
+      },
     ],
   },
 ];

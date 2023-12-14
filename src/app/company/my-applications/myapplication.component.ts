@@ -210,6 +210,7 @@ export interface Application {
   paymnetDate: string;
   paymnetStatus: string;
   paymentStatus: string;
+  paymentDescription: string;
   email: string;
   reference: string;
   applicationTypeId: number;
@@ -234,6 +235,8 @@ export interface Vessel {
   operator: string;
   vesselType: string;
   placeOfBuild: string;
+  loadingPort: string;
+  dischargePort: string;
   yearOfBuild: number;
   flag: string;
   callSIgn: string;

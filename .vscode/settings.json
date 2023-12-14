@@ -3,5 +3,17 @@
     "[html]": {
         "editor.tabSize": 2,
         "editor.detectIndentation": false
+    },
+    "[scss]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2
+    },
+    "[css]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2
+    },
+    "[typescript]": {
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false
     }
 }

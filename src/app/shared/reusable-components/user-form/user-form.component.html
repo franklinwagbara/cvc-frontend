@@ -80,7 +80,11 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>User Role</label>
       <select name="roleId" formControlName="roleId" class="form-control">
-        <option *ngFor="let ut of roles" [ngValue]="ut.id">
+        <option
+          *ngFor="let ut of roles"
+          [selected]="ut.name === currentValue.role"
+          [ngValue]="ut.id"
+        >
           {{ ut.name }}
         </option>
       </select>
@@ -125,6 +129,7 @@
         Office is required!
       </div>
     </div>
+    </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>
@@ -133,7 +138,7 @@
       </label>
     </div>
 
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label for="formFile" class="form-label">Upload Signature Image</label>
       <input
         (change)="onFileChange($event)"
@@ -149,7 +154,7 @@
       >
         Signature image is required!
       </div>
-    </div>
+    </div> -->
   </form>
 </div>
 <div mat-dialog-actions>

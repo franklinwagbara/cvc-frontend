@@ -1,0 +1,117 @@
+<h1 mat-dialog-title>
+  {{
+    this.data.data.action === "EDIT"
+      ? "Edit Application Fee"
+      : "Add New Application Fee"
+  }}
+</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form">
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Application Type</label>
+      <select
+        name="applicationTypeId"
+        formControlName="applicationTypeId"
+        class="form-control"
+      >
+        <option selected disabled>--Select from options --</option>
+        <option
+          *ngFor="let applicationType of applicationTypes"
+          [ngValue]="applicationType.id"
+        >
+          {{ applicationType.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          (f['applicationTypeId'].touched || isSubmitted) &&
+          f['applicationTypeId']?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Application Type is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>NOA Fee ({{ "\u20A6" }})</label>
+      <input
+        name="noaFee"
+        type="number"
+        formControlName="noaFee"
+        class="form-control"
+      />
+      <div
+        *ngIf="(f['noaFee'].touched || isSubmitted) && f['noaFee']?.invalid"
+        class="alert alert-danger"
+      >
+        NOA Fee is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>COQ Fee ({{ "\u20A6" }})</label>
+      <input
+        name="coqFee"
+        type="number"
+        formControlName="coqFee"
+        class="form-control"
+      />
+      <div
+        *ngIf="(f['coqFee'].touched || isSubmitted) && f['coqFee']?.invalid"
+        class="alert alert-danger"
+      >
+        COQ Fee is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Sercive Charge ({{ "\u20A6" }})</label>
+      <input
+        type="number"
+        name="serciveCharge"
+        formControlName="serciveCharge"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          (f['serciveCharge'].touched || isSubmitted) &&
+          f['serciveCharge']?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Service charge is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Processing Fee ({{ "\u20A6" }})</label>
+      <input
+        type="number"
+        name="processingFee"
+        formControlName="processingFee"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          (f['processingFee'].touched || isSubmitted) &&
+          f['processingFee']?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Processing fee is required!
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+      <button
+        mat-raised-button
+        (click)="this.data.data.action === 'EDIT' ? EditFee() : createFee()"
+        [disabled]="form.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

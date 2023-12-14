@@ -14,10 +14,12 @@ import { MyDeskComponent } from '../desk/my-desk/my-desk.component';
 import { ViewApplicationComponent } from '../application/view-application/view-application.component';
 import { LicenceComponent } from '../licence/licence.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
+import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
+import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -33,11 +35,13 @@ const routes: Routes = [
   { path: 'application-process', component: AppProcessComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
+  { path: 'view-application-in-full/:id', component: ViewApplicationInFullComponent },
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
   { path: 'licences', component: LicenceComponent },
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
+  { path: 'app-fees', component: AppFeeComponent },
 ];
 
 @NgModule({

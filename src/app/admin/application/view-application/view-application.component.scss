@@ -5,19 +5,19 @@
 }
 
 .content {
-  @apply flex flex-row w-full mt-9 gap-4;
+  @apply flex flex-col xl:flex-row w-full mt-9 gap-4;
 }
 
 .application-view {
-  @apply flex-1 w-[33%];
+  @apply flex-1 w-[100%] xl:w-[33%];
 }
 
 .application-controls {
-  @apply flex-1 w-[33%]  shadow-md flex flex-col gap-4;
+  @apply flex-1 flex flex-col gap-4;
 }
 
 .view-application {
-  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 min-w-fit;
+  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 flex flex-col min-w-fit;
 }
 
 .actions {
@@ -54,4 +54,13 @@
 
 mat-expansion-panel {
   min-width: 50%;
+}
+
+.btn {
+  display: inline !important;
+  color: #3e4e50;
+  background: #83a4d4;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  @apply font-bold uppercase p-[1rem] border-4 w-full md:w-[50%] mt-10 mb-8 float-right;
 }

@@ -70,7 +70,6 @@ export class AllStaffComponent implements OnInit {
         if (res[1].success) {
           this.staffList = res[1].data;
         }
-
         if (res[2].success) this.roles = res[2].data;
 
         if (res[3].success) this.locations = res[3].data;
@@ -106,7 +105,6 @@ export class AllStaffComponent implements OnInit {
           users: this.users,
           staffList: this.staffList,
           roles: this.roles,
-          offices: this.offices,
           branches: this.branches,
           locations: this.locations,
         },
@@ -181,6 +179,13 @@ export class AllStaffComponent implements OnInit {
             .sort((a, b) => a.length - b.length);
 
           if (type === 'users') this.users = responses[0];
+          this.progressBar.open();
+
+          this.adminHttpService.getAllStaff().subscribe((res) => {
+            this.users = res.data;
+
+            this.progressBar.close();
+          });
         }
 
         this.progressBar.close();
@@ -273,6 +278,7 @@ export class Staff {
   status: boolean;
   appCount: number;
   branchId: any;
+  locationId: any;
   officeId: any;
   userType: string;
   elpsId: string;
