@@ -19,4 +19,5 @@
 .dashboard-expanded {
   width: calc(100% - 100px);
   margin-left: 100px;
+  @apply transition-all ease-in-out delay-150 duration-500;
 }

@@ -19,6 +19,7 @@ import { ApplicationReportComponent } from './application-report/application-rep
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
+import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'application-process', component: AppProcessComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
+  { path: 'view-application-in-full/:id', component: ViewApplicationInFullComponent },
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
   { path: 'licences', component: LicenceComponent },

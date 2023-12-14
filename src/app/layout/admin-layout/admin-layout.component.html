@@ -3,8 +3,8 @@
   <div
     class="dashboard overflow-hidden"
     [ngClass]="{
-      'collapse-dashboard': isCollapse,
-      'unCollapse-dashboard': !isCollapse
+      'dashboard-expanded': isCollapse,
+      'dashboard': !isCollapse
     }"
   >
     <app-top-nav (onMenuOpen)="onMenuOpen($event)"> </app-top-nav>
