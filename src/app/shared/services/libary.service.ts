@@ -59,4 +59,6 @@ export class LibaryService {
   public getAppStatuses() {
     return this.http.get<any>(`${api}/getAppStatus`);
   }
+
+ 
 }

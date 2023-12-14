@@ -47,6 +47,7 @@ import { ApplicationReportBarChartComponent } from './admin/application-report/b
 import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart/bar-chart.component';
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { AppFeeComponent } from './settings/app-fee/app-fee.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
     PaymentReportBarChartComponent,
     LicenceComponent,
     ScheduleComponent,
+    AppFeeComponent,
   ],
 
   imports: [
