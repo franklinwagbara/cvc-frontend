@@ -126,36 +126,6 @@
       </div>
     </div>
 
-    <!-- <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Branch</label>
-      <select name="branchId" formControlName="branchId" class="form-control">
-        <option *ngFor="let br of branches" [ngValue]="br.id">
-          {{ br.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="form.get('branchId')?.touched && form.get('officeId')?.invalid"
-        class="alert alert-danger"
-      >
-        Branch is required!
-      </div>
-    </div>
-
-    <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Office</label>
-      <select name="officeId" formControlName="officeId" class="form-control">
-        <option *ngFor="let ut of offices" [ngValue]="ut.id">
-          {{ ut.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="form.get('officeId')?.touched && form.get('officeId')?.invalid"
-        class="alert alert-danger"
-      >
-        Office is required!
-      </div>
-    </div> -->
-
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>
         <input name="isActive" formControlName="isActive" type="checkbox" />
