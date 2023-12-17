@@ -1,0 +1,29 @@
+<div id="coq-form-data-table-preview-title" class="hidden">Certificate of Quantity Form Data Preview</div>
+<div>
+  <table *ngIf="coqForm?.liquidProductPreviewData.length" class="table table-responsive table-striped" id="coq-form-data-preview-table" mat-table [dataSource]="dataSource" aria-describedby="coq-form-data-table-preview-title">
+    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+      <th mat-header-cell *matHeaderCellDef>
+        <ng-container *ngIf="hasNoUnit(column)">{{ column | uppercase }}</ng-container>
+        <ng-container *ngIf="hasMeterCubeUnit(column)">{{ column | uppercase }}(m<sup>3</sup>)</ng-container>
+        <ng-container *ngIf="hasTempUnit(column)">{{ column | uppercase }}(<sup>0</sup>C)</ng-container>
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <ng-container *ngIf="objNotEmpty(element)">
+          <ng-container *ngIf="column !== 'actions'">{{ element[column] }}</ng-container>
+          <ng-container *ngIf="column === 'actions'">
+            <div *ngIf="element.status.toLowerCase() !== 'diff'" class="flex justify-center items-center">
+              <button mat-button class="text-blue-500" (click)="openEditDialog({ form: element, title: element?.tank + ' - ' + element.status})">Edit</button>
+              <button mat-button class="text-red-500" (click)="removeFormData(element)">Remove</button>
+            </div>
+          </ng-container>
+        </ng-container>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="isPreviewDataOk">
+    <button class="text-purple-500 rounded border">Proceed to Review</button>
+  </div>
+</div>

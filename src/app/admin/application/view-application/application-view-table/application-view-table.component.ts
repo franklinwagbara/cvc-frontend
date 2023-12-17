@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
 
 
@@ -9,8 +10,16 @@ import { Application } from 'src/app/company/my-applications/myapplication.compo
 })
 export class ApplicationViewTableComponent implements OnInit {
   @Input() application: Application;
+  @Input() appId: number;
+  @Input() appSource: string;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {}
+
+  viewApplicationInFull() {
+    this.router.navigate([`/admin/view-application-in-full/${this.appId}`], {
+      queryParams: { id: this.appId, appSource: this.appSource },
+    });
+  }
 }

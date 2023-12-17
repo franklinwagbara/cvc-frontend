@@ -1,5 +1,6 @@
 .title {
-  background-color: #48acf0;
+  background: #ad5389;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #3c1053, #ad5389);  /* Chrome 10-25, Safari 5.1-6 */
   color: wheat;
   @apply px-10 py-5 shadow-md;
 }
@@ -54,13 +55,4 @@
 
 mat-expansion-panel {
   min-width: 50%;
-}
-
-.btn {
-  display: inline !important;
-  color: #3e4e50;
-  background: #83a4d4;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  @apply font-bold uppercase p-[1rem] border-4 w-full md:w-[50%] mt-10 mb-8 float-right;
 }

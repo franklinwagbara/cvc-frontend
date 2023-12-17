@@ -48,6 +48,14 @@ import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CertificateOfQuantityComponent } from './certificate-of-quantity/certificate-of-quantity.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { CoqFormPreviewComponent } from './certificate-of-quantity/coq-form-preview/coq-form-preview.component';
+import { CoqFormDataComponent } from './certificate-of-quantity/coq-form-data/coq-form-data.component';
+import { EditCoqFormComponent } from './certificate-of-quantity/edit-coq-form/edit-coq-form.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -83,6 +91,9 @@ import { CertificateOfQuantityComponent } from './certificate-of-quantity/certif
     LicenceComponent,
     ScheduleComponent,
     CertificateOfQuantityComponent,
+    CoqFormPreviewComponent,
+    CoqFormDataComponent,
+    EditCoqFormComponent,
   ],
 
   imports: [
@@ -95,9 +106,14 @@ import { CertificateOfQuantityComponent } from './certificate-of-quantity/certif
     MatGridListModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatTableModule,
     MatTabsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule
   ],
   exports: [],
   providers: [

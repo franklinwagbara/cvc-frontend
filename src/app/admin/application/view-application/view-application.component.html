@@ -6,6 +6,8 @@
     <div class="application-view">
       <app-application-view-table
         [application]="application"
+        [appId]="appId"
+        [appSource]="appSource"
       ></app-application-view-table>
     </div>
     <div class="application-controls">
@@ -145,5 +147,4 @@
     </div>
   </div>
   
-  <button class="btn" (click)="viewApplicationInFull()">View Application Details In Full</button>
 </div>

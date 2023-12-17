@@ -19,6 +19,7 @@ import { PaymentReportComponent } from './payment-report/payment-report.componen
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
 import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
+import { CertificateOfQuantityComponent } from '../certificate-of-quantity/certificate-of-quantity.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'licences', component: LicenceComponent },
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
+  { path: 'certificate-of-quantity', component: CertificateOfQuantityComponent },
 ];
 
 @NgModule({

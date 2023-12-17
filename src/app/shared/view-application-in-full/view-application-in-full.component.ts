@@ -25,7 +25,8 @@ export class ViewApplicationInFullComponent implements OnInit {
   appId: number;
   appSource: AppSource;
   currentUser: any;
-  util: Util
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
 
   constructor(
     private router: Router, 
