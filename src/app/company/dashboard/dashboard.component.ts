@@ -57,6 +57,7 @@ export class DashboardComponent implements OnInit {
         this.popUp.open(error?.message, 'error');
         this.progress.close();
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -76,6 +77,7 @@ export class DashboardComponent implements OnInit {
         this.popUp.open(error?.message, 'error');
         this.spinner.close();
         this.progress.close();
+        this.cd.markForCheck();
       },
     });
   }

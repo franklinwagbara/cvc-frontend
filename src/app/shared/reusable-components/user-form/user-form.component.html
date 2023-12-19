@@ -97,31 +97,29 @@
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Branch/Location</label>
+      <label>Staff Location</label>
       <select
         name="locationId"
         formControlName="locationId"
         class="form-control"
       >
-        <option *ngFor="let br of branches" [ngValue]="br.id">
-          {{ br.name }}
+        <option *ngFor="let lo of locations" [ngValue]="lo.id">
+          {{ lo.name }}
         </option>
       </select>
       <div
-        *ngIf="
-          form.get('locationId')?.touched && form.get('locationId')?.invalid
-        "
+        *ngIf="form.get('locationId')?.touched && form.get('roleId')?.invalid"
         class="alert alert-danger"
       >
-        Branch is required!
+        Staff location is required!
       </div>
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Office</label>
       <select name="officeId" formControlName="officeId" class="form-control">
-        <option *ngFor="let ut of offices" [ngValue]="ut.id">
-          {{ ut.name }}
+        <option *ngFor="let off of offices" [ngValue]="off.id">
+          {{ off.name }}
         </option>
       </select>
       <div

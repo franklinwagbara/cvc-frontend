@@ -170,7 +170,7 @@ export class NewApplicationComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
 
-        this.router.navigate(['paymentsum', appId]);
+        this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');

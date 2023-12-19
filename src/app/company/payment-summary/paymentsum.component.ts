@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { AuthenticationService, GenericService } from '../../shared/services';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'paymentsum.component.html',
@@ -30,6 +31,7 @@ export class PaymentSumComponent implements OnInit {
     private progressbar: ProgressBarService,
     private applicationServer: ApplyService,
     private popUp: PopupService,
+    private spinner: SpinnerService,
     private cd: ChangeDetectorRef
   ) {
     this.genk = gen;
@@ -48,6 +50,7 @@ export class PaymentSumComponent implements OnInit {
 
   getPaymentSummary() {
     this.progressbar.open();
+    this.spinner.open();
     this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
       next: (res) => {
         if (res.success) {
@@ -66,10 +69,12 @@ export class PaymentSumComponent implements OnInit {
           );
         }
         this.progressbar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.progressbar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -78,6 +83,7 @@ export class PaymentSumComponent implements OnInit {
   generateRRR() {
     this.route.params.subscribe((params) => {
       this.progressbar.open();
+      this.spinner.open();
       this.application_id = params['id'];
 
       this.applicationServer.createPayment_RRR(this.application_id).subscribe({
@@ -92,6 +98,7 @@ export class PaymentSumComponent implements OnInit {
 
             this.popUp.open('RRR was generated successfully!', 'success');
             this.progressbar.close();
+            this.spinner.close();
             this.cd.markForCheck();
           }
         },
@@ -99,6 +106,7 @@ export class PaymentSumComponent implements OnInit {
           //todo: display error dialog
           this.popUp.open('RRR generation failed!', 'error');
           this.progressbar.close();
+          this.spinner.close();
           this.cd.markForCheck();
         },
       });

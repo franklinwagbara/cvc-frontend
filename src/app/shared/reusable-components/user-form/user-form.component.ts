@@ -15,7 +15,10 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import {
+  ILocation,
+  Staff,
+} from 'src/app/admin/settings/all-staff/all-staff.component';
 import { FieldOffice } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
@@ -33,6 +36,7 @@ export class UserFormComponent implements OnInit {
   public offices: FieldOffice[];
   public branches: IBranch[];
   public roles: any;
+  public locations: ILocation[];
   public currentValue: Staff | null;
   public usersFromElps: StaffWithName[];
   public file: File | null = null;
@@ -49,10 +53,12 @@ export class UserFormComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService
   ) {
+    debugger;
     this.usersFromAus2 = data.data.users;
     this.offices = data.data.offices;
     this.branches = data.data.branches;
     this.roles = data.data.roles;
+    this.locations = data.data.locations;
     this.usersFromElps = data.data.staffList;
     this.currentValue = data.data?.currentValue;
     let currentUserId: string;
@@ -81,11 +87,13 @@ export class UserFormComponent implements OnInit {
       phone: [this.currentValue ? this.currentValue.phoneNo : ''],
       userType: [this.currentValue ? this.currentValue.userType : ''],
       roleId: ['', Validators.required],
+
+      locationId: [this.currentValue ? this.currentValue.locationId : ''],
+
       officeId: [this.currentValue ? this.currentValue.officeId : ''],
-      locationId: [
-        this.currentValue ? this.currentValue.locationId : '',
-        Validators.required,
-      ],
+
+      // officeId: [this.currentValue ? this.currentValue.officeId : ''],
+      // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
         this.currentValue ? this.currentValue.status : '',
         Validators.required,
@@ -94,8 +102,8 @@ export class UserFormComponent implements OnInit {
       //   this.currentValue ? this.currentValue.signatureImage : '',
       // ],
     });
-    console.log(this.currentValue);
-    this.form.get('elpsId').setValue(this.currentValue.id);
+    // console.log(this.currentValue);
+    // this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
@@ -123,8 +131,10 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    formDataToSubmit.append('officeId', this.form.get('officeId').value);
     formDataToSubmit.append('locationId', this.form.get('locationId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
     //formDataToSubmit.append('signatureImage', this.file);
     this.adminService.createStaff(this.form.value).subscribe({
@@ -165,8 +175,10 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    formDataToSubmit.append('officeId', this.form.get('officeId').value);
     formDataToSubmit.append('locationId', this.form.get('locationId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
     //formDataToSubmit.append('signatureImage', this.file);
 
@@ -235,6 +247,8 @@ export class UserFormComponent implements OnInit {
     this.form.controls['email'].setValue(user.email);
     this.form.controls['phone'].setValue(user.phoneNo);
     this.form.controls['userType'].setValue('Staff');
+    // this.form.controls['locationId'].setValue(user.locationId);
+    // this.form.controls['locationId'].setValue(user.locationId);
   }
 }
 
