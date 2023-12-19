@@ -278,7 +278,6 @@ export class Staff {
   status: boolean;
   appCount: number;
   branchId: any;
-  locationId: any;
   officeId: any;
   userType: string;
   elpsId: string;

@@ -53,6 +53,7 @@ export class UserFormComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService
   ) {
+    debugger;
     this.usersFromAus2 = data.data.users;
     this.offices = data.data.offices;
     this.branches = data.data.branches;
@@ -86,11 +87,6 @@ export class UserFormComponent implements OnInit {
       phone: [this.currentValue ? this.currentValue.phoneNo : ''],
       userType: [this.currentValue ? this.currentValue.userType : ''],
       roleId: ['', Validators.required],
-      officeId: [this.currentValue ? this.currentValue.officeId : ''],
-      locationId: [
-        this.currentValue ? this.currentValue.locationId : '',
-        Validators.required,
-      ],
 
       locationId: [this.currentValue ? this.currentValue.locationId : ''],
 
@@ -106,8 +102,8 @@ export class UserFormComponent implements OnInit {
       //   this.currentValue ? this.currentValue.signatureImage : '',
       // ],
     });
-    console.log(this.currentValue);
-    this.form.get('elpsId').setValue(this.currentValue.id);
+    // console.log(this.currentValue);
+    // this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
