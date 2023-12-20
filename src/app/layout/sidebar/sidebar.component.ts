@@ -70,6 +70,28 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 3,
+    title: 'CoQ',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+
+    subRoutes: [
+      {
+        id: 1,
+        title: 'NOA Applications',
+        url: '/admin/noa-applications-by-depot',
+      },
+      {
+        id: 2,
+        title: 'COQ Applications',
+        url: '/admin/certificate-of-quantity/all-applications-by-depot'
+      }
+    ],
+  },
+  {
+    id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
     iconId: 'dashboard_outline',
@@ -86,7 +108,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     title: 'LICENCES',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -103,7 +125,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
+    id: 5,
     title: 'SCHEDULES',
     iconName: 'schedules',
     iconId: 'schedules',
@@ -120,7 +142,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 6,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -142,7 +164,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 5,
+    id: 7,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -169,7 +191,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 8,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',

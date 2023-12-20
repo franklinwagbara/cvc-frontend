@@ -13,7 +13,6 @@ import {
 import { MatTabsModule } from '@angular/material/tabs';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProgressBarService } from '../shared/services/progress-bar.service';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
@@ -47,15 +46,18 @@ import { ApplicationReportBarChartComponent } from './admin/application-report/b
 import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart/bar-chart.component';
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { CertificateOfQuantityComponent } from './certificate-of-quantity/certificate-of-quantity.component';
+import { CoqApplicationFormComponent } from './coq-application-form/coq-application-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
-import { CoqFormPreviewComponent } from './certificate-of-quantity/coq-form-preview/coq-form-preview.component';
-import { CoqFormDataComponent } from './certificate-of-quantity/coq-form-data/coq-form-data.component';
-import { EditCoqFormComponent } from './certificate-of-quantity/edit-coq-form/edit-coq-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { NoaApplicationsByDepotComponent } from './noa-applications-by-depot/noa-applications-by-depot.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
+
 
 @NgModule({
   declarations: [
@@ -90,10 +92,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     PaymentReportBarChartComponent,
     LicenceComponent,
     ScheduleComponent,
-    CertificateOfQuantityComponent,
-    CoqFormPreviewComponent,
-    CoqFormDataComponent,
-    EditCoqFormComponent,
+    CoqApplicationFormComponent,
+    NoaApplicationsByDepotComponent,
+    CoqApplicationsByDepotComponent,
   ],
 
   imports: [
@@ -113,7 +114,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
   ],
   exports: [],
   providers: [

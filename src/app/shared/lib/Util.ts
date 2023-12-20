@@ -1,3 +1,4 @@
+import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class Util {
 
@@ -25,5 +26,11 @@ export class Util {
 
   public static objNotEmpty(obj: any): boolean {
     return !obj ? false : Object.keys(obj).length > 0;
+  }
+
+  public static customValidator(evaluatorFn: Function, errorKey: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !evaluatorFn(control.value) ? { [errorKey]: { value: control.value } } : null;
+    }
   }
 }

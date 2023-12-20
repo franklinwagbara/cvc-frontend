@@ -57,11 +57,7 @@ th {
 }
 
 .table-title {
-  text-align: center;
-  padding-top: 50px;
-  font-weight: bolder;
-
-  @apply flex items-center justify-center pb-4;
+  @apply flex items-center text-center font-bold pt-[50px] justify-center pb-4;
 }
 
 .red {

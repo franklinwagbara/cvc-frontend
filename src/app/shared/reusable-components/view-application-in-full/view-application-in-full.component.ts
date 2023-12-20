@@ -1,19 +1,19 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { ApplicationService } from '../services/application.service';
-import { SpinnerService } from '../services/spinner.service';
-import { ProgressBarService } from '../services/progress-bar.service';
+import { ApplicationService } from '../../services/application.service';
+import { SpinnerService } from '../../services/spinner.service';
+import { ProgressBarService } from '../../services/progress-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AppSource } from '../constants/appSource';
-import { ShowMoreComponent } from '../reusable-components/show-more/show-more.component';
-import { AddScheduleFormComponent } from '../reusable-components/add-schedule-form/add-schedule-form.component';
-import { SendBackFormComponent } from '../reusable-components/send-back-form/send-back-form.component';
-import { ApproveFormComponent } from '../reusable-components/approve-form/approve-form.component';
-import { AuthenticationService } from '../services';
-import { Util } from '../lib/Util';
-import { UserType } from '../constants/userType';
+import { AppSource } from '../../constants/appSource';
+import { ShowMoreComponent } from '../show-more/show-more.component';
+import { AddScheduleFormComponent } from '../add-schedule-form/add-schedule-form.component';
+import { SendBackFormComponent } from '../send-back-form/send-back-form.component';
+import { ApproveFormComponent } from '../approve-form/approve-form.component';
+import { AuthenticationService } from '../../services';
+import { Util } from '../../lib/Util';
+import { UserType } from '../../constants/userType';
 
 @Component({
   selector: 'app-view-application-in-full',
@@ -42,7 +42,6 @@ export class ViewApplicationInFullComponent implements OnInit {
     this.route.queryParams.subscribe((value: Params) => {
       this.appId = parseInt(value['id']);
       this.appSource = value['appSource'];
-      this.spinner.open();
     })
   }
 
@@ -58,6 +57,7 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   getApplication() {
+    this.spinner.open();
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {

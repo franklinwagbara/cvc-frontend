@@ -18,8 +18,10 @@ import { ApplicationReportComponent } from './application-report/application-rep
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
-import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
-import { CertificateOfQuantityComponent } from '../certificate-of-quantity/certificate-of-quantity.component';
+import { ViewApplicationInFullComponent } from 'src/app/shared/reusable-components/view-application-in-full/view-application-in-full.component';
+import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
+import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
+import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -41,7 +43,9 @@ const routes: Routes = [
   { path: 'licences', component: LicenceComponent },
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
-  { path: 'certificate-of-quantity', component: CertificateOfQuantityComponent },
+  { path: 'noa-applications-by-depot', component: NoaApplicationsByDepotComponent },
+  { path: 'certificate-of-quantity/all-applications-by-depot', component: CoqApplicationsByDepotComponent },
+  { path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application', component: CoqApplicationFormComponent },
 ];
 
 @NgModule({
