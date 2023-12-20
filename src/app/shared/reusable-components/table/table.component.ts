@@ -114,6 +114,16 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+    if (this.enableInitiateCoQControl) {
+      this.columns.push({
+        columnDef: 'action_controls',
+        header: 'Application Control',
+        cell: (item: Staff) => {
+          if (item.appCount > 0) return 'initiate_coq_control';
+          else return '';
+        },
+      });
+    }
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -164,14 +174,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_schedule_control',
       });
-    }
-
-    if (this.enableInitiateCoQControl) {
-      this.columns.push({
-        columnDef: 'view_control',
-        header: '',
-        cell: (item) => 'initiate_coq_control'
-      })
     }
 
     this.columns.unshift({

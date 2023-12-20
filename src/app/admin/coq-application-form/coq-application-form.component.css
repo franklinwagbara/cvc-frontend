@@ -56,7 +56,6 @@ label {
 
 .guidelines {
   @apply w-full border-2 rounded-sm p-4 text-left text-3xl text-lg bg-[#F1EB0B55] border-none mb-8 font-medium text-slate-700;
-  /* @apply mt-3 mb-10 bg-slate-200 p-8 shadow-md rounded-md; */
 }
 
 .guidelines-list {
@@ -69,10 +68,8 @@ label {
 
 .table-container {
   min-height: fit-content;
-  width: 98%;
-  max-width: 100%;
   margin: 10px;
-  @apply rounded-lg bg-white overflow-x-auto;
+  @apply rounded-lg bg-white overflow-x-auto w-full;
 }
 
 table {
@@ -89,7 +86,7 @@ th {
 }
 
 .upload-btn {
-  @apply border bg-purple-200 rounded-2xl text-slate-500 font-bold;
+  @apply border bg-purple-200 rounded-2xl text-purple-600 font-bold;
 }
 
 input::-webkit-outer-spin-button,
