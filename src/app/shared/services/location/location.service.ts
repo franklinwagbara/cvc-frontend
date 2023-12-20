@@ -9,4 +9,8 @@ const api = `${environment.apiUrl}/location`;
 })
 export class LocationService {
   constructor(private http: HttpClient) {}
+
+  public getAppDepots() {
+    return this.http.get<any>(`${api}/all-depot`);
+  }
 }

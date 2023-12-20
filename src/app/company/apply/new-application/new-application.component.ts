@@ -398,6 +398,11 @@ export interface IAppFee {
   coqFee: number;
 }
 
+export interface IDepot {
+  id: number;
+  name: string;
+}
+
 export interface IApplicationFormDTO {
   vesselName: string;
   loadingPort: string;
