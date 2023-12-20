@@ -118,6 +118,15 @@
               >
                 View Application
               </button>
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'initiate_coq_control'"
+                (click)="viewData(row)"
+              >
+                Initiate CoQ
+              </button>
 
               <button
                 mat-flat-button

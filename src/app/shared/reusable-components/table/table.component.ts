@@ -49,6 +49,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noCheckControls?: boolean = false;
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
+  @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
@@ -163,6 +164,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_schedule_control',
       });
+    }
+
+    if (this.enableInitiateCoQControl) {
+      this.columns.push({
+        columnDef: 'view_control',
+        header: '',
+        cell: (item) => 'initiate_coq_control'
+      })
     }
 
     this.columns.unshift({

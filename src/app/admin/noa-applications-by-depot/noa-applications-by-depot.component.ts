@@ -53,7 +53,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
           }
         );
 
-        // this.progressBar.close();
         this.spinner.close();
         this.cdr.markForCheck();
       },
