@@ -42,11 +42,11 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/all-applications`);
   }
 
-  viewApplicationByDepot(depotId: number): Observable<HttpResponse<any>> {
-    return this.http.get<any>(`${API}/view-application-by-depot`, { params: { id: depotId }});
+  viewApplicationByDepot(depotId: number): Observable<any> {
+    return this.http.get<any>(`${API}/view-application-by-depot`, { params: { id: depotId } });
   }
 
-  viewApplicationByDepotOfficer(officerId: number): Observable<HttpResponse<any>> {
+  viewApplicationByDepotOfficer(officerId: number): Observable<any> {
     return this.http.get<any>(`${API}/view-application-by-depot-officer`, { params: { id: officerId }});
   }
 }

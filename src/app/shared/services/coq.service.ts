@@ -17,15 +17,15 @@ export class CoqService {
   //   return this.http.get<any>(`${API}/`)
   // }
 
-  getAllApplications(): Observable<HttpResponse<any>> {
+  getAllApplications(): Observable<any> {
     return this.http.get<any>(`${API}/all_coqs`);
   }
 
-  createCoQ(data: ICoQApplication): Observable<HttpResponse<any>> {
+  createCoQ(data: ICoQApplication): Observable<any> {
     return this.http.post<any>(`${API}/createCoQ`, data);
   }
 
-  viewCoQLicense(id): Observable<HttpResponse<any>> {
+  viewCoQLicense(id): Observable<any> {
     return this.http.get<any>(`${API}/view_license`);
   }
 }
