@@ -115,16 +115,10 @@ export class UserFormComponent implements OnInit {
 
     const formDataToSubmit = new FormData();
 
-    formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
-    formDataToSubmit.append('firstName', this.form.get('firstName').value);
-    formDataToSubmit.append('lastName', this.form.get('lastName').value);
-    formDataToSubmit.append('email', this.form.get('email').value);
-    formDataToSubmit.append('phone', this.form.get('phone').value);
-    formDataToSubmit.append('userType', this.form.get('userType').value);
-    formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
-    formDataToSubmit.append('isActive', this.form.get('isActive').value);
+    const formKeys = ['elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
+    formKeys.forEach((key) => {
+      formDataToSubmit.append(key, this.form.get(key).value);
+    });
     formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.createStaff(this.form.value).subscribe({
@@ -157,17 +151,10 @@ export class UserFormComponent implements OnInit {
 
     const formDataToSubmit = new FormData();
 
-    // formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
-    formDataToSubmit.append('id', this.form.get('id').value);
-    formDataToSubmit.append('firstName', this.form.get('firstName').value);
-    formDataToSubmit.append('lastName', this.form.get('lastName').value);
-    formDataToSubmit.append('email', this.form.get('email').value);
-    formDataToSubmit.append('phone', this.form.get('phone').value);
-    formDataToSubmit.append('userType', this.form.get('userType').value);
-    formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
-    formDataToSubmit.append('isActive', this.form.get('isActive').value);
+    const formKeys = ['id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
+    formKeys.forEach((key) => {
+      formDataToSubmit.append(key, this.form.get(key).value);
+    })
     formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
@@ -217,9 +204,7 @@ export class UserFormComponent implements OnInit {
 
   toggleCloseDropdownSelection() {
     this.closeDropdownSelection = !this.closeDropdownSelection;
-    this.usersDropdownSettings = Object.assign({}, this.usersDropdownSettings, {
-      closeDropDownOnSelection: this.closeDropdownSelection,
-    });
+    this.usersDropdownSettings = { ...this.usersDropdownSettings, closeDropDownOnSelection: this.closeDropdownSelection };
   }
 
   onDeSelect(event: ListItem) {
