@@ -13,7 +13,6 @@ import {
 import { MatTabsModule } from '@angular/material/tabs';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProgressBarService } from '../shared/services/progress-bar.service';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
@@ -48,6 +47,7 @@ import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
+import { AppDepotComponent } from './settings/app-depot/app-depot.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +83,7 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     LicenceComponent,
     ScheduleComponent,
     AppFeeComponent,
+    AppDepotComponent,
   ],
 
   imports: [

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppFeeComponent } from './app-depot.component';
+import { AppDepotComponent } from './app-depot.component';
 
-describe('AppFeeComponent', () => {
-  let component: AppFeeComponent;
-  let fixture: ComponentFixture<AppFeeComponent>;
+describe('AppDepotComponent', () => {
+  let component: AppDepotComponent;
+  let fixture: ComponentFixture<AppDepotComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AppFeeComponent ]
-    })
-    .compileComponents();
+      declarations: [AppDepotComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(AppFeeComponent);
+    fixture = TestBed.createComponent(AppDepotComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

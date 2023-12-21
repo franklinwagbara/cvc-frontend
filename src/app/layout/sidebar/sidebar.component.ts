@@ -213,6 +213,11 @@ const ROUTES: RouteInfo[] = [
         title: 'APPLICATION FEE',
         url: '/admin/app-fees',
       },
+      {
+        id: 8,
+        title: 'APPLICATION DEPOT',
+        url: '/admin/app-depots',
+      },
     ],
   },
 ];

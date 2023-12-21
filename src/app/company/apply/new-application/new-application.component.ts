@@ -21,9 +21,12 @@ export class NewApplicationComponent implements OnInit {
   public isLicenceVerified = false;
   public applicationTypeId: number;
   public isLoading = false;
-  public tanks: ITank[];
+  // public tanks: ITank[];
+  public appDepots: IAppDepot[];
   public products: IProduct[];
-  public selectedTanks: ITankDTO[] = [];
+  public depots: IDepot[];
+  // public selectedTanks: ITankDTO[] = [];
+  public selectedAppDepots: IAppDepot[] = [];
   public isMobile = false;
   public selectedFacility: IFacility[] = [];
   public vesselTypes: IVesselType[] = [];
@@ -32,7 +35,8 @@ export class NewApplicationComponent implements OnInit {
 
   public facilityForm: FormGroup;
   public vesselForm: FormGroup;
-  public tankForm: FormGroup;
+  // public tankForm: FormGroup;
+  public appDepotForm: FormGroup;
 
   constructor(
     private libraryService: LibaryService,
@@ -49,21 +53,11 @@ export class NewApplicationComponent implements OnInit {
     this.vesselForm = this.formBuilder.group({
       vesselName: ['', Validators.required],
       loadingPort: ['', Validators.required],
-      dischargePort: ['', Validators.required],
+      // dischargePort: ['', Validators.required],
       marketerName: ['', Validators.required],
       productId: ['', Validators.required],
       vesselTypeId: ['', Validators.required],
       imoNumber: ['', Validators.required],
-
-      ////////////////////////////
-
-      // capacity: ['', Validators.required],
-      // deadWeight: ['', Validators.required],
-      // operator: ['', Validators.required],
-      // placeOfBuild: ['', Validators.required],
-      // yearOfBuild: ['', Validators.required],
-      // flag: ['', Validators.required],
-      // callSIgn: ['', Validators.required],
     });
 
     this.facilityForm = this.formBuilder.group({
@@ -76,9 +70,11 @@ export class NewApplicationComponent implements OnInit {
       lgaId: ['', Validators.required],
     });
 
-    this.tankForm = this.formBuilder.group({
+    this.appDepotForm = this.formBuilder.group({
       name: ['', Validators.required],
-      capacity: ['', Validators.required],
+      depotId: ['', Validators.required],
+      appId: ['', Validators.required],
+      volume: ['', Validators.required],
       productId: ['', Validators.required],
     });
 
@@ -96,6 +92,7 @@ export class NewApplicationComponent implements OnInit {
     this.getStates();
     this.getProducts();
     this.getVesselTypes();
+    this.getDepots();
   }
 
   public get activateFirstSegment() {
@@ -118,7 +115,7 @@ export class NewApplicationComponent implements OnInit {
     return (
       this.vesselForm.controls['vesselName'].valid &&
       this.vesselForm.controls['loadingPort'].valid &&
-      this.vesselForm.controls['dischargePort'].valid &&
+      // this.vesselForm.controls['dischargePort'].valid &&
       this.vesselForm.controls['vesselTypeId'].valid &&
       this.vesselForm.controls['imoNumber'].valid
     );
@@ -129,7 +126,7 @@ export class NewApplicationComponent implements OnInit {
   }
 
   public get productIdControl() {
-    return this.tankForm.controls['productId'];
+    return this.appDepotForm.controls['productId'];
   }
 
   public updateState(s: 1 | 2 | 3) {
@@ -141,26 +138,16 @@ export class NewApplicationComponent implements OnInit {
     const payload: IApplicationFormDTO = {
       vesselName: this.vesselForm.value.vesselName,
       loadingPort: this.vesselForm.value.loadingPort,
-      dischargePort: this.vesselForm.value.dischargePort,
+      // dischargePort: this.vesselForm.value.dischargePort,
       marketerName: this.vesselForm.value.marketerName,
       // productId: this.vesselForm.value.productId,
       vesselTypeId: this.vesselForm.value.vesselTypeId,
       imoNumber: (this.vesselForm.value.imoNumber as number).toString(),
 
-      //////////////////////////////////////////
-
       applicationTypeId: this.applicationTypeId,
       facilityName: this.vesselForm.value.vesselName,
-      // vesselTypeId: this.vesselForm.value.vesselTypeId,
-      // capacity: this.vesselForm.value.capacity,
-      // deadWeight: this.vesselForm.value.deadWeight,
-      // operator: this.vesselForm.value.operator,
-      // placeOfBuild: this.vesselForm.value.placeOfBuild,
-      // yearOfBuild: this.vesselForm.value.yearOfBuild,
-      // flag: this.vesselForm.value.flag,
-      // callSIgn: this.vesselForm.value.callSIgn,
       facilitySources: this.selectedFacility,
-      tankList: this.selectedTanks,
+      depotList: this.selectedAppDepots,
     };
 
     this.spinner.open();
@@ -179,22 +166,22 @@ export class NewApplicationComponent implements OnInit {
     });
   }
 
-  public addTank() {
-    const formValue = this.tankForm.value;
-    const newTank: ITankDTO = {
+  public addAppDepot() {
+    const formValue = this.appDepotForm.value;
+    const newDepot: any = {
       id: 0,
       name: formValue.name,
-      capacity: formValue.capacity as number,
+      depotId: formValue.depotId,
+      volume: formValue.volume as number,
       productId: formValue.productId,
       product: this.products.find((x) => x.id == formValue.productId).name,
-      facilityId: 0,
     };
 
-    const isExist = this.selectedTanks.find((x) => x.name == newTank.name);
+    const isExist = this.selectedAppDepots.find((x) => x.name == newDepot.name);
 
-    this.tankForm.reset();
+    this.appDepotForm.reset();
 
-    if (!isExist) this.selectedTanks.push(newTank);
+    if (!isExist) this.selectedAppDepots.push(newDepot);
     else this.popUp.open('This tank has been added before!', 'error');
     this.cd.markForCheck();
   }
@@ -222,8 +209,10 @@ export class NewApplicationComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  public removeTank(tank: ITankDTO) {
-    this.selectedTanks = this.selectedTanks.filter((x) => x.name !== tank.name);
+  public removeDepot(tank: IAppDepot) {
+    this.selectedAppDepots = this.selectedAppDepots.filter(
+      (x) => x.name !== tank.name
+    );
     this.cd.markForCheck();
   }
 
@@ -274,6 +263,21 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: AppException) => {
+        this.popUp.open(error.message, 'error');
+        this.spinner.close();
+      },
+    });
+  }
+
+  public getDepots() {
+    this.spinner.open();
+    this.libraryService.getAppDepots().subscribe({
+      next: (res) => {
+        this.depots = res.data;
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -368,6 +372,16 @@ export interface ITank {
   product: string;
 }
 
+export interface IAppDepot {
+  id: number;
+  depotId: number;
+  // appId: number;
+  name: string;
+  productId: number;
+  volume: number;
+  product?: string;
+}
+
 export interface ITankDTO {
   id: number;
   name: string;
@@ -406,9 +420,7 @@ export interface IDepot {
 export interface IApplicationFormDTO {
   vesselName: string;
   loadingPort: string;
-  dischargePort: string;
   marketerName: string;
-  // productId: string;
   vesselTypeId: number;
   imoNumber: string;
 
@@ -416,7 +428,9 @@ export interface IApplicationFormDTO {
   facilityName: string;
 
   facilitySources: IFacility[];
-  tankList: ITankDTO[];
+  depotList: IAppDepot[];
+  // productId: string;
+  // dischargePort: string;
   // capacity: number;
   // operator: string;
   // callSIgn: string;

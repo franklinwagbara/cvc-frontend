@@ -50,6 +50,7 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 import { ViewApplicationInFullComponent } from './view-application-in-full/view-application-in-full.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-depot-form.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { MatIconModule } from '@angular/material/icon';
     FirstNPipe,
     FormatTimeAmPmPipe,
     ViewApplicationInFullComponent,
+    AppDepotFormComponent,
   ],
   imports: [
     CommonModule,

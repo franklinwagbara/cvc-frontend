@@ -25,7 +25,7 @@
               />
             </div>
 
-            <div class="flex flex-col">
+            <!-- <div class="flex flex-col">
               <span class="input-label"> Discharge Port </span>
               <input
                 type="text"
@@ -33,20 +33,6 @@
                 placeholder="Discharge Port"
                 formControlName="dischargePort"
               />
-            </div>
-
-            <!-- <div class="flex flex-col">
-              <span class="input-label"> Product </span>
-              <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="productId"
-              >
-                <option disabled>--select--</option>
-                <option *ngFor="let p of products" [ngValue]="p.id">
-                  {{ p.name }}
-                </option>
-              </select>
             </div> -->
 
             <div class="flex flex-col">
@@ -86,40 +72,30 @@
       </div>
 
       <div class="second-segment" *ngIf="activateSecondSegment">
-        <div class="tankForm">
-          <form class="tankForm" [formGroup]="tankForm">
-            <!-- <div class="flex flex-col">
-              <span class="input-label"> Tank </span>
+        <div class="appDepotForm">
+          <form class="appDepotForm" [formGroup]="appDepotForm">
+            <div class="flex flex-col">
+              <span class="input-label"> Depot Name </span>
               <select
                 type="text"
                 class="border border-t border-b rounded-r p-2"
-                formControlName="name"
+                formControlName="depotId"
               >
                 <option disabled>--select--</option>
-                <option *ngFor="let t of tanks" [ngValue]="t.name">
-                  {{ t.name }}
+                <option *ngFor="let d of depots" [ngValue]="d.id">
+                  {{ d.name }}
                 </option>
               </select>
-            </div> -->
-
-            <div class="flex flex-col">
-              <span class="input-label"> Tank Name </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Tank Name"
-                formControlName="name"
-              />
             </div>
 
             <div class="flex flex-col">
-              <span class="input-label"> Capacity </span>
+              <span class="input-label"> Volume to Discharge </span>
               <input
                 type="number"
                 min="0"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Capacity"
-                formControlName="capacity"
+                placeholder="Volume"
+                formControlName="volume"
               />
             </div>
 
@@ -141,30 +117,30 @@
               mat-stroked-button
               color="primary"
               class="m-4"
-              [disabled]="tankForm.invalid ? true : null"
-              (click)="addTank()"
+              [disabled]="appDepotForm.invalid ? true : null"
+              (click)="addAppDepot()"
             >
               Add Tank
             </button>
 
-            <div *ngIf="selectedTanks?.length > 0">
+            <div *ngIf="selectedAppDepots?.length > 0">
               <table class="table table-auto data-table">
                 <thead>
                   <tr>
-                    <th>Tank Name</th>
-                    <th>Capacity</th>
+                    <th>Depot Name</th>
+                    <th>Volumne</th>
                     <th>Product Name</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let t of selectedTanks">
+                  <tr *ngFor="let t of selectedAppDepots">
                     <td>{{ t.name }}</td>
-                    <td>{{ t.capacity }}</td>
+                    <td>{{ t.volume }}</td>
                     <td>{{ t.product }}</td>
                     <td>
                       <button
-                        (click)="removeTank(t)"
+                        (click)="removeDepot(t)"
                         mat-flat-button
                         color="accent"
                       >
@@ -184,7 +160,7 @@
               </button>
 
               <button
-                *ngIf="selectedTanks.length > 0"
+                *ngIf="selectedAppDepots.length > 0"
                 mat-raised-button
                 color="primary"
                 class="primary"
@@ -196,141 +172,6 @@
           </form>
         </div>
       </div>
-
-      <!-- <div class="form" *ngIf="activateThirdSegment">
-        <form class="tankForm" [formGroup]="facilityForm">
-          <div class="second-segment">
-            <div class="flex flex-col">
-              <span class="input-label"> Source of Products </span>
-
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Source of Products"
-                formControlName="sourceOfProducts"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Facility Name </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Facility Name"
-                formControlName="facilityName"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Address </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Address"
-                formControlName="address"
-              />
-            </div>
-
-            <div class="licences">
-              <h5>Held License Number of Fixed Facility(s)</h5>
-              <div class="flex items-center gap-3">
-                <div class="flex flex-col">
-                  <span class="input-label"> License Number </span>
-                  <input
-                    type="text"
-                    class="border border-t border-b rounded-r p-2"
-                    placeholder="License Number"
-                    formControlName="licenseNumber"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> State </span>
-              <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="stateId"
-              >
-                <option disabled>--select--</option>
-                <option *ngFor="let s of states" [ngValue]="s.id">
-                  {{ s.name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> L.G.A </span>
-              <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="lgaId"
-              >
-                <option disabled>--select--</option>
-                <option *ngFor="let l of lga" [ngValue]="l.id">
-                  {{ l.name }}
-                </option>
-              </select>
-            </div>
-          </div>
-
-          <button
-            mat-stroked-button
-            color="primary"
-            class="m-4"
-            [disabled]="facilityForm.invalid ? true : null"
-            (click)="addFacility()"
-          >
-            Add Facility
-          </button>
-
-          <div *ngIf="selectedFacility?.length > 0">
-            <table class="table table-auto data-table">
-              <thead>
-                <tr>
-                  <th>Source of Products</th>
-                  <th>Facility Name</th>
-                  <th>Address</th>
-                  <th>License Number</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr *ngFor="let t of selectedFacility">
-                  <td>{{ t.sourceOfProducts }}</td>
-                  <td>{{ t.facilityName }}</td>
-                  <td>{{ t.address }}</td>
-                  <td>{{ t.licenseNumber }}</td>
-                  <td>
-                    <button
-                      (click)="removeFacility(t)"
-                      mat-flat-button
-                      color="accent"
-                    >
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <button class="btn-back" mat-raised-button (click)="updateState(2)">
-              Back
-            </button>
-
-            <button
-              *ngIf="selectedTanks.length > 0"
-              mat-raised-button
-              color="primary"
-              class="primary"
-              (click)="submit()"
-            >
-              Continue
-            </button>
-          </div>
-        </form>
-      </div> -->
     </div>
   </div>
 </div>

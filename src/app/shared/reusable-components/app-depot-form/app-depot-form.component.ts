@@ -16,10 +16,9 @@ import {
   IDepot,
   IApplicationType,
 } from 'src/app/company/apply/new-application/new-application.component';
-import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
-import { AdminService } from '../../services/admin.service';
 import { SpinnerService } from '../../services/spinner.service';
+import { LocationService } from '../../services/location/location.service';
 
 @Component({
   selector: 'app-app-depot-form',
@@ -40,15 +39,11 @@ export class AppDepotFormComponent implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<AppDepotFormComponent>,
     private cd: ChangeDetectorRef,
-    private progressBar: ProgressBarService,
     private popUp: PopupService,
-    private adminService: AdminService,
+    private locService: LocationService,
     private spinner: SpinnerService
   ) {
-    this.applicationTypes = data.data.applicationTypes;
-
     this.form = formBuilder.group({
-      applicationTypeId: ['', [Validators.required]],
       serciveCharge: ['', [Validators.required]],
       noaDepot: ['', [Validators.required]],
       coqDepot: ['', [Validators.required]],
@@ -64,25 +59,18 @@ export class AppDepotFormComponent implements OnInit {
   }
 
   getAppDepot() {
-    this.adminService.getAppDepotById(this.data.data.appDepotId).subscribe({
+    this.locService.getDepot(this.data.data.appDepotId).subscribe({
       next: (res) => {
         this.appDepots = res.data;
-        this.form.get('noaDepot').setValue(this.appDepots.noaDepot);
-        this.form.get('coqDepot').setValue(this.appDepots.coqDepot);
-        this.form
-          .get('processingDepot')
-          .setValue(this.appDepots.processingDepot);
-        this.form.get('serciveCharge').setValue(this.appDepots.serciveCharge);
-        this.form
-          .get('applicationTypeId')
-          .setValue(this.appDepots.applicationTypeId);
+        // this.form.get('noaDepot').setValue(this.appDepots.noaDepot);
+        // this.form.get('coqDepot').setValue(this.appDepots.coqDepot);
         this.cd.markForCheck();
       },
       error: (err) => {
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
-        this.progressBar.close();
+        this.spinner.close();
       },
     });
   }
@@ -90,24 +78,19 @@ export class AppDepotFormComponent implements OnInit {
   createDepot() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
-    this.adminService.addAppDepots(this.form.value).subscribe({
+    this.spinner.open();
+    this.locService.createDepot(this.form.value).subscribe({
       next: (res) => {
-        this.progressBar.close();
-        this.snackBar.open(
+        this.spinner.close();
+        this.popUp.open(
           'Application depot was created successfully!',
-          null,
-          {
-            panelClass: ['success'],
-          }
+          'success'
         );
         this.dialogRef.close();
       },
       error: (err) => {
-        this.snackBar.open(err?.message, null, {
-          panelClass: ['error'],
-        });
-        this.progressBar.close();
+        this.popUp.open(err?.message, 'error');
+        this.spinner.close();
       },
     });
   }
@@ -115,27 +98,22 @@ export class AppDepotFormComponent implements OnInit {
   EditDepot() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    this.spinner.open();
 
     let formData = this.form.value;
     formData.id = this.data.data.appDepotId;
-    this.adminService.editAppDepots(formData).subscribe({
+    this.locService.editDepot(formData).subscribe({
       next: (res) => {
-        this.progressBar.close();
-        this.snackBar.open(
+        this.spinner.close();
+        this.popUp.open(
           'Application depot was modified successfully!',
-          null,
-          {
-            panelClass: ['success'],
-          }
+          'success'
         );
         this.dialogRef.close();
       },
       error: (err) => {
-        this.progressBar.close();
-        this.snackBar.open(err?.message, null, {
-          panelClass: ['error'],
-        });
+        this.spinner.close();
+        this.popUp.open(err?.message, 'error');
       },
     });
   }

@@ -107,7 +107,7 @@
       <button mat-button mat-dialog-close (click)="onClose()">Close</button>
       <button
         mat-raised-button
-        (click)="this.data.data.action === 'EDIT' ? EditFee() : createFee()"
+        (click)="this.data.data.action === 'EDIT' ? EditDepot() : createDepot()"
         [disabled]="form.invalid"
       >
         Save

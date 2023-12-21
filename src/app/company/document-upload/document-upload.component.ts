@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CompanyService } from 'src/app/shared/services/company.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';

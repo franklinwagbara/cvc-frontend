@@ -67,4 +67,8 @@ export class LibaryService {
   public getAllOffices() {
     return this.http.get<any>(`${api}/all-offices`);
   }
+
+  public getAppDepots() {
+    return this.http.get<any>(`${api}/all-depot`);
+  }
 }

@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AppFeeFormComponent } from './app-depot-form.component';
+import { AppDepotFormComponent } from './app-depot-form.component';
 
-describe('AppFeeFormComponent', () => {
-  let component: AppFeeFormComponent;
-  let fixture: ComponentFixture<AppFeeFormComponent>;
+describe('AppDepotFormComponent', () => {
+  let component: AppDepotFormComponent;
+  let fixture: ComponentFixture<AppDepotFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AppFeeFormComponent ]
-    })
-    .compileComponents();
+      declarations: [AppDepotFormComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(AppFeeFormComponent);
+    fixture = TestBed.createComponent(AppDepotFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
