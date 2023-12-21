@@ -10,9 +10,9 @@
           [table_content]="fieldOfficersData"
           [noTitle]="true"
           [table_controls_horizontal]="true"
-          (onAddData)="onAddData($event, 'fieldOfficers')"
-          (onDeleteData)="onDeleteData($event, 'fieldOfficers')"
-          (onEditData)="onEditData($event, 'fieldOfficers')"
+          (onAddData)="addData()"
+          (onDeleteData)="deleteData($event)"
+          (onEditData)="editData($event)"
         ></generic-table>
       </div>
     </div>

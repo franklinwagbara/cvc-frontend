@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { IDepot } from 'src/app/shared/interfaces/IDepot';
 import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
+import { IRole } from 'src/app/shared/interfaces/IRole';
 import { IUser } from 'src/app/shared/interfaces/IUser';
+import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
 
 @Component({
   selector: 'app-field-officer-setting',
@@ -12,6 +15,9 @@ export class FieldOfficerSettingComponent implements OnInit {
   fieldOfficers: IDepotOfficer[];
   fieldOfficerUsers: IUser[];
   fieldOfficerDepots: IDepot[];
+  roles: IRole[];
+  locations: any[];
+  offices: any[];
 
   fieldOfficersData: FieldOfficer[]
   
@@ -25,22 +31,49 @@ export class FieldOfficerSettingComponent implements OnInit {
     isActive: 'Status'
   }
 
-  constructor() {}
+  constructor(private dialog: MatDialog) {}
 
   ngOnInit(): void {
     
   }
 
-  onAddData(event: Event, s) {
+  addData() {
+    const data = {
+      data: {
+        users: this.fieldOfficerUsers,
+        staffList: this.fieldOfficers,
+        roles: this.roles,
+        offices: this.offices,
+      }
+    }
+    const dialogRef = this.dialog.open(UserFormComponent, { data });
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+
+      }
+    })
+  }
+
+  deleteData(event: Event) {
 
   }
 
-  onDeleteData(event: Event, s) {
+  editData(event: Event) {
+    const data = {
+      data: {
+        users: this.fieldOfficerUsers,
+        staffList: this.fieldOfficers,
+        roles: this.roles,
+        offices: this.offices,
+        currentValue: ''
+      }
+    }
+    const dialogRef = this.dialog.open(UserFormComponent, { data });
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
 
-  }
-
-  onEditData(event: Event, s) {
-
+      }
+    })
   }
 
 }

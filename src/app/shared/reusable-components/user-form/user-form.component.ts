@@ -28,7 +28,7 @@ import { IBranch } from '../../interfaces/IBranch';
 })
 export class UserFormComponent implements OnInit {
   public form: FormGroup;
-  public usersFromAus2: StaffWithName[];
+  public usersFromCvc: StaffWithName[];
   public userTypes = [''];
   public offices: FieldOffice[];
   public branches: IBranch[];
@@ -49,7 +49,7 @@ export class UserFormComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService
   ) {
-    this.usersFromAus2 = data.data.users;
+    this.usersFromCvc = data.data.users;
     this.offices = data.data.offices;
     this.branches = data.data.branches;
     this.roles = data.data.roles;
