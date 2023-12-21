@@ -133,7 +133,7 @@ export class AssignApplicationFormComponent
       newStaffId: this.form.get('id').value[0].id,
       oldStaffId: null,
       comment: this.form.get('comment').value,
-      apps: [...this.selectedApplications.map((app) => app.id)],
+      apps: [...this.selectedApplications.map((app) => app.applicationTypeId)],
     };
 
     this.adminServe.assignApplication(model).subscribe({

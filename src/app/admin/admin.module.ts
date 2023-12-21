@@ -27,7 +27,6 @@ import { FieldZonalOfficeComponent } from './settings/field-zonal-office/field-z
 import { ModulesSettingComponent } from './settings/modules-setting/modules-setting.component';
 import { StaffdeskComponent } from './staffdesk/staffdesk.component';
 import { AppProcessComponent } from './settings/app-process/app-process.component';
-import { ApplicationsFilteredByCategoryPipe } from './application/applications-filtered-by-category.pipe';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
 import { ShowMoreComponent } from '../shared/reusable-components/show-more/show-more.component';
@@ -72,9 +71,8 @@ import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq
     PhasedocumentsComponent,
     BranchSettingComponent,
     ApplicationViewTableComponent,
-    ViewApplicationComponent,
     AppProcessComponent,
-    ApplicationsFilteredByCategoryPipe,
+    ViewApplicationComponent,
     MyDeskComponent,
     BarChartComponent,
     ShowMoreComponent,

@@ -5,6 +5,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+
 @Component({
   selector: 'app-noa-applications-by-depot',
   templateUrl: './noa-applications-by-depot.component.html',
@@ -18,12 +19,14 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   };
 
   public applicationKeysMappedToHeaders = {
-    reference: 'Reference Number',
-    companyName: 'Company Name',
+    applicationTypeId: 'Application Type Id',
+    marketerName: 'Marketer Name',
+    imoNumber: 'IMO Number',
     vesselName: 'Vessel Name',
-    createdDate: 'Initiation Date',
-    capacity: 'Capacity',
-    status: 'Status',
+    loadingPort: 'Loading Port',
+    dischargePort: 'Discharge Port',
+    vesselTypeId: 'Vessel Type Id',
+    eta: 'Estimated Time of Arrival'
   };
 
   constructor(
@@ -37,7 +40,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.open();
 
-    this.applicationService.viewApplicationByDepotOfficer(1).subscribe({
+    this.applicationService.viewApplicationByDepot(1).subscribe({
       next: (res) => {
         if (res[0].success) this.applications = res[0].data;
 

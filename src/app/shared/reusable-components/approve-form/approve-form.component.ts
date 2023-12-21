@@ -77,7 +77,7 @@ export class ApproveFormComponent implements OnInit {
     this.progressBarService.open();
 
     const model = {
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       action: ApplicationActionType.Approve,
       comment: this.form.controls['comment'].value,
       // currentUserId: this.currentUser.id,
