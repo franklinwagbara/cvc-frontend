@@ -37,7 +37,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.open();
 
-    this.applicationService.getAllApplications().subscribe({
+    this.applicationService.viewApplicationByDepotOfficer(1).subscribe({
       next: (res) => {
         if (res[0].success) this.applications = res[0].data;
 
