@@ -1,4 +1,4 @@
-export interface IAppDepot {
+export interface IDepot {
   id?: number;
   depotId?: number;
   appId?: number | null;

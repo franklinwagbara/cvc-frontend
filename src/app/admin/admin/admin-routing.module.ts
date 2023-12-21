@@ -22,6 +22,7 @@ import { ViewApplicationInFullComponent } from 'src/app/shared/reusable-componen
 import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
 import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
 import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
+import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'branch-setting', component: BranchSettingComponent },
   { path: 'phasedocuments', component: PhasedocumentsComponent },
   { path: 'application-process', component: AppProcessComponent },
+  { path: 'field-officer-setting', component: FieldOfficerSettingComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
   { path: 'view-application-in-full/:id', component: ViewApplicationInFullComponent },

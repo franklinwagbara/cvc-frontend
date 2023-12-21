@@ -56,6 +56,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
+import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq
     CoqApplicationFormComponent,
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
+    FieldOfficerSettingComponent,
   ],
 
   imports: [

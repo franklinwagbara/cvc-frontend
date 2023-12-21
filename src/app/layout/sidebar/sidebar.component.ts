@@ -230,6 +230,11 @@ const ROUTES: RouteInfo[] = [
         title: 'APPLICATION PROCESS',
         url: '/admin/application-process',
       },
+      {
+        id: 7,
+        title: 'FIELD OFFICER SETUP',
+        url: '/admin/field-officer-setting'
+      }
     ],
   },
 ];

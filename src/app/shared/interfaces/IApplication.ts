@@ -1,5 +1,5 @@
 import { ITank } from './ITank';
-import { IAppDepot } from './IAppDepot';
+import { IDepot } from './IDepot';
 
 export interface IApplication {
   applicationTypeId?: number;
@@ -11,7 +11,7 @@ export interface IApplication {
   marketerName?: string | null;
   deportStateId?: number;
   tankList?: Array<ITank> | null;
-  depotList?: Array<IAppDepot> | null;
+  depotList?: Array<IDepot> | null;
   eta?: string;
 }
 
