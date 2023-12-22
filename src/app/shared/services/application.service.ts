@@ -40,4 +40,8 @@ export class ApplicationService {
   getAllApplications() {
     return this.http.get<any>(`${API}/all-applications`);
   }
+
+  getAllPayments() {
+    return this.http.get<any>(`${API}/all-applications`);
+  }
 }

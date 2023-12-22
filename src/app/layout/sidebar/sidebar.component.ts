@@ -132,7 +132,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'ALL PAYMENTS',
-        url: '#',
+        url: '/admin/payments',
       },
       {
         id: 2,
@@ -182,6 +182,11 @@ const ROUTES: RouteInfo[] = [
         id: 1,
         title: 'USER SETUP',
         url: '/admin/all-staff',
+      },
+      {
+        id: 8,
+        title: 'ROLE SETTINGS',
+        url: '/admin/roles',
       },
       {
         id: 2,

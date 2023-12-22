@@ -48,6 +48,10 @@ import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
+import { PaymentComponent } from './payment/payment.component';
+import { PaymentViewTableComponent } from './payment/view-payment/payment-view-table/payment-view-table.component';
+import { ViewPaymentComponent } from './payment/view-payment/view-payment.component';
+import { RolesComponent } from './settings/roles/roles.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +87,11 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     LicenceComponent,
     ScheduleComponent,
     AppFeeComponent,
+    PaymentComponent,
+    ViewPaymentComponent,
+    PaymentViewTableComponent,
+    RolesComponent,
+    
   ],
 
   imports: [
