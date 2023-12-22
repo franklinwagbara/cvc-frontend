@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { forkJoin, of } from 'rxjs';
+
 
 @Component({
   selector: 'form-dialog',
@@ -6,7 +10,30 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./form-dialog.component.css'],
 })
 export class FormDialogComponent implements OnInit {
-  constructor() {}
+  form: FormGroup;
+  formKeys: any[];
+  formValues: any[];
+  @Input() formKeysProp: FormKeysProp;
 
-  ngOnInit(): void {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data,
+    private dialogRef: MatDialogRef<FormDialogComponent>,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    const formGroup = {};
+    this.formKeys = Object.keys(this.formKeysProp);
+    this.formValues = Object.values(this.formKeysProp);
+    this.formKeys.forEach((key, i) => {
+      formGroup[key] = [this.formValues[i]?.value || '', this.formValues[i]?.validator || []]
+    })
+    this.form = this.fb.group(formGroup);
+  }
+
+  onClose(): void {
+    this.dialogRef.close(this.form.value);
+  }
 }
+
+export type FormKeysProp = {[key: string]: { validator?: ValidatorFn | ValidatorFn[], value?: any }};

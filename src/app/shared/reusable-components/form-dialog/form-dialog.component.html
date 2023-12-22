@@ -1,1 +1,19 @@
-<p>form-dialog works!</p>
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content class="">
+  <form [formGroup]="form">
+    <div class="form-group" style="margin-bottom: 10px" *ngFor="let key of formKeys">
+      <label>{{ key | titlecase }}</label>
+      <input
+        [name]="key"
+        [formControlName]="key"
+        class="form-control"
+      />
+      <small
+        *ngIf="form.get(key)?.touched && form.get(key)?.invalid"
+        class="invalid-feedback"
+      >
+        {{ key }} is required
+      </small>
+    </div>
+  </form>
+</div>

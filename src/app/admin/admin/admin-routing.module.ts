@@ -24,6 +24,7 @@ import { CoqApplicationFormComponent } from '../coq-application-form/coq-applica
 import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
 import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
+import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'application-stage-docs', component: AppStageDocsComponent },
   { path: 'field-zone-office', component: FieldZonalOfficeComponent },
   { path: 'branch-setting', component: BranchSettingComponent },
+  { path: 'jetty-setting', component: JettySettingComponent },
   { path: 'phasedocuments', component: PhasedocumentsComponent },
   { path: 'application-process', component: AppProcessComponent },
   { path: 'field-officer-setting', component: FieldOfficerSettingComponent },

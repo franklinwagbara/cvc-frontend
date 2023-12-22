@@ -239,6 +239,11 @@ const ROUTES: RouteInfo[] = [
         title: 'APPLICATION FEE',
         url: '/admin/app-fees',
       },
+      {
+        id: 9,
+        title: 'JETTY CONFIGURATION',
+        url: '/admin/jetty-setting'
+      }
     ],
   },
 ];

@@ -21,7 +21,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply bg-yellow-100 text-black pt-6;
+  @apply bg-yellow-100 text-black pt-6 overflow-auto;
 }
 
 .nav-sub-menu p {

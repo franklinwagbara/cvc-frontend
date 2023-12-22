@@ -58,6 +58,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
+import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.component';
 
 
 @NgModule({
@@ -97,6 +98,7 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
+    JettySettingComponent,
   ],
 
   imports: [
