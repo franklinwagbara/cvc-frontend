@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
@@ -9,10 +10,14 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 })
 export class AdminLayoutComponent implements OnInit {
   public isCollapse = false;
+  isCollapsed$ = new BehaviorSubject<boolean>(false);
 
   constructor(private pageManagerService: PageManagerService) {}
 
   ngOnInit(): void {
+    this.isCollapsed$.subscribe((val: boolean) => {
+      this.isCollapse = val;
+    })
     this.pageManagerService.adminSidebarHover.subscribe({
       next: (value: boolean) => {
         this.isCollapse = !value;
@@ -24,6 +29,6 @@ export class AdminLayoutComponent implements OnInit {
   }
 
   onMenuOpen(open: boolean) {
-    this.isCollapse = !open;
+    this.isCollapsed$.next(!open);
   }
 }

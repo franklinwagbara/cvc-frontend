@@ -11,6 +11,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubRouteInfo } from '../sidebar/sidebar.component';
 
+
 @Component({
   selector: 'app-nav-item',
   templateUrl: './nav-item.component.html',
@@ -36,13 +37,17 @@ export class NavItemComponent implements OnInit, OnChanges {
 
   @Output() onActive = new EventEmitter();
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(
+    iconRegistry: MatIconRegistry, 
+    sanitizer: DomSanitizer,
+  ) {
     iconRegistry.addSvgIcon(
       'my-star-icon',
       sanitizer.bypassSecurityTrustResourceUrl('../../../assets/svgs/apps.svg')
     );
     this.iconN = `assets/svgs/apps.svg#Outline`;
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.isSidebarCollapsed = this.isSideBarCollapsedProp;
     this.title = this.titleProp;

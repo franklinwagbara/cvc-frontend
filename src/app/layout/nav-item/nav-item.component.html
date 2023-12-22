@@ -56,8 +56,11 @@
   <a
     *ngFor="let item of subItems"
     [routerLink]="item.url"
+    routerLinkActive="active-sub-menu-item"
+    [routerLinkActiveOptions]="{exact: true}"
     (click)="setActiveSubNavItem(item.id)"
-    ><p [ngClass]="{ 'active-sub-menu-item': item.id === activeSubMenuItem }">
+    #rla="routerLinkActive"
+    ><p >
       {{ item.title }}
     </p></a
   >
