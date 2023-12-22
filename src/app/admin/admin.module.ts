@@ -57,6 +57,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
+import { AppFeeComponent } from './settings/app-fee/app-fee.component';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { FieldOfficerSettingComponent } from './settings/field-officer-setting/f
     PhasedocumentsComponent,
     BranchSettingComponent,
     ApplicationViewTableComponent,
+    AppFeeComponent,
     AppProcessComponent,
     ViewApplicationComponent,
     MyDeskComponent,
