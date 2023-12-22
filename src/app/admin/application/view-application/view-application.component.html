@@ -6,6 +6,8 @@
     <div class="application-view">
       <app-application-view-table
         [application]="application"
+        [appId]="appId"
+        [appSource]="appSource"
       ></app-application-view-table>
     </div>
     <div class="application-controls">
@@ -16,116 +18,6 @@
         <p>{{ application?.currentDesk }}</p>
       </mat-expansion-panel>
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let history of application?.appHistories | firstN : 4"
-        >
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ history.triggeredBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Recipient</div>
-            <div class="item-content">{{ history.targetedTo }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Remark</div>
-            <div class="item-content">{{ history.comment }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Date</div>
-            <div class="item-content">{{ history.date }}</div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('appHistory')">Show more</p>
-      </mat-expansion-panel>
-
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> SCHEDULE(S) </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let schedule of application?.schedules | firstN : 4"
-        >
-          <div
-            *ngIf="isCreatedByMe(schedule.scheduledBy)"
-            class="flex justify-end"
-          >
-            <button
-              mat-stroked-button
-              color="accent"
-              (click)="action('editSchedule', schedule)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-
-          <div *ngIf="isSupervisor" class="flex justify-end">
-            <button
-              mat-stroked-button
-              color="accent"
-              (click)="action('editSchedule', schedule)"
-            >
-              <mat-icon>check</mat-icon>
-            </button>
-          </div>
-
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ schedule.scheduledBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Schedule Date</div>
-            <div class="item-content">{{ schedule.inspectionDate }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Expiry Date</div>
-            <div class="item-content">{{ schedule.expiryDate }}</div>
-          </div>
-          <!-- <div class="card-item">
-            <div class="item-title">Company Status</div>
-            <div class="item-content">{{ schedule.companyStatus }}</div>
-          </div> -->
-          <div class="card-item">
-            <div class="item-title">Approval Remark</div>
-            <div class="item-content">{{ schedule.approvalMessage }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approver</div>
-            <div class="item-content">{{ schedule.approvedBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approval Status</div>
-            <div class="item-content">
-              {{
-                schedule.isApproved
-                  ? "Approved"
-                  : schedule.isApproved === null
-                  ? "Approval Pending"
-                  : "Disapproved"
-              }}
-            </div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approval Accepted</div>
-            <div class="item-content">
-              {{
-                schedule.isApproved
-                  ? "Approved"
-                  : schedule.isApproved === null
-                  ? "Approval Pending"
-                  : "Disapproved"
-              }}
-            </div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('schedules')">Show more</p>
-      </mat-expansion-panel>
 
       <mat-expansion-panel>
         <mat-expansion-panel-header>
@@ -255,5 +147,4 @@
     </div>
   </div>
   
-  <button class="btn" (click)="viewApplicationInFull()">View Application Details In Full</button>
 </div>

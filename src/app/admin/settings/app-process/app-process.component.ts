@@ -63,7 +63,6 @@ export class AppProcessComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBarService.open();
     this.spinner.open();
 
     forkJoin([
@@ -140,13 +139,15 @@ export class AppProcessComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 

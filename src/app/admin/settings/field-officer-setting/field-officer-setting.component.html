@@ -1,0 +1,21 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-blue-500 text-blue-800">FIELD OFFICER SETTINGS</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'FIELD OFFICERS'"
+          [title-color]="'blue'"
+          [table_keysMappedToHeaders]="officerKeysMappedToHeaders"
+          [table_content]="fieldOfficersData"
+          [noTitle]="true"
+          [table_controls_horizontal]="true"
+          [noAddButton]="!elpsUsers?.length"
+          (onAddData)="addData()"
+          (onDeleteData)="deleteData($event)"
+          (onEditData)="editData($event)"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

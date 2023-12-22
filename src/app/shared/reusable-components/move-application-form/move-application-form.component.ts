@@ -141,7 +141,7 @@ export class MoveApplicationFormComponent implements OnInit, AfterViewChecked {
       newStaffId: this.form.get('id').value[0].id,
       oldStaffId: this.staff.id,
       comment: this.form.get('comment').value,
-      apps: [...this.selectedApplications.map((app) => app.id)],
+      apps: [...this.selectedApplications.map((app) => app.applicationTypeId)],
     };
 
     this.adminServe.rerouteApplication(model).subscribe({

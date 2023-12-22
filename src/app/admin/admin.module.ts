@@ -13,7 +13,6 @@ import {
 import { MatTabsModule } from '@angular/material/tabs';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { ProgressBarService } from '../shared/services/progress-bar.service';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin/admin-routing.module';
 import { AdminComponent } from './admin/admin.component';
@@ -28,7 +27,6 @@ import { FieldZonalOfficeComponent } from './settings/field-zonal-office/field-z
 import { ModulesSettingComponent } from './settings/modules-setting/modules-setting.component';
 import { StaffdeskComponent } from './staffdesk/staffdesk.component';
 import { AppProcessComponent } from './settings/app-process/app-process.component';
-import { ApplicationsFilteredByCategoryPipe } from './application/applications-filtered-by-category.pipe';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
 import { ShowMoreComponent } from '../shared/reusable-components/show-more/show-more.component';
@@ -47,7 +45,20 @@ import { ApplicationReportBarChartComponent } from './admin/application-report/b
 import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart/bar-chart.component';
 import { LicenceComponent } from './licence/licence.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { CoqApplicationFormComponent } from './coq-application-form/coq-application-form.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { NoaApplicationsByDepotComponent } from './noa-applications-by-depot/noa-applications-by-depot.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
+import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
+
 
 @NgModule({
   declarations: [
@@ -62,9 +73,9 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     PhasedocumentsComponent,
     BranchSettingComponent,
     ApplicationViewTableComponent,
-    ViewApplicationComponent,
+    AppFeeComponent,
     AppProcessComponent,
-    ApplicationsFilteredByCategoryPipe,
+    ViewApplicationComponent,
     MyDeskComponent,
     BarChartComponent,
     ShowMoreComponent,
@@ -82,7 +93,10 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     PaymentReportBarChartComponent,
     LicenceComponent,
     ScheduleComponent,
-    AppFeeComponent,
+    CoqApplicationFormComponent,
+    NoaApplicationsByDepotComponent,
+    CoqApplicationsByDepotComponent,
+    FieldOfficerSettingComponent,
   ],
 
   imports: [
@@ -95,9 +109,17 @@ import { AppFeeComponent } from './settings/app-fee/app-fee.component';
     MatGridListModule,
     MatSnackBarModule,
     MatExpansionModule,
+    MatTableModule,
     MatTabsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatProgressBarModule,
   ],
   exports: [],
   providers: [

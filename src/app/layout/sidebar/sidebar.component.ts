@@ -2,13 +2,12 @@ import {
   Component,
   OnInit,
   Input,
-  Pipe,
-  PipeTransform,
+  HostListener,
   OnChanges,
   SimpleChanges,
-  HostListener,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
 import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
@@ -35,7 +34,7 @@ const ROUTES: RouteInfo[] = [
     iconName: 'dashboard',
     iconId: 'dashboard',
     iconColor: 'white',
-    active: true,
+    active: false,
     subMenuActive: false,
 
     subRoutes: [
@@ -70,6 +69,28 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 3,
+    title: 'CoQ',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+
+    subRoutes: [
+      {
+        id: 1,
+        title: 'NOA Applications',
+        url: '/admin/noa-applications-by-depot',
+      },
+      {
+        id: 2,
+        title: 'COQ Applications',
+        url: '/admin/certificate-of-quantity/all-applications-by-depot'
+      }
+    ],
+  },
+  {
+    id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
     iconId: 'dashboard_outline',
@@ -86,7 +107,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
+    id: 4,
     title: 'LICENCES',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -103,7 +124,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
+    id: 5,
     title: 'SCHEDULES',
     iconName: 'schedules',
     iconId: 'schedules',
@@ -120,7 +141,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 6,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -142,7 +163,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 5,
+    id: 7,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -169,7 +190,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 8,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -210,6 +231,11 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 7,
+        title: 'FIELD OFFICER SETUP',
+        url: '/admin/field-officer-setting'
+      },
+      {
+        id: 8,
         title: 'APPLICATION FEE',
         url: '/admin/app-fees',
       },
@@ -222,23 +248,55 @@ const ROUTES: RouteInfo[] = [
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
   user: any[];
   public menuItems: RouteInfo[];
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
 
-  @Input() isCollapsed = false;
+  isCollapsed = false;
+  @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private pageManagerService: PageManagerService
-  ) {}
+  ) {
+    this.menuItems = [...ROUTES];
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      let foundActiveNav = false;
+      for (let item of this.menuItems) {
+        for (let subItem of item.subRoutes) {
+          if (this.router.url === subItem.url) {
+            item.active = true;
+            item.subMenuActive = true;
+            foundActiveNav = true;
+            break;
+          }
+        }
+        if (foundActiveNav) break;
+      }
+    })
+  }
 
   ngOnInit() {
-    this.menuItems = [...ROUTES];
+    this.isCollapsed$.subscribe((val: boolean) => {
+      this.isCollapsed = val;
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) {
+          return { ...item, subMenuActive: !val };
+        }
+        return item;
+      })
+    })
     this.user = JSON.parse(localStorage.getItem('currentUser'));
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    
   }
 
   setActiveNavItem(navItem: string) {
@@ -247,13 +305,14 @@ export class SidebarComponent implements OnInit {
       if (menu.title === navItem) {
         menu.active = true;
         menu.subMenuActive = true;
-      } else {
-        menu.active = false;
-        menu.subMenuActive = false;
       }
-
+      if (menu.title !== navItem) {
+        let subMenuActive = menu.subRoutes.some((val) => val.url === this.router.url);
+        menu.active = subMenuActive;
+        menu.subMenuActive = subMenuActive;
+      }
       return menu;
-    });
+    })
     this.menuItems = [...this.menuItems];
   }
 
@@ -261,6 +320,12 @@ export class SidebarComponent implements OnInit {
   onMouseover(event: Event) {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = false;
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) { 
+          return { ...item, subMenuActive: true };
+        }
+        return item;
+      })
       this.pageManagerService.adminSidebarHover.emit(true);
     }
   }
@@ -269,6 +334,17 @@ export class SidebarComponent implements OnInit {
   onMouseLeave(event: Event) {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = true;
+      // Collapse active nav item
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) {
+          let isCurrentRoute = item.subRoutes.some((val) => val.url === this.router.url);
+          if (!isCurrentRoute) {
+            return { ...item, active: false, subMenuActive: false };
+          }
+          return { ...item, subMenuActive: false };
+        }
+        return item;
+      })
       this.pageManagerService.adminSidebarHover.emit(false);
     }
   }

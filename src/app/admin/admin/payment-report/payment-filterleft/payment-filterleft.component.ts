@@ -38,7 +38,7 @@ export class PaymentFilterleftComponent implements OnInit {
     } else {
       if (this.checked) {
         sorted = [...this.applications].sort((a, b) =>
-          a.companyName.localeCompare(b.companyName)
+          a.marketerName.localeCompare(b.marketerName)
         );
         this.sortedApps.emit(sorted);
         this.onChecked.emit(this.checked);
@@ -68,7 +68,7 @@ export class PaymentFilterleftComponent implements OnInit {
   //   if (this.checked) {
   //     if (type === 'alphabetical') {
   //       sorted = this.applications.sort((a, b) =>
-  //         a.companyName.localeCompare(b.companyName)
+  //         a.marketerName.localeCompare(b.marketerName)
   //       );
   //       this.sortedApps.emit(sorted);
   //       this.onChecked.emit(this.checked);

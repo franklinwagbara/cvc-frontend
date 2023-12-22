@@ -33,7 +33,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     AdminModule,
     LayoutModule,
     ReactiveFormsModule,
-    MatProgressSpinnerModule,
+    MatProgressSpinnerModule
   ],
   exports: [RouterModule],
   providers: [

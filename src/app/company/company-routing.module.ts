@@ -16,7 +16,7 @@ import { PaymentSumComponent } from './payment-summary/paymentsum.component';
 import { DocumentUploadComponent } from './document-upload/document-upload.component';
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
-import { ViewApplicationInFullComponent } from '../shared/view-application-in-full/view-application-in-full.component';
+import { ViewApplicationInFullComponent } from '../shared/reusable-components/view-application-in-full/view-application-in-full.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
