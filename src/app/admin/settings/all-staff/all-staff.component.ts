@@ -107,6 +107,7 @@ export class AllStaffComponent implements OnInit {
           roles: this.roles,
           branches: this.branches,
           locations: this.locations,
+          offices: this.offices,
         },
         form: UserFormComponent,
       },

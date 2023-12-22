@@ -8,6 +8,7 @@ import { LibaryService } from 'src/app/shared/services/libary.service';
 import {
   IDepot,
   IApplicationType,
+  IState,
 } from 'src/app/company/apply/new-application/new-application.component';
 import { LocationService } from 'src/app/shared/services/location/location.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
@@ -21,18 +22,16 @@ import { AppDepotFormComponent } from 'src/app/shared/reusable-components/app-de
 export class AppDepotComponent implements OnInit {
   public appDepots: IDepot[];
   public applicationTypes: IApplicationType[];
+  public states: IState[];
 
   public tableTitles = {
     depots: 'APPLICATION DEPOTS',
   };
 
   public depotsKeysMappedToHeaders = {
-    //id: 'Id',
-    applicationTypeId: 'Application Type',
-    serciveCharge: 'Sercive Charge',
-    noaDepot: 'NOA Depot',
-    coqDepot: 'COQ Depot',
-    processingDepot: 'Processing Depot',
+    name: 'Depot Name',
+    stateName: 'State',
+    capacity: 'Depot Capacity',
   };
 
   constructor(
@@ -48,14 +47,35 @@ export class AppDepotComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllDepots();
+    this.getAllStates();
+  }
+
+  public getAllStates() {
+    this.spinner.open();
+    return this.libraryService.getStates().subscribe({
+      next: (res) => {
+        this.states = res.data;
+        this.cd.markForCheck;
+        this.spinner.close();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popUp.open(e.message ?? e.Message, 'error');
+        this.cd.markForCheck();
+      },
+    });
   }
 
   public getAllDepots() {
-    debugger;
     this.spinner.open();
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
         this.appDepots = res.data;
+        this.appDepots = this.appDepots.map((d) => {
+          d.stateName = d.state.name;
+          return d;
+        });
+
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -71,7 +91,8 @@ export class AppDepotComponent implements OnInit {
     const operationConfiguration = {
       applicationDepots: {
         data: {
-          AppDepots: this.appDepots,
+          appDepots: this.appDepots,
+          states: this.states,
         },
         form: AppDepotFormComponent,
       },
@@ -141,8 +162,9 @@ export class AppDepotComponent implements OnInit {
     const operationConfiguration = {
       applicationDepots: {
         data: {
-          AppDepots: this.appDepots,
+          appDepots: this.appDepots,
           appDepotId: event.id,
+          states: this.states,
           action: 'EDIT',
         },
         form: AppDepotFormComponent,

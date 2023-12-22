@@ -71,9 +71,8 @@ export class NewApplicationComponent implements OnInit {
     });
 
     this.appDepotForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      // name: ['', Validators.required],
       depotId: ['', Validators.required],
-      appId: ['', Validators.required],
       volume: ['', Validators.required],
       productId: ['', Validators.required],
     });
@@ -170,8 +169,8 @@ export class NewApplicationComponent implements OnInit {
     const formValue = this.appDepotForm.value;
     const newDepot: any = {
       id: 0,
-      name: formValue.name,
       depotId: formValue.depotId,
+      name: this.depots.find((d) => d.id == formValue?.depotId)?.name,
       volume: formValue.volume as number,
       productId: formValue.productId,
       product: this.products.find((x) => x.id == formValue.productId).name,
@@ -415,6 +414,10 @@ export interface IAppFee {
 export interface IDepot {
   id: number;
   name: string;
+  stateId: number;
+  capacity: number;
+  state: IState;
+  stateName: string;
 }
 
 export interface IApplicationFormDTO {

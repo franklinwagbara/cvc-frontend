@@ -5,7 +5,12 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -15,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   IDepot,
   IApplicationType,
+  IState,
 } from 'src/app/company/apply/new-application/new-application.component';
 import { PopupService } from '../../services/popup.service';
 import { SpinnerService } from '../../services/spinner.service';
@@ -28,13 +34,12 @@ import { LocationService } from '../../services/location/location.service';
 })
 export class AppDepotFormComponent implements OnInit {
   public form: FormGroup;
-  public appDepots: IDepot;
-  public applicationTypes: IApplicationType[];
+  public appDepots: IDepot[];
   public isSubmitted = false;
+  public states: IState[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<AppDepotFormComponent>,
@@ -43,14 +48,15 @@ export class AppDepotFormComponent implements OnInit {
     private locService: LocationService,
     private spinner: SpinnerService
   ) {
-    this.form = formBuilder.group({
-      serciveCharge: ['', [Validators.required]],
-      noaDepot: ['', [Validators.required]],
-      coqDepot: ['', [Validators.required]],
-      processingDepot: ['', [Validators.required]],
-    });
+    this.states = data.data.states;
   }
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      stateId: ['', [Validators.required]],
+      capacity: ['', [Validators.required]],
+    });
+
     if (this.data.data.action === 'EDIT') this.getAppDepot();
   }
 
@@ -59,18 +65,17 @@ export class AppDepotFormComponent implements OnInit {
   }
 
   getAppDepot() {
+    this.spinner.open();
     this.locService.getDepot(this.data.data.appDepotId).subscribe({
       next: (res) => {
         this.appDepots = res.data;
-        // this.form.get('noaDepot').setValue(this.appDepots.noaDepot);
-        // this.form.get('coqDepot').setValue(this.appDepots.coqDepot);
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (err) => {
-        this.snackBar.open(err?.message, null, {
-          panelClass: ['error'],
-        });
+      error: (e) => {
+        this.popUp.open(e?.message ?? e?.Message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -119,4 +124,10 @@ export class AppDepotFormComponent implements OnInit {
   }
 
   onClose() {}
+}
+
+interface DepotForm {
+  name: FormControl<string>;
+  stateId: FormControl<number>;
+  capacity: FormControl<number>;
 }

@@ -91,7 +91,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   public selection = new SelectionModel<any>(true, []);
 
   ngOnInit(): void {
-    debugger;
     this.headers = Object.values(this.keysMappedToHeaders);
     this.keys = Object.keys(this.keysMappedToHeaders);
 
