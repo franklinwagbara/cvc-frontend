@@ -18,6 +18,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
 import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { IApplication } from '../../interfaces/IApplication';
 
 interface IColumn {
   columnDef: string;
@@ -62,6 +63,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onAddData = new EventEmitter<any>();
   @Output() onDeleteData = new EventEmitter<any>();
   @Output() onEditData = new EventEmitter<any>();
+  @Output() onInitiateCoQ = new EventEmitter<any>();
   @Output() onViewData = new EventEmitter<any>();
   @Output() onGenerateRRR = new EventEmitter<any>();
   @Output() onConfirmPayment = new EventEmitter<any>();
@@ -118,9 +120,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'action_controls',
         header: 'Application Control',
-        cell: (item: Staff) => {
-          if (item.appCount > 0) return 'initiate_coq_control';
-          else return '';
+        cell: (item: IApplication) => {
+          return 'initiate_coq_control';
         },
       });
     }
@@ -228,6 +229,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   viewData(row) {
     this.onViewData.emit(row);
+  }
+
+  initiateCoQ(row: any) {
+    this.onInitiateCoQ.emit(row);
   }
 
   onSelectChange() {

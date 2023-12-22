@@ -8,11 +8,11 @@
           [title-color]="'purple'"
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="applications"
-          [EnableViewControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
           [EnableInitiateCoQControl]="true"
+          (onInitiateCoQ)="initiateCoq($event)"
         >
         </generic-table>
       </div>

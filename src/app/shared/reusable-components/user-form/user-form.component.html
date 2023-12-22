@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Add New Permit Stage Document</h1>
 <div mat-dialog-content class="w-[1000px] h-screen">
   <form [formGroup]="form" (ngSubmit)="createUser()">
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>User Information from ELPS</label>
       <ng-multiselect-dropdown
         [placeholder]="'Select User'"
@@ -13,7 +13,7 @@
       >
       </ng-multiselect-dropdown>
     </div>
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>First Name</label>
       <input
         name="firstName"
@@ -29,23 +29,24 @@
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>Last Name</label>
       <input
         name="lastName"
         formControlName="lastName"
         class="form-control"
         [attr.disabled]="true"
+        (focus)="form.controls['lastName'].markAsTouched"
       />
       <div
-        *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid"
-        class="alert alert-danger"
+        
+        class="invalid-feedback"
       >
         Last Name is required!
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>Email</label>
       <input
         name="email"
@@ -61,7 +62,7 @@
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>Phone Number</label>
       <input
         name="phone"
@@ -77,7 +78,7 @@
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>User Role</label>
       <select name="roleId" formControlName="roleId" class="form-control">
         <option *ngFor="let ut of roles" [ngValue]="ut.id">
@@ -92,7 +93,7 @@
       </div>
     </div>
 
-    <!-- <div class="fomr-group" style="margin-bottom: 10px">
+    <!-- <div class="form-group" style="margin-bottom: 10px">
       <label>Branch</label>
       <select name="branchId" formControlName="branchId" class="form-control">
         <option *ngFor="let br of branches" [ngValue]="br.id">
@@ -107,7 +108,7 @@
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>Office</label>
       <select name="officeId" formControlName="officeId" class="form-control">
         <option *ngFor="let ut of offices" [ngValue]="ut.id">
@@ -122,7 +123,7 @@
       </div>
     </div> -->
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="form-group" style="margin-bottom: 10px">
       <label>
         <input name="isActive" formControlName="isActive" type="checkbox" />
         Active?

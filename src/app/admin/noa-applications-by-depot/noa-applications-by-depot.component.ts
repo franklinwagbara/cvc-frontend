@@ -29,6 +29,39 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     eta: 'Estimated Time of Arrival'
   };
 
+  dummyApplications = [
+    {
+      applicationTypeId: '343982',
+      marketerName: 'AGIP',
+      imoNumber: '38493184392',
+      vesselName: 'Casablanca',
+      loadingPort: 'Jos',
+      dischargePort: 'Niger',
+      vesselTypeId: '893483',
+      eta: '2 weeks'
+    },
+    {
+      applicationTypeId: '343982',
+      marketerName: 'Conoil',
+      imoNumber: '38493184392',
+      vesselName: 'Casablanca',
+      loadingPort: 'Jos',
+      dischargePort: 'Niger',
+      vesselTypeId: '893483',
+      eta: '2 weeks'
+    },
+    {
+      applicationTypeId: '343982',
+      marketerName: 'Mobil',
+      imoNumber: '38493184392',
+      vesselName: 'Casablanca',
+      loadingPort: 'Lagos',
+      dischargePort: 'Abuja',
+      vesselTypeId: '893483',
+      eta: '2 weeks'
+    },
+  ]
+
   constructor(
     private applicationService: ApplicationService,
     private spinner: SpinnerService,
@@ -42,14 +75,14 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
     this.applicationService.viewApplicationByDepot(1).subscribe({
       next: (res) => {
-        if (res[0].success) this.applications = res[0].data;
-
+        if (res[0]?.success) this.applications = res[0].data;
         this.spinner.close();
         this.cdr.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
+          
           null,
           {
             panelClass: ['error'],
@@ -62,7 +95,17 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     });
   }
 
-  onInitiateCoq(event: any) {
+  initiateCoq(event: any) {
+    const row = event;
+    // Call the endpoint to create an empty coq
     this.router.navigate([`/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`]);
   }
 }
+
+// export interface CoQApplication {
+//   marketerName: string;
+//   imoNumber: string;
+//   vesselName: string;
+//   loadingPort: string; 
+//   dischargePort: string;
+// }
