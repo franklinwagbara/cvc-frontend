@@ -8,6 +8,7 @@ import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
 import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
 import { IAppFee } from 'src/app/company/apply/new-application/new-application.component';
+import { IRole } from '../interfaces/IRole';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -125,12 +126,46 @@ export class AdminService {
   }
 
   getRoles() {
-    return this.http.get<any>(`${environment.apiUrl}/Library/Roles`, {}).pipe(
+    // return this.http.get<any>(`${environment.apiUrl}/Library/Roles`, {}).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/Role/get-roles`).pipe(
       retry(this.num),
       map((res) => {
         return res;
       })
     );
+  }
+
+  addRoles(data: IRole) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Role/add-role`, data)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  editRoles(data: IRole) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Role/edit-role`, data)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  deleteRoles(id: any) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/Role/delete-role?id=${id}`)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
   }
 
   getCompanyResource(companyCode: string) {

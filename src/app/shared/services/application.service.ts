@@ -43,10 +43,14 @@ export class ApplicationService {
   }
 
   viewApplicationByDepot(depotId: number): Observable<any> {
-    return this.http.get<any>(`${API}/view-application-by-depot`, { params: { id: depotId } });
+    return this.http.get<any>(`${API}/view-application-by-depot`, {
+      params: { id: depotId },
+    });
   }
 
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {
-    return this.http.get<any>(`${API}/view-application-by-depot-officer`, { params: { id: officerId }});
+    return this.http.get<any>(`${API}/view-application-by-depot-officer`, {
+      params: { id: officerId },
+    });
   }
 }
