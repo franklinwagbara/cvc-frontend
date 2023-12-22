@@ -64,7 +64,6 @@ export class DocumentUploadComponent implements OnInit {
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
-
           return d;
         });
         this.documents$.next(this.documents);

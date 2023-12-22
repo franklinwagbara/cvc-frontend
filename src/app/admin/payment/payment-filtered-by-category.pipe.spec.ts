@@ -1,4 +1,4 @@
-import { ApplicationsFilteredByCategoryPipe } from './applications-filtered-by-category.pipe';
+import { ApplicationsFilteredByCategoryPipe } from './payment-filtered-by-category.pipe';
 
 describe('ApplicationsFilteredByCategoryPipe', () => {
   it('create an instance', () => {

@@ -1,0 +1,195 @@
+<div>
+  <div class="form-details-container">
+    <!-- Liquid Gas Form-->
+    <div class="form-wrapper">
+      <h1>Certificate of Quantity Application Form</h1>
+      <div class="p-4 w-[90%]">
+        <div class="grid grid-cols-1 md:grid-cols-4 w-full">
+          <h5 class="text-slate-400 col-span-1">FORM THREE:</h5>
+          <h5 class="text-slate-600 col-span-3 text-right">SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE</h5>
+        </div>
+
+        <ng-container *ngIf="vesselInfo">
+          <hr />
+          <div class="grid grid-cols-1 md:grid-cols-9 w-full gap-2">
+            <div class="col-span-3">
+              <p><span class="form-header-info">MARKETER/PDT OWNER</span>: {{ vesselInfo.owner }}</p>
+              <p><span class="form-header-info">MOTHER VESSEL</span>: {{ vesselInfo.companyName }}</p>
+            </div>
+            <div class="col-span-3">
+              <p><span class="form-header-info">PRODUCT</span>: {{ vesselInfo.product }}</p>
+              <p><span class="form-header-info">JETTY</span>: {{ vesselInfo.jetty }}</p>
+            </div>
+            <div class="col-span-3">
+              <p><span class="form-header-info">VESSEL NAME</span>: {{ vesselInfo.vesselName }}</p>
+              <p><span class="form-header-info">RECEIVING TERMINAL</span>: {{ vesselInfo.receivingTerminal}}</p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <hr class="w-full" />
+      <hr class="w-full" />
+
+      <form [formGroup]="liquidProductForm" class="form">
+        <div class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-4">
+          <h5 class="form-section col-span-9">Vessel Information</h5>
+          <div class="md:col-span-9 flex flex-col lg:flex-row gap-4 pr-2">
+            <mat-form-field>
+              <mat-label>Date of Vessel Arrival</mat-label>
+              <div class="flex">
+                <input
+                  matInput
+                  name="dateOfVesselArrival" 
+                  formControlName="dateOfVesselArrival" 
+                  [matDatepicker]="arrivalDatePicker"
+                  
+                >
+                <mat-datepicker-toggle matIconSuffix [for]="arrivalDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #arrivalDatePicker></mat-datepicker>
+              </div>
+              <mat-error *ngIf="liquidProductForm.controls['dateOfVesselArrival'].hasError('matDatepickerMax')">Date should be earlier</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field>
+              <mat-label>Date of Vessel Ullage</mat-label>
+              <div class="flex">
+                <input 
+                  matInput 
+                  name="dateOfVesselUllage" 
+                  formControlName="dateOfVesselUllage" 
+                  [matDatepicker]="ullageDatePicker" 
+                >
+                <mat-datepicker-toggle matIconSuffix [for]="ullageDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #ullageDatePicker></mat-datepicker>
+              </div>
+            </mat-form-field>
+    
+            <mat-form-field>
+              <mat-label>Date of Shore-Tank After Discharge</mat-label>
+              <div class="flex">
+                <input matInput name="dateOfSTAfterDischarge" formControlName="dateOfSTAfterDischarge" [matDatepicker]="shoreTankDatePicker">
+                <mat-datepicker-toggle matIconSuffix [for]="shoreTankDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #shoreTankDatePicker></mat-datepicker>
+              </div>
+            </mat-form-field>
+          </div>
+          <div class="md:col-span-3">
+            <label for="coq-liquid-product-gov">GOV(litres) <sup class="text-red-700">*</sup></label>
+            <input
+              type="number"
+              formControlName="gov"
+              id="coq-liquid-product-gov"
+              class="form-field"
+              required
+            />
+          </div>
+  
+          <div class="md:col-span-3">
+            <label for="coq-liquid-product-gsv">GSV(Litres) <sup class="text-red-700">*</sup></label>
+            <input
+              type="number"
+              name="gsv"
+              formControlName="gsv"
+              id="coq-liquid-product-gsv"
+              class="form-field"
+              required
+            />
+          </div>
+          <div class="md:col-span-3">
+            <label for="coq-liquid-product-mtvac">MT(VAC) <sup class="text-red-700">*</sup></label>
+            <input
+              type="number"
+              name="mt_VAC"
+              formControlName="mt_VAC"
+              id="coq-liquid-product-mtvac"
+              class="form-field"
+              required
+            />
+          </div>
+          <div class="md:col-span-3">
+            <label for="coq-liquid-product-mtvac">Expot-Depot Price<sup class="text-red-700">*</sup></label>
+            <input
+              type="number"
+              name="depotPrice"
+              formControlName="depotPrice"
+              id="coq-liquid-product-ex-depot-price"
+              class="form-field"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="w-[90%] mb-4 p-0">
+          <h5 class="form-section">Upload Documents</h5>
+          <div class="guidelines">
+            <h4>Please Note</h4>
+            <ul class="guidelines-list">
+              <li>
+                All documents listed below are required and must be uploaded.
+                Subsequently, other documents may be needed and will be added to this
+                list.
+              </li>
+              <li>
+                The Maximum file size allowed is <strong>20MB</strong> per document, any file size
+                greater than this value will not be uploaded.
+              </li>
+              <li>
+                Only <strong>JPEG</strong>, <strong>PNG</strong>, <strong>JPG</strong>, and <strong>PDF</strong> file types are allowed on this platform.
+              </li>
+            </ul>
+          </div>
+
+          <div id="coq_doc_upload_table_description" class="hidden">Document Upload Table</div>
+
+          <div class="table-container mat-elevation-z8">
+            <div class="table-title">REQUIRED DOCUMENTS</div>
+            <table mat-table [dataSource]="dataSource" aria-describedby="coq_doc_upload_table_description">
+              <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                <th mat-header-cell *matHeaderCellDef class="text-slate-700 text-[16px] text-center">{{ column | uppercase }}</th>
+                <td mat-cell *matCellDef="let element; let i = index;" class="text-center">
+                  <ng-container *ngIf="column === 'document'">{{ element[column] }}</ng-container>
+                  <ng-container *ngIf="column === 'action'">
+                    <button mat-button class="upload-btn" (click)="uploadDoc(i)">Upload</button>
+                    <input class="d-none file-input" type="file" accept=".png,.jpg,.jpeg,.pdf" (change)="onFileSelected($event, i)" />
+                  </ng-container>
+                  <ng-container *ngIf="column === 'progress'">
+                    <div class="flex flex-col items-center justify-center">
+                      <span *ngIf="uploadInfo[i].fileName" class="font-bold text-slate-500">{{ uploadInfo[i].fileName + ' (' + uploadInfo[i].fileSizeInKb + 'Kb)' }}</span>
+                      <mat-progress-bar 
+                        mode="determinate" 
+                        [value]="uploadInfo[i].percentProgress" 
+                        [ngClass]="{'in-progress': uploadInfo[i].success === null, 'success': uploadInfo[i].success, 'failed': !uploadInfo[i].success}"
+                      >
+                      </mat-progress-bar>
+                    </div>
+                  </ng-container>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns" class="rounded-md shadow-lg"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div> 
+
+          <div *ngIf="liquidProductForm.valid && hasUploadedAllRequiredDocs" class="md:col-span-9 text-right mt-8">
+            <button
+              type="submit"
+              (click)="1"
+              class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+
+        <ng-template #noRequiredDocsWarn>
+          <div class="bg-yellow-100 w-[90%] border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">No Required Documents Configured:&nbsp;&nbsp;</strong>
+            <span class="block sm:inline">You may not proceed with this application.</span>
+          </div>
+        </ng-template>
+      </form>
+        
+    </div>
+  </div>
+</div>

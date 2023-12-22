@@ -15,5 +15,9 @@
     "[typescript]": {
         "editor.tabSize": 2,
         "editor.detectIndentation": false
+    },
+    "[json]": {
+        "editor.tabSize": 2,
+        "editor.detectIndentation": false
     }
 }

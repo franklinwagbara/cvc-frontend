@@ -47,10 +47,12 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
 import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-form.component';
 import { FirstNPipe } from './pipes/first-n.pipe';
 import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
-import { ViewApplicationInFullComponent } from './view-application-in-full/view-application-in-full.component';
+import { ViewApplicationInFullComponent } from './reusable-components/view-application-in-full/view-application-in-full.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-depot-form.component';
+import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -80,6 +82,7 @@ import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-
     FormatTimeAmPmPipe,
     ViewApplicationInFullComponent,
     AppDepotFormComponent,
+    RoleFormComponent,
   ],
   imports: [
     CommonModule,
@@ -100,6 +103,7 @@ import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-
     MatProgressBarModule,
     MatDatepickerModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     MatNativeDateModule,
     MatSelectModule,
     NgxMaterialTimepickerModule,

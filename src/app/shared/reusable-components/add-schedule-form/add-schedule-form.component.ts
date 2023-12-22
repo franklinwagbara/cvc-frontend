@@ -168,7 +168,7 @@ export class AddScheduleFormComponent implements OnInit {
 
     const model = {
       id: 0,
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       scheduleType: this.form.controls['typeOfAppoinment'].value,
       scheduledDate: this.form.controls['selectedDate'].value,
       scheduleMessage: this.form.controls['comment'].value,
@@ -220,7 +220,7 @@ export class AddScheduleFormComponent implements OnInit {
 
     const model = {
       id: this.schedule.id,
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       scheduleType: this.form.controls['typeOfAppoinment'].value,
       scheduledDate: this.form.controls['selectedDate'].value,
       scheduleMessage: this.form.controls['comment'].value,
@@ -275,7 +275,7 @@ export class AddScheduleFormComponent implements OnInit {
 
     const model = {
       id: this.schedule.id,
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       scheduleType: this.form.controls['typeOfAppoinment'].value,
       scheduledDate: this.form.controls['selectedDate'].value,
       scheduleMessage: this.form.controls['comment'].value,
