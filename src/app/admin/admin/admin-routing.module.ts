@@ -14,6 +14,7 @@ import { MyDeskComponent } from '../desk/my-desk/my-desk.component';
 import { ViewApplicationComponent } from '../application/view-application/view-application.component';
 import { LicenceComponent } from '../licence/licence.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
+import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';

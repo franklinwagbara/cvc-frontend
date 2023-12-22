@@ -16,6 +16,7 @@ import {
   IFacilityType,
 } from 'src/app/company/apply/new-application/new-application.component';
 import { PermitStage } from '../modules-setting/modules-setting.component';
+import { ILocation } from '../all-staff/all-staff.component';
 
 @Component({
   selector: 'app-app-process',
@@ -28,6 +29,7 @@ export class AppProcessComponent implements OnInit {
   public branches: IBranch[];
   public roles: IRole[];
   public actions: string[];
+  public locations: ILocation[];
   public statuses: string[];
   public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
@@ -70,6 +72,7 @@ export class AppProcessComponent implements OnInit {
       this.libraryService.getAppStatuses(),
       this.libraryService.getFacilityTypes(),
       this.libraryService.getApplicationTypes(),
+      this.libraryService.getAllLocations(),
       // this.adminHttpService.getBranches(),
       // this.adminHttpService.getPhaseCategories(),
     ]).subscribe({
@@ -87,6 +90,8 @@ export class AppProcessComponent implements OnInit {
         if (res[4].success) this.facilityTypes = res[4].data;
 
         if (res[5].success) this.applicationTypes = res[5].data;
+
+        if (res[6].success) this.locations = res[6].data;
 
         // if (res[4].success) this.permitStages = res[4].data.data.permitStages;
         // if (res[1].success) this.branches = res[1].data.data;
@@ -113,11 +118,13 @@ export class AppProcessComponent implements OnInit {
     const operationConfiguration = {
       applicationProcesses: {
         data: {
+          editMode: false,
           permitStages: this.permitStages,
           branches: this.branches,
           roles: this.roles,
           actions: this.actions,
           statuses: this.statuses,
+          locations: this.locations,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
         },
@@ -205,11 +212,13 @@ export class AppProcessComponent implements OnInit {
     const operationConfiguration = {
       applicationProcesses: {
         data: {
+          editMode: true,
           permitStages: this.permitStages,
           branches: this.branches,
           roles: this.roles,
           actions: this.actions,
           statuses: this.statuses,
+          locations: this.locations,
           applicationProcess: event,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,

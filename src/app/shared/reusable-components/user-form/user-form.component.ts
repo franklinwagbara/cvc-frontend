@@ -15,7 +15,10 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import {
+  ILocation,
+  Staff,
+} from 'src/app/admin/settings/all-staff/all-staff.component';
 import { FieldOffice } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
@@ -33,6 +36,7 @@ export class UserFormComponent implements OnInit {
   public offices: FieldOffice[];
   public branches: IBranch[];
   public roles: any;
+  public locations: ILocation[];
   public currentValue: Staff | null;
   public usersFromElps: StaffWithName[];
   public file: File | null = null;
@@ -53,6 +57,7 @@ export class UserFormComponent implements OnInit {
     this.offices = data.data.offices;
     this.branches = data.data.branches;
     this.roles = data.data.roles;
+    this.locations = data.data.locations;
     this.usersFromElps = data.data.staffList;
     this.currentValue = data.data?.currentValue;
     let currentUserId: string;
@@ -60,11 +65,12 @@ export class UserFormComponent implements OnInit {
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
     this.usersFromElps = this.usersFromElps?.map((user) => {
       user.name = `${user?.lastName}, ${user?.firstName} (${user?.email})`;
-
       if (this.currentValue && user.email === this.currentValue.email)
         currentUserId = user.id;
       return user;
     });
+
+    console.log(data);
 
     this.selectedUserFromElps = this.usersFromElps[0];
 
@@ -79,20 +85,24 @@ export class UserFormComponent implements OnInit {
       ],
       phone: [this.currentValue ? this.currentValue.phoneNo : ''],
       userType: [this.currentValue ? this.currentValue.userType : ''],
-      roleId: [
-        this.currentValue ? this.currentValue.role : '',
-        Validators.required,
-      ],
+      roleId: ['', Validators.required],
+
+      locationId: [this.currentValue ? this.currentValue.locationId : ''],
+
+      officeId: [this.currentValue ? this.currentValue.officeId : ''],
+
       // officeId: [this.currentValue ? this.currentValue.officeId : ''],
       // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
         this.currentValue ? this.currentValue.status : '',
         Validators.required,
       ],
-      signatureImage: [
-        this.currentValue ? this.currentValue.signatureImage : '',
-      ],
+      // signatureImage: [
+      //   this.currentValue ? this.currentValue.signatureImage : '',
+      // ],
     });
+    // console.log(this.currentValue);
+    // this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
@@ -109,10 +119,8 @@ export class UserFormComponent implements OnInit {
   }
 
   createUser() {
-    this.progressBar.open();
-
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
-
+    this.progressBar.open();
     const formDataToSubmit = new FormData();
 
     const formKeys = ['elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
@@ -133,7 +141,7 @@ export class UserFormComponent implements OnInit {
       },
       error: (error: unknown) => {
         this.snackBar.open(
-          'Operation failed! Could not create the Staff account.',
+          'Operation failed! Could not create the Staff account.' + error,
           null,
           {
             panelClass: ['error'],
@@ -220,6 +228,8 @@ export class UserFormComponent implements OnInit {
     this.form.controls['email'].setValue(user.email);
     this.form.controls['phone'].setValue(user.phoneNo);
     this.form.controls['userType'].setValue('Staff');
+    // this.form.controls['locationId'].setValue(user.locationId);
+    // this.form.controls['locationId'].setValue(user.locationId);
   }
 }
 

@@ -170,7 +170,7 @@ export class NewApplicationComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
 
-        this.router.navigate(['paymentsum', appId]);
+        this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
@@ -386,6 +386,16 @@ export interface IProduct {
 export interface IApplicationType {
   id: number;
   name: string;
+}
+
+export interface IAppFee {
+  id: number;
+  applicationTypeId: number;
+  applicationFee: number;
+  processingFee: number;
+  serciveCharge: number;
+  noaFee: number;
+  coqFee: number;
 }
 
 export interface IApplicationFormDTO {

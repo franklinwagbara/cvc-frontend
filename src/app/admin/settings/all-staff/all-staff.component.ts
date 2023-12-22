@@ -10,6 +10,7 @@ import { IBranch } from 'src/app/shared/interfaces/IBranch';
 import { MoveApplicationFormComponent } from 'src/app/shared/reusable-components/move-application-form/move-application-form.component';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { FieldOffice } from '../field-zonal-office/field-zonal-office.component';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-all-staff',
@@ -23,6 +24,7 @@ export class AllStaffComponent implements OnInit {
   public staffList: any;
   public offices: FieldOffice[];
   public branches: IBranch[];
+  public locations: ILocation[];
 
   tableTitles = {
     users: 'User Settings',
@@ -45,7 +47,8 @@ export class AllStaffComponent implements OnInit {
     private adminHttpService: AdminService,
     public dialog: MatDialog,
     private progressBar: ProgressBarService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private libService: LibaryService
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +59,8 @@ export class AllStaffComponent implements OnInit {
       this.adminHttpService.getAllStaff(),
       this.adminHttpService.getElpsStaffList(),
       this.adminHttpService.getRoles(),
-      // this.adminHttpService.getOffices(),
+      this.libService.getAllLocations(),
+      this.libService.getAllOffices(),
       // this.adminHttpService.getBranches(),
     ]).subscribe({
       next: (res) => {
@@ -66,8 +70,11 @@ export class AllStaffComponent implements OnInit {
         if (res[1].success) {
           this.staffList = res[1].data;
         }
-
         if (res[2].success) this.roles = res[2].data;
+
+        if (res[3].success) this.locations = res[3].data;
+
+        if (res[4].success) this.offices = res[4].data;
 
         // if (res[3].success) this.offices = res[3].data.data;
 
@@ -98,8 +105,8 @@ export class AllStaffComponent implements OnInit {
           users: this.users,
           staffList: this.staffList,
           roles: this.roles,
-          offices: this.offices,
           branches: this.branches,
+          locations: this.locations,
         },
         form: UserFormComponent,
       },
@@ -172,6 +179,13 @@ export class AllStaffComponent implements OnInit {
             .sort((a, b) => a.length - b.length);
 
           if (type === 'users') this.users = responses[0];
+          this.progressBar.open();
+
+          this.adminHttpService.getAllStaff().subscribe((res) => {
+            this.users = res.data;
+
+            this.progressBar.close();
+          });
         }
 
         this.progressBar.close();
@@ -227,6 +241,7 @@ export class AllStaffComponent implements OnInit {
           roles: this.roles,
           offices: this.offices,
           branches: this.branches,
+          locations: this.locations,
           currentValue: event,
         },
         form: UserFormComponent,
@@ -259,6 +274,7 @@ export class Staff {
   phoneNo: string;
   role: string;
   office: string;
+  locationId: number;
   status: boolean;
   appCount: number;
   branchId: any;
@@ -279,10 +295,17 @@ export class Staff {
     this.status = item.status;
     this.appCount = item.appCount;
     this.office = item.office;
+    this.locationId = item.locationId;
     this.branchId = item.branchId;
     this.officeId = item.officeId;
     this.userType = item.userType;
     this.elpsId = item.elpsId;
     this.signatureImage = item.signatureImage;
   }
+}
+
+export class ILocation {
+  id: number;
+  name: string;
+  statedId: number;
 }

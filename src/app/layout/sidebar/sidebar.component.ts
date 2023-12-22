@@ -234,6 +234,9 @@ const ROUTES: RouteInfo[] = [
         title: 'FIELD OFFICER SETUP',
         url: '/admin/field-officer-setting'
       }
+        title: 'APPLICATION FEE',
+        url: '/admin/app-fees',
+      },
     ],
   },
 ];

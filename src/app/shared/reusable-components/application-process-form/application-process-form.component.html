@@ -1,80 +1,6 @@
 <h1 mat-dialog-title>Add New Application Process</h1>
 <div mat-dialog-content class="min-w-[500px]">
   <form [formGroup]="form" (ngSubmit)="createProcessFlow()">
-    <!-- <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Permit Stage</label>
-      <select
-        name="permitStageId"
-        formControlName="permitStageId"
-        class="form-control"
-      >
-        <option value="none" selected disabled hidden>
-          --Select from options --
-        </option>
-        <option
-          *ngFor="let permitStage of permitStages"
-          [ngValue]="permitStage.id"
-        >
-          {{ permitStage.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="
-          form.get('permitStageId')?.touched &&
-          form.get('permitStageId')?.invalid
-        "
-        class="alert alert-danger"
-      >
-        Permit Stage is required!
-      </div>
-    </div>
-
-    <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Branch</label>
-      <select name="branchId" formControlName="branchId" class="form-control">
-        <option value="none" selected disabled hidden>
-          --Select from options --
-        </option>
-        <option *ngFor="let branch of branches" [ngValue]="branch.id">
-          {{ branch.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="form.get('branchId')?.touched && form.get('branchId')?.invalid"
-        class="alert alert-danger"
-      >
-        Application Type is required!
-      </div>
-    </div> -->
-
-    <!-- <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Facility Type</label>
-      <select
-        name="facilityTypeId"
-        formControlName="facilityTypeId"
-        class="form-control"
-      >
-        <option value="none" selected disabled hidden>
-          --Select from options --
-        </option>
-        <option
-          *ngFor="let facilityType of facilityTypes"
-          [ngValue]="facilityType.id"
-        >
-          {{ facilityType.name }}
-        </option>
-      </select>
-      <div
-        *ngIf="
-          form.get('facilityTypeId')?.touched &&
-          form.get('facilityTypeId')?.invalid
-        "
-        class="alert alert-danger"
-      >
-        (Facility Type) is required!
-      </div>
-    </div> -->
-
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Vessel Type</label>
       <select
@@ -133,8 +59,8 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Triggered By (Role)</label>
       <select
-        name="triggeredByRole"
-        formControlName="triggeredByRole"
+        name="triggeredByRoleId"
+        formControlName="triggeredByRoleId"
         class="form-control"
       >
         <option value="none" selected disabled hidden>
@@ -146,8 +72,8 @@
       </select>
       <div
         *ngIf="
-          form.get('triggeredByRole')?.touched &&
-          form.get('triggeredByRole')?.invalid
+          form.get('triggeredByRoleId')?.touched &&
+          form.get('triggeredByRoleId')?.invalid
         "
         class="alert alert-danger"
       >
@@ -158,8 +84,8 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Target (Role)</label>
       <select
-        name="targetRole"
-        formControlName="targetRole"
+        name="targetRoleId"
+        formControlName="targetRoleId"
         class="form-control"
       >
         <option value="none" selected disabled hidden>
@@ -171,7 +97,7 @@
       </select>
       <div
         *ngIf="
-          form.get('targetRole')?.touched && form.get('targetRole')?.invalid
+          form.get('targetRoleId')?.touched && form.get('targetRoleId')?.invalid
         "
         class="alert alert-danger"
       >
@@ -182,20 +108,21 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Trigger Location</label>
       <select
-        name="fromLocation"
-        formControlName="fromLocation"
+        name="fromLocationId"
+        formControlName="fromLocationId"
         class="form-control"
       >
         <option value="none" selected disabled hidden>
           --Select from options --
         </option>
-        <option *ngFor="let role of roles" [ngValue]="role.id">
-          {{ role.name }}
+        <option *ngFor="let location of locations" [ngValue]="location.id">
+          {{ location.name }}
         </option>
       </select>
       <div
         *ngIf="
-          form.get('fromLocation')?.touched && form.get('fromLocation')?.invalid
+          form.get('fromLocationId')?.touched &&
+          form.get('fromLocationId')?.invalid
         "
         class="alert alert-danger"
       >
@@ -206,20 +133,20 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Target Location</label>
       <select
-        name="toLocation"
-        formControlName="toLocation"
+        name="toLocationId"
+        formControlName="toLocationId"
         class="form-control"
       >
         <option value="none" selected disabled hidden>
           --Select from options --
         </option>
-        <option *ngFor="let role of roles" [ngValue]="role.id">
-          {{ role.name }}
+        <option *ngFor="let location of locations" [ngValue]="location.id">
+          {{ location.name }}
         </option>
       </select>
       <div
         *ngIf="
-          form.get('toLocation')?.touched && form.get('toLocation')?.invalid
+          form.get('toLocationId')?.touched && form.get('toLocationId')?.invalid
         "
         class="alert alert-danger"
       >
@@ -308,10 +235,20 @@
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="onClose()">Close</button>
   <button
+    *ngIf="!editMode"
     mat-raised-button
     (click)="createProcessFlow()"
     [disabled]="form.invalid"
   >
     Create
+  </button>
+
+  <button
+    *ngIf="editMode"
+    mat-raised-button
+    (click)="editProcessFlow()"
+    [disabled]="form.invalid"
+  >
+    Edit
   </button>
 </div>
