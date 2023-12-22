@@ -7,7 +7,7 @@
 }
 
 .application-details h1 {
-  @apply text-blue-600 my-8;
+  @apply text-[#3e4e50] my-8;
 }
 
 hr {

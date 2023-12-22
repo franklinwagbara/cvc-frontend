@@ -77,7 +77,7 @@ export class SendBackFormComponent implements OnInit {
     this.progressBarService.open();
 
     const model = {
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       action: ApplicationActionType.Reject,
       comment: this.form.controls['comment'].value,
       // delegatedUserId: '',

@@ -19,10 +19,15 @@ import { ApplicationReportComponent } from './application-report/application-rep
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
-import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
+//import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
 import { PaymentComponent } from '../payment/payment.component';
 import { ViewPaymentComponent } from '../payment/view-payment/view-payment.component';
 import { RolesComponent } from '../settings/roles/roles.component';
+import { ViewApplicationInFullComponent } from 'src/app/shared/reusable-components/view-application-in-full/view-application-in-full.component';
+import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
+import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
+import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
+import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -36,6 +41,7 @@ const routes: Routes = [
   { path: 'branch-setting', component: BranchSettingComponent },
   { path: 'phasedocuments', component: PhasedocumentsComponent },
   { path: 'application-process', component: AppProcessComponent },
+  { path: 'field-officer-setting', component: FieldOfficerSettingComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
   {
@@ -51,6 +57,18 @@ const routes: Routes = [
   { path: 'payments', component: PaymentComponent },
   { path: 'payment/:id', component: ViewPaymentComponent },
   { path: 'roles', component: RolesComponent },
+  {
+    path: 'noa-applications-by-depot',
+    component: NoaApplicationsByDepotComponent,
+  },
+  {
+    path: 'certificate-of-quantity/all-applications-by-depot',
+    component: CoqApplicationsByDepotComponent,
+  },
+  {
+    path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
+    component: CoqApplicationFormComponent,
+  },
 ];
 
 @NgModule({

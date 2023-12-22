@@ -13,11 +13,9 @@ export class ProgressBarService {
   public open() {
     // ProgressBarService.open = !ProgressBarService.open;
     this.progressBar.next(true);
-    console.log('toggling progress bar');
   }
 
   public close() {
     this.progressBar.next(false);
-    console.log('toggling progress bar');
   }
 }

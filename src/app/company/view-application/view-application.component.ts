@@ -30,7 +30,8 @@ export class ViewApplicationComponent implements OnInit {
   public appSource: AppSource;
   public licence: any;
   public currentUser: any;
-  util: Util
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -207,12 +208,6 @@ export class ViewApplicationComponent implements OnInit {
       this.progressBar.open();
 
       this.getApplication();
-    });
-  }
-
-  viewApplicationInFull() {
-    this.router.navigate([`/company/view-application-in-full/${this.appId}`], {
-      queryParams: { id: this.appId, appSource: this.appSource },
     });
   }
 }
