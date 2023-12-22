@@ -316,11 +316,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = false;
       this.menuItems = this.menuItems.map((item) => {
-        if (item.active) {
-          let isCurrentRoute = item.subRoutes.some((val) => val.url === this.router.url);
-          if (!isCurrentRoute) {
-            return { ...item, active: false, subMenuActive: false };
-          }
+        if (item.active) { 
           return { ...item, subMenuActive: true };
         }
         return item;
