@@ -10,7 +10,6 @@
           [table_content]="jettyData"
           [noTitle]="true"
           [table_controls_horizontal]="true"
-          [noDeleteButton]="!jettyData?.length"
           (onAddData)="addData()"
           (onDeleteData)="deleteData($event)"
           (onEditData)="editData($event)"
