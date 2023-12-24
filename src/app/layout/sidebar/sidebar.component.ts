@@ -85,8 +85,8 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'COQ Applications',
-        url: '/admin/certificate-of-quantity/all-applications-by-depot'
-      }
+        url: '/admin/certificate-of-quantity/all-applications-by-depot',
+      },
     ],
   },
   {
@@ -153,7 +153,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'ALL PAYMENTS',
-        url: '#',
+        url: '/admin/payments',
       },
       {
         id: 2,
@@ -205,6 +205,11 @@ const ROUTES: RouteInfo[] = [
         url: '/admin/all-staff',
       },
       {
+        id: 8,
+        title: 'ROLE SETTINGS',
+        url: '/admin/roles',
+      },
+      {
         id: 2,
         title: 'MODULE SETTINGS',
         url: '/admin/modules-setting',
@@ -232,7 +237,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 7,
         title: 'FIELD OFFICER SETUP',
-        url: '/admin/field-officer-setting'
+        url: '/admin/field-officer-setting',
       },
       {
         id: 8,
@@ -269,22 +274,22 @@ export class SidebarComponent implements OnInit, OnChanges {
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      let foundActiveNav = false;
-      for (let item of this.menuItems) {
-        for (let subItem of item.subRoutes) {
-          if (this.router.url === subItem.url) {
-            item.active = true;
-            item.subMenuActive = true;
-            foundActiveNav = true;
-            break;
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        let foundActiveNav = false;
+        for (let item of this.menuItems) {
+          for (let subItem of item.subRoutes) {
+            if (this.router.url === subItem.url) {
+              item.active = true;
+              item.subMenuActive = true;
+              foundActiveNav = true;
+              break;
+            }
           }
+          if (foundActiveNav) break;
         }
-        if (foundActiveNav) break;
-      }
-    })
+      });
   }
 
   ngOnInit() {
@@ -295,14 +300,12 @@ export class SidebarComponent implements OnInit, OnChanges {
           return { ...item, subMenuActive: !val };
         }
         return item;
-      })
-    })
+      });
+    });
     this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   setActiveNavItem(navItem: string) {
     this.activeNavItem = navItem;
@@ -312,12 +315,14 @@ export class SidebarComponent implements OnInit, OnChanges {
         menu.subMenuActive = true;
       }
       if (menu.title !== navItem) {
-        let subMenuActive = menu.subRoutes.some((val) => val.url === this.router.url);
+        let subMenuActive = menu.subRoutes.some(
+          (val) => val.url === this.router.url
+        );
         menu.active = subMenuActive;
         menu.subMenuActive = subMenuActive;
       }
       return menu;
-    })
+    });
     this.menuItems = [...this.menuItems];
   }
 
@@ -326,11 +331,11 @@ export class SidebarComponent implements OnInit, OnChanges {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = false;
       this.menuItems = this.menuItems.map((item) => {
-        if (item.active) { 
+        if (item.active) {
           return { ...item, subMenuActive: true };
         }
         return item;
-      })
+      });
       this.pageManagerService.adminSidebarHover.emit(true);
     }
   }
@@ -342,14 +347,16 @@ export class SidebarComponent implements OnInit, OnChanges {
       // Collapse active nav item
       this.menuItems = this.menuItems.map((item) => {
         if (item.active) {
-          let isCurrentRoute = item.subRoutes.some((val) => val.url === this.router.url);
+          let isCurrentRoute = item.subRoutes.some(
+            (val) => val.url === this.router.url
+          );
           if (!isCurrentRoute) {
             return { ...item, active: false, subMenuActive: false };
           }
           return { ...item, subMenuActive: false };
         }
         return item;
-      })
+      });
       this.pageManagerService.adminSidebarHover.emit(false);
     }
   }

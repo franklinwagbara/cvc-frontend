@@ -50,6 +50,8 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 import { ViewApplicationInFullComponent } from './reusable-components/view-application-in-full/view-application-in-full.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,7 @@ import { MatIconModule } from '@angular/material/icon';
     FirstNPipe,
     FormatTimeAmPmPipe,
     ViewApplicationInFullComponent,
+    RoleFormComponent,
   ],
   imports: [
     CommonModule,
@@ -98,6 +101,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressBarModule,
     MatDatepickerModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     MatNativeDateModule,
     MatSelectModule,
     NgxMaterialTimepickerModule,
