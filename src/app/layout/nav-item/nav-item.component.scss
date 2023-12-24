@@ -22,8 +22,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  overflow: auto;
-  @apply flex flex-col bg-yellow-100 text-black pt-6;
+  @apply flex flex-col bg-yellow-100 text-black pt-6 overflow-auto;
 }
 
 .nav-sub-menu p {
@@ -37,12 +36,11 @@ a {
 
 .nav-item .arrow-down,
 .nav-sub-menu {
-  max-height: 0px;
-  transition: max-height 1.15s ease-in-out;
+  transition: height 1.15s ease-in-out;
   margin-left: 0px;
   margin-top: -25px;
   overflow: hidden;
-  @apply invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+  @apply min-h-fit invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
 }
 
 .arrow {
@@ -55,7 +53,7 @@ a {
   }
 
   & + .nav-sub-menu {
-    @apply max-h-[500px] visible opacity-100 transition-all ease-in-out delay-150 duration-700;
+    @apply min-h-fit visible opacity-100 transition-all ease-in-out delay-150 duration-700;
   }
 }
 
