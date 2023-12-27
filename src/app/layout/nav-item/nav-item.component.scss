@@ -22,7 +22,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply flex flex-col bg-yellow-100 text-black pt-6 overflow-auto;
+  @apply max-h-[400px] overflow-y-auto flex flex-col bg-yellow-100 text-black pt-6;
 }
 
 .nav-sub-menu p {
@@ -40,7 +40,7 @@ a {
   margin-left: 0px;
   margin-top: -25px;
   overflow: hidden;
-  @apply min-h-fit invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+  @apply max-h-[400px] overflow-y-auto invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
 }
 
 .arrow {
@@ -53,7 +53,7 @@ a {
   }
 
   & + .nav-sub-menu {
-    @apply min-h-fit visible opacity-100 transition-all ease-in-out delay-150 duration-700;
+    @apply visible opacity-100 transition-all ease-in-out delay-150 duration-700;
   }
 }
 
@@ -73,7 +73,23 @@ a {
 /**Toggle nav sub menu css ends here */
 
 .active-sub-menu-item {
-  background-color: rgb(161, 150, 29) !important;
-  color: white;
-  font-weight: bold !important;
+  @apply font-bold text-white bg-[#a1961d];
+  & p {
+    @apply bg-yellow-300;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #EDF5F9;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  background: #7F7FD5;  /* fallback for old browsers */
+  background: linear-gradient(to right, #3c1053e9, #ad5389d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 4px;
 }

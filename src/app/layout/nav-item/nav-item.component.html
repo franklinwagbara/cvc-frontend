@@ -1,66 +1,64 @@
 <div>
 
-  <i class="test"></i>
-  
-  <div
-    class="nav-item nav-item-active"
-    [ngClass]="{
-      'nav-item-active': active,
-      'collapse-submenu': !isSubMenuActive,
-      'unCollapse-submenu': isSubMenuActive
-    }"
-    (click)="setActiveNavItem(title)"
-  >
-    <div class="nav-item-control">
-      <svg class="w-[23px] h-[23px] fill-red-400">
-        <use attr.xlink:href="{{ iconN }}"></use>
-      </svg>
-      <span
-        class="flex items-center"
-        [ngClass]="{
-          hide: isSidebarCollapsed,
-          show: !isSidebarCollapsed
-        }"
+<div
+  class="nav-item nav-item-active"
+  [ngClass]="{
+    'nav-item-active': active,
+    'collapse-submenu': !isSubMenuActive,
+    'unCollapse-submenu': isSubMenuActive
+  }"
+  (click)="setActiveNavItem(title)"
+>
+  <div class="nav-item-control">
+    <svg class="w-[23px] h-[23px] fill-red-400">
+      <use attr.xlink:href="{{ iconN }}"></use>
+    </svg>
+    <span
+      class="flex items-center"
+      [ngClass]="{
+        hide: isSidebarCollapsed,
+        show: !isSidebarCollapsed
+      }"
+    >
+      <span>{{ title }}</span>
+
+      <svg
+        class="arrow"
+        *ngIf="!isSubMenuActive"
+        xmlns="http://www.w3.org/2000/svg"
+        id="Outline"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
       >
-        <span>{{ title }}</span>
-  
-        <svg
-          class="arrow"
-          *ngIf="!isSubMenuActive"
-          xmlns="http://www.w3.org/2000/svg"
-          id="Outline"
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-        >
-          <path
-            d="M23.71,16.29,15.54,8.12a5,5,0,0,0-7.08,0L.29,16.29a1,1,0,0,0,1.42,1.42L9.88,9.54a3,3,0,0,1,4.24,0l8.17,8.17a1,1,0,0,0,1.42,0A1,1,0,0,0,23.71,16.29Z"
-          />
-        </svg>
-        <svg
-          class="arrow"
-          *ngIf="isSubMenuActive"
-          xmlns="http://www.w3.org/2000/svg"
-          id="Layer_1"
-          data-name="Layer 1"
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-        >
-          <path
-            d="M22.586,5.929l-9.879,9.879a1.021,1.021,0,0,1-1.414,0L1.42,5.934.006,7.348l9.873,9.874a3.075,3.075,0,0,0,4.243,0L24,7.343Z"
-          />
-        </svg>
-      </span>
-    </div>
+        <path
+          d="M23.71,16.29,15.54,8.12a5,5,0,0,0-7.08,0L.29,16.29a1,1,0,0,0,1.42,1.42L9.88,9.54a3,3,0,0,1,4.24,0l8.17,8.17a1,1,0,0,0,1.42,0A1,1,0,0,0,23.71,16.29Z"
+        />
+      </svg>
+      <svg
+        class="arrow"
+        *ngIf="isSubMenuActive"
+        xmlns="http://www.w3.org/2000/svg"
+        id="Layer_1"
+        data-name="Layer 1"
+        viewBox="0 0 24 24"
+        width="16"
+        height="16"
+      >
+        <path
+          d="M22.586,5.929l-9.879,9.879a1.021,1.021,0,0,1-1.414,0L1.42,5.934.006,7.348l9.873,9.874a3.075,3.075,0,0,0,4.243,0L24,7.343Z"
+        />
+      </svg>
+    </span>
   </div>
   <ul class="nav-sub-menu">
-    <li *ngFor="let item of subItems">
+    <li class="nav-sub-menu-list" *ngFor="let item of subItems" [ngClass]="{'nav-item-active': rla.isActive}">
       <a
         [routerLink]="item.url"
         routerLinkActive="active-sub-menu-item"
         [routerLinkActiveOptions]="{exact: true}"
         (click)="setActiveSubNavItem(item.id)"
+        #rla="routerLinkActive"
         ><p >
           {{ item.title }}
         </p></a

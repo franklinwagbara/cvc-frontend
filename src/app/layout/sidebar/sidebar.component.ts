@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
+import { decodeUser } from 'src/app/helpers/tokenUtils';
 import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
@@ -293,6 +294,13 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // Show CoQ nav only to Staffs in Field Offices
+    const currentUser = decodeUser();
+    if (currentUser && (!currentUser?.location || currentUser.location !== 'FO')) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
+    }
+    
+    this.menuItems = this.menuItems
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {
@@ -327,7 +335,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   @HostListener('mouseover', ['$event'])
-  onMouseover(event: Event) {
+  onMouseover(event: MouseEvent) {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = false;
       this.menuItems = this.menuItems.map((item) => {
@@ -341,7 +349,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   @HostListener('mouseleave', ['$event'])
-  onMouseLeave(event: Event) {
+  onMouseLeave(event: MouseEvent) {
     if (!this.pageManagerService.adminSidebarMenuOpen) {
       this.isCollapsed = true;
       // Collapse active nav item
