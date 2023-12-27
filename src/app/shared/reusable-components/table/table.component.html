@@ -80,6 +80,7 @@
             {{
               column.cell(row) === "undefined" ||
               column.cell(row) === "edit_control" ||
+              column.cell(row) === "initiate_coq_control" ||
               column.cell(row) === "view_control" ||
               column.cell(row) === "view_licence_control" ||
               column.cell(row) === "view_schedule_control" ||
@@ -120,11 +121,9 @@
               </button>
               <button
                 mat-flat-button
-                color="blue"
+                color="accent"
                 class="view-button"
-                *ngIf="
-                  column.header === 'Application Control' &&
-                  column.cell(row) === 'initiate_coq_control'"
+                *ngIf="column.cell(row) === 'initiate_coq_control'"
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ

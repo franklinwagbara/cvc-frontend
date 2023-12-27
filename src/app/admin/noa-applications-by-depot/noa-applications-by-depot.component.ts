@@ -19,55 +19,21 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   };
 
   public applicationKeysMappedToHeaders = {
-    applicationTypeId: 'Application Type Id',
+    reference: 'Reference',
     marketerName: 'Marketer Name',
     imoNumber: 'IMO Number',
     vesselName: 'Vessel Name',
     loadingPort: 'Loading Port',
-    dischargePort: 'Discharge Port',
-    vesselTypeId: 'Vessel Type Id',
-    eta: 'Estimated Time of Arrival'
+    jetty: 'Jetty',
+    motherVessel: 'Mother Vessel',
   };
-
-  dummyApplications = [
-    {
-      applicationTypeId: '343982',
-      marketerName: 'AGIP',
-      imoNumber: '38493184392',
-      vesselName: 'Casablanca',
-      loadingPort: 'Jos',
-      dischargePort: 'Niger',
-      vesselTypeId: '893483',
-      eta: '2 weeks'
-    },
-    {
-      applicationTypeId: '343982',
-      marketerName: 'Conoil',
-      imoNumber: '38493184392',
-      vesselName: 'Casablanca',
-      loadingPort: 'Jos',
-      dischargePort: 'Niger',
-      vesselTypeId: '893483',
-      eta: '2 weeks'
-    },
-    {
-      applicationTypeId: '343982',
-      marketerName: 'Mobil',
-      imoNumber: '38493184392',
-      vesselName: 'Casablanca',
-      loadingPort: 'Lagos',
-      dischargePort: 'Abuja',
-      vesselTypeId: '893483',
-      eta: '2 weeks'
-    },
-  ]
 
   constructor(
     private applicationService: ApplicationService,
     private spinner: SpinnerService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -75,7 +41,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
     this.applicationService.viewApplicationByDepot(1).subscribe({
       next: (res) => {
-        if (res[0]?.success) this.applications = res[0].data;
+        if (res?.success) this.applications = res.data;
         this.spinner.close();
         this.cdr.markForCheck();
       },
@@ -99,6 +65,11 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     const row = event;
     // Call the endpoint to create an empty coq
     this.router.navigate([`/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`]);
+  }
+
+  public get isFieldOfficer(): boolean {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser && currentUser?.userRoles.includes('Field_Officer');
   }
 }
 
