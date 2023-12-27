@@ -295,12 +295,11 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // Show CoQ nav only to Staffs in Field Offices
-    const currentUser = decodeUser();
-    if (currentUser && (!currentUser?.location || currentUser.location !== 'FO')) {
-      this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
-    }
+    // const currentUser = decodeUser();
+    // if (currentUser && (!currentUser?.location || currentUser.location !== 'FO')) {
+    //   this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
+    // }
     
-    this.menuItems = this.menuItems
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {

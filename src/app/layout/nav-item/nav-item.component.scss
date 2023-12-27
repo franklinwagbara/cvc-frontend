@@ -1,6 +1,6 @@
 /** Toggle side nav css ends here */
 .nav-item {
-  @apply relative z-10 mt-10 py-4 pl-7 flex items-center  font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
+  @apply relative z-10 mt-10 py-4 pl-7 flex items-center font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
 }
 
 .nav-item-control {
@@ -22,7 +22,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply max-h-[400px] overflow-y-auto flex flex-col bg-yellow-100 text-black pt-6;
+  @apply flex flex-col bg-yellow-100 text-black pt-6 max-h-[400px] overflow-y-auto;
 }
 
 .nav-sub-menu p {

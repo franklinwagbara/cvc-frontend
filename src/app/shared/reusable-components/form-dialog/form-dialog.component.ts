@@ -36,4 +36,4 @@ export class FormDialogComponent implements OnInit {
   }
 }
 
-export type FormKeysProp = {[key: string]: { validator?: ValidatorFn | ValidatorFn[], value?: any }};
+export type FormKeysProp = {[key: string]: { validator?: ValidatorFn | ValidatorFn[], value?: any, disabled?: boolean }};
