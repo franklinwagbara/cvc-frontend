@@ -52,7 +52,7 @@
     </span>
   </div>
   <ul class="nav-sub-menu">
-    <li *ngFor="let item of subItems" [ngClass]="{'nav-item-active': rla.isActive}">
+    <li class="nav-sub-menu-list" *ngFor="let item of subItems" [ngClass]="{'nav-item-active': rla.isActive}">
       <a
         [routerLink]="item.url"
         routerLinkActive="active-sub-menu-item"

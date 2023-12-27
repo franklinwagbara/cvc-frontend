@@ -22,7 +22,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply flex flex-col bg-yellow-100 text-black pt-6 max-h-[400px] overflow-y-auto;
+  @apply max-h-[400px] overflow-y-auto flex flex-col bg-yellow-100 text-black pt-6;
 }
 
 .nav-sub-menu p {
