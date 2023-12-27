@@ -1,35 +1,19 @@
-<div class="text-right">
-  <span (click)="closeDialog()" class="btn btn-outline btn-danger px-2 py-1">X</span>
-</div>
-<h1 class="text-center mt-2" mat-dialog-title>{{ data.title }}</h1>
+<h1 mat-dialog-title>{{ data.title }}</h1>
 <div mat-dialog-content class="">
   <form [formGroup]="form">
-    <div class="form-group" style="margin-bottom: 10px" *ngFor="let entry of formEntries; trackBy: trackByFn; let i = index">
-      <label>{{ entry[0] | titlecase }}</label>
-      <ng-container *ngIf="!entry[1]?.select">
-        <input
-          [name]="entry[0]"
-          [formControlName]="entry[0]"
-          [type]="entry[1]?.inputType || 'text'"
-          [disabled]="!!entry[1].disabled"
-          class="form-control"
-        />
-      </ng-container>
-      <ng-container *ngIf="entry[1]?.select">
-        <select [name]="entry[0]" [formControlName]="entry[0]">
-          <option value="">-- Select an option --</option>
-          <option [value]="val" *ngFor="let val of entry[1]?.selectData">{{ val | uppercase }}</option>
-        </select>
-      </ng-container>
+    <div class="form-group" style="margin-bottom: 10px" *ngFor="let key of formKeys">
+      <label>{{ key | titlecase }}</label>
+      <input
+        [name]="key"
+        [formControlName]="key"
+        class="form-control"
+      />
       <small
-        *ngIf="form.get(entry[0])?.touched && form.get(entry[0])?.invalid"
+        *ngIf="form.get(key)?.touched && form.get(key)?.invalid"
         class="invalid-feedback"
       >
-        {{ entry[0] | titlecase }} is required
+        {{ key }} is required
       </small>
-    </div>
-    <div class="text-right mt-4">
-      <button type="submit" class="btn btn-primary btn-outline fw-medium" (click)="submit()">{{ data.formType }}</button>
     </div>
   </form>
 </div>
