@@ -29,6 +29,7 @@ import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/no
 import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
+import { CoqGuard } from 'src/app/shared/guards/coq.guard';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -62,14 +63,17 @@ const routes: Routes = [
   {
     path: 'noa-applications-by-depot',
     component: NoaApplicationsByDepotComponent,
+    canActivate: [CoqGuard]
   },
   {
     path: 'certificate-of-quantity/all-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
+    canActivate: [CoqGuard]
   },
   {
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
+    canActivate: [CoqGuard]
   },
 ];
 

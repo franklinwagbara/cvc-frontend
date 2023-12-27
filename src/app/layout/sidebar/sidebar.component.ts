@@ -300,7 +300,6 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
     }
     
-    this.menuItems = this.menuItems
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {
