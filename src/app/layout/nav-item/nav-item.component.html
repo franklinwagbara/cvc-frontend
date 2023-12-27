@@ -51,18 +51,16 @@
       </svg>
     </span>
   </div>
-  <ul class="nav-sub-menu">
-    <li class="nav-sub-menu-list" *ngFor="let item of subItems" [ngClass]="{'nav-item-active': rla.isActive}">
-      <a
-        [routerLink]="item.url"
-        routerLinkActive="active-sub-menu-item"
-        [routerLinkActiveOptions]="{exact: true}"
-        (click)="setActiveSubNavItem(item.id)"
-        #rla="routerLinkActive"
-        ><p >
-          {{ item.title }}
-        </p></a
-      >
-    </li>
-  </ul>
+  <div class="nav-sub-menu">
+    <a
+      *ngFor="let item of subItems"
+      [routerLink]="item.url"
+      routerLinkActive="active-sub-menu-item"
+      [routerLinkActiveOptions]="{exact: true}"
+      (click)="setActiveSubNavItem(item.id)"
+      ><p >
+        {{ item.title }}
+      </p></a
+    >
+  </div>
 </div>
