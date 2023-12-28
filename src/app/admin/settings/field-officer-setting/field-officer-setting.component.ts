@@ -53,9 +53,9 @@ export class FieldOfficerSettingComponent implements OnInit {
       this.adminService.getRoles()
     ]).subscribe({
       next: (res: any[]) => {
-        this.allUsers = res[0].data;
-        this.elpsUsers = res[1].data;
-        this.roles = res[2].data;
+        this.allUsers = res[0]?.data ? res[0].data : res[0];
+        this.elpsUsers = res[1]?.data ? res[1].data : res[1];
+        this.roles = res[2]?.data ? res[2].data : res[2];
       },
       error: (error: any) => {
         console.log(error);
