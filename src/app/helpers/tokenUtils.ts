@@ -1,6 +1,6 @@
 import { JwtHelperService } from '@auth0/angular-jwt';
 
-export const tokenNotExpired = () => {
+export const tokenNotExpired = (): boolean => {
   const jwtHelper = new JwtHelperService();
   const token = localStorage.getItem('token');
 
@@ -10,3 +10,10 @@ export const tokenNotExpired = () => {
 
   return !isExpired;
 };
+
+export const decodeUser = (): any => {
+  const jwtHelper = new JwtHelperService();
+  const token = localStorage.getItem('token');
+
+  return jwtHelper.decodeToken(token);
+}

@@ -149,6 +149,7 @@
                 <td mat-cell *matCellDef="let element; let i = index;" class="text-center">
                   <ng-container *ngIf="column === 'document'">{{ element[column] }}</ng-container>
                   <ng-container *ngIf="column === 'action'">
+                    <!-- TODO: If document upload success or previously uploaded doc related to this coq based on id, show download btn -->
                     <button mat-button class="upload-btn" (click)="uploadDoc(i)">Upload</button>
                     <input class="d-none file-input" type="file" accept=".png,.jpg,.jpeg,.pdf" (change)="onFileSelected($event, i)" />
                   </ng-container>

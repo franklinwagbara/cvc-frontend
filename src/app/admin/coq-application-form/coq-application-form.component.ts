@@ -137,13 +137,14 @@ export class CoqApplicationFormComponent implements OnInit, AfterViewInit, OnDes
       })
       
       const dateId = Date.now();
+      // To update with actual dynamic data
       const { docTypeId, compId, email, apiHash, docName, uniqueid } = {
         docTypeId: dateId,
-        compId: this.documentConfig.companyElpsId,
-        email: this.documentConfig.apiEmail,
-        apiHash: this.documentConfig.apiHash,
+        compId: '',
+        email: '',
+        apiHash: '',
         docName: file.name,
-        uniqueid: dateId
+        uniqueid: ''
       };
       const uploadUrl = `${environment.elpsBase}/api/UploadCompanyDoc/${docTypeId}/${compId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
 

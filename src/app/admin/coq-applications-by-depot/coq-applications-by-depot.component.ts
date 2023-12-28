@@ -40,7 +40,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
 
     this.applicationService.getAllApplications().subscribe({
       next: (res) => {
-        if (res[0].success) this.applications = res[0].data;
+        if (res.success) this.applications = res.data;
 
         this.spinner.close();
         this.cdr.markForCheck();

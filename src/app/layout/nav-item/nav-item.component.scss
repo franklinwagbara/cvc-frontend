@@ -16,17 +16,32 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 8px;
+  background: #7F7FD5;  /* fallback for old browsers */
+  background: linear-gradient(to right, #3c1053e9, #ad5389d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border-radius: 4px;
+}
+
 .content {
   @apply mx-10 -mt-content_mt bg-white border h-full rounded-3xl p-6 shadow-md;
 }
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply bg-yellow-100 text-black pt-6;
+  @apply flex flex-col bg-yellow-100 text-black pt-6 overflow-auto;
 }
 
 .nav-sub-menu p {
-  @apply bg-yellow-200 m-3 p-3 shadow-lg hover:bg-yellow-300 transition-all ease-in-out delay-150 duration-300 hover:cursor-pointer;
+  @apply bg-yellow-200 m-3 p-3 shadow-lg hover:bg-yellow-400 transition-all ease-in-out delay-150 duration-300 hover:cursor-pointer;
 }
 
 a {
@@ -36,12 +51,15 @@ a {
 
 .nav-item .arrow-down,
 .nav-sub-menu {
-  max-height: 0px;
-  transition: max-height 1.15s ease-in-out;
+  transition: height 1.15s ease-in-out;
   margin-left: 0px;
   margin-top: -25px;
   overflow: hidden;
-  @apply invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+  @apply min-h-fit invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+}
+
+.nav-sub-menu {
+  @apply max-h-[400px] overflow-y-auto;
 }
 
 .arrow {
@@ -54,7 +72,7 @@ a {
   }
 
   & + .nav-sub-menu {
-    @apply max-h-[500px] visible opacity-100 transition-all ease-in-out delay-150 duration-700;
+    @apply max-h-[400px] overflow-y-auto visible opacity-100 transition-all ease-in-out delay-150 duration-700;
   }
 }
 
@@ -74,7 +92,9 @@ a {
 /**Toggle nav sub menu css ends here */
 
 .active-sub-menu-item {
-  background-color: rgb(161, 150, 29) !important;
-  color: white;
-  font-weight: bold !important;
+  @apply text-white font-bold;
+
+  & p {
+    @apply bg-yellow-400;
+  }
 }
