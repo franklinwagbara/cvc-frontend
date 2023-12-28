@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New Permit Stage Document</h1>
+<h1 mat-dialog-title>Add Staff</h1>
 <div mat-dialog-content class="w-[1000px] h-screen">
   <form [formGroup]="form" (ngSubmit)="createUser()">
     <div class="form-group" style="margin-bottom: 10px">
@@ -19,7 +19,6 @@
         name="firstName"
         formControlName="firstName"
         class="form-control"
-        [attr.disabled]="true"
       />
       <div
         *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid"
@@ -31,29 +30,13 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Last Name</label>
-      <input
-        name="lastName"
-        formControlName="lastName"
-        class="form-control"
-        [attr.disabled]="true"
-        (focus)="form.controls['lastName'].markAsTouched"
-      />
-      <div
-        
-        class="invalid-feedback"
-      >
-        Last Name is required!
-      </div>
+      <input name="lastName" formControlName="lastName" class="form-control" />
+      <div class="invalid-feedback">Last Name is required!</div>
     </div>
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Email</label>
-      <input
-        name="email"
-        formControlName="email"
-        class="form-control"
-        [attr.disabled]="true"
-      />
+      <input name="email" formControlName="email" class="form-control" />
       <div
         *ngIf="form.get('email')?.touched && form.get('email')?.invalid"
         class="alert alert-danger"
@@ -64,12 +47,7 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Phone Number</label>
-      <input
-        name="phone"
-        formControlName="phone"
-        class="form-control"
-        [attr.disabled]="true"
-      />
+      <input name="phone" formControlName="phone" class="form-control" />
       <div
         *ngIf="form.get('phone')?.touched && form.get('phone')?.invalid"
         class="alert alert-danger"
@@ -83,7 +61,7 @@
       <select name="roleId" formControlName="roleId" class="form-control">
         <option
           *ngFor="let ut of roles"
-          [selected]="ut.name === currentValue.role"
+          [selected]="ut.name === currentValue?.role"
           [ngValue]="ut.id"
         >
           {{ ut.name }}
@@ -97,11 +75,15 @@
       </div>
     </div>
 
-    <!-- <div class="form-group" style="margin-bottom: 10px">
-      <label>Branch</label>
-      <select name="branchId" formControlName="branchId" class="form-control">
-        <option *ngFor="let br of branches" [ngValue]="br.id">
-          {{ br.name }}
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Staff Location</label>
+      <select
+        name="locationId"
+        formControlName="locationId"
+        class="form-control"
+      >
+        <option *ngFor="let lo of locations" [ngValue]="lo.id">
+          {{ lo.name }}
         </option>
       </select>
       <div
@@ -112,7 +94,7 @@
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
+    <div class="fomr-group" style="margin-bottom: 10px">
       <label>Office</label>
       <select name="officeId" formControlName="officeId" class="form-control">
         <option *ngFor="let off of offices" [ngValue]="off.id">
@@ -127,7 +109,7 @@
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
+    <div class="fomr-group" style="margin-bottom: 10px">
       <label>
         <input name="isActive" formControlName="isActive" type="checkbox" />
         Active?

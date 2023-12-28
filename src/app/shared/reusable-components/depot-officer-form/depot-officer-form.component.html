@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Add New Branch</h1>
+<div mat-dialog-content class="modal-width">
+  <form [formGroup]="form" (ngSubmit)="createBranch()">
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Depot</label>
+      <select name="depotID" formControlName="depotID" class="form-control">
+        <option *ngFor="let depot of depots" [ngValue]="depot.id">
+          {{ depot.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('depotID')?.touched && form.get('depotID')?.invalid"
+        class="alert alert-danger"
+      >
+        Depot is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Field Officer</label>
+      <select name="userID" formControlName="userID" class="form-control">
+        <option *ngFor="let staff of staffList" [ngValue]="staff.id">
+          {{ staff.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('userID')?.touched && form.get('userID')?.invalid"
+        class="alert alert-danger"
+      >
+        Field Officer is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-raised-button (click)="createBranch()" [disabled]="form.invalid">
+    Create
+  </button>
+</div>

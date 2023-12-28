@@ -53,4 +53,10 @@ export class ApplicationService {
       params: { id: officerId },
     });
   }
+
+  public getVesselDetails(appId: number) {
+    return this.http.get<any>(`${API}/get-app-vessel-info`, {
+      params: { id: appId },
+    });
+  }
 }

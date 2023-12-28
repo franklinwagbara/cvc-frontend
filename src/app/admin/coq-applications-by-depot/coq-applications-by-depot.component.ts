@@ -1,64 +1,77 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { ICoQApplication } from 'src/app/shared/interfaces/ICoQApplication';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ICOQ,
+  ICoQApplication,
+} from 'src/app/shared/interfaces/ICoQApplication';
+import { CoqService } from 'src/app/shared/services/coq.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-coq-applications-by-depot',
   templateUrl: './coq-applications-by-depot.component.html',
-  styleUrls: ['./coq-applications-by-depot.component.css']
+  styleUrls: ['./coq-applications-by-depot.component.css'],
 })
 export class CoqApplicationsByDepotComponent implements OnInit {
-  public applications: ICoQApplication[];
-  
+  public coqs: ICoQApplication[];
+
   public tableTitles = {
-    applications: 'COQ Applications',
+    coqs: 'Certificate of Quality(s)',
   };
 
-  public applicationKeysMappedToHeaders = {
-    reference: 'Reference Number',
-    companyName: 'Company Name',
+  public coqKeysMappedToHeaders = {
+    importName: 'Importer',
     vesselName: 'Vessel Name',
-    createdDate: 'Initiation Date',
-    capacity: 'Capacity',
-    status: 'Status',
+    depotName: 'Receiving Terminal',
+    dateOfVesselUllage: 'Date of Vessel Ullage',
+    dateOfSTAfterDischarge: 'Date of Shore-Tank After Discharge',
+    gov: 'GOV',
+    gsv: 'GSV',
+    createdBy: 'Created By',
   };
 
   constructor(
-    private applicationService: ApplicationService,
     private spinner: SpinnerService,
-    private router: Router,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar
-  ) {
-  }
+    private popUp: PopupService,
+    private coqService: CoqService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    this.fetchAllData();
+  }
+
+  public fetchAllData() {
     this.spinner.open();
 
-    this.applicationService.getAllApplications().subscribe({
+    this.coqService.getAllCOQs().subscribe({
       next: (res) => {
-        if (res.success) this.applications = res.data;
+        this.coqs = res.data;
 
         this.spinner.close();
         this.cdr.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
+        this.popUp.open('Something went wrong while retrieving data.', 'error');
 
-        // this.progressBar.close();
         this.spinner.close();
         this.cdr.markForCheck();
       },
     });
   }
 
-} 
+  public onViewCOQ(event: ICOQ) {
+    this.router.navigate(
+      [
+        'admin',
+        'noa-applications-by-depot',
+        event.appId,
+        'certificate-of-quantity',
+        'new-application',
+      ],
+      { queryParams: { depotId: event.depotId, view: true, coqId: event.id } }
+    );
+  }
+}

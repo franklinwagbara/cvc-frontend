@@ -16,6 +16,8 @@ export interface IApplication {
   tankList?: Array<ITank> | null;
   depotList?: Array<IDepot> | null;
   eta?: string;
+
+  applicationType?: string;
 }
 
 export interface IDoc {

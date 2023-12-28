@@ -34,7 +34,7 @@ export class UserFormComponent implements OnInit {
   public usersFromCvc: StaffWithName[];
   public userTypes = [''];
   public offices: FieldOffice[];
-  public branches: IBranch[];
+  // public branches: IBranch[];
   public roles: any;
   public locations: ILocation[];
   public currentValue: Staff | null;
@@ -55,7 +55,7 @@ export class UserFormComponent implements OnInit {
   ) {
     this.usersFromCvc = data.data.users;
     this.offices = data.data.offices;
-    this.branches = data.data.branches;
+    // this.branches = data.data.branches;
     this.roles = data.data.roles;
     this.locations = data.data.locations;
     this.usersFromElps = data.data.staffList;
@@ -70,20 +70,45 @@ export class UserFormComponent implements OnInit {
       return user;
     });
 
-    console.log(data);
-
     this.selectedUserFromElps = this.usersFromElps[0];
 
     this.form = this.formBuilder.group({
-      elpsId: [this.currentValue ? currentUserId : '', Validators.required],
-      id: [this.currentValue ? this.currentValue.id : '0', Validators.required],
-      firstName: [this.currentValue ? this.currentValue.firstName : ''],
-      lastName: [this.currentValue ? this.currentValue.lastName : ''],
-      email: [
-        this.currentValue ? this.currentValue.email : '',
+      elpsId: [
+        { value: this.currentValue ? currentUserId : '', disabled: true },
         Validators.required,
       ],
-      phone: [this.currentValue ? this.currentValue.phoneNo : ''],
+      id: [
+        {
+          value: this.currentValue ? this.currentValue.id : '0',
+          disabled: true,
+        },
+        Validators.required,
+      ],
+      firstName: [
+        {
+          value: this.currentValue ? this.currentValue.firstName : '',
+          disabled: true,
+        },
+      ],
+      lastName: [
+        {
+          value: this.currentValue ? this.currentValue.lastName : '',
+          disabled: true,
+        },
+      ],
+      email: [
+        {
+          value: this.currentValue ? this.currentValue.email : '',
+          disabled: true,
+        },
+        Validators.required,
+      ],
+      phone: [
+        {
+          value: this.currentValue ? this.currentValue.phoneNo : '',
+          disabled: true,
+        },
+      ],
       userType: [this.currentValue ? this.currentValue.userType : ''],
       roleId: ['', Validators.required],
 
@@ -123,13 +148,22 @@ export class UserFormComponent implements OnInit {
     this.progressBar.open();
     const formDataToSubmit = new FormData();
 
-    const formKeys = ['elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
-    formKeys.forEach((key) => {
-      formDataToSubmit.append(key, this.form.get(key).value);
-    });
-    formDataToSubmit.append('signatureImage', this.file);
+    formDataToSubmit.append('id', '0');
+    formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
+    formDataToSubmit.append('firstName', this.form.get('firstName').value);
+    formDataToSubmit.append('lastName', this.form.get('lastName').value);
+    formDataToSubmit.append('email', this.form.get('email').value);
+    formDataToSubmit.append('phone', this.form.get('phone').value);
+    formDataToSubmit.append('userType', this.form.get('userType').value);
+    formDataToSubmit.append('roleId', this.form.get('roleId').value);
+    formDataToSubmit.append('locationId', this.form.get('locationId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
+    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
+    formDataToSubmit.append('isActive', this.form.get('isActive').value);
+    //formDataToSubmit.append('signatureImage', this.file);
 
-    this.adminService.createStaff(this.form.value).subscribe({
+    this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {
         if (res.success) {
           this.snackBar.open('Staff was created successfully!', null, {

@@ -83,7 +83,7 @@ export class LicenceComponent implements OnInit, AfterViewInit {
     //   queryParams: { id: event.id, appSource: AppSource.Licence },
     // });
     window.location.assign(
-      `${environment}/licenses/view_license?id=${event.id}`
+      `${environment.apiUrl}/licenses/view_license?id=${event.id}`
     );
   }
 }

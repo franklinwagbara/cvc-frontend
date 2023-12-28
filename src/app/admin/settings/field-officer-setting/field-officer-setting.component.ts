@@ -1,98 +1,98 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { IDepot } from 'src/app/shared/interfaces/IDepot';
 import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
 import { IRole } from 'src/app/shared/interfaces/IRole';
-import { IUser } from 'src/app/shared/interfaces/IUser';
-import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
 import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { Staff } from '../all-staff/all-staff.component';
+import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { LibaryService } from 'src/app/shared/services/libary.service';
+import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
 
 @Component({
   selector: 'app-field-officer-setting',
   templateUrl: './field-officer-setting.component.html',
-  styleUrls: ['./field-officer-setting.component.css']
+  styleUrls: ['./field-officer-setting.component.css'],
 })
 export class FieldOfficerSettingComponent implements OnInit {
-  fieldOfficers: IDepotOfficer[];
-  fieldOfficerUsers: IUser[];
-  fieldOfficerDepots: IDepot[];
+  depotOfficers: IDepotOfficer[];
+  depots: IDepot[];
   allUsers: Staff[];
   elpsUsers: any[];
   roles: IRole[];
   locations: any[];
   offices: any[];
+  staffList: Staff[];
 
-  fieldOfficersData: FieldOfficer[];
-  
   officerKeysMappedToHeaders: any = {
-    name: 'Name',
-    email: 'Email',
-    phoneNumber: 'Phone',
-    role: 'Role',
-    office: 'Office',
-    location: 'Location',
-    isActive: 'Status'
-  }
+    officerName: 'Officer Name',
+    depotName: 'Depot',
+  };
 
   constructor(
     private dialog: MatDialog,
     private adminService: AdminService,
-    private progressBar: ProgressBarService,
-    private snackBar: MatSnackBar
+    private depotOfficerService: DepotOfficerService,
+    private libService: LibaryService,
+    private spinner: SpinnerService,
+    private popUp: PopupService
   ) {}
 
   ngOnInit(): void {
-    this.progressBar.open();
+    this.fetchAllData();
+  }
+
+  public fetchAllData() {
+    this.spinner.open();
     forkJoin([
+      this.depotOfficerService.getAllMappings(),
+      this.libService.getAppDepots(),
       this.adminService.getAllStaff(),
       this.adminService.getElpsStaffList(),
-      this.adminService.getRoles()
+      this.adminService.getRoles(),
     ]).subscribe({
       next: (res: any[]) => {
-        this.allUsers = res[0].data;
-        this.elpsUsers = res[1].data;
-        this.roles = res[2].data;
+        this.depotOfficers = res[0].data;
+        this.depots = res[1].data;
+        this.staffList = res[2].data;
+        this.elpsUsers = res[3].data;
+        this.roles = res[4].data;
       },
       error: (error: any) => {
-        console.log(error);
-        this.snackBar.open('Something went wrong while fetching elps users', null, {
-          panelClass: ['error']
-        });
-      }
-    })
-    this.progressBar.close();
+        console.error(error);
+        this.popUp.open('Something went wrong while fetching data.', 'error');
+      },
+    });
+    this.spinner.close();
   }
 
   addData() {
     const data = {
       data: {
         users: this.elpsUsers,
-        staffList: this.elpsUsers,
+        staffList: this.staffList,
+        depots: this.depots,
         roles: this.roles,
         offices: this.offices,
-      }
-    }
-    const dialogRef = this.dialog.open(UserFormComponent, { data });
+      },
+    };
+    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-
+        this.fetchAllData();
       }
-    })
+    });
   }
 
   deleteData(event: any) {
     const listOfDataToDelete = event.filter((s) => {
       if (s.appCount > 0) {
-        this.snackBar.open(
-          `Cannot delete a field officer with an assigned depot`,
-          null,
-          {
-            panelClass: ['success'],
-          }
+        this.popUp.open(
+          'Cannot delete a field officer with an assigned depot',
+          'error'
         );
       }
       return s.appCount === 0;
@@ -102,34 +102,29 @@ export class FieldOfficerSettingComponent implements OnInit {
       return this.adminService.deleteStaff(req.id);
     });
 
-    this.progressBar.open();
+    this.spinner.open();
 
     forkJoin(requests).subscribe({
       next: (res) => {
         if (res && res.length > 0) {
-          this.snackBar.open(
+          this.popUp.open(
             `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
-            null,
-            {
-              panelClass: ['success'],
-            }
+            'success'
           );
 
           const responses = res
             .map((r) => r.data.data)
             .sort((a, b) => a.length - b.length);
 
-          this.fieldOfficerUsers = responses[0];
+          this.allUsers = responses[0];
         }
 
-        this.progressBar.close();
+        this.spinner.close();
       },
       error: (error: unknown) => {
-        this.snackBar.open('Something went wrong while deleting data!', null, {
-          panelClass: ['error'],
-        });
+        this.popUp.open('Something went wrong while deleting data!', 'error');
 
-        this.progressBar.close();
+        this.spinner.close();
       },
     });
   }
@@ -137,29 +132,27 @@ export class FieldOfficerSettingComponent implements OnInit {
   editData(event: Event) {
     const data = {
       data: {
-        users: this.fieldOfficerUsers,
-        staffList: this.fieldOfficers,
+        users: this.allUsers,
+        staffList: this.staffList,
         roles: this.roles,
         offices: this.offices,
-        currentValue: ''
-      }
-    }
-    const dialogRef = this.dialog.open(UserFormComponent, { data });
+        currentValue: '',
+      },
+    };
+    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-
       }
-    })
+    });
   }
-
 }
 
-interface FieldOfficer {
-  name: string,
-  email: string,
-  phoneNumber: string,
-  role: string,
-  office: string,
-  location: string,
-  status: string
-}
+// interface FieldOfficer {
+//   name: string;
+//   email: string;
+//   phoneNumber: string;
+//   role: string;
+//   office: string;
+//   location: string;
+//   status: string;
+// }

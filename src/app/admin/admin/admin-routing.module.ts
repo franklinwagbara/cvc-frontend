@@ -20,6 +20,7 @@ import { PaymentReportComponent } from './payment-report/payment-report.componen
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
 //import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
+import { AppDepotComponent } from '../settings/app-depot/app-depot.component';
 import { PaymentComponent } from '../payment/payment.component';
 import { ViewPaymentComponent } from '../payment/view-payment/view-payment.component';
 import { RolesComponent } from '../settings/roles/roles.component';
@@ -57,6 +58,7 @@ const routes: Routes = [
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
   { path: 'app-fees', component: AppFeeComponent },
+  { path: 'app-depots', component: AppDepotComponent },
   { path: 'payments', component: PaymentComponent },
   { path: 'payment/:id', component: ViewPaymentComponent },
   { path: 'roles', component: RolesComponent },
