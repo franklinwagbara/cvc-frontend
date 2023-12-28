@@ -41,8 +41,6 @@ import { RenewApplicationComponent } from './apply/renew-application/renew-appli
 import { ViewApplicationComponent } from './view-application/view-application.component';
 import { ApplicationViewTableComponent } from './view-application/application-view-table/application-view-table.component';
 
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -85,7 +83,7 @@ import { ApplicationViewTableComponent } from './view-application/application-vi
     NewApplicationComponent,
     RenewApplicationComponent,
     ViewApplicationComponent,
-    ApplicationViewTableComponent
+    ApplicationViewTableComponent,
   ],
   providers: [],
 })
