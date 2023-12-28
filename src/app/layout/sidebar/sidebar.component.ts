@@ -206,11 +206,6 @@ const ROUTES: RouteInfo[] = [
         url: '/admin/all-staff',
       },
       {
-        id: 8,
-        title: 'ROLE SETTINGS',
-        url: '/admin/roles',
-      },
-      {
         id: 2,
         title: 'MODULE SETTINGS',
         url: '/admin/modules-setting',
@@ -259,6 +254,11 @@ const ROUTES: RouteInfo[] = [
         id: 10,
         title: 'SURVEYOR CONFIGURATION',
         url: '/admin/nominated-surveyor-setting'
+      },
+      {
+        id: 11,
+        title: 'ROLE SETTINGS',
+        url: '/admin/roles',
       },
     ],
   },
