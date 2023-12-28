@@ -249,7 +249,12 @@ const ROUTES: RouteInfo[] = [
         id: 9,
         title: 'JETTY CONFIGURATION',
         url: '/admin/jetty-setting'
-      }
+      },
+      {
+        id: 10,
+        title: 'SURVEYOR CONFIGURATION',
+        url: '/admin/nominated-surveyor-setting'
+      },
     ],
   },
 ];

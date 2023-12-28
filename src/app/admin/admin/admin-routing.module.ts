@@ -30,6 +30,7 @@ import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/co
 import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { CoqGuard } from 'src/app/shared/guards/coq.guard';
+import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'phasedocuments', component: PhasedocumentsComponent },
   { path: 'application-process', component: AppProcessComponent },
   { path: 'field-officer-setting', component: FieldOfficerSettingComponent },
+  { path: 'nominated-surveyor-setting', component: NominatedSurveyorSettingComponent },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
   {
