@@ -1,0 +1,65 @@
+<h1 mat-dialog-title>
+  {{ this.data.data.action === "EDIT" ? "Edit Depot" : "Add New Depot" }}
+</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form">
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Depot Name</label>
+      <input
+        name="name"
+        type="string"
+        formControlName="name"
+        class="form-control"
+      />
+      <div
+        *ngIf="(f['name'].touched || isSubmitted) && f['name']?.invalid"
+        class="alert alert-danger"
+      >
+        Depot Name is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Capacity</label>
+      <input
+        name="capacity"
+        type="number"
+        formControlName="capacity"
+        class="form-control"
+      />
+      <div
+        *ngIf="(f['capacity'].touched || isSubmitted) && f['capacity']?.invalid"
+        class="alert alert-danger"
+      >
+        Capacity is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>State</label>
+      <select name="stateId" formControlName="stateId" class="form-control">
+        <option selected disabled>--Select from options --</option>
+        <option *ngFor="let state of states" [ngValue]="state.id">
+          {{ state.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="(f['stateId'].touched || isSubmitted) && f['stateId']?.invalid"
+        class="alert alert-danger"
+      >
+        State is required!
+      </div>
+    </div>
+
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+      <button
+        mat-raised-button
+        (click)="this.data.data.action === 'EDIT' ? EditDepot() : createDepot()"
+        [disabled]="form.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

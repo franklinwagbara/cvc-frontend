@@ -2,13 +2,12 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { IApplication } from 'src/app/shared/interfaces/IApplication';
 import { IBranch } from 'src/app/shared/interfaces/IBranch';
 import { AssignApplicationFormComponent } from 'src/app/shared/reusable-components/assign-application-form/assign-application-form.component';
 import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { ApplicationService } from 'src/app/shared/services/application.service';
@@ -27,6 +26,8 @@ export class MyDeskComponent implements OnInit {
   public categories: Category[] = [];
   public categories$ = new Subject<Category[]>();
 
+  public appType$ = new BehaviorSubject<string>('NOA');
+
   public users: Staff[];
   public userDetail: any;
   public roles: any;
@@ -40,7 +41,7 @@ export class MyDeskComponent implements OnInit {
 
   public applicationKeysMappedToHeaders = {
     reference: 'Reference Number',
-    companyName: 'Company Name',
+    importName: 'Import Name',
     companyEmail: 'Company Email',
     // appType: 'Application Type',
     vesselName: 'Vessel Name',
@@ -49,6 +50,18 @@ export class MyDeskComponent implements OnInit {
     paymnetStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
+  };
+
+  public coqKeysMappedToHeaders = {
+    companyEmail: 'Company Email',
+    vesselName: 'Vessel Name',
+    depotName: 'Depot Name',
+    mT_VAC: 'MT VAC',
+    dateOfVesselArrival: 'Date of Arrival',
+    dateOfSTAfterDischarge: 'Date of Discharge',
+    depotPrice: 'Initiation Date',
+    submittedDate: 'Date Submitted',
+    status: 'Status',
   };
 
   constructor(
@@ -70,40 +83,16 @@ export class MyDeskComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.progressBar.open();
     this.spinner.open();
 
-    forkJoin([
-      this.applicationService.getApplicationsOnDesk(),
-      // this.adminService.getAllStaff(),
-      // this.adminService.getElpsStaffList(),
-      // this.adminService.getRoles(),
-      // this.adminService.getModule(),
-      // this.adminService.getOffices(),
-      // this.adminService.getBranches(),
-    ]).subscribe({
+    forkJoin([this.applicationService.getApplicationsOnDesk()]).subscribe({
       next: (res) => {
         if (res[0].success) {
           this.applications = res[0].data;
+          if (this.applications.length > 0)
+            this.appType$.next(this.applications[0].applicationType);
           this.applications$.next(this.applications);
         }
-
-        // if (res[1].success) {
-        //   this.categories = res[1].data.data;
-        //   this.categories$.next(res[1].data.data);
-        // }
-
-        // if (res[2].success) this.users = res[2].data.data;
-
-        // if (res[3].success) this.staffList = res[3].data.data;
-
-        // if (res[4].success) this.roles = res[4].data.data;
-
-        // if (res[5].success) this.offices = res[5].data.data;
-
-        // if (res[6].success) this.branches = res[6].data.data;
-
-        // this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -116,20 +105,33 @@ export class MyDeskComponent implements OnInit {
           }
         );
 
-        // this.progressBar.close();
         this.spinner.close();
       },
     });
   }
 
-  ngAfterViewInit(): void {
-    // this.categories = [...this.categories];
-  }
+  ngAfterViewInit(): void {}
 
   onViewData(event: any, type: string) {
-    this.router.navigate([`/admin/view-application/${event.id}`], {
-      queryParams: { id: event.id, appSource: AppSource.MyDesk },
-    });
+    if (this.appType$.getValue() == 'COQ') {
+      this.router.navigate([`/admin/view-application/${event.id}`], {
+        queryParams: {
+          id: event.appId,
+          appSource: AppSource.MyDesk,
+          depotId: event.depotId,
+          coqId: event.id,
+        },
+      });
+    } else
+      this.router.navigate([`/admin/view-application/${event.id}`], {
+        queryParams: { id: event.id, appSource: AppSource.MyDesk },
+      });
+  }
+
+  public get getColumnHeaders() {
+    return this.appType$.getValue() == 'NOA'
+      ? this.applicationKeysMappedToHeaders
+      : this.coqKeysMappedToHeaders;
   }
 
   onAssignApplication() {

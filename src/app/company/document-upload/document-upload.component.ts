@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CompanyService } from 'src/app/shared/services/company.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -250,6 +249,7 @@ export class DocumentConfig {
   appid?: string;
   companyElpsId: string;
   facilityElpsId: string;
+  uniqueid: string;
 }
 
 export class DocumentInfo {
@@ -263,4 +263,13 @@ export class DocumentInfo {
   available: string;
   docType: string;
   company: string;
+  success?: boolean;
+  fileSizeInKb?: any;
+  percentProgress?: any;
+  fileName: string;
+}
+
+export interface IUploadDocInfo {
+  documentConfig: DocumentConfig;
+  documentInfo: DocumentInfo[];
 }

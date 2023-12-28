@@ -7,17 +7,16 @@ import { Observable } from 'rxjs';
 const API = `${environment.apiUrl}/CoQ`;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CoqService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // getListOfRequiredDocs(): Observable<HttpResponse<any>> {
   //   return this.http.get<any>(`${API}/`)
   // }
 
-  getAllApplications(): Observable<any> {
+  getAllCOQs(): Observable<any> {
     return this.http.get<any>(`${API}/all_coqs`);
   }
 
@@ -27,5 +26,27 @@ export class CoqService {
 
   viewCoQLicense(id): Observable<any> {
     return this.http.get<any>(`${API}/view_license`);
+  }
+
+  getCOQById(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/coq_by_id/${id}`);
+  }
+
+  submit(id: number): Observable<any> {
+    return this.http.post<any>(`${API}/submit`, null, { params: { id } });
+  }
+
+  processApplication(model: {
+    applicationId: number;
+    action: string;
+    comment: string;
+  }) {
+    return this.http.post<any>(`${API}/process`, model, {
+      params: {
+        id: model.applicationId,
+        act: model.action,
+        comment: model.comment,
+      },
+    });
   }
 }

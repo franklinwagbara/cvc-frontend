@@ -2,6 +2,7 @@ import { ITank } from './ITank';
 import { IDepot } from './IDepot';
 
 export interface IApplication {
+  reference?: string;
   applicationTypeId?: number;
   vesselTypeId?: number;
   imoNumber?: string | null;
@@ -9,10 +10,14 @@ export interface IApplication {
   loadingPort?: string | null;
   dischargePort?: string | null;
   marketerName?: string | null;
+  motherVessel?: string;
+  jetty?: string | null;
   deportStateId?: number;
   tankList?: Array<ITank> | null;
   depotList?: Array<IDepot> | null;
   eta?: string;
+
+  applicationType?: string;
 }
 
 export interface IDoc {
