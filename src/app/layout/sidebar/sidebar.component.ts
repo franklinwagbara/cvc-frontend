@@ -246,15 +246,15 @@ const ROUTES: RouteInfo[] = [
         url: '/admin/app-fees',
       },
       {
-        id: 8,
+        id: 9,
         title: 'APPLICATION DEPOT',
         url: '/admin/app-depots',
       },
       {
-        id: 9,
+        id: 10,
         title: 'JETTY CONFIGURATION',
-        url: '/admin/jetty-setting'
-      }
+        url: '/admin/jetty-setting',
+      },
     ],
   },
 ];
@@ -301,7 +301,10 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     // Show CoQ nav only to Staffs in Field Offices
     const currentUser = decodeUser();
-    if (currentUser && (!currentUser?.location || currentUser.location !== 'FO')) {
+    if (
+      currentUser &&
+      (!currentUser?.location || currentUser.location !== 'FO')
+    ) {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
     }
 

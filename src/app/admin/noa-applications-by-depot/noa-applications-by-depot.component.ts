@@ -68,11 +68,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser && currentUser?.userRoles.includes('Field_Officer');
   }
-
-  public get isFieldOfficer(): boolean {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser && currentUser?.userRoles.includes('Field_Officer');
-  }
 }
 
 // export interface CoQApplication {
