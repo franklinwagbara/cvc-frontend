@@ -268,6 +268,7 @@ export class CoqApplicationFormComponent
       });
 
       const dateId = Date.now();
+      // To update with actual dynamic data
       const { docTypeId, compId, email, apiHash, docName, uniqueid } = {
         docTypeId: doc.docId,
         compId: this.documentConfig.companyElpsId,

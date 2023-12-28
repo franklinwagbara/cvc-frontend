@@ -122,9 +122,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.enableInitiateCoQControl) {
       this.columns.push({
         columnDef: 'action_controls',
-        header: 'Application Control',
+        header: '',
         cell: (item: IApplication) => {
-          return 'initiate_coq_control';
+          if (item) return 'initiate_coq_control'
+          else return '';
         },
       });
     }

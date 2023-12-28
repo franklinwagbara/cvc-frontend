@@ -63,6 +63,8 @@ import { PaymentComponent } from './payment/payment.component';
 import { PaymentViewTableComponent } from './payment/view-payment/payment-view-table/payment-view-table.component';
 import { ViewPaymentComponent } from './payment/view-payment/view-payment.component';
 import { RolesComponent } from './settings/roles/roles.component';
+import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.component';
+
 
 @NgModule({
   declarations: [
@@ -108,6 +110,7 @@ import { RolesComponent } from './settings/roles/roles.component';
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
+    JettySettingComponent,
   ],
 
   imports: [

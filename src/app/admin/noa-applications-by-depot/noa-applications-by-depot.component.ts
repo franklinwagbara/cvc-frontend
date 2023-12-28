@@ -63,6 +63,16 @@ export class NoaApplicationsByDepotComponent implements OnInit {
       `/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`,
     ]);
   }
+
+  public get isFieldOfficer(): boolean {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser && currentUser?.userRoles.includes('Field_Officer');
+  }
+
+  public get isFieldOfficer(): boolean {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    return currentUser && currentUser?.userRoles.includes('Field_Officer');
+  }
 }
 
 // export interface CoQApplication {

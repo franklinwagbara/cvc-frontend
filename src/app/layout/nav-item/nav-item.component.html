@@ -1,4 +1,7 @@
-<div class="wrapper">
+<div>
+
+  <i class="test"></i>
+
   <div
     class="nav-item nav-item-active"
     [ngClass]="{
@@ -51,17 +54,17 @@
       </span>
     </div>
   </div>
-  <div class="nav-sub-menu">
-    <a
-      *ngFor="let item of subItems"
-      [routerLink]="item.url"
-      routerLinkActive="active-sub-menu-item"
-      [routerLinkActiveOptions]="{ exact: true }"
-      (click)="setActiveSubNavItem(item.id)"
-      #rla="routerLinkActive"
-      ><p>
-        {{ item.title }}
-      </p></a
-    >
-  </div>
+  <ul class="nav-sub-menu">
+    <li *ngFor="let item of subItems">
+      <a
+        [routerLink]="item.url"
+        routerLinkActive="active-sub-menu-item"
+        [routerLinkActiveOptions]="{exact: true}"
+        (click)="setActiveSubNavItem(item.id)"
+        ><p >
+          {{ item.title }}
+        </p></a
+      >
+    </li>
+  </ul>
 </div>

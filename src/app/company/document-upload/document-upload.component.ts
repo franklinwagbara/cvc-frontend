@@ -249,6 +249,7 @@ export class DocumentConfig {
   appid?: string;
   companyElpsId: string;
   facilityElpsId: string;
+  uniqueid: string;
 }
 
 export class DocumentInfo {
