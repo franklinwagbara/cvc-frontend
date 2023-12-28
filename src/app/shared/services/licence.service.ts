@@ -14,6 +14,10 @@ export class LicenceService {
     return this.http.get<any>(`${api}/all_permits`);
   }
 
+  public getCompanyLicences() {
+    return this.http.get<any>(`${api}/all_company_permits`);
+  }
+
   public getLicence(id: number) {
     return this.http.get<any>(`${api}/view_license`, { params: { id } });
   }

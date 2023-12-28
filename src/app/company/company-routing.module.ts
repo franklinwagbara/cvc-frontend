@@ -24,7 +24,7 @@ const routes: Routes = [
   { path: 'messages', component: MessagesComponent },
   { path: 'myschedule', component: MyScheduleComponent },
   { path: 'changepassword', component: ChangePasswordComponent },
-  { path: 'mypermits', component: MypermitsComponent },
+  // { path: 'mypermits', component: MypermitsComponent },
   { path: 'apply', component: ApplyComponent },
   { path: 'myapplication', component: MyApplicationComponent },
   { path: 'registerdirector', component: RegisterDirectorComponent },
@@ -35,7 +35,11 @@ const routes: Routes = [
   { path: 'new', component: NewApplicationComponent },
   { path: 'renew', component: RenewApplicationComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'view-application-in-full/:id', component: ViewApplicationInFullComponent },
+  {
+    path: 'view-application-in-full/:id',
+    component: ViewApplicationInFullComponent,
+  },
+  { path: 'mycertificates', component: MypermitsComponent },
   {
     path: 'companyinformation',
     component: CompanyInformationComponent,

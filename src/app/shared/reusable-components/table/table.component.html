@@ -124,7 +124,8 @@
                 class="view-button"
                 *ngIf="
                   column.header === 'Application Control' &&
-                  column.cell(row) === 'initiate_coq_control'"
+                  column.cell(row) === 'initiate_coq_control'
+                "
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ
@@ -214,7 +215,6 @@
             </div>
           </td>
         </ng-template>
-
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
