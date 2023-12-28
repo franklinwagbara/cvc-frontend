@@ -64,6 +64,7 @@ import { PaymentViewTableComponent } from './payment/view-payment/payment-view-t
 import { ViewPaymentComponent } from './payment/view-payment/view-payment.component';
 import { RolesComponent } from './settings/roles/roles.component';
 import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.component';
+import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 
 
 @NgModule({
@@ -111,6 +112,7 @@ import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.co
     CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
     JettySettingComponent,
+    NominatedSurveyorSettingComponent,
   ],
 
   imports: [
