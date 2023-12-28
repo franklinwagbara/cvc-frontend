@@ -60,13 +60,14 @@ export class FieldOfficerSettingComponent implements OnInit {
         this.staffList = res[2].data;
         this.elpsUsers = res[3].data;
         this.roles = res[4].data;
+        this.spinner.close();
       },
       error: (error: any) => {
         console.error(error);
         this.popUp.open('Something went wrong while fetching data.', 'error');
+        this.spinner.close();
       },
     });
-    this.spinner.close();
   }
 
   addData() {
