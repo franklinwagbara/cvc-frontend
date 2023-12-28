@@ -38,7 +38,10 @@ export class FormDialogComponent implements OnInit {
   }
 
   submit(): void {
-    this.dialogRef.close(this.form.getRawValue());
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.dialogRef.close(this.form.getRawValue());
+    }
   }
 
   closeDialog(): void {

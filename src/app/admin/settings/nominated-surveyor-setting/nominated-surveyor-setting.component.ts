@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { forkJoin } from 'rxjs';
 import { INominatedSurveyor } from 'src/app/shared/interfaces/INominatedSurveyor';
 import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
 import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
@@ -50,13 +51,12 @@ export class NominatedSurveyorSettingComponent implements OnInit {
   addData(): void {
     const formData: FormKeysProp = {
       name: {validator: [Validators.required] },
-      email: {validator: [Validators.required] }
+      email: {validator: null }
     }
     const dialogRef = this.dialog.open(FormDialogComponent, { data: { title: 'New Nominated Surveyor', formData, formType: 'Create' }, disableClose: true});
     dialogRef.afterClosed().subscribe((result: INominatedSurveyor) => {
       if (result) {
         console.log(result);
-        debugger;
         this.spinner.open();
         this.nominatedSurveyorService.createNominatedSurveyor(result).subscribe({
           next: () => {
@@ -82,27 +82,46 @@ export class NominatedSurveyorSettingComponent implements OnInit {
       name: {validator: [Validators.required], value: row.name },
       email: {validator: null, value: row.email }
     }
-    const dialogRef = this.dialog.open(FormDialogComponent, { data: { title: 'Edit Nominated Surveyor', formData }, disableClose: true });
+    const dialogRef = this.dialog.open(FormDialogComponent, { data: { title: 'Edit Nominated Surveyor', formData, formType: 'Edit' }, disableClose: true });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
+        this.spinner.open();
+        this.nominatedSurveyorService.editNominatedSurveyor(result).subscribe({
+          next: (res: any) => {
+            this.spinner.close();
+            this.snackBar.open(`Nominated Surveyor with id: ${result.id} edited successfully`, null, {panelClass: ['success']});
+            setTimeout(() => {
+              window.location.reload();
+            }, 2500);
+          },
+          error: (error: any) => {
+            console.log(error);
+            this.spinner.close();
+            this.snackBar.open('Something went wrong. Could not edit nominated surveyor.');
+          }
+        })
       }
     })
   }
 
-  deleteData(row: any): void {
-    this.spinner.open();
-    this.nominatedSurveyorService.deleteNominatedSurveyor(row.id).subscribe({
-      next: (res: any) => {
-        this.spinner.close();
-        this.snackBar.open(`Nominated Surveyor with id ${row.id} deleted successfully`, null, { panelClass: ['success'] });
-      },
-      error: (error: any) => {
-        console.log(error);
-        this.spinner.close();
-        this.snackBar.open('Something went wrong. Could not delete Nominated Surveyor', null, { panelClass: ['error'] });
-      }
-    })
+  deleteData(selected: any[]): void {
+    if (selected?.length) {
+      this.spinner.open();
+      forkJoin(selected.map((val) => this.nominatedSurveyorService.deleteNominatedSurveyor(val.id))).subscribe({
+        next: () => {
+          this.spinner.close();
+          this.snackBar.open('Selected Nominated Surveyor(s) deleted successfully', null, { panelClass: ['success']}); 
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500);
+        },
+        error: (error: unknown) => {
+          this.spinner.close();
+          console.log(error);
+          this.snackBar.open('Delete operation could not be processed', null, { panelClass: ['error']});
+        }
+      })
+    }
   }
 
 }

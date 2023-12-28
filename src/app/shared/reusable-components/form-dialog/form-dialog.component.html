@@ -11,21 +11,22 @@
           [name]="entry[0]"
           [formControlName]="entry[0]"
           [type]="entry[1]?.inputType || 'text'"
-          [disabled]="!!entry[1].disabled"
           class="form-control"
+          [ngClass]="{'is-invalid': form.get(entry[0])?.touched && form.get(entry[0])?.invalid}"
         />
       </ng-container>
       <ng-container *ngIf="entry[1]?.select">
-        <select [name]="entry[0]" [formControlName]="entry[0]">
+        <select 
+          [name]="entry[0]" 
+          [formControlName]="entry[0]"
+          [ngClass]="{'is-invalid': form.get(entry[0])?.touched && form.get(entry[0])?.invalid}"
+        >
           <option value="">-- Select an option --</option>
           <option [value]="val" *ngFor="let val of entry[1]?.selectData">{{ val | uppercase }}</option>
         </select>
       </ng-container>
-      <small
-        *ngIf="form.get(entry[0])?.touched && form.get(entry[0])?.invalid"
-        class="invalid-feedback"
-      >
-        {{ entry[0] | titlecase }} is required
+      <small class="invalid-feedback">
+        {{ entry[0] | titlecase }} is invalid
       </small>
     </div>
     <div class="text-right mt-4">
