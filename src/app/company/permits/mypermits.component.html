@@ -1,4 +1,31 @@
-<div class="container" style="box-shadow:0 0 5px #c5c5c5; padding: 0 15px 20px 15px; background:white;">
+<div class="setting-desk">
+  <h2 class="page-title bg-yellow-500 text-yellow-800">MY CERTIFICATES</h2>
+  <div>
+    <!-- <mat-tab-group> -->
+    <!-- <mat-tab *ngFor="let cat of categories" [label]="cat.name"> -->
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.permits"
+          [title-color]="'yellow'"
+          [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+          [table_content]="permits"
+          [EnableViewLicenceControl]="true"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          [noTitle]="true"
+          (onViewData)="onViewData($event, 'permits')"
+        >
+        </generic-table>
+      </div>
+    </div>
+    <!-- </mat-tab> -->
+    <!-- </mat-tab-group> -->
+  </div>
+</div>
+
+<!-- <div class="container" style="box-shadow:0 0 5px #c5c5c5; padding: 0 15px 20px 15px; background:white;">
     <div class="panel-body">
         <br><br>
         <p></p>
@@ -113,4 +140,4 @@
 </div>
 
 <br><br>
-
+ -->
