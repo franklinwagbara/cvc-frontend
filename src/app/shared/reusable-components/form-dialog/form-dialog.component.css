@@ -1,0 +1,7 @@
+.form-group {
+  @apply mb-4;
+}
+
+label {
+  @apply font-medium;
+}
