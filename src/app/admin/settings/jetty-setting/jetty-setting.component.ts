@@ -97,21 +97,22 @@ export class JettySettingComponent implements OnInit {
   }
 
   deleteData(selected: IJetty[]): void {
-    forkJoin(selected.map((val) => this.jettyService.deleteJetty(val.id))).subscribe({
-      next: (responses: any[]) => {
-        responses.forEach((res, i) => {
-          if (!res?.sucess) {
-            this.snackBar.open(`Failed to delete jetty with id: ${selected[i].id}`, null, { panelClass: ['error']});
-            return;
-          }
-          this.snackBar.open(`Jetty with id: ${selected[i].id} deleted successfully`);
-        })
-      },
-      error: (error: unknown) => {
-        console.log(error);
-        this.snackBar.open('Delete operation could not be processed', null, { panelClass: ['error']});
-      }
-    })
-  
+    if (selected?.length) {
+      forkJoin(selected.map((val) => this.jettyService.deleteJetty(val.id))).subscribe({
+        next: (responses: any[]) => {
+          responses.forEach((res, i) => {
+            if (!res?.success) {
+              this.snackBar.open(`Failed to delete jetty with id: ${selected[i].id}`, null, { panelClass: ['error']});
+              return;
+            }
+            this.snackBar.open(`Jetty with id: ${selected[i].id} deleted successfully`);
+          })
+        },
+        error: (error: unknown) => {
+          console.log(error);
+          this.snackBar.open('Delete operation could not be processed', null, { panelClass: ['error']});
+        }
+      })
+    }
   }
 }

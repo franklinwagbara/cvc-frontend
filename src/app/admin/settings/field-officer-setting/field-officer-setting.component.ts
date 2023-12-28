@@ -83,7 +83,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        this.fetchAllData();
+        
       }
     });
   }
