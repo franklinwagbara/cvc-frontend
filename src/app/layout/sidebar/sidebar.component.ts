@@ -108,8 +108,8 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
-    title: 'LICENCES',
+    id: 5,
+    title: 'NOA APPLICATIONS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
     iconColor: 'white',
@@ -119,13 +119,13 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL LICENCES',
+        title: 'ALL NOA APPLICATIONS',
         url: '/admin/licences',
       },
     ],
   },
   {
-    id: 5,
+    id: 6,
     title: 'SCHEDULES',
     iconName: 'schedules',
     iconId: 'schedules',
@@ -142,7 +142,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -164,7 +164,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -191,7 +191,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -247,6 +247,11 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 9,
+        title: 'APPLICATION DEPOT',
+        url: '/admin/app-depots',
+      },
+      {
+        id: 10,
         title: 'JETTY CONFIGURATION',
         url: '/admin/jetty-setting'
       },
@@ -301,10 +306,13 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     // Show CoQ nav only to Staffs in Field Offices
     const currentUser = decodeUser();
-    if (currentUser && (!currentUser?.location || currentUser.location !== 'FO')) {
+    if (
+      currentUser &&
+      (!currentUser?.location || currentUser.location !== 'FO')
+    ) {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
     }
-    
+
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {

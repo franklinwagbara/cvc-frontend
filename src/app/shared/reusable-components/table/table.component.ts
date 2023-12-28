@@ -94,6 +94,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   public selection = new SelectionModel<any>(true, []);
 
   ngOnInit(): void {
+    this.initialComponents();
+  }
+
+  private initialComponents() {
     this.headers = Object.values(this.keysMappedToHeaders);
     this.keys = Object.keys(this.keysMappedToHeaders);
 
@@ -187,6 +191,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.initialComponents();
+
     //this.dataSource.setData(this.items);
     this.dataSource.data = this.items;
   }

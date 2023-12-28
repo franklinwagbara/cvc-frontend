@@ -58,6 +58,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
+import { AppDepotComponent } from './settings/app-depot/app-depot.component';
 import { PaymentComponent } from './payment/payment.component';
 import { PaymentViewTableComponent } from './payment/view-payment/payment-view-table/payment-view-table.component';
 import { ViewPaymentComponent } from './payment/view-payment/view-payment.component';
@@ -100,6 +101,7 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     LicenceComponent,
     ScheduleComponent,
     AppFeeComponent,
+    AppDepotComponent,
     PaymentComponent,
     ViewPaymentComponent,
     PaymentViewTableComponent,

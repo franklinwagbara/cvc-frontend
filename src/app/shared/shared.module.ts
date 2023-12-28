@@ -50,8 +50,10 @@ import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
 import { ViewApplicationInFullComponent } from './reusable-components/view-application-in-full/view-application-in-full.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
+import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-depot-form.component';
 import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DepotOfficerFormComponent } from './reusable-components/depot-officer-form/depot-officer-form.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FirstNPipe,
     FormatTimeAmPmPipe,
     ViewApplicationInFullComponent,
+    AppDepotFormComponent,
     RoleFormComponent,
+    DepotOfficerFormComponent,
   ],
   imports: [
     CommonModule,
