@@ -2,8 +2,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppException } from 'src/app/shared/exceptions/AppException';
+import { IJetty } from 'src/app/shared/interfaces/ijetty';
 import { IVesselType } from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
+import { JettyService } from 'src/app/shared/services/jetty.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
@@ -30,6 +32,7 @@ export class NewApplicationComponent implements OnInit {
   public isMobile = false;
   public selectedFacility: IFacility[] = [];
   public vesselTypes: IVesselType[] = [];
+  public jetties: IJetty[] = [];
 
   public segmentState: 1 | 2 | 3;
 
@@ -46,7 +49,8 @@ export class NewApplicationComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private jettyService: JettyService
   ) {}
 
   ngOnInit(): void {
@@ -93,6 +97,7 @@ export class NewApplicationComponent implements OnInit {
     this.getProducts();
     this.getVesselTypes();
     this.getDepots();
+    this.getJetties();
   }
 
   public get activateFirstSegment() {
@@ -223,6 +228,22 @@ export class NewApplicationComponent implements OnInit {
       (x) => x.sourceOfProducts !== facility.sourceOfProducts
     );
     this.cd.markForCheck();
+  }
+
+  public getJetties() {
+    this.spinner.open();
+
+    this.jettyService.getAllJetty().subscribe({
+      next: (res) => {
+        this.jetties = res.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: AppException) => {
+        this.popUp.open(error.message, 'error');
+        this.spinner.close();
+      },
+    });
   }
 
   public getFacilityTypes() {

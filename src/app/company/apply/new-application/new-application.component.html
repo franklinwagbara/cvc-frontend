@@ -34,7 +34,7 @@
                 formControlName="loadingPort"
               />
             </div>
-
+            <!--
             <div class="flex flex-col">
               <span class="input-label"> Jetty </span>
               <input
@@ -43,6 +43,20 @@
                 placeholder="Discharge Port"
                 formControlName="jetty"
               />
+            </div> -->
+
+            <div class="flex flex-col">
+              <span class="input-label"> Jetty </span>
+              <select
+                type="text"
+                class="border border-t border-b rounded-r p-2"
+                formControlName="jetty"
+              >
+                <option disabled>--select--</option>
+                <option *ngFor="let j of jetties" [ngValue]="j.name">
+                  {{ j.name }}
+                </option>
+              </select>
             </div>
 
             <div class="flex flex-col">
@@ -130,7 +144,7 @@
               [disabled]="appDepotForm.invalid ? true : null"
               (click)="addAppDepot()"
             >
-              Add Tank
+              Add Depot
             </button>
 
             <div *ngIf="selectedAppDepots?.length > 0">
