@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
-
 
 @Component({
   selector: 'app-application-view-table',
@@ -13,13 +12,34 @@ export class ApplicationViewTableComponent implements OnInit {
   @Input() appId: number;
   @Input() appSource: string;
 
-  constructor(private router: Router) {}
+  public depotId?: number;
+  public coqId?: number;
 
-  ngOnInit(): void {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((param) => {
+      this.depotId = +param['depotId'];
+      this.coqId = +param['coqId'];
+    });
+  }
 
   viewApplicationInFull() {
     this.router.navigate([`/admin/view-application-in-full/${this.appId}`], {
       queryParams: { id: this.appId, appSource: this.appSource },
     });
+  }
+
+  viewCOQApplication() {
+    this.router.navigate(
+      [
+        'admin',
+        'noa-applications-by-depot',
+        this.appId,
+        'certificate-of-quantity',
+        'new-application',
+      ],
+      { queryParams: { depotId: this.depotId, view: true, coqId: this.coqId } }
+    );
   }
 }

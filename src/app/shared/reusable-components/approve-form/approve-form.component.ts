@@ -18,6 +18,7 @@ import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
 import { PopupService } from '../../services/popup.service';
+import { CoqService } from '../../services/coq.service';
 
 @Component({
   selector: 'app-approve-form',
@@ -28,6 +29,8 @@ export class ApproveFormComponent implements OnInit {
   public form: FormGroup;
   public application: IApplication;
   public currentUser: Staff;
+  public isFO: boolean;
+  public coqId: number;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
@@ -39,9 +42,12 @@ export class ApproveFormComponent implements OnInit {
     private auth: AuthenticationService,
     private popup: PopupService,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private coqService: CoqService
   ) {
     this.application = data.data.application;
+    this.isFO = data.data.isFO;
+    this.coqId = data.data.coqId;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
@@ -73,7 +79,12 @@ export class ApproveFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  approve() {
+  public approve() {
+    if (this.isFO) this.approveFO();
+    else this.approveOther();
+  }
+
+  private approveOther() {
     this.progressBarService.open();
 
     const model = {
@@ -85,6 +96,38 @@ export class ApproveFormComponent implements OnInit {
     };
 
     this.appService.processApplication(model).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.popup.open('Operation was successfully!', 'success');
+          this.dialogRef.close();
+        }
+
+        this.progressBarService.close();
+        this.router.navigate(['/admin/my-desk']);
+        this.cd.markForCheck();
+      },
+
+      error: (error: unknown) => {
+        this.popup.open(
+          'Operation failed! Could not user information!',
+          'error'
+        );
+
+        this.progressBarService.close();
+      },
+    });
+  }
+
+  private approveFO() {
+    this.progressBarService.open();
+
+    const model = {
+      applicationId: this.coqId,
+      action: ApplicationActionType.Approve,
+      comment: this.form.controls['comment'].value,
+    };
+
+    this.coqService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
           this.popup.open('Operation was successfully!', 'success');

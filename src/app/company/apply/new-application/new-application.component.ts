@@ -53,7 +53,8 @@ export class NewApplicationComponent implements OnInit {
     this.vesselForm = this.formBuilder.group({
       vesselName: ['', Validators.required],
       loadingPort: ['', Validators.required],
-      // dischargePort: ['', Validators.required],
+      jetty: ['', Validators.required],
+      motherVessel: ['', Validators.required],
       marketerName: ['', Validators.required],
       productId: ['', Validators.required],
       vesselTypeId: ['', Validators.required],
@@ -114,7 +115,8 @@ export class NewApplicationComponent implements OnInit {
     return (
       this.vesselForm.controls['vesselName'].valid &&
       this.vesselForm.controls['loadingPort'].valid &&
-      // this.vesselForm.controls['dischargePort'].valid &&
+      this.vesselForm.controls['jetty'].valid &&
+      this.vesselForm.controls['motherVessel'].valid &&
       this.vesselForm.controls['vesselTypeId'].valid &&
       this.vesselForm.controls['imoNumber'].valid
     );
@@ -137,16 +139,17 @@ export class NewApplicationComponent implements OnInit {
     const payload: IApplicationFormDTO = {
       vesselName: this.vesselForm.value.vesselName,
       loadingPort: this.vesselForm.value.loadingPort,
-      // dischargePort: this.vesselForm.value.dischargePort,
-      marketerName: this.vesselForm.value.marketerName,
-      // productId: this.vesselForm.value.productId,
       vesselTypeId: this.vesselForm.value.vesselTypeId,
       imoNumber: (this.vesselForm.value.imoNumber as number).toString(),
+      jetty: this.vesselForm.value.jetty,
+      motherVessel: this.vesselForm.value.motherVessel,
 
       applicationTypeId: this.applicationTypeId,
+      depotList: this.selectedAppDepots,
+
       facilityName: this.vesselForm.value.vesselName,
       facilitySources: this.selectedFacility,
-      depotList: this.selectedAppDepots,
+      marketerName: this.vesselForm.value.marketerName,
     };
 
     this.spinner.open();
@@ -426,6 +429,8 @@ export interface IApplicationFormDTO {
   marketerName: string;
   vesselTypeId: number;
   imoNumber: string;
+  motherVessel: string;
+  jetty: string;
 
   applicationTypeId: number;
   facilityName: string;

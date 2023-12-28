@@ -1,4 +1,12 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -7,95 +15,213 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ICoQApplication } from 'src/app/shared/interfaces/ICoQApplication';
+import {
+  ICOQ,
+  ICoQApplication,
+} from 'src/app/shared/interfaces/ICoQApplication';
 import { environment } from 'src/environments/environment';
-import { DocumentConfig } from 'src/app/company/document-upload/document-upload.component';
-
+import {
+  DocumentConfig,
+  DocumentInfo,
+  IUploadDocInfo,
+} from 'src/app/company/document-upload/document-upload.component';
+import { ApplicationService } from 'src/app/shared/services/application.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { IDepot } from 'src/app/shared/interfaces/IDepot';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-coq-application-form',
   templateUrl: './coq-application-form.component.html',
   styleUrls: ['./coq-application-form.component.css'],
 })
-
-export class CoqApplicationFormComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CoqApplicationFormComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   liquidProductForm: FormGroup;
   displayedColumns = ['document', 'action', 'progress'];
   private allSubscriptions = new Subscription();
   dataSource: MatTableDataSource<any>;
   listOfRequiredDocs: any[] = [];
-  vesselInfo: any;
+  vesselInfo: IVesselDetail;
   appId: number;
   documentConfig: DocumentConfig;
+  uploadDocInfo: IUploadDocInfo;
+  documents: DocumentInfo[] = [];
+  depots: IDepot[];
+  selectedDepotId: number;
+  coqId: number;
+  coq: ICOQ;
+
+  viewOnly: boolean = false;
 
   dateValidation = {
     minDate: '',
-    maxDate: new Date()
-  }
+    maxDate: new Date(),
+  };
 
   tableData = [
-    { document: 'Document A', action: 'upload', progress: 'Progress'},
-    { document: 'Document B', action: 'upload', progress: 'Progress'},
-    { document: 'Document C', action: 'upload', progress: 'Progress'},
-  ]
+    { document: 'Document A', action: 'upload', progress: 'Progress' },
+    { document: 'Document B', action: 'upload', progress: 'Progress' },
+    { document: 'Document C', action: 'upload', progress: 'Progress' },
+  ];
   uploadedDocs: File[] = [];
   uploadedDoc$ = new BehaviorSubject<File>(null);
-  uploadInfo: any[] = [
-    { document: 'Document A', fileName: '', fileSizeKB: '', progressPercent: 0, success: null },
-    { document: 'Document B', fileName: '', fileSizeKB: '', progressPercent: 0, success: null },
-    { document: 'Document C', fileName: '', fileSizeKB: '', progressPercent: 0, success: null },
-  ];
-  uploadInfo$: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  documents$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private fileUpload: FileuploadWithProgressService,
     private elRef: ElementRef,
     private snackBar: MatSnackBar,
     private coqService: CoqService,
-    private spinner: SpinnerService,
+    public spinner: SpinnerService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private appService: ApplicationService,
+    private popup: PopupService,
+    private libService: LibaryService,
+    private cd: ChangeDetectorRef
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
-    })
-  }
-  
-  ngOnInit(): void {
-    this.spinner.open();
+    });
 
-    this.liquidProductForm = this.fb.group({
-      dateOfVesselArrival: ['', [Validators.required, Validators.max]],
-      dateOfVesselUllage: ['', [Validators.required]],
-      dateOfSTAfterDischarge: ['', [Validators.required]],
-      gov: ['', [Validators.required]],
-      gsv: ['', [Validators.required]],
-      mt_VAC: ['', [Validators.required]],
-      depotPrice: ['', [Validators.required]]
-    })
+    this.route.queryParams.subscribe((qp) => {
+      this.viewOnly = qp['view'];
+      if (this.viewOnly) {
+        this.selectedDepotId = +qp['depotId'];
+        this.coqId = +qp['coqId'];
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    if (this.coqId) this.getCOQ();
+    this.initialForms(null);
 
     this.uploadedDoc$.subscribe((file) => {
       this.uploadedDocs.push(file);
-    })
-
-    // Get list of required coq docs
-    // this.coqService.getListOfRequiredDocs().subscribe({
-    //   next: (val: any[]) => {
-    //     this.listOfRequiredDocs = val;
-    //   },
-    //   error: (error: any) => {
-    //     alert('Unable to initiate CoQ Application at the moment. Please try again.');
-    //     this.router.navigate(['/admin/noa-applications-by-depot']);
-    //   }
-    // })
+    });
 
     this.dataSource = new MatTableDataSource<any>([]);
+
+    this.documents$.subscribe((res) => {
+      this.setDataSource();
+    });
+
+    this.getVesselDetails();
+    this.getDepots();
+    this.getUploadDocuments();
+  }
+
+  public initialForms(coqInfo: ICOQ) {
+    if (!coqInfo)
+      this.liquidProductForm = this.fb.group({
+        dateOfVesselArrival: ['', [Validators.required, Validators.max]],
+        dateOfVesselUllage: ['', [Validators.required]],
+        dateOfSTAfterDischarge: ['', [Validators.required]],
+        gov: ['', [Validators.required]],
+        gsv: ['', [Validators.required]],
+        mt_VAC: ['', [Validators.required]],
+        depotPrice: ['', [Validators.required]],
+      });
+    else {
+      this.liquidProductForm = this.fb.group({
+        dateOfVesselArrival: [
+          new Date(coqInfo.dateOfVesselArrivalISO),
+          [Validators.required, Validators.max],
+        ],
+        dateOfVesselUllage: [
+          new Date(coqInfo.dateOfVesselUllageISO),
+          [Validators.required],
+        ],
+        dateOfSTAfterDischarge: [
+          new Date(coqInfo.dateOfSTAfterDischargeISO),
+          [Validators.required],
+        ],
+        gov: [coqInfo.gov ?? '', [Validators.required]],
+        gsv: [coqInfo.gsv ?? '', [Validators.required]],
+        mt_VAC: [coqInfo.mT_VAC ?? '', [Validators.required]],
+        depotPrice: [coqInfo.depotPrice ?? '', [Validators.required]],
+      });
+    }
+    this.cd.markForCheck();
+  }
+
+  public getCOQ() {
+    this.coqService.getCOQById(this.coqId).subscribe({
+      next: (res) => {
+        this.coq = res.data;
+        this.initialForms(this.coq);
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message, 'error');
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public getVesselDetails() {
+    this.spinner.open();
+    this.appService.getVesselDetails(this.appId).subscribe({
+      next: (res) => {
+        this.vesselInfo = res.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message, 'error');
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public getUploadDocuments() {
+    this.spinner.open();
+    this.appService.getUploadDocuments(this.appId).subscribe({
+      next: (res) => {
+        this.documentConfig = res.data.apiData;
+        this.documents = res.data.docs;
+        this.documents$.next(this.documents);
+        this.hasUploadedAllRequiredDocs;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message, 'error');
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public getDepots() {
+    this.spinner.open();
+    this.libService.getAppDepots().subscribe({
+      next: (res) => {
+        this.depots = res.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message, 'error');
+        this.cd.markForCheck();
+      },
+    });
   }
 
   ngAfterViewInit(): void {
-    this.spinner.close();
-    this.dataSource = new MatTableDataSource(this.tableData)
+    this.setDataSource();
+  }
+
+  private setDataSource() {
+    this.dataSource = new MatTableDataSource(this.documents);
   }
 
   ngOnDestroy(): void {
@@ -103,15 +229,14 @@ export class CoqApplicationFormComponent implements OnInit, AfterViewInit, OnDes
   }
 
   get hasUploadedAllRequiredDocs(): boolean {
-    if (this.uploadInfo.length) {
-      return this.uploadInfo.every((info) => info.success);
+    if (this.documents.length) {
+      return this.documents.every((info) => info.docSource);
     }
     return false;
   }
 
-  onFileSelected(evt: Event, index: number): void {
+  onFileSelected(evt: Event, index: number, doc: DocumentInfo): void {
     const file = (evt.target as any).files[0];
-    console.log('File =========== ', file);
     if (file) {
       let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
       if (!isAccepted) {
@@ -121,72 +246,163 @@ export class CoqApplicationFormComponent implements OnInit, AfterViewInit, OnDes
       }
 
       const fileSizeInBytes = file.size;
-      const fileSizeInKb = fileSizeInBytes / 1024
+      const fileSizeInKb = fileSizeInBytes / 1024;
       const fileSizeInMB = fileSizeInKb / 1024;
       if (fileSizeInMB > 20) {
-        this.snackBar.open(`File ${file.name} size too large`, null, { panelClass: ['error'] });
+        this.snackBar.open(`File ${file.name} size too large`, null, {
+          panelClass: ['error'],
+        });
         (evt.target as any).value = '';
         return;
       }
 
-      this.uploadInfo = this.uploadInfo.map((el, i) => {
+      this.documents = this.documents.map((el, i) => {
         if (i === index) {
-          return { ...el, fileName: file.name, fileSizeInKb: fileSizeInKb.toFixed(2) }
+          return {
+            ...el,
+            fileName: file.name,
+            fileSizeInKb: fileSizeInKb.toFixed(2),
+          };
         }
         return el;
-      })
-      
+      });
+
       const dateId = Date.now();
       const { docTypeId, compId, email, apiHash, docName, uniqueid } = {
-        docTypeId: dateId,
+        docTypeId: doc.docId,
         compId: this.documentConfig.companyElpsId,
         email: this.documentConfig.apiEmail,
         apiHash: this.documentConfig.apiHash,
-        docName: file.name,
-        uniqueid: dateId
+        docName: doc.docName,
+        uniqueid: '',
       };
+
       const uploadUrl = `${environment.elpsBase}/api/UploadCompanyDoc/${docTypeId}/${compId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
 
-      this.allSubscriptions.add(this.fileUpload.uploadFile(file, uploadUrl).subscribe({
-        next: (val: number) => {
-          this.uploadInfo = this.uploadInfo.map((el, i) => {
-            if (i === index) {
-              return { ...el, percentProgress: val, success: val === 100 || null  };
-            }
-            return el;
-          })
-          this.uploadInfo$.next(this.uploadInfo);
-        },
-        error: (error: any) => {
-          console.log(error);
-          this.uploadInfo = this.uploadInfo.map((el, i) => {
-            if (i === index) {
-              return { ...el, success: false };
-            }
-            return el;
-          })
-          this.uploadInfo$.next(this.uploadInfo);
-          this.snackBar.open('Could not upload file', null, { panelClass: ['error'] });
-        }
-      }));
+      this.allSubscriptions.add(
+        this.fileUpload.uploadFile(file, uploadUrl).subscribe({
+          next: (val: number) => {
+            this.documents = this.documents.map((el, i) => {
+              if (i === index) {
+                return {
+                  ...el,
+                  percentProgress: val,
+                  success: val === 100 || null,
+                };
+              }
+              return el;
+            });
+            this.documents$.next(this.documents);
+            this.cd.markForCheck();
+          },
+          error: (error: any) => {
+            this.documents = this.documents.map((el, i) => {
+              if (i === index) {
+                return { ...el, success: false };
+              }
+              return el;
+            });
+            this.documents$.next(this.documents);
+            this.snackBar.open('Could not upload file', null, {
+              panelClass: ['error'],
+            });
+            this.cd.markForCheck();
+          },
+        })
+      );
     }
   }
 
   uploadDoc(index: number) {
-    const collections = this.elRef.nativeElement.querySelectorAll('.file-input');
+    const collections =
+      this.elRef.nativeElement.querySelectorAll('.file-input');
     const inputEl = collections[index];
     inputEl.click();
   }
 
-  submit():  void {
-    let data: ICoQApplication = {...this.liquidProductForm.value, appId: this.appId, depotId: '', };
-    this.coqService.createCoQ(data);
+  save(): void {
+    if (!this.selectedDepotId) {
+      this.popup.open('No depot was selected. Please select a depot', 'error');
+      return;
+    }
+
+    let data: ICoQApplication = {
+      ...this.liquidProductForm.value,
+      appId: this.appId,
+      depotId: this.selectedDepotId,
+    };
+    this.spinner.open();
+    this.coqService.createCoQ(data).subscribe({
+      next: (res) => {
+        this.spinner.close();
+        this.popup.open(
+          res?.message ?? 'COQ was saved successfully.',
+          'success'
+        );
+        this.coqId = res.data.id;
+        this.onViewCOQ(this.appId, this.coqId, this.selectedDepotId);
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message ?? 'Attempt to save COQ failed!', 'error');
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public submit() {
+    this.coqService.submit(this.coqId).subscribe({
+      next: (res) => {
+        this.popup.open(
+          'COQ Application was submitted successfully.',
+          'success'
+        );
+        this.spinner.close();
+        this.getCOQ();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.spinner.close();
+        this.popup.open(e?.message, 'error');
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public onViewCOQ(appId: number, coqId: number, depotId: number) {
+    this.router.navigate(
+      [
+        'admin',
+        'noa-applications-by-depot',
+        appId,
+        'certificate-of-quantity',
+        'new-application',
+      ],
+      { queryParams: { depotId: depotId, view: true, coqId: coqId } }
+    );
+  }
+
+  public get isSubmitted() {
+    return this.coq && this.coq.submittedDate;
   }
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
-    if (["e", "E", "+"].includes(evt.key)) {
-      evt.preventDefault()
-    } 
+    if (['e', 'E', '+'].includes(evt.key)) {
+      evt.preventDefault();
+    }
   }
+}
+
+export interface IVesselDetail {
+  marketerName: string;
+  depotCapacity: string;
+  productName: string;
+  volume: number;
+  vesselName: string;
+  motherVessel: string;
+  jetty: string;
+  eta: string;
+  recievingTerminal: string;
 }

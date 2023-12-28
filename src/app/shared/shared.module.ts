@@ -53,6 +53,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-depot-form.component';
 import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DepotOfficerFormComponent } from './reusable-components/depot-officer-form/depot-officer-form.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ViewApplicationInFullComponent,
     AppDepotFormComponent,
     RoleFormComponent,
+    DepotOfficerFormComponent,
   ],
   imports: [
     CommonModule,

@@ -262,4 +262,13 @@ export class DocumentInfo {
   available: string;
   docType: string;
   company: string;
+  success?: boolean;
+  fileSizeInKb?: any;
+  percentProgress?: any;
+  fileName: string;
+}
+
+export interface IUploadDocInfo {
+  documentConfig: DocumentConfig;
+  documentInfo: DocumentInfo[];
 }

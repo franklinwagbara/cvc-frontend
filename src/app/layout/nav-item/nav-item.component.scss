@@ -22,7 +22,7 @@
 
 /**Toggle nav sub menu css */
 .nav-sub-menu {
-  @apply bg-yellow-100 text-black pt-6;
+  @apply bg-yellow-50 text-black pt-6;
 }
 
 .nav-sub-menu p {
@@ -42,6 +42,11 @@ a {
   margin-top: -25px;
   overflow: hidden;
   @apply invisible opacity-0 transition-all ease-in-out delay-150 duration-500;
+}
+
+.nav-sub-menu {
+  min-height: fit-content;
+  overflow-y: auto;
 }
 
 .arrow {

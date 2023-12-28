@@ -284,10 +284,12 @@ export class Staff {
   elpsId: string;
   signatureImage: any;
   id: any;
+  name?: string;
 
   constructor(item: Staff) {
     this.firstName = item.firstName;
     this.lastName = item.lastName;
+    this.name = item.firstName + ', ' + item.lastName;
     this.userId = item.userId;
     this.email = item.email;
     this.phoneNo = item.phoneNo;

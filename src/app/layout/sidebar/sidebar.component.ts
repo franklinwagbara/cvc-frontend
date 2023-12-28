@@ -107,8 +107,8 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
-    title: 'LICENCES',
+    id: 5,
+    title: 'NOA APPLICATIONS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
     iconColor: 'white',
@@ -118,13 +118,13 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL LICENCES',
+        title: 'ALL NOA APPLICATIONS',
         url: '/admin/licences',
       },
     ],
   },
   {
-    id: 5,
+    id: 6,
     title: 'SCHEDULES',
     iconName: 'schedules',
     iconId: 'schedules',
@@ -141,7 +141,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -163,7 +163,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -190,7 +190,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
