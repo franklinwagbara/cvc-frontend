@@ -40,7 +40,6 @@ export class ViewMessageComponent implements OnInit {
       this.content = this.sanitizer.bypassSecurityTrustHtml(
         this.message.content
       );
-      console.log(this.content);
     }
     this.cd.markForCheck();
   }
