@@ -71,4 +71,10 @@ export class LibaryService {
   public getAppDepots() {
     return this.http.get<any>(`${api}/all-depot`);
   }
+
+  public getAppDepotsByAppId(appId: number) {
+    return this.http.get<any>(`${api}/All-Depot-By-AppId`, {
+      params: { appId },
+    });
+  }
 }

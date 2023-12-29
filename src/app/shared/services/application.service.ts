@@ -54,9 +54,9 @@ export class ApplicationService {
     });
   }
 
-  public getVesselDetails(appId: number) {
+  public getVesselDetails(appId: number, depotId: number) {
     return this.http.get<any>(`${API}/get-app-vessel-info`, {
-      params: { id: appId },
+      params: { id: appId, depotId },
     });
   }
 }

@@ -52,7 +52,7 @@
       <th>Submitted On</th>
       <td>{{ application?.submittedDate }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="authService.isFOLocation">
       <th>View COQ Application</th>
       <td>
         <button class="btn" (click)="viewCOQApplication()">

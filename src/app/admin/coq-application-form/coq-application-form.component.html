@@ -10,6 +10,7 @@
             <mat-label>Select Depot</mat-label>
             <mat-select
               [(ngModel)]="selectedDepotId"
+              (valueChange)="onSelectDepot($event)"
               name="depot"
               [disabled]="viewOnly"
             >

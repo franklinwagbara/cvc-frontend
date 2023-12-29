@@ -29,7 +29,7 @@ export class LicenceComponent implements OnInit, AfterViewInit {
   public categories: Category[];
 
   public tableTitles = {
-    applications: 'All Licences',
+    applications: 'All CERTIFICATES',
   };
 
   public applicationKeysMappedToHeaders = {

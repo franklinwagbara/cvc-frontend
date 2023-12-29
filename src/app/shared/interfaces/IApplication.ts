@@ -18,6 +18,7 @@ export interface IApplication {
   eta?: string;
 
   applicationType?: string;
+  id?: number;
 }
 
 export interface IDoc {

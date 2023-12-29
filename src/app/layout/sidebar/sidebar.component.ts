@@ -109,7 +109,7 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 5,
-    title: 'NOA APPLICATIONS',
+    title: 'NOA CERTIFICATES',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
     iconColor: 'white',
@@ -119,7 +119,7 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL NOA APPLICATIONS',
+        title: 'ALL NOA CERTIFICATES',
         url: '/admin/licences',
       },
     ],
@@ -248,12 +248,12 @@ const ROUTES: RouteInfo[] = [
       {
         id: 10,
         title: 'JETTY CONFIGURATION',
-        url: '/admin/jetty-setting'
+        url: '/admin/jetty-setting',
       },
       {
         id: 10,
         title: 'SURVEYOR CONFIGURATION',
-        url: '/admin/nominated-surveyor-setting'
+        url: '/admin/nominated-surveyor-setting',
       },
       {
         id: 11,

@@ -1,7 +1,9 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   HostListener,
   OnDestroy,
@@ -49,7 +51,7 @@ export class CoqApplicationFormComponent
   uploadDocInfo: IUploadDocInfo;
   documents: DocumentInfo[] = [];
   depots: IDepot[];
-  selectedDepotId: number;
+  selectedDepotId: number = 0;
   coqId: number;
   coq: ICOQ;
 
@@ -110,8 +112,8 @@ export class CoqApplicationFormComponent
       this.setDataSource();
     });
 
-    this.getVesselDetails();
-    this.getDepots();
+    if (this.selectedDepotId != 0) this.getVesselDetails();
+    this.getAppDepotsByAppId();
     this.getUploadDocuments();
   }
 
@@ -149,6 +151,10 @@ export class CoqApplicationFormComponent
     this.cd.markForCheck();
   }
 
+  public onSelectDepot(depotId) {
+    this.getVesselDetails(depotId);
+  }
+
   public getCOQ() {
     this.coqService.getCOQById(this.coqId).subscribe({
       next: (res) => {
@@ -165,20 +171,26 @@ export class CoqApplicationFormComponent
     });
   }
 
-  public getVesselDetails() {
+  public getVesselDetails(depotId = null) {
     this.spinner.open();
-    this.appService.getVesselDetails(this.appId).subscribe({
-      next: (res) => {
-        this.vesselInfo = res.data;
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (e) => {
-        this.spinner.close();
-        this.popup.open(e?.message, 'error');
-        this.cd.markForCheck();
-      },
-    });
+    this.appService
+      .getVesselDetails(this.appId, depotId ?? this.selectedDepotId)
+      .subscribe({
+        next: (res) => {
+          this.vesselInfo = res.data;
+          if (res.data.coqExist) {
+            this.coqId = res.data.coqId;
+            this.getCOQ();
+          }
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (e) => {
+          this.spinner.close();
+          this.popup.open(e?.message, 'error');
+          this.cd.markForCheck();
+        },
+      });
   }
 
   public getUploadDocuments() {
@@ -200,9 +212,9 @@ export class CoqApplicationFormComponent
     });
   }
 
-  public getDepots() {
+  public getAppDepotsByAppId() {
     this.spinner.open();
-    this.libService.getAppDepots().subscribe({
+    this.libService.getAppDepotsByAppId(this.appId).subscribe({
       next: (res) => {
         this.depots = res.data;
         this.spinner.close();

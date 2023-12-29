@@ -80,6 +80,7 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
+    debugger;
     if (this.isFO) this.approveFO();
     else this.approveOther();
   }
@@ -88,7 +89,7 @@ export class ApproveFormComponent implements OnInit {
     this.progressBarService.open();
 
     const model = {
-      applicationId: this.application.applicationTypeId,
+      applicationId: this.application.id,
       action: ApplicationActionType.Approve,
       comment: this.form.controls['comment'].value,
       // currentUserId: this.currentUser.id,
