@@ -8,6 +8,8 @@ import { GenericService } from '../../shared/services/generic.service';
 import { AuthenticationService } from '../../shared/services';
 import { LoginModel } from '../../shared/models/login-model';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ViewMessageComponent } from '../messages/view-message/view-message.component';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -20,7 +22,7 @@ export class DashboardComponent implements OnInit {
   public generic: GenericService;
   public currentUsername: LoginModel;
   public dashboard: IDashboard;
-  public messages: IMessage;
+  public messages: IMessage[];
 
   constructor(
     private gen: GenericService,
@@ -31,7 +33,8 @@ export class DashboardComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private popUp: PopupService,
     private adminService: AdminService,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private dialog: MatDialog
   ) {
     this.generic = gen;
     this.currentUsername = auth.currentUser;
@@ -82,6 +85,13 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  viewMessage(index: number) {
+    this.dialog.open(ViewMessageComponent, {
+      data: { index: index, messages: this.messages },
+      panelClass: 'view-message-content',
+    });
+  }
+
   showApply() {
     if (this.showapply) {
       this.showapply = false;
@@ -118,4 +128,10 @@ export interface IDashboard {
   totalLicenses: number;
 }
 
-export interface IMessage {}
+export interface IMessage {
+  id: string;
+  subject: string;
+  seen: boolean;
+  content: string;
+  date: string;
+}
