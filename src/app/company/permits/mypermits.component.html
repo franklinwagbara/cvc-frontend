@@ -11,11 +11,15 @@
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="permits"
           [EnableViewLicenceControl]="true"
+          [EnableViewCoQCertsControl]="true"
+          [EnableViewDebitNotesControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
           [noTitle]="true"
           (onViewData)="onViewData($event, 'permits')"
+          (onViewCoQCerts)="viewCoQCerts($event)"
+          (onViewDebitNotes)="viewDebitNotes($event)"
         >
         </generic-table>
       </div>

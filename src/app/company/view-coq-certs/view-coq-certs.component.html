@@ -1,0 +1,22 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-yellow-500 text-yellow-800">MY CERTIFICATE(S) OF QUANTITY</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'Certificate of Quantity'"
+          [title-color]="'yellow'"
+          [table_keysMappedToHeaders]="coqsKeysMappedToHeaders"
+          [table_content]="coqs"
+          [EnableViewCoQCertControl]="true"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          [noTitle]="true"
+          (onViewCoQCert)="viewCoQCert($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </div>
+</div>
