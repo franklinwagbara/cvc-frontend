@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthenticationService } from '../services';
 import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CoqGuard implements CanActivate {
+export class NoaAndApplicationsGuard implements CanActivate {
   constructor(
-    private router: Router,
-    private authService: AuthenticationService
+    private router: Router
   ) {}
 
   canActivate(
@@ -18,11 +16,10 @@ export class CoqGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
     const currentUser = decodeFullUserInfo();
-    if (currentUser && (!currentUser.location || currentUser.location !== 'FO')) {
-      this.router.navigateByUrl('/admin');
-      return false;
+    if (currentUser?.location === 'HQ' || ['SuperAdmin', 'Admin'].includes(currentUser?.userRoles)) {
+      return true;
     }
-    return true;
+    return false;
   }
   
 }
