@@ -319,7 +319,9 @@
 
     <div class="apply">
       <div>Click Here to</div>
-      <button class="apply-button">Apply</button>
+      <button class="apply-button" [routerLink]="['/company/apply']">
+        Apply
+      </button>
       <div>for a Permit</div>
     </div>
   </div>
@@ -337,55 +339,20 @@
         </thead>
 
         <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr *ngFor="let msg of messages; let i = index">
+            <td (click)="viewMessage(i)" class="cursor-pointer">
+              <i
+                class="fas"
+                [ngClass]="{
+                  'fa-envelope-open': msg.seen,
+                  'fa-envelope text-green-700': !msg.seen
+                }"
+              ></i>
+            </td>
+            <td (click)="viewMessage(i)" class="cursor-pointer">
+              {{ msg.subject }}
+            </td>
+            <td>{{ msg.date | date }}</td>
           </tr>
         </tbody>
       </table>

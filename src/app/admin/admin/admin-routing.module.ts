@@ -32,12 +32,17 @@ import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { CoqGuard } from 'src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
+import { NoaAndApplicationsGuard } from 'src/app/shared/guards/noa-and-applications.guard';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
   { path: 'staff-dashboard', component: DashboardComponent },
   { path: 'staff-desk', component: StaffdeskComponent },
-  { path: 'all-applications', component: ApplicationComponent },
+  { 
+    path: 'all-applications', 
+    component: ApplicationComponent,
+    canActivate: [NoaAndApplicationsGuard] 
+  },
   { path: 'all-staff', component: AllStaffComponent },
   { path: 'modules-setting', component: ModulesSettingComponent },
   { path: 'application-stage-docs', component: AppStageDocsComponent },
@@ -56,7 +61,11 @@ const routes: Routes = [
   },
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
-  { path: 'licences', component: LicenceComponent },
+  { 
+    path: 'licences', 
+    component: LicenceComponent, 
+    canActivate: [NoaAndApplicationsGuard] 
+  },
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
   { path: 'app-fees', component: AppFeeComponent },
