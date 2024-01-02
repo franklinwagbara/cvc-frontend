@@ -65,6 +65,10 @@ import { ViewPaymentComponent } from './payment/view-payment/view-payment.compon
 import { RolesComponent } from './settings/roles/roles.component';
 import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.component';
 import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
+import { CoqFormPreviewComponent } from './coq-application-form/coq-form-preview/coq-form-preview.component';
+import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 
 
 @NgModule({
@@ -106,13 +110,15 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     ViewPaymentComponent,
     PaymentViewTableComponent,
     RolesComponent,
-
     CoqApplicationFormComponent,
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
     JettySettingComponent,
     NominatedSurveyorSettingComponent,
+    EditCoqFormComponent,
+    CoqFormPreviewComponent,
+    CoqFormReviewComponent,
   ],
 
   imports: [
@@ -136,6 +142,7 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatStepperModule
   ],
   exports: [],
   providers: [

@@ -1,0 +1,8 @@
+
+.table td {
+  @apply pt-4 text-center;
+}
+
+.table th {
+  @apply text-gray-700 pb-4 pt-4 text-center font-bold;
+}

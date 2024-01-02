@@ -72,6 +72,10 @@ label {
   @apply rounded-lg bg-white overflow-x-auto w-full;
 }
 
+::ng-deep .mat-stepper-vertical {
+  @apply relative w-full;
+}
+
 table {
   width: 100%;
 }
@@ -86,7 +90,7 @@ th {
 }
 
 .upload-btn {
-  @apply border bg-purple-200 rounded-2xl text-purple-600 font-bold;
+  @apply border bg-blue-100 rounded-lg font-bold;
 }
 
 input::-webkit-outer-spin-button,
@@ -100,5 +104,5 @@ input[type=number]{
 }
 
 .form-field {
-  @apply px-2 block text-gray-800 w-full bg-transparent h-10 bg-gray-50 border border-gray-200 rounded mt-1;
+  @apply px-2 block text-gray-800 w-full bg-transparent h-10 bg-gray-50 border hover:border-gray-200 rounded mt-1;
 }
