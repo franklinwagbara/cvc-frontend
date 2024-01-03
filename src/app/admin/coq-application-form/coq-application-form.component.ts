@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -9,7 +8,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FileuploadWithProgressService } from '../../shared/services/fileupload-with-progress.service';
@@ -33,6 +32,7 @@ import { IDepot } from 'src/app/shared/interfaces/IDepot';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import { Util } from 'src/app/shared/lib/Util';
 import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -43,7 +43,7 @@ export class CoqApplicationFormComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   depotSelection = new FormControl('', Validators.required);;
-  tankName =  new FormControl('', Validators.required);
+  tankName =  new FormControl('', {validators: [Validators.required, this.isUniqueTankName()]});
   tankInfoForm: FormGroup;
   tankBeforeInfoForm: FormGroup;
   tankAfterInfoForm: FormGroup;
@@ -64,7 +64,7 @@ export class CoqApplicationFormComponent
 
   tankDisplayedColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC'];
 
-  @ViewChild('tankInfoStepper') tankInfoStepper: ElementRef;
+  @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
 
   tankBeforeFormTemplateCtx: any;
   tankAfterFormTemplateCtx: any;
@@ -124,10 +124,8 @@ export class CoqApplicationFormComponent
 
     this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
     
-    this.subscribePreviewData();
-    this.restorePreviewData();
+    this.subscribeReviewData();
     this.restoreReviewData();
-    this.subscribeTankValueChanges();
 
     this.coqFormService.formDataEvent.subscribe((val) => {
       if (val === 'removed') {
@@ -469,56 +467,15 @@ export class CoqApplicationFormComponent
     return this.coq && this.coq.submittedDate;
   }
 
-
   fetchConfiguredTanks(): string[] {
     return ['Tank 1', 'Tank 2', 'Tank 3'];
   }
 
-  restorePreviewData(): void {
-    const localPreviewData = JSON.parse(localStorage.getItem(LocalDataKeys.COQFORMPREVIEWDATA));
-    if (Array.isArray(localPreviewData) && localPreviewData.length) {
-      this.coqFormService.liquidProductPreviewData = localPreviewData.filter((val: CoQData) => {
-        return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
-      });
-      this.coqFormService.liquidProductPreviewData$.next(this.coqFormService.liquidProductPreviewData);
-    }
-  }
-
   restoreReviewData(): void {
-    const localFormReviewData = JSON.parse(localStorage.getItem(LocalDataKeys.COQFORMREVIEWDATA));
+    const localFormReviewData = JSON.parse(localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA));
     if (Array.isArray(localFormReviewData) && localFormReviewData.length) {
-      this.coqFormService.liquidProductReviewData = localFormReviewData;
       this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
     }
-  }
-
-  subscribePreviewData(): void {
-    this.allSubscriptions.add(this.coqFormService.liquidProductPreviewData$.subscribe((val) => {
-      if (Array.isArray(val) && val.length > 0) {
-        // Filter off tanks with before and after CoQData in the preview area
-        const tanksInPreview = val.map((coqData) => {
-          if (Object.keys(coqData.before).length && Object.keys(coqData.after).length) {
-            return coqData.before.tank;
-          }
-        });
-        this.coqFormService.configuredTanks = this.coqFormService.configuredTanks.filter((tank) => !tanksInPreview.includes(tank));
-      }
-    }));
-  }
-
-  subscribeTankValueChanges(): void {
-    this.allSubscriptions.add(this.tankInfoForm.controls['tank'].valueChanges.subscribe((val) => {
-      if (val) {
-        const data = this.coqFormService.liquidProductPreviewData;
-        for (let coqData of data) {
-          if (Object.keys(coqData.before).length && Object.keys(coqData.after).length && coqData.before.tank === val) {
-            this.toggleStatus(coqData.before, coqData.after);
-          } else if ((Object.keys(coqData.before).length || Object.keys(coqData.after).length) && coqData.before.tank === val) {
-            this.toggleStatus(coqData.before, coqData.after, Object.keys(coqData.before).length ? coqData.before : coqData.after);
-          }
-        }
-      }
-    }));
   }
 
   subscribeReviewData(): void {
@@ -536,21 +493,14 @@ export class CoqApplicationFormComponent
     }));
   }
 
-  toggleStatus(beforeOption: HTMLOptionElement, afterOption: HTMLOptionElement, formData?: any): void {
-    if (formData && Object.keys(formData).length) {
-      if (formData?.status === 'before') {
-        beforeOption.disabled = true;
-      }
-      if (formData?.status === 'after') {
-        afterOption.disabled = true;
-      }
-    } else {
-      beforeOption.disabled = false;
-      afterOption.disabled = false;
+  isUniqueTankName(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !this.coqFormService.liquidProductReviewData.some((val) => val.before.tank.toLowerCase() === control.value.toLowerCase()) ?
+        null : { duplicate: control.value };
     }
   }
 
-  saveToPreview(): void {
+  saveToReview(): void {
     const coqData: CoQData = {
       before: this.tankBeforeInfoForm.value, 
       after: this.tankAfterInfoForm.value, 
@@ -574,24 +524,33 @@ export class CoqApplicationFormComponent
     }
     
     // Check for form preview data in local storage
-    let coqFormDataArr = JSON.parse(localStorage.getItem(LocalDataKeys.COQFORMPREVIEWDATA));
+    let coqFormDataArr = JSON.parse(localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA));
     if (Array.isArray(coqFormDataArr) && coqFormDataArr.length) {
       coqFormDataArr.push(coqData);
     } else {
       coqFormDataArr = [coqData];
     }
-    this.coqFormService.liquidProductPreviewData$.next(coqFormDataArr);
-    localStorage.setItem(LocalDataKeys.COQFORMPREVIEWDATA, JSON.stringify(coqFormDataArr));
-    this.tankInfoStepper.nativeElement.reset();
+    this.coqFormService.liquidProductReviewData$.next(coqFormDataArr);
+    localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqFormDataArr));
+
+    for (let control in this.tankBeforeInfoForm.controls) {
+      if (control !== 'status') {
+        this.tankBeforeInfoForm.controls[control].setValue('');
+        this.tankAfterInfoForm.controls[control].setValue('');
+      }
+    }
+
+    this.tankName.setValue('');
+    this.tankInfoStepper.selectedIndex = 0;
   }
 
   updateConfiguredTanks() {
-    const tanksInPreview = this.coqFormService.liquidProductPreviewData.map((coqData) => {
+    const tanksInReview = this.coqFormService.liquidProductReviewData.map((coqData) => {
       if (Object.keys(coqData.before).length && Object.keys(coqData.after).length) {
         return coqData.before.tank;
       }
     });
-    this.coqFormService.configuredTanks = this.fetchConfiguredTanks().filter((tank) => !tanksInPreview.includes(tank));
+    this.coqFormService.configuredTanks = this.fetchConfiguredTanks().filter((tank) => !tanksInReview.includes(tank));
   }
 
   @HostListener('keydown', ['$event'])
@@ -601,38 +560,6 @@ export class CoqApplicationFormComponent
     } 
   }
 
-  /**
-   * Check if each tank's CoQData has before, after and diff data.
-   * @see CoQData
-   */
-  get isPreviewDataOk(): boolean {
-    if (!this.coqFormService.liquidProductPreviewData.length) return false;
-    for (let coqData of this.coqFormService.liquidProductPreviewData) {
-      if (!Object.keys(coqData.before).length || !Object.keys(coqData.after).length || !Object.keys(coqData.diff).length) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  proceedToReview(): void {
-    const reviewData = JSON.parse(localStorage.getItem(LocalDataKeys.COQFORMREVIEWDATA));
-    const previewData = JSON.parse(localStorage.getItem(LocalDataKeys.COQFORMPREVIEWDATA));
-    if (Array.isArray(reviewData) && reviewData.length) {
-      reviewData.push(...previewData);
-      this.coqFormService.liquidProductReviewData = reviewData;
-      this.coqFormService.liquidProductReviewData$.next(reviewData);
-      localStorage.setItem(LocalDataKeys.COQFORMREVIEWDATA, JSON.stringify(reviewData));
-    } else {
-      this.coqFormService.liquidProductReviewData = previewData;
-      this.coqFormService.liquidProductReviewData$.next(previewData);
-      localStorage.setItem(LocalDataKeys.COQFORMREVIEWDATA, JSON.stringify(previewData));
-    }
-
-    this.coqFormService.liquidProductPreviewData = [];
-    this.coqFormService.liquidProductPreviewData$.next([]);
-    localStorage.removeItem(LocalDataKeys.COQFORMPREVIEWDATA);
-  }
 }
 
 export interface LiquidProductData {
@@ -658,7 +585,7 @@ export interface CoQData {
   diff: any;
 }
 
-export enum LocalDataKeys {
+export enum LocalDataKey {
   COQFORMPREVIEWDATA = 'coq-form-preview-data-arr',
   COQFORMREVIEWDATA = 'coq-form-review-data-arr'
 }

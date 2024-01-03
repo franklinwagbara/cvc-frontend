@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { CoQData, LiquidProductData, LocalDataKeys } from 'src/app/admin/coq-application-form/coq-application-form.component';
+import { CoQData, LiquidProductData, LocalDataKey } from 'src/app/admin/coq-application-form/coq-application-form.component';
 import { DialogData, EditCoqFormComponent } from 'src/app/admin/coq-application-form/edit-coq-form/edit-coq-form.component';
 
 @Injectable({
@@ -9,15 +9,13 @@ import { DialogData, EditCoqFormComponent } from 'src/app/admin/coq-application-
 })
 export class CoqAppFormService {
   public configuredTanks: string[] = [];
-  public liquidProductPreviewData: any[] = [];
-  public liquidProductPreviewData$ = new BehaviorSubject<any[]>([]);
   public liquidProductReviewData: any[] = [];
   public liquidProductReviewData$ = new BehaviorSubject<any[]>([]);
   public formDataEvent = new EventEmitter<'edited' | 'removed'>();
 
   constructor(public dialog: MatDialog) {
-    this.liquidProductPreviewData$.subscribe((val: any[]) => {
-      this.liquidProductPreviewData = val.filter((val: CoQData) => {
+    this.liquidProductReviewData$.subscribe((val: any[]) => {
+      this.liquidProductReviewData = val.filter((val: CoQData) => {
         return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
       });
     })
@@ -51,7 +49,7 @@ export class CoqAppFormService {
     return arr;
   }
 
-  public openEditDialog(dialogData: DialogData, localDataKey: LocalDataKeys): void {
+  public openEditDialog(dialogData: DialogData, localDataKey: LocalDataKey): void {
     const dialogRef = this.dialog.open(EditCoqFormComponent, 
       { data: dialogData, closeOnNavigation: true, width: '400px', height: '400px' });
     dialogRef.afterClosed().subscribe((result: LiquidProductData) => {
@@ -82,12 +80,7 @@ export class CoqAppFormService {
                 }
               }
               localStorage.setItem(localDataKey, JSON.stringify(data));
-              if (localDataKey === LocalDataKeys.COQFORMPREVIEWDATA) {
-                this.liquidProductPreviewData = data.filter((val: CoQData) => {
-                  return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
-                });
-                this.liquidProductPreviewData$.next(data);
-              } else if (localDataKey === LocalDataKeys.COQFORMREVIEWDATA) {
+              if (localDataKey === LocalDataKey.COQFORMREVIEWDATA) {
                 this.liquidProductReviewData = data.filter((val: CoQData) => {
                   return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
                 });
@@ -100,30 +93,22 @@ export class CoqAppFormService {
     });
   }
 
-  removeFormData(data: any, localDataKey: LocalDataKeys): void {
+  removeFormData(data: any, localDataKey: LocalDataKey): void {
     const { tank, status } = data;
-    if (localDataKey === LocalDataKeys.COQFORMPREVIEWDATA) {
-      const localPreviewData = JSON.parse(localStorage.getItem(localDataKey));
-      if (Array.isArray(localPreviewData) && localPreviewData.length) {
-        for (let coqData of localPreviewData) {
-          if (coqData[status].tank === tank && coqData[status].status === status) {
-            coqData[status] = {};
-            if (Object.keys(coqData.diff).length) {
-              coqData.diff = {};
-            }
-            // Filter off coqData with empty before and after objects 
-            this.liquidProductPreviewData = localPreviewData.filter((val: CoQData) => {
-              return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
-            });
-            this.liquidProductPreviewData$.next(this.liquidProductPreviewData);
-            localStorage.setItem(localDataKey, JSON.stringify(this.liquidProductPreviewData));
-            this.formDataEvent.emit('removed');
-            break;
-          }
+    let localData = JSON.parse(localStorage.getItem(localDataKey));
+    if (Array.isArray(localData) && localData.length) {
+      for (let i = 0; i < localData.length; i++) {
+        console.log('Local Data =========> ', localData[i]);
+        if (localData[i][status.toLowerCase()].tank === tank) {
+          localData = localData.slice(0, i).concat(localData.slice(i+1));
+
+          this.liquidProductReviewData$.next(localData);
+          
+          localStorage.setItem(localDataKey, JSON.stringify(localData));
+          this.formDataEvent.emit('removed');
+          break;
         }
       }
-    } else if (localDataKey === LocalDataKeys.COQFORMREVIEWDATA) {
-
     }
   }
 }

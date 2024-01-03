@@ -67,8 +67,8 @@ import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.co
 import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
-import { CoqFormPreviewComponent } from './coq-application-form/coq-form-preview/coq-form-preview.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
+import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
 
 
 @NgModule({
@@ -117,8 +117,8 @@ import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/c
     JettySettingComponent,
     NominatedSurveyorSettingComponent,
     EditCoqFormComponent,
-    CoqFormPreviewComponent,
     CoqFormReviewComponent,
+    ViewCoqApplicationComponent,
   ],
 
   imports: [

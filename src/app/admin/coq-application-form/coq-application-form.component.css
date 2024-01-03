@@ -46,8 +46,8 @@ label {
   border-radius: 4px;
 }
 
-.proceed-btn {
-  @apply bg-purple-500 text-white rounded-lg hover:bg-purple-700 p-2 font-medium;
+.mat-step-header .mat-step-icon-state-done {
+  @apply bg-green-700;
 }
 
 .form-section {
@@ -72,8 +72,8 @@ label {
   @apply rounded-lg bg-white overflow-x-auto w-full;
 }
 
-::ng-deep .mat-stepper-vertical {
-  @apply relative w-full;
+::ng-deep .mat-stepper-vertical, .mat-stepper-horizontal {
+  @apply relative w-full overflow-x-auto;
 }
 
 table {

@@ -12,9 +12,16 @@
     data-collapse="collapse-1"
     class="h-0 overflow-hidden transition-all duration-300 ease-in-out"
   >
-
     <div id="coq-form-data-table-preview-title" class="hidden">Certificate of Quantity Form Data Review</div>
-    <table *ngIf="coqForm?.liquidProductPreviewData.length" class="table table-responsive table-striped" id="coq-form-data-review-table" mat-table [dataSource]="dSource" aria-describedby="coq-form-data-table-review-title">
+    <table 
+      mat-table 
+      [dataSource]="dSource" 
+      id="coq-form-data-review-table" 
+      *ngIf="coqForm?.liquidProductReviewData.length" 
+      class="table table-responsive table-striped"
+      style="overflow-x: auto;"
+      aria-describedby="coq-form-data-table-review-title"
+    >
       <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
         <th mat-header-cell *matHeaderCellDef>
           <ng-container *ngIf="coqForm.hasNoUnit(column)">{{ column | uppercase }}</ng-container>

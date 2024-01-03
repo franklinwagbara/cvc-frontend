@@ -20,7 +20,7 @@ hr {
 
 .info-sections-wrapper h2 {
   color: #ffebcd;
-  @apply bg-[#85A7D6] text-center p-3 rounded;
+  @apply bg-gradient-to-r from-[#71B280] to-[#134E5E] text-center p-3 rounded;
 }
 
 .info-section {

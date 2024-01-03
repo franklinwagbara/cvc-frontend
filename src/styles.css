@@ -62,7 +62,7 @@ button:disabled {
 .page-title {
   box-shadow: 1px 3px 4px 0px #9fa4c2;
   color: wheat !important;
-  @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#48ACF0] to-[#255e85];
+  @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#71B280] to-[#134E5E];
 }
 
 .setting-desk {

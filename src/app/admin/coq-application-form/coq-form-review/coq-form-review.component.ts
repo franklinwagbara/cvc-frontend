@@ -3,7 +3,7 @@ import { Util } from 'src/app/shared/lib/Util';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
-import { LocalDataKeys } from '../coq-application-form.component';
+import { LocalDataKey } from '../coq-application-form.component';
 
 
 @Component({
@@ -13,7 +13,7 @@ import { LocalDataKeys } from '../coq-application-form.component';
 })
 export class CoqFormReviewComponent implements OnInit {
   displayedColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC', 'actions'];
-  localDataKey = LocalDataKeys.COQFORMREVIEWDATA;
+  localDataKey = LocalDataKey.COQFORMREVIEWDATA;
   dataSources: MatTableDataSource<any[]>[] = [];
   formData: any[] = [];
 
@@ -28,6 +28,7 @@ export class CoqFormReviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.coqForm.liquidProductReviewData$.subscribe((val) => {
+      this.dataSources = [];
       this.formData = this.coqForm.flattenCoQDataArr(val);
       for (let i = 0; i < this.formData.length; i += 3) {
         const tableData = [this.formData[i], this.formData[i+1], this.formData[i+2]];

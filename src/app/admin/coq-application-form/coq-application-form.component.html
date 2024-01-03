@@ -2,7 +2,7 @@
   <div class="form-details-container">
     <!-- Liquid Gas Form-->
     <div class="form-wrapper">
-      <h1>Certificate of Quantity Application Form</h1>
+      <h1 class="px-2">Certificate of Quantity Application Form</h1>
       <div class="p-4 w-[90%]">
         <div class="grid grid-cols-1 md:grid-cols-4 w-full">
           <h5 class="text-slate-400 col-span-1">FORM THREE</h5>
@@ -50,7 +50,7 @@
       <hr class="w-full" />
       <hr class="w-full" />
 
-      <mat-stepper orientation="vertical" linear #stepper>
+      <mat-stepper class="pl-3 pr-2" orientation="vertical" linear #stepper>
         <mat-step [stepControl]="depotSelection" label="Select Depot">
           <mat-form-field appearance="fill" style="min-width: fit-content">
             <mat-label>Select Depot</mat-label>
@@ -63,32 +63,51 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div *ngIf="depotSelection.valid">
-            <button mat-raised-button matStepperNext (click)="depotSelection.markAllAsTouched()">Next</button>
+          <div>
+            <button 
+              mat-raised-button 
+              matStepperNext 
+              (click)="depotSelection.markAllAsTouched()"
+              [disabled]="!depotSelection.valid"
+            >Next</button>
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="tankInfoForm" label="Fill in BEFORE & AFTER details for tanks">
-          <mat-stepper #tankInfoStepper>
-            <mat-step label="Enter tank name">
+        <mat-step [stepControl]="tankInfoForm" label="Fill in BEFORE & AFTER Data for Vessel Tanks">
+          <mat-stepper #tankInfoStepper linear>
+            <mat-step [stepControl]="tankName" label="Enter tank name">
               <mat-form-field>
                 <mat-label>Tank Name</mat-label>
                 <input matInput [formControl]="tankName" />
               </mat-form-field>
-              <div *ngIf="tankName?.valid">
-                <button mat-raised-button matStepperNext color="primary">Continue</button>
+              <mat-error *ngIf="!tankName?.valid" class="mb-2 mt-0">
+                {{ !!tankName?.errors['duplicate'] ? 'Tank name already exists' : 'Tank name is required'}}
+              </mat-error>
+              <div>
+                <button mat-raised-button matStepperNext color="primary" [disabled]="!tankName?.valid">Continue</button>
               </div>
             </mat-step>
-            <mat-step label="Enter BEFORE data">
+            <mat-step [stepControl]="tankBeforeFormTemplateCtx.formGroup" label="Enter BEFORE data">
               <ng-container *ngTemplateOutlet="tankFormContent; context: tankBeforeFormTemplateCtx"></ng-container>
-              <div *ngIf="tankBeforeFormTemplateCtx.formGroup.valid" class="mt-4">
-                <button mat-raised-button matStepperNext color="primary">Continue</button>
+              <div class="mt-4">
+                <button 
+                  mat-raised-button 
+                  matStepperNext 
+                  color="primary"
+                  [disabled]="tankBeforeFormTemplateCtx.formGroup.invalid"
+                >Continue</button>
               </div>
             </mat-step>
-            <mat-step label="Enter AFTER data">
+            <mat-step [stepControl]="tankAfterFormTemplateCtx.formGroup" label="Enter AFTER data">
               <ng-container *ngTemplateOutlet="tankFormContent; context: tankAfterFormTemplateCtx"></ng-container>
-              <div *ngIf="tankAfterFormTemplateCtx.formGroup.valid" class="mt-4">
-                <button mat-raised-button matStepperNext color="primary" (click)="saveToPreview()">Save</button>
+              <div class="mt-4">
+                <button 
+                  mat-raised-button 
+                  matStepperNext 
+                  color="primary" 
+                  (click)="saveToReview()" 
+                  [disabled]="tankAfterFormTemplateCtx.formGroup.invalid"
+                >Save</button>
               </div>
             </mat-step>
           </mat-stepper>
@@ -220,23 +239,8 @@
               </div>
             </form>
           </ng-template>
-
-          <div class="form-preview">
-            <h4 class="tex-slate-600 font-medium">Data Preview</h4>
-            <hr />
-            <div *ngIf="coqFormService?.liquidProductPreviewData.length; else noPreview">
-              <app-coq-form-preview></app-coq-form-preview>
-            </div>
-            <ng-template #noPreview>
-              <p class="text-slate-600 text-center">BEFORE & AFTER data will be previewed here</p>
-            </ng-template>
-          </div>
     
-          <div *ngIf="isPreviewDataOk" class="text-right w-full mt-2 p-4">
-            <button class="proceed-btn" (click)="proceedToReview()">Proceed to Review</button>
-          </div>
-    
-          <div class="form-review">
+          <div class="mt-4 overflow-x-auto">
             <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
             <hr />
             <div *ngIf="coqFormService?.liquidProductReviewData.length else noReview">
@@ -249,7 +253,7 @@
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="vesselInfoForm" label="Fill in the depot details">
+        <mat-step [stepControl]="vesselInfoForm" label="Fill in Vessel Details">
           <form [formGroup]="vesselInfoForm" class="form">
             <div
               class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-4"
