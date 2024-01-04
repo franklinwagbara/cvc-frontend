@@ -1,13 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { CompanyService } from 'src/app/shared/services/company.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { CompanyService } from '../../../../src/app/shared/services/company.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { AdminService } from '../../../../src/app/shared/services/admin.service';
 import { GenericService } from '../../shared/services/generic.service';
 import { AuthenticationService } from '../../shared/services';
 import { LoginModel } from '../../shared/models/login-model';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewMessageComponent } from '../messages/view-message/view-message.component';
 

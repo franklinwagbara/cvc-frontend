@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IDepot } from 'src/app/shared/interfaces/IDepot';
-import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
-import { IRole } from 'src/app/shared/interfaces/IRole';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { IDepot } from '../../../../../src/app/shared/interfaces/IDepot';
+import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
+import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { Staff } from '../all-staff/all-staff.component';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-field-officer-setting',

@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
-import { PageManagerService } from 'src/app/shared/services/page-manager.service';
+import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
+import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
   id: number;

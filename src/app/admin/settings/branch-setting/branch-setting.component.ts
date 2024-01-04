@@ -1,9 +1,9 @@
 import { forkJoin } from 'rxjs';
-import { FieldOfficeFormComponent } from 'src/app/shared/reusable-components/field-office-form/field-office-form.component';
-import { AuthenticationService } from 'src/app/shared/services';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { FieldOfficeFormComponent } from '../../../../../src/app/shared/reusable-components/field-office-form/field-office-form.component';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 import { Component, OnInit } from '@angular/core';
 import {
@@ -14,9 +14,9 @@ import {
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IBranch } from 'src/app/shared/interfaces/IBranch';
-import { BranchFormComponent } from 'src/app/shared/reusable-components/branch-form/branch-form.component';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { IBranch } from '../../../../../src/app/shared/interfaces/IBranch';
+import { BranchFormComponent } from '../../../../../src/app/shared/reusable-components/branch-form/branch-form.component';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-branch-setting',

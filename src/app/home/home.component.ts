@@ -5,7 +5,7 @@ import {
   HostListener,
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { environment as envr } from 'src/environments/environment';
+import { environment as envr } from '../../../src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService, GenericService } from '../shared/services';
 import { UserType } from '../shared/constants/userType';

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { AuthenticationService } from 'src/app/shared/services';
-import { PageManagerService } from 'src/app/shared/services/page-manager.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AuthenticationService } from '../../../../src/app/shared/services';
+import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-admin-layout',

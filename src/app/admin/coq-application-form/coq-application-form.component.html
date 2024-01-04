@@ -16,12 +16,10 @@
           <div class="grid grid-cols-1 md:grid-cols-9 w-full gap-2">
             <div class="col-span-3">
               <p>
-                <span class="form-header-info">MARKETER/PDT OWNER</span>:
-                {{ noaApplication?.marketerName }}
+                <span class="form-header-info">MARKETER/PDT OWNER</span>: {{ noaApplication?.marketerName }}
               </p>
               <p *ngIf="isLiquidProduct">
-                <span class="form-header-info">MOTHER VESSEL</span>:
-                {{ noaApplication?.motherVessel }}
+                <span class="form-header-info">MOTHER VESSEL: {{ noaApplication?.motherVessel }}</span>     
               </p>
             </div>
             <div class="col-span-3">
@@ -253,53 +251,74 @@
             <form [formGroup]="form">
               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-dip">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="liqDensityVac"
+                    formControlName="liqDensityVac"
+                    id="coq-liquid-product-liqDensityVac"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['liqDensityVac'].touched && form?.controls['liqDensityVac'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+    
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-dip">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="obsSounding"
+                    formControlName="obsSounding"
+                    id="coq-liquid-product-obsSounding"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['obsSounding'].touched && form?.controls['obsSounding'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-tapeCorr">Tape Correction (m) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="tapeCorr"
+                    formControlName="tapeCorr"
+                    id="coq-liquid-product-tapeCorr"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['tapeCorr'].touched && form?.controls['tapeCorr'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-liqTemp">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="liqTemp"
+                    formControlName="liqTemp"
+                    id="coq-liquid-product-liqTemp"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['liqTemp'].touched && form?.controls['liqTemp'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-observedLiqVol">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="observedLiqVol"
+                    formControlName="observedLiqVol"
+                    id="coq-liquid-product-observedLiqVol"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['observedLiqVol'].touched && form?.controls['observedLiqVol'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-shrinkageFactor">Shrinkage Factor <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="shrinkageFactor"
+                    formControlName="shrinkageFactor"
+                    id="coq-liquid-product-shrinkageFactor"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['shrinkageFactor'].touched && form?.controls['shrinkageFactor'].invalid}"
                   />
                 </div>
               </div>

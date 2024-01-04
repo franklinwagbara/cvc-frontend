@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../../../../src/app/company/my-applications/myapplication.component';
 
 @Component({
   selector: 'app-payment-view-table',

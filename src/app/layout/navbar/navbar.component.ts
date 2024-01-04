@@ -5,8 +5,8 @@ import {
   PathLocationStrategy,
 } from '@angular/common';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { LoginModel } from 'src/app/shared/models/login-model';
+import { environment } from '../../../../src/environments/environment';
+import { LoginModel } from '../../../../src/app/shared/models/login-model';
 import { AuthenticationService, GenericService } from '../../shared/services';
 
 interface RouteInfo {

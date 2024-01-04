@@ -3,9 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
-import { LoginModel } from '../models/login-model';
-import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
+import { environment } from '../../../../src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ApplyService {

@@ -1,10 +1,10 @@
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { forkJoin, Subject } from 'rxjs';
-import { AppException } from 'src/app/shared/exceptions/AppException';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AppException } from '../../../../../src/app/shared/exceptions/AppException';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 import { Component, Inject, OnInit } from '@angular/core';
 import {
@@ -129,7 +129,7 @@ export class AdditionalDocListFormComponent implements OnInit {
       doc.available = 'Not Uploaded';
       doc.docType = d.type;
       doc.docName = d.name;
-      doc.source = `<img width="20" src="assets/image/no-document.png" />`;
+      doc.source = `<img width="20" ../../../../../src="assets/image/no-document.png" />`;
 
       return doc;
     });

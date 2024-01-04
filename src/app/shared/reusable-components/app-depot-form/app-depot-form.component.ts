@@ -21,7 +21,7 @@ import {
   IDepot,
   IApplicationType,
   IState,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { PopupService } from '../../services/popup.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { LocationService } from '../../services/location/location.service';
