@@ -5,43 +5,43 @@
       <h1 class="px-2">Certificate of Quantity Application Form</h1>
       <div class="p-4 w-[90%]">
         <div class="grid grid-cols-1 md:grid-cols-4 w-full">
-          <h5 class="text-slate-400 col-span-1">FORM THREE</h5>
+          <h5 class="text-slate-400 col-span-1">{{ isLiquidProduct ? 'FORM THREE' : '' }}</h5>
           <h5 class="text-slate-600 col-span-3 text-right">
-            SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE
+            {{ isLiquidProduct ? 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' : isLiquidProduct === null ? '' : 'LPG WEIGHT CERTIFICATION'}}
           </h5>
         </div>
 
-        <ng-container *ngIf="vesselInfo">
+        <ng-container *ngIf="noaApplication">
           <hr />
           <div class="grid grid-cols-1 md:grid-cols-9 w-full gap-2">
             <div class="col-span-3">
               <p>
                 <span class="form-header-info">MARKETER/PDT OWNER</span>:
-                {{ vesselInfo.marketerName }}
+                {{ noaApplication?.marketerName }}
               </p>
-              <p>
+              <p *ngIf="isLiquidProduct">
                 <span class="form-header-info">MOTHER VESSEL</span>:
-                {{ vesselInfo.motherVessel }}
+                {{ noaApplication?.motherVessel }}
               </p>
             </div>
             <div class="col-span-3">
-              <p>
+              <p *ngIf="isLiquidProduct">
                 <span class="form-header-info">PRODUCT</span>:
-                {{ vesselInfo.productName }}
+                {{ noaApplication?.productName }}
               </p>
               <p>
                 <span class="form-header-info">JETTY</span>:
-                {{ vesselInfo.jetty }}
+                {{ noaApplication?.jetty }}
               </p>
             </div>
             <div class="col-span-3">
               <p>
                 <span class="form-header-info">VESSEL NAME</span>:
-                {{ vesselInfo.vesselName }}
+                {{ noaApplication?.vesselName }}
               </p>
               <p>
                 <span class="form-header-info">RECEIVING TERMINAL</span>:
-                {{ vesselInfo.recievingTerminal }}
+                {{ noaApplication?.recievingTerminal }}
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@
       <hr class="w-full" />
       <hr class="w-full" />
 
-      <mat-stepper class="pl-3 pr-2" orientation="vertical" linear #stepper>
+      <mat-stepper *ngIf="isLiquidProduct !== null" class="pl-3 pr-2" orientation="vertical" linear #stepper>
         <mat-step [stepControl]="depotSelection" label="Select Depot">
           <mat-form-field appearance="fill" style="min-width: fit-content">
             <mat-label>Select Depot</mat-label>
@@ -73,22 +73,29 @@
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="tankInfoForm" label="Fill in BEFORE & AFTER Data for Vessel Tanks">
+        <mat-step [stepControl]="isLiquidProduct ? tankLiqInfoForm : tankGasInfoForm" label="Tank(s) BEFORE & AFTER Data Entry">
           <mat-stepper #tankInfoStepper linear>
-            <mat-step [stepControl]="tankName" label="Enter tank name">
+            <mat-step [stepControl]="configuredTank" label="Enter tank name">
               <mat-form-field>
                 <mat-label>Tank Name</mat-label>
-                <input matInput [formControl]="tankName" />
+                <mat-select
+                  name="depot"
+                  [formControl]="configuredTank"
+                >
+                  <mat-option *ngFor="let depot of depots" [value]="depot.id">
+                    {{ depot.name }}
+                  </mat-option>
+                </mat-select>
               </mat-form-field>
-              <mat-error *ngIf="!tankName?.valid" class="mb-2 mt-0">
-                {{ !!tankName?.errors['duplicate'] ? 'Tank name already exists' : 'Tank name is required'}}
+              <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
+                {{ !!configuredTank?.errors['duplicate'] ? 'Tank name already exists' : 'Tank name is required'}}
               </mat-error>
               <div>
-                <button mat-raised-button matStepperNext color="primary" [disabled]="!tankName?.valid">Continue</button>
+                <button mat-raised-button matStepperNext color="primary" [disabled]="!configuredTank?.valid">Continue</button>
               </div>
             </mat-step>
             <mat-step [stepControl]="tankBeforeFormTemplateCtx.formGroup" label="Enter BEFORE data">
-              <ng-container *ngTemplateOutlet="tankFormContent; context: tankBeforeFormTemplateCtx"></ng-container>
+              <ng-container *ngTemplateOutlet="tankLiqForm; context: tankBeforeFormTemplateCtx"></ng-container>
               <div class="mt-4">
                 <button 
                   mat-raised-button 
@@ -99,9 +106,9 @@
               </div>
             </mat-step>
             <mat-step [stepControl]="tankAfterFormTemplateCtx.formGroup" label="Enter AFTER data">
-              <ng-container *ngTemplateOutlet="tankFormContent; context: tankAfterFormTemplateCtx"></ng-container>
+              <ng-container *ngTemplateOutlet="tankLiqForm; context: tankAfterFormTemplateCtx"></ng-container>
               <div class="mt-4">
-                <button 
+                <button
                   mat-raised-button 
                   matStepperNext 
                   color="primary" 
@@ -112,7 +119,7 @@
             </mat-step>
           </mat-stepper>
           
-          <ng-template #tankFormContent let-form="formGroup">
+          <ng-template #tankLiqForm let-form="formGroup">
             <form [formGroup]="form">
               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
                 <div class="md:col-span-3 form-group">
@@ -239,6 +246,12 @@
               </div>
             </form>
           </ng-template>
+
+          <ng-template #tankGasForm let-form="formGroup">
+            <form [formGroup]="form">
+            
+            </form>
+          </ng-template>
     
           <div class="mt-4 overflow-x-auto">
             <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
@@ -253,7 +266,7 @@
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="vesselInfoForm" label="Fill in Vessel Details">
+        <mat-step [stepControl]="vesselInfoForm" label="Vessel Details Entry">
           <form [formGroup]="vesselInfoForm" class="form">
             <div
               class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-4"
@@ -378,7 +391,7 @@
             <button mat-button matStepperNext (click)="vesselInfoForm.markAllAsTouched()">Next</button>
           </div>
         </mat-step>
-        <mat-step label="Upload Documents">
+        <mat-step label="Document(s) Upload">
           <div class="w-[90%] mb-4 p-0">
             <div class="guidelines">
               <h4>Please Note</h4>

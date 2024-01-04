@@ -10,7 +10,7 @@ import { AdminGuard } from './shared/guards/admin.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/home',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

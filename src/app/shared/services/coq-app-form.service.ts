@@ -11,6 +11,8 @@ export class CoqAppFormService {
   public configuredTanks: string[] = [];
   public liquidProductReviewData: any[] = [];
   public liquidProductReviewData$ = new BehaviorSubject<any[]>([]);
+  public gasProductReviewData: any[] = [];
+  public gasProductReviewData$ = new BehaviorSubject<any[]>([]);
   public formDataEvent = new EventEmitter<'edited' | 'removed'>();
 
   constructor(public dialog: MatDialog) {

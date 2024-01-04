@@ -315,6 +315,11 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
     }
 
+    // Show settings only SuperAdmin
+    if (!['SuperAdmin'].includes(currentUser?.userRoles)) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
+    }
+
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {

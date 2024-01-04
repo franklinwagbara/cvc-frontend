@@ -79,7 +79,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
   initiateCoq(event: any) {
     const row = event;
-    // Call the endpoint to create an empty coq
     this.router.navigate([
       `/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`,
     ]);
