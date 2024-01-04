@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CompanyService } from 'src/app/shared/services/company.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplyService } from 'src/app/shared/services/apply.service';
-import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 
 @Component({
   selector: 'app-document-upload',
@@ -38,7 +37,8 @@ export class DocumentUploadComponent implements OnInit {
     public dialog: MatDialog,
     public appService: ApplicationService,
     private popUp: PopupService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -65,19 +65,20 @@ export class DocumentUploadComponent implements OnInit {
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
-
           return d;
         });
         this.documents$.next(this.documents);
         this.documentConfig = res.data.apiData;
 
         this.progressBar.close();
+        this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
         this.progressBar.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -96,7 +97,6 @@ export class DocumentUploadComponent implements OnInit {
     const formdata = new FormData();
     formdata.append('file', file);
 
-    debugger;
     this.applicationService
       .uploadCompanyFileToElps(
         doc.docId,
@@ -130,12 +130,14 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File was uploaded successfully!', null, {
             panelClass: ['success'],
           });
+          this.cd.markForCheck();
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
           });
+          this.cd.markForCheck();
         },
       });
   }
@@ -188,7 +190,7 @@ export class DocumentUploadComponent implements OnInit {
             panelClass: ['success'],
           });
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
@@ -208,7 +210,7 @@ export class DocumentUploadComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(
+    const dialogRef = this.dialog.open(
       operationsConfiguration['additionalDocuments'].form,
       {
         data: {
@@ -238,7 +240,7 @@ export class DocumentUploadComponent implements OnInit {
         this.popUp.open('Document(s) upload was successfull.', 'success');
         this.router.navigate(['/company/apply']);
       },
-      error: (res) => {
+      error: (res: unknown) => {
         this.progressBar.close();
         this.popUp.open('Document(s) upload failed!', 'error');
       },
@@ -252,6 +254,7 @@ export class DocumentConfig {
   appid?: string;
   companyElpsId: string;
   facilityElpsId: string;
+  uniqueid: string;
 }
 
 export class DocumentInfo {
@@ -265,4 +268,13 @@ export class DocumentInfo {
   available: string;
   docType: string;
   company: string;
+  success?: boolean;
+  fileSizeInKb?: any;
+  percentProgress?: any;
+  fileName: string;
+}
+
+export interface IUploadDocInfo {
+  documentConfig: DocumentConfig;
+  documentInfo: DocumentInfo[];
 }

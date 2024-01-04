@@ -7,11 +7,11 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AppException } from '../../exceptions/AppException';
 import { AdminService } from '../../services/admin.service';
-import { ProgressBarService } from '../../services/progress-bar.service';
+import { SpinnerService } from '../../services/spinner.service';
+import { PopupService } from '../../services/popup.service';
 
 @Component({
   selector: 'app-field-office-form',
@@ -26,11 +26,11 @@ export class FieldOfficeFormComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<FieldOfficeFormComponent>,
-    private snackBar: MatSnackBar,
     private adminService: AdminService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private progressBar: ProgressBarService
+    private spinner: SpinnerService,
+    private popup: PopupService
   ) {
     this.stateList = data.data.stateList;
 
@@ -48,23 +48,19 @@ export class FieldOfficeFormComponent {
   }
 
   createOffice() {
-    this.progressBar.open();
+    this.spinner.open();
     this.adminService.createOffice(this.form.value).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Phase was created successfully!', null, {
-            panelClass: ['success'],
-          });
+          this.popup.open('Phase was created successfully!', 'success');
           this.dialogRef.close();
         }
 
-        this.progressBar.close();
+        this.spinner.close();
       },
       error: (error: AppException) => {
-        this.snackBar.open(error.message, null, {
-          panelClass: ['error'],
-        });
-        this.progressBar.close();
+        this.popup.open(error.message, 'error');
+        this.spinner.close();
       },
     });
   }

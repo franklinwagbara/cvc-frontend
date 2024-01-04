@@ -1,23 +1,24 @@
 import { NgModule } from '@angular/core';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 import { CompanyModule } from './company/company.module';
 import { AdminModule } from './admin/admin.module';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor, JwtInterceptor } from './helpers';
-import { RouterModule } from '@angular/router';
 import { LayoutModule } from './layout/layout.module';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ProgressBarService } from './shared/services/progress-bar.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, AccessDeniedComponent],
   imports: [
     BrowserModule,
     // NgbModule,

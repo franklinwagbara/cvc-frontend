@@ -1,23 +1,22 @@
 .title {
-  background-color: #48acf0;
   color: wheat;
-  @apply px-10 py-5 shadow-md;
+  @apply px-10 py-5 shadow-md bg-gradient-to-r from-[#71B280] to-[#134E5E];
 }
 
 .content {
-  @apply flex flex-row w-full mt-9 gap-4;
+  @apply flex flex-col xl:flex-row w-full mt-9 gap-4;
 }
 
 .application-view {
-  @apply flex-1 w-[33%];
+  @apply flex-1 w-[100%] xl:w-[33%];
 }
 
 .application-controls {
-  @apply flex-1 w-[33%]  shadow-md flex flex-col gap-4;
+  @apply flex-1 flex flex-col gap-4;
 }
 
 .view-application {
-  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 min-w-fit;
+  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 flex flex-col min-w-fit;
 }
 
 .actions {

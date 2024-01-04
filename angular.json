@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "BunkeringFrontEnd": {
+    "CVCFrontEnd": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
@@ -45,7 +45,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "4mb"
+                  "maximumError": "1mb"
                 }
               ],
               "fileReplacements": [
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "BunkeringFrontEnd:build:production"
+              "browserTarget": "CVCFrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "BunkeringFrontEnd:build:development"
+              "browserTarget": "CVCFrontEnd:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -82,7 +82,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "BunkeringFrontEnd:build"
+            "browserTarget": "CVCFrontEnd:build"
           }
         },
         "test": {
@@ -98,6 +98,12 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }

@@ -80,7 +80,12 @@
             {{
               column.cell(row) === "undefined" ||
               column.cell(row) === "edit_control" ||
+              column.cell(row) === "initiate_coq_control" ||
               column.cell(row) === "view_control" ||
+              column.cell(row) === "view_coq_certs_control" ||
+              column.cell(row) === "view_debit_notes_control" ||
+              column.cell(row) === "view_coq_cert_control" ||
+              column.cell(row) === "view_debit_note_control" ||
               column.cell(row) === "view_licence_control" ||
               column.cell(row) === "view_schedule_control" ||
               column.cell(row) === "rrr_control" ||
@@ -118,6 +123,15 @@
               >
                 View Application
               </button>
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'initiate_coq_control'"
+                (click)="initiateCoQ(row)"
+              >
+                Initiate CoQ
+              </button>
 
               <button
                 mat-flat-button
@@ -127,6 +141,46 @@
                 (click)="viewData(row)"
               >
                 View Licence
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: blueviolet; color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_coq_certs_control'"
+                (click)="viewCoQCerts(row)"
+              >
+                View CoQ Certificates
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_debit_notes_control'"
+                (click)="viewDebitNotes(row)"
+              >
+                View Debit Notes
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: blueviolet; color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_coq_cert_control'"
+                (click)="viewCoQCerts(row)"
+              >
+                View Certificate
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_debit_note_control'"
+                (click)="viewDebitNotes(row)"
+              >
+                View Debit Note
               </button>
 
               <button
@@ -199,17 +253,10 @@
                 type="file"
                 accept=".pdf, .doc, .docx"
                 (change)="fileUpload($event, row)"
-              />
+              />  
             </div>
           </td>
         </ng-template>
-
-        <!-- <ng-template #notSelect>
-          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-stroked-button color="accent">Accent</button>
-          </td>
-        </ng-template> -->
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

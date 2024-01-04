@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,18 +9,19 @@ import { Router } from '@angular/router';
 export class ChangePasswordComponent implements OnInit {
   changePasswordForm: FormGroup;
 
-  constructor() {}
+  constructor(private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.createForm();
+  }
 
   createForm() {
-    this.changePasswordForm = new FormGroup(
+    this.changePasswordForm = this.fb.group(
       {
-        current_pasword: new FormControl('', [Validators.required]),
-        new_pasword: new FormControl('', [Validators.required]),
-        confirm_new_password: new FormControl('', [Validators.required]),
-      },
-      {}
+        current_password: ['', [Validators.required]],
+        new_password: ['', [Validators.required]],
+        confirm_new_password: ['', [Validators.required]],
+      }
     );
   }
 

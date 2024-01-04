@@ -1,0 +1,60 @@
+<div class="p-3">
+  <h1 mat-dialog-title>
+    {{ this.data.data.action === "EDIT" ? "Edit Role" : "Add New Role" }}
+  </h1>
+  <div mat-dialog-content class="min-w-[500px]">
+    <form [formGroup]="form">
+      <div class="fomr-group" style="margin-bottom: 10px">
+        <label>Name</label>
+        <input
+          name="name"
+          type="text"
+          formControlName="name"
+          class="form-control"
+        />
+        <div
+          *ngIf="(f['name'].touched || isSubmitted) && f['name']?.invalid"
+          class="alert alert-danger"
+        >
+          Name is required!
+        </div>
+      </div>
+
+      <div class="fomr-group" style="margin-bottom: 10px">
+        <label>Description</label>
+        <input
+          name="description"
+          type="text"
+          formControlName="description"
+          class="form-control"
+        />
+        <div
+          *ngIf="
+            (f['description'].touched || isSubmitted) &&
+            f['description']?.invalid
+          "
+          class="alert alert-danger"
+        >
+          Description is required!
+        </div>
+      </div>
+
+      <div mat-dialog-actions>
+        <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+        <button
+          [ngClass]="isLoading ? '!border-none !shadow-none !outline-none' : ''"
+          mat-raised-button
+          (click)="this.data.data.action === 'EDIT' ? EditRole() : createRole()"
+          [disabled]="form.invalid"
+        >
+          <span *ngIf="!isLoading">Save</span>
+          <mat-spinner
+            [diameter]="30"
+            strokeWidth="10"
+            *ngIf="isLoading"
+          ></mat-spinner>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

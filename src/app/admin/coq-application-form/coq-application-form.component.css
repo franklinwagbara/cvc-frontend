@@ -1,0 +1,108 @@
+.form-details-container {
+  @apply flex flex-col items-center justify-center;
+}
+
+.form-header-info {
+  @apply text-slate-500 font-medium;
+}
+
+.form-wrapper {
+  @apply bg-[#f4f4f4] flex flex-col items-center shadow-lg border-none rounded-md w-[80%] justify-center border-2 rounded-md m-8 px-0 py-4;
+}
+
+.form-wrapper h1 {
+  @apply text-center mb-4 mt-0 text-xl md:text-2xl font-bold leading-tight text-slate-900;
+}
+
+.form {
+  @apply w-full flex flex-wrap justify-center bg-transparent mb-4 gap-2 min-h-full p-4;
+}
+
+label {
+  @apply text-slate-700 font-medium text-[16px];
+}
+
+::ng-deep .mat-form-field {
+ @apply w-full lg:w-[31%];
+}
+
+::ng-deep .in-progress .mat-progress-bar-fill::after {
+  background-color: #1a5cb9;
+}
+
+::ng-deep .failed .mat-progress-bar-fill::after {
+  background-color: #c01736;
+}
+
+::ng-deep .success .mat-progress-bar-fill::after {
+  background-color: #229a10;
+}
+
+::ng-deep .mat-progress-bar-buffer {
+  background: #E4E8EB;
+}
+
+::ng-deep .mat-progress-bar {
+  border-radius: 4px;
+}
+
+.mat-step-header .mat-step-icon-state-done {
+  @apply bg-green-700;
+}
+
+.form-section {
+  @apply text-slate-500 font-medium text-xl w-full mb-4;
+}
+
+.guidelines {
+  @apply w-full border-2 rounded-sm p-4 text-left text-3xl text-lg bg-[#F1EB0B55] border-none mb-8 font-medium text-slate-700;
+}
+
+.guidelines-list {
+  @apply list-decimal;
+}
+
+.guidelines h4 {
+  @apply bg-[#393939] text-white p-2 rounded-3xl font-medium flex justify-center items-center;
+}
+
+.table-container {
+  min-height: fit-content;
+  margin: 10px;
+  @apply rounded-lg bg-white overflow-x-auto w-full;
+}
+
+::ng-deep .mat-stepper-vertical, .mat-stepper-horizontal {
+  @apply relative w-full overflow-x-auto;
+}
+
+table {
+  width: 100%;
+}
+
+td,
+th {
+  width: fit-content;
+}
+
+.table-title {
+  @apply flex items-center text-center font-bold pt-[50px] justify-center pb-4 bg-blue-100;
+}
+
+.upload-btn {
+  @apply border bg-blue-100 rounded-lg font-bold;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+  -moz-appearance: textfield;
+}
+
+.form-field {
+  @apply px-2 block text-gray-800 w-full bg-transparent h-10 bg-gray-50 border hover:border-gray-200 rounded mt-1;
+}

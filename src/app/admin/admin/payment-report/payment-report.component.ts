@@ -10,9 +10,9 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
   styleUrls: ['./payment-report.component.css'],
 })
 export class PaymentReportComponent implements OnInit {
-  showModal: boolean = false;
-  checked: boolean = false;
-  searchValue: string = '';
+  showModal = false;
+  checked = false;
+  searchValue = '';
 
   constructor(
     private appService: AdminService,
@@ -68,7 +68,7 @@ export class PaymentReportComponent implements OnInit {
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,

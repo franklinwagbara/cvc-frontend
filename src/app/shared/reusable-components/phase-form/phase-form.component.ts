@@ -106,7 +106,7 @@ export class PhaseFormComponent {
 
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not update the Phase',
           null,

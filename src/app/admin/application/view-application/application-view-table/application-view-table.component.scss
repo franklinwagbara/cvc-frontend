@@ -16,3 +16,7 @@ td {
   background-color: #3e4e50;
   @apply text-slate-100;
 }
+
+.btn {
+  @apply font-bold text-white bg-[#3e4e50] uppercase p-[1rem] border-4 w-full md:w-[90%];
+}

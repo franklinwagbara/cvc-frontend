@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { GenericService, AuthenticationService } from 'src/app/shared/services';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
@@ -41,21 +42,28 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private progressBar: ProgressBarService,
     private spinner: SpinnerService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
     this.spinner.open();
 
-    this.auth.getStaffDashboard().subscribe((result) => {
-      if (result.success) {
-        console.log(result.data);
-        this.dashboardInfo = result.data;
-        this.processingForThreeWeeks =
-          this.dashboardInfo.inProcessingForThreeWeeks;
-        this.onStaffDeskForFiveDays = this.dashboardInfo.onStaffDeskForFiveDays;
+    this.auth.getStaffDashboard().subscribe({
+      next: (result) => {
+        if (result.success) {
+          console.log(result.data);
+          this.dashboardInfo = result.data;
+          this.processingForThreeWeeks =
+            this.dashboardInfo.inProcessingForThreeWeeks;
+          this.onStaffDeskForFiveDays = this.dashboardInfo.onStaffDeskForFiveDays;
 
+          this.spinner.close();
+          this.cd.markForCheck();
+        }
+      },
+      error: (error: any) => {
         this.spinner.close();
-        this.cd.markForCheck();
+        this.snackBar.open('Could not get dashboard', null, { panelClass: ['error']});
       }
     });
   }

@@ -1,0 +1,57 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Reference Number</th>
+      <td>{{ payment?.appReference }}</td>
+    </tr>
+
+    <!-- <tr>
+      <th>Vessel Name</th>
+      <td>{{ payment?.vessel.name }}</td>
+    </tr>
+    <tr>
+      <th>Vessel IMO Number</th>
+      <td>{{ payment?.vessel.imoNumber }}</td>
+    </tr> -->
+    <tr>
+      <th>Company Name</th>
+      <td>{{ payment?.companyName }}</td>
+    </tr>
+    <tr>
+      <th>Company Email</th>
+      <td>{{ payment?.companyEmail }}</td>
+    </tr>
+    <!-- <tr>
+      <th>Category</th>
+      <td>{{ application?.category }}</td>
+    </tr>
+    <tr>
+      <th>Permit Type</th>
+      <td>{{ application?.permitType }}</td>
+    </tr> -->
+    <tr>
+      <th>Vessel Name</th>
+      <td>{{ payment?.vesselName }}</td>
+    </tr>
+    <tr>
+      <th>RRR</th>
+      <td>{{ payment?.rrr }}</td>
+    </tr>
+    <tr>
+      <th>Amount</th>
+      <td>{{ payment?.amount }}</td>
+    </tr>
+    <tr>
+      <th>Payment Date</th>
+      <td>{{ payment?.paymentDate | date }}</td>
+    </tr>
+    <tr>
+      <th>Payment Status</th>
+      <td>{{ payment?.paymentStatus }}</td>
+    </tr>
+    <!-- <tr>
+      <th>Extra Payment Reference</th>
+      <td>{{ payment?.ExtraPaymentReference }}</td>
+    </tr> -->
+  </tbody>
+</table>

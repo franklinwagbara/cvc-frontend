@@ -1,13 +1,17 @@
 $primary: #aaefdf;
 $primary-dark: #6aad9e;
 $text-dark: #035024;
-$nav-height: 60px;
+$nav-height: 70px;
 $logo-height: 60px;
 
 #company-top-nav {
-  background-color: $primary;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
   min-height: $nav-height;
-  @apply flex justify-evenly items-center flex-wrap;
+  @apply flex justify-between items-center flex-wrap bg-white shadow-md px-4;
 }
 
 .brand-logo {
@@ -27,7 +31,30 @@ $logo-height: 60px;
 }
 
 .nav-list {
-  @apply flex  font-semibold gap-5 text-sm -mb-[14px] flex-nowrap;
+  @apply flex font-semibold gap-5 text-sm -mb-[14px] flex-nowrap;
+}
+
+.menu {
+  @apply text-[#2D8A75] text-[32px];
+}
+
+@media screen and (max-width: 920px) {
+  .nav-list {
+    display: none;
+  }
+  #company-navmenu-trigger {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 921px) {
+  #company-navmenu-trigger {
+    display: none;
+  }
+}
+
+::ng-deep .mat-menu {
+  @apply font-medium min-w-[170px] p-4;
 }
 
 .user,
@@ -37,8 +64,7 @@ $logo-height: 60px;
 }
 
 .logout:hover {
-  background-color: $primary-dark;
-  color: white;
+  @apply bg-red-400 text-white;
 }
 
 .user-group {

@@ -8,7 +8,7 @@ import { IApplication } from 'src/app/shared/interfaces/IApplication';
 })
 export class FilterleftComponent implements OnInit {
   @Input() applications: IApplication[];
-  checked: boolean = false;
+  checked = false;
   @Output() sortedApps: EventEmitter<IApplication[]> = new EventEmitter<
     IApplication[]
   >();
@@ -38,7 +38,7 @@ export class FilterleftComponent implements OnInit {
     } else {
       if (this.checked) {
         sorted = [...this.applications].sort((a, b) =>
-          a.companyName.localeCompare(b.companyName)
+          a.marketerName.localeCompare(b.marketerName)
         );
         this.sortedApps.emit(sorted);
         this.onChecked.emit(this.checked);

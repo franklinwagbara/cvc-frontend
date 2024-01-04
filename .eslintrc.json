@@ -1,0 +1,83 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2019,
+        "project": [
+          "tsconfig.json"
+        ],
+        "sourceType": "module"
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:promise/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:rxjs/recommended"
+      ],
+      "plugins": [
+        "import",
+        "rxjs",
+        "promise"
+      ],
+      "rules": {
+        "linebreak-style": "off",
+        "import/no-unresolved": "warn",
+        "rxjs/no-nested-subscribe": "warn",
+        "rxjs/no-implicit-any-catch": "warn",
+        "rxjs/no-ignored-replay-buffer": "warn",
+        // "rxjs/no-negated-async": ["warn"],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "warn",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/no-empty-lifecycle-method": "warn",
+        "@angular-eslint/no-output-on-prefix": "warn",
+        "@angular-eslint/no-input-rename": "warn",
+        "import/newline-after-import": "error",
+        "import/order": "error",
+        "promise/no-nesting": "error",
+        "promise/no-return-in-finally": "error",
+        "@typescript-eslint/explicit-function-return-type": "warn",
+        "@typescript-eslint/prefer-ts-expect-error": "error",
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/no-empty-interface": "warn",
+        "prefer-arrow-callback": "warn"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        
+      }
+    }
+  ]
+}

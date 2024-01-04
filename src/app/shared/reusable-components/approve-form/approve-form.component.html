@@ -3,24 +3,20 @@
   <div class="card-list">
     <div class="card-item">
       <div class="item-title">Reference No.</div>
-      <div class="item-content">{{ application.reference }}</div>
+      <div class="item-content">{{ application.applicationTypeId }}</div>
     </div>
     <div class="card-item">
       <div class="item-title">Vessel Name</div>
-      <div class="item-content">{{ application.vessel.name }}</div>
+      <div class="item-content">{{ application.vesselName }}</div>
     </div>
     <div class="card-item">
       <div class="item-title">Vessel Type</div>
-      <div class="item-content">{{ application.vessel.vesselType }}</div>
+      <div class="item-content">{{ application.vesselTypeId }}</div>
     </div>
     <!-- <div class="card-item">
       <div class="item-title">Stage</div>
       <div class="item-content">{{ application.permitType }}</div>
     </div> -->
-    <div class="card-item">
-      <div class="item-title">Status</div>
-      <div class="item-content">{{ application.status }}</div>
-    </div>
   </div>
 
   <form [formGroup]="form" (ngSubmit)="approve()">

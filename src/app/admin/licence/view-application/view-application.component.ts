@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from 'src/app/shared/services';
@@ -12,9 +12,9 @@ import { AdminService } from 'src/app/shared/services/admin.service';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ShowMoreComponent } from './show-more/show-more.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
+import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 
 @Component({
   selector: 'app-view-application',
@@ -56,7 +56,7 @@ export class ViewApplicationComponent implements OnInit {
           this.spinner.close();
           this.cd.markForCheck();
         },
-        error: (error) => {
+        error: (error: unknown) => {
           this.snackBar.open(
             'Something went wrong while retrieving data.',
             null,
@@ -115,7 +115,7 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -162,7 +162,7 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(ShowMoreComponent, {
+    const dialogRef = this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },

@@ -1,0 +1,291 @@
+<div class="container">
+  <div class="application-details">
+    <h1>FULL APPLICATION DETAILS</h1>
+
+    <div class="info-sections-wrapper">
+      <h2 *ngIf="application.reference">APPLICATION REFERENCE : {{ application.reference }}</h2>
+      <section class="info-section">
+        <h3>Reference Information</h3>
+        <div class="info-wrapper">
+          <div>
+            <h5>Reference Number</h5>
+            <hr />
+            <ng-container *ngIf="application?.reference else noData">
+              <span>{{ application?.reference }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Application Type</h5>
+            <hr />
+            <ng-container *ngIf="application?.appType else noData">
+              <span>{{ application?.appType }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Application Status</h5>
+            <hr />
+            <ng-container *ngIf="application?.status else noData">
+              <span>{{ application?.status }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+      <section class="info-section">
+        <h3>Company Information</h3>
+        <div class="info-wrapper">
+          <div>
+            <h5>Company Name</h5>
+            <hr />
+            <ng-container *ngIf="application?.companyName else noData">
+              <span>{{ application?.companyName }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Company Email</h5>
+            <hr />
+            <ng-container *ngIf="application?.email else noData">
+              <span>{{ application?.email }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Company Address</h5>
+            <hr />
+            <ng-container *ngIf="application?.companyAddress else noData">
+              <span>{{ application?.companyAddress }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+      <section class="info-section">
+        <h3>Vessel Information</h3>
+        <div class="info-wrapper">
+          <div>
+            <h5>Vessel Name</h5>
+            <hr />
+            <ng-container *ngIf="application?.vessel.name else noData">
+              <span>{{ application?.vessel.name }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Vessel Type</h5>
+            <hr />
+            <ng-container *ngIf="application?.vessel.vesselType else noData">
+              <span>{{ application?.vessel.vesselType }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Loading Port</h5>
+            <hr />
+            <ng-container *ngIf="application?.vessel.name else noData">
+              <span>{{ application?.vessel.loadingPort }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Discharge Port</h5>
+            <hr />
+            <ng-container *ngIf="application?.vessel.dischargePort else noData">
+              <span>{{ application?.vessel.dischargePort }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>IMO Number</h5>
+            <hr />
+            <ng-container *ngIf="application?.vessel.imoNumber else noData">
+              <span>{{ application?.vessel.imoNumber }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="!isCompany" class="info-section">
+        <h3>Payment Information</h3>
+        <div class="info-wrapper">
+          <div>
+            <h5>Payment Status</h5>
+            <hr />
+            <ng-container *ngIf="application?.paymnetStatus else noData">
+              <span>{{ application?.paymnetStatus }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Payment Description</h5>
+            <hr />
+            <ng-container *ngIf="application?.paymentDescription else noData">
+              <span>{{ application?.paymentDescription }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>Payment Date</h5>
+            <hr />
+            <ng-container *ngIf="application?.paymnetDate else noData">
+              <span>{{ application?.paymnetDate | formatTimeAmPm }}</span>
+            </ng-container>
+          </div>
+        </div>
+      </section>
+      <section *ngIf="application.vessel.tanks.length" class="info-section">
+        <h3>Tanks Information</h3>
+        <div *ngFor="let tank of application.vessel.tanks; let i = index">
+          <div class="tank-info-wrapper">
+            <h4>Tank {{i + 1}}</h4>
+            <hr />
+            <div class="info-wrapper">
+              <div>
+                <h5>Name</h5>
+                <hr>
+                <ng-container *ngIf="tank.name else noData">
+                  <span>{{ tank.name }}</span>
+                </ng-container>
+              </div>
+              <div>
+                <h5>Capacity</h5>
+                <hr>
+                <ng-container *ngIf="tank.capacity else noData">
+                  <span>{{ tank.capacity }}</span>
+                </ng-container>
+              </div>
+              <div>
+                <h5>Product</h5>
+                <hr>
+                <ng-container *ngIf="tank.product else noData">
+                  <span>{{ tank.product }}</span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <ng-template #noData>
+        <span class="empty bg-transparent">Null</span>
+      </ng-template>
+    </div>
+
+    <div class="application-controls">
+      <h3 class="text-slate-500">Other Information</h3>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> SCHEDULE(S) </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          class="card-list"
+          *ngFor="let schedule of application?.schedules | firstN : 4"
+        >
+          <div
+            *ngIf="isCreatedByMe(schedule.scheduledBy)"
+            class="flex justify-end"
+          >
+            <button
+              mat-stroked-button
+              color="accent"
+              (click)="action('editSchedule', schedule)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="isSupervisor" class="flex justify-end">
+            <button
+              mat-stroked-button
+              color="accent"
+              (click)="action('editSchedule', schedule)"
+            >
+              <mat-icon>check</mat-icon>
+            </button>
+          </div>
+
+          <div class="card-item">
+            <div class="item-title">Initiator</div>
+            <div class="item-content">{{ schedule.scheduledBy }}</div>
+          </div>
+          <div class="card-item">
+            <div class="item-title">Schedule Date</div>
+            <div class="item-content">{{ schedule.inspectionDate }}</div>
+          </div>
+          <div class="card-item">
+            <div class="item-title">Expiry Date</div>
+            <div class="item-content">{{ schedule.expiryDate }}</div>
+          </div>
+          
+          <div class="card-item">
+            <div class="item-title">Approval Remark</div>
+            <div class="item-content">{{ schedule.approvalMessage }}</div>
+          </div>
+          <div class="card-item">
+            <div class="item-title">Approver</div>
+            <div class="item-content">{{ schedule.approvedBy }}</div>
+          </div>
+          <div class="card-item">
+            <div class="item-title">Approval Status</div>
+            <div class="item-content">
+              {{
+                schedule.isApproved
+                  ? "Approved"
+                  : schedule.isApproved === null
+                  ? "Approval Pending"
+                  : "Disapproved"
+              }}
+            </div>
+          </div>
+          <div class="card-item">
+            <div class="item-title">Approval Accepted</div>
+            <div class="item-content">
+              {{
+                schedule.isApproved
+                  ? "Approved"
+                  : schedule.isApproved === null
+                  ? "Approval Pending"
+                  : "Disapproved"
+              }}
+            </div>
+          </div>
+        </div>
+        <p class="show-more" (click)="showMore('schedules')">Show more</p>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          class="card-list"
+          *ngFor="let applicationDoc of application?.documents | firstN : 4"
+        >
+          <div class="card-item">
+            <div class="item-title">
+              <a [href]="applicationDoc.docSource" target="_blank">
+                <img
+                  *ngIf="isPDF(applicationDoc.docSource)"
+                  src="../../../../assets/image/pdfIcon.png"
+                  alt="open file"
+                />
+
+                <img
+                  *ngIf="isIMG(applicationDoc.docSource)"
+                  src="../../../../assets/image/imageIcon.png"
+                  alt="open file"
+                />
+
+                <img
+                  *ngIf="
+                    !isIMG(applicationDoc.docSource) &&
+                    !isPDF(applicationDoc.docSource)
+                  "
+                  src="../../../../assets/image/otherFileType.png"
+                  alt="open file"
+                />
+              </a>
+            </div>
+            <div class="item-content">
+              <a [href]="applicationDoc.docSource" target="_blank">
+                {{ applicationDoc.docName }}
+              </a>
+            </div>
+          </div>
+        </div>
+        <p class="show-more" (click)="showMore('applicationDocs')">Show more</p>
+      </mat-expansion-panel>
+    </div>
+  </div>
+
+</div>

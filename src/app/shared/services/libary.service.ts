@@ -41,7 +41,7 @@ export class LibaryService {
   }
 
   public getStates() {
-    return this.http.get<any>(`${api}/states`);
+    return this.http.get<any>(`${api}/statesinnigeria`);
   }
 
   public getProducts() {
@@ -58,5 +58,17 @@ export class LibaryService {
 
   public getAppStatuses() {
     return this.http.get<any>(`${api}/getAppStatus`);
+  }
+
+  public getAllLocations() {
+    return this.http.get<any>(`${api}/all-locations`);
+  }
+
+  public getAllOffices() {
+    return this.http.get<any>(`${api}/all-offices`);
+  }
+
+  public getAppDepots() {
+    return this.http.get<any>(`${api}/all-depot`);
   }
 }

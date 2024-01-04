@@ -5,15 +5,13 @@ import {
   OnInit,
   ViewChild,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { IMenuItem, ISubmenu } from '../../interfaces/menuItem';
 
 @Component({
-  host: {
-    '(document:click)': 'onClickOutSide($event)',
-  },
   selector: 'app-dropdown',
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
@@ -23,8 +21,8 @@ export class DropdownComponent implements OnInit, AfterViewInit {
   public isOpen = false;
   public isActive = false;
 
-  @Input('title') title: string;
-  @Input('path') path: string;
+  @Input() title: string;
+  @Input() path: string;
   @Input('menu-items') menuItems: IMenuItem[];
 
   @ViewChild('menu_item') menuItem;
@@ -56,6 +54,7 @@ export class DropdownComponent implements OnInit, AfterViewInit {
     );
   }
 
+  @HostListener('document:click', ['$event'])
   onClickOutSide(event) {
     if (
       !this.menuItem.nativeElement.contains(event.target) &&
@@ -92,7 +91,7 @@ export class DropdownComponent implements OnInit, AfterViewInit {
     }
 
     if (this.menuItems && this.menuItems.length > 0)
-      for (var m of this.menuItems) {
+      for (const m of this.menuItems) {
         console.log('for: ', this.router.url, m.url);
         if (this.router.url.includes(m.url)) {
           this.isActive = true;

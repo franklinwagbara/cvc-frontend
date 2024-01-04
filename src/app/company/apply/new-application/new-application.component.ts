@@ -1,12 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
+import { AppException } from 'src/app/shared/exceptions/AppException';
 import { IVesselType } from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
@@ -21,10 +20,13 @@ export class NewApplicationComponent implements OnInit {
   public lga: ILGA[];
   public isLicenceVerified = false;
   public applicationTypeId: number;
-  public isLoading: boolean = false;
-  public tanks: ITank[];
+  public isLoading = false;
+  // public tanks: ITank[];
+  public appDepots: IAppDepot[];
   public products: IProduct[];
-  public selectedTanks: ITankDTO[] = [];
+  public depots: IDepot[];
+  // public selectedTanks: ITankDTO[] = [];
+  public selectedAppDepots: IAppDepot[] = [];
   public isMobile = false;
   public selectedFacility: IFacility[] = [];
   public vesselTypes: IVesselType[] = [];
@@ -33,30 +35,29 @@ export class NewApplicationComponent implements OnInit {
 
   public facilityForm: FormGroup;
   public vesselForm: FormGroup;
-  public tankForm: FormGroup;
+  // public tankForm: FormGroup;
+  public appDepotForm: FormGroup;
 
   constructor(
     private libraryService: LibaryService,
-    private progress: ProgressBarService,
     private popUp: PopupService,
     private formBuilder: FormBuilder,
     private appService: ApplicationService,
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private spinner: SpinnerService
   ) {}
 
   ngOnInit(): void {
     this.vesselForm = this.formBuilder.group({
       vesselName: ['', Validators.required],
-      capacity: ['', Validators.required],
-      deadWeight: ['', Validators.required],
-      operator: ['', Validators.required],
+      loadingPort: ['', Validators.required],
+      jetty: ['', Validators.required],
+      motherVessel: ['', Validators.required],
+      marketerName: ['', Validators.required],
+      productId: ['', Validators.required],
       vesselTypeId: ['', Validators.required],
-      placeOfBuild: ['', Validators.required],
-      yearOfBuild: ['', Validators.required],
-      flag: ['', Validators.required],
-      callSIgn: ['', Validators.required],
       imoNumber: ['', Validators.required],
     });
 
@@ -70,54 +71,12 @@ export class NewApplicationComponent implements OnInit {
       lgaId: ['', Validators.required],
     });
 
-    this.tankForm = this.formBuilder.group({
-      name: ['', Validators.required],
-      capacity: ['', Validators.required],
+    this.appDepotForm = this.formBuilder.group({
+      // name: ['', Validators.required],
+      depotId: ['', Validators.required],
+      volume: ['', Validators.required],
       productId: ['', Validators.required],
     });
-
-    this.isLoading = true;
-
-    // this.licenseNumberControl.valueChanges.subscribe((res) => {
-    //   this.isLoading = true;
-    //   this.cd.markForCheck();
-    // });
-
-    // this.facilityTypeControl.valueChanges.subscribe((res: '1' | '2') => {
-    //   if (res == '1') this.isMobile = true;
-    //   else this.isMobile = false;
-    //   this.cd.markForCheck();
-    // });
-
-    this.licenseNumberControl.valueChanges
-      .pipe(
-        switchMap((res) =>
-          this.appService.verifyLicence(res).pipe(
-            catchError((error) => {
-              return of(null);
-            })
-          )
-        )
-      )
-      .subscribe({
-        next: (res) => {
-          if (res.data == null) {
-            this.isLicenceVerified = false;
-          } else {
-            this.isLicenceVerified = true;
-            // this.tanks = res.data.tanks;
-          }
-
-          this.isLoading = false;
-          this.cd.markForCheck();
-        },
-        error: (error) => {
-          this.isLicenceVerified = false;
-
-          this.isLoading = false;
-          this.cd.markForCheck();
-        },
-      });
 
     this.stateControl.valueChanges.subscribe((value) => {
       if (!value) return;
@@ -131,6 +90,7 @@ export class NewApplicationComponent implements OnInit {
     this.getStates();
     this.getProducts();
     this.getVesselTypes();
+    this.getDepots();
   }
 
   public get activateFirstSegment() {
@@ -151,23 +111,21 @@ export class NewApplicationComponent implements OnInit {
 
   public get isNext() {
     return (
+      this.vesselForm.controls['vesselName'].valid &&
+      this.vesselForm.controls['loadingPort'].valid &&
+      this.vesselForm.controls['jetty'].valid &&
+      this.vesselForm.controls['motherVessel'].valid &&
       this.vesselForm.controls['vesselTypeId'].valid &&
-      this.vesselForm.controls['operator'].valid &&
-      this.vesselForm.controls['capacity'].valid &&
-      this.vesselForm.controls['vesselName'].valid
+      this.vesselForm.controls['imoNumber'].valid
     );
   }
-
-  // public get facilityTypeControl() {
-  //   return this.faciltyForm.controls['facilityTypeId'];
-  // }
 
   public get licenseNumberControl() {
     return this.facilityForm.controls['licenseNumber'];
   }
 
   public get productIdControl() {
-    return this.tankForm.controls['productId'];
+    return this.appDepotForm.controls['productId'];
   }
 
   public updateState(s: 1 | 2 | 3) {
@@ -177,54 +135,53 @@ export class NewApplicationComponent implements OnInit {
 
   public submit() {
     const payload: IApplicationFormDTO = {
-      applicationTypeId: this.applicationTypeId,
-      facilityName: this.vesselForm.value.vesselName,
-      // vesselTypeId: this.vesselForm.value.vesselTypeId,
+      vesselName: this.vesselForm.value.vesselName,
+      loadingPort: this.vesselForm.value.loadingPort,
       vesselTypeId: this.vesselForm.value.vesselTypeId,
-      capacity: this.vesselForm.value.capacity,
-      deadWeight: this.vesselForm.value.deadWeight,
-      operator: this.vesselForm.value.operator,
-      placeOfBuild: this.vesselForm.value.placeOfBuild,
-      yearOfBuild: this.vesselForm.value.yearOfBuild,
-      flag: this.vesselForm.value.flag,
-      callSIgn: this.vesselForm.value.callSIgn,
       imoNumber: (this.vesselForm.value.imoNumber as number).toString(),
+      jetty: this.vesselForm.value.jetty,
+      motherVessel: this.vesselForm.value.motherVessel,
+
+      applicationTypeId: this.applicationTypeId,
+      depotList: this.selectedAppDepots,
+
+      facilityName: this.vesselForm.value.vesselName,
       facilitySources: this.selectedFacility,
-      tankList: this.selectedTanks,
+      marketerName: this.vesselForm.value.marketerName,
     };
 
-    this.progress.open();
+    this.spinner.open();
     this.appService.apply(payload).subscribe({
       next: (res) => {
         const appId = res.data.appId;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
 
-        this.router.navigate(['paymentsum', appId]);
+        this.router.navigate(['company', 'paymentsum', appId]);
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
       },
     });
   }
 
-  public addTank() {
-    const formValue = this.tankForm.value;
-    const newTank: ITankDTO = {
+  public addAppDepot() {
+    const formValue = this.appDepotForm.value;
+    const newDepot: any = {
       id: 0,
-      name: formValue.name,
-      capacity: formValue.capacity as number,
+      depotId: formValue.depotId,
+      name: this.depots.find((d) => d.id == formValue?.depotId)?.name,
+      volume: formValue.volume as number,
       productId: formValue.productId,
       product: this.products.find((x) => x.id == formValue.productId).name,
-      facilityId: 0,
     };
 
-    const isExist = this.selectedTanks.find((x) => x.name == newTank.name);
+    const isExist = this.selectedAppDepots.find((x) => x.name == newDepot.name);
 
-    this.tankForm.reset();
+    this.appDepotForm.reset();
 
-    if (!isExist) this.selectedTanks.push(newTank);
+    if (!isExist) this.selectedAppDepots.push(newDepot);
     else this.popUp.open('This tank has been added before!', 'error');
     this.cd.markForCheck();
   }
@@ -252,8 +209,10 @@ export class NewApplicationComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  public removeTank(tank: ITankDTO) {
-    this.selectedTanks = this.selectedTanks.filter((x) => x.name !== tank.name);
+  public removeDepot(tank: IAppDepot) {
+    this.selectedAppDepots = this.selectedAppDepots.filter(
+      (x) => x.name !== tank.name
+    );
     this.cd.markForCheck();
   }
 
@@ -265,23 +224,24 @@ export class NewApplicationComponent implements OnInit {
   }
 
   public getFacilityTypes() {
-    this.progress.open();
+    this.spinner.open();
 
     this.libraryService.getFacilityTypes().subscribe({
       next: (res) => {
         this.facilityTypes = res.data;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
 
   public getApplicationTypes() {
-    this.progress.open();
+    this.spinner.open();
 
     this.libraryService.getApplicationTypes().subscribe({
       next: (res) => {
@@ -289,74 +249,92 @@ export class NewApplicationComponent implements OnInit {
         this.applicationTypeId = this.applicationTypes.find(
           (x) => x.name.toLowerCase() == 'new'
         ).id;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
 
   public getProducts() {
-    this.progress.open();
+    this.spinner.open();
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res.data;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  public getDepots() {
+    this.spinner.open();
+    this.libraryService.getAppDepots().subscribe({
+      next: (res) => {
+        this.depots = res.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: AppException) => {
+        this.popUp.open(error.message, 'error');
+        this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
 
   public getVesselTypes() {
-    this.progress.open();
+    this.spinner.open();
     this.libraryService.getVesselTypes().subscribe({
       next: (res) => {
         this.vesselTypes = res.data;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
       },
     });
   }
 
   public getStates() {
-    this.progress.open();
+    this.spinner.open();
 
     this.libraryService.getStates().subscribe({
       next: (res) => {
         this.states = res.data;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
       },
     });
   }
 
   public getLGAByStateId(id: number) {
-    this.progress.open();
+    this.spinner.open();
 
     this.libraryService.getLGAByStateId(id).subscribe({
       next: (res) => {
         this.lga = res.data;
-        this.progress.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
-        this.progress.close();
+        this.spinner.close();
       },
     });
   }
@@ -398,6 +376,16 @@ export interface ITank {
   product: string;
 }
 
+export interface IAppDepot {
+  id: number;
+  depotId: number;
+  // appId: number;
+  name: string;
+  productId: number;
+  volume: number;
+  product?: string;
+}
+
 export interface ITankDTO {
   id: number;
   name: string;
@@ -418,20 +406,48 @@ export interface IApplicationType {
   name: string;
 }
 
+export interface IAppFee {
+  id: number;
+  applicationTypeId: number;
+  applicationFee: number;
+  processingFee: number;
+  serciveCharge: number;
+  noaFee: number;
+  coqFee: number;
+}
+
+export interface IDepot {
+  id: number;
+  name: string;
+  stateId: number;
+  capacity: number;
+  state: IState;
+  stateName: string;
+}
+
 export interface IApplicationFormDTO {
+  vesselName: string;
+  loadingPort: string;
+  marketerName: string;
+  vesselTypeId: number;
+  imoNumber: string;
+  motherVessel: string;
+  jetty: string;
+
   applicationTypeId: number;
   facilityName: string;
-  vesselTypeId: number;
-  capacity: number;
-  operator: string;
-  imoNumber: string;
-  callSIgn: string;
-  flag: string;
-  yearOfBuild: string;
-  placeOfBuild: string;
-  deadWeight: number;
+
   facilitySources: IFacility[];
-  tankList: ITankDTO[];
+  depotList: IAppDepot[];
+  // productId: string;
+  // dischargePort: string;
+  // capacity: number;
+  // operator: string;
+  // callSIgn: string;
+  // flag: string;
+  // placeOfBuild: string;
+  // yearOfBuild: string;
+  // deadWeight: number;
 }
 
 export interface IVessel {

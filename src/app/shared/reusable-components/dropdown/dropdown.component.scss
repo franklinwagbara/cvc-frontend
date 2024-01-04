@@ -2,13 +2,12 @@ $primary: #aaefdf;
 $primary-dark: #6aad9e;
 $text-dark: #035024;
 $nav-height: 60px;
-$yellow: #ffca43;
+$yellow: #f9e076;
 
 span {
-  min-width: 100px;
   color: $text-dark;
   transition: all 0.4s ease-in-out;
-  @apply flex py-3 px-3 rounded-t-lg cursor-pointer gap-3 items-center;
+  @apply flex p-3 rounded-t-lg cursor-pointer gap-1 items-center text-sm lg:text-lg;
 
   &:hover {
     background-color: $primary-dark;
@@ -29,7 +28,7 @@ span {
   color: white;
   text-align: center;
   z-index: 100;
-  @apply rounded-b-lg rounded-tr-lg flex flex-col;
+  @apply rounded-b-lg rounded-tr-lg flex flex-col text-[16px];
 
   & li {
     position: relative;
