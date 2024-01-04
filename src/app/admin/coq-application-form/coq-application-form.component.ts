@@ -50,7 +50,8 @@ export class CoqApplicationFormComponent
   tankGasInfoForm: FormGroup;
   tankBeforeInfoForm: FormGroup;
   tankAfterInfoForm: FormGroup;
-  vesselInfoForm: FormGroup;
+  vesselLiqInfoForm: FormGroup;
+  vesselGasInfoForm: FormGroup;
   displayedColumns = ['document', 'action', 'progress'];
   private allSubscriptions = new Subscription();
   dataSource: MatTableDataSource<any>;
@@ -129,7 +130,7 @@ export class CoqApplicationFormComponent
     this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
 
     if (this.coqId) this.getCOQ();
-    this.initialForms(null);
+    this.initForms(null);
 
     this.uploadedDoc$.subscribe((file) => {
       this.uploadedDocs.push(file);
@@ -176,9 +177,9 @@ export class CoqApplicationFormComponent
     })
   }
 
-  public initialForms(coqInfo: ICOQ) {
+  public initForms(coqInfo: ICOQ) {
     if (!coqInfo)
-      this.vesselInfoForm = this.fb.group({
+      this.vesselLiqInfoForm = this.fb.group({
         dateOfVesselArrival: ['', [Validators.required, Validators.max]],
         dateOfVesselUllage: ['', [Validators.required]],
         dateOfSTAfterDischarge: ['', [Validators.required]],
@@ -188,7 +189,7 @@ export class CoqApplicationFormComponent
         depotPrice: ['', [Validators.required]],
       });
     else {
-      this.vesselInfoForm = this.fb.group({
+      this.vesselLiqInfoForm = this.fb.group({
         dateOfVesselArrival: [
           new Date(coqInfo.dateOfVesselArrivalISO),
           [Validators.required, Validators.max],
@@ -208,8 +209,21 @@ export class CoqApplicationFormComponent
       });
     }
 
-    this.tankBeforeInfoForm = this.isLiquidProduct ? this.getTankLiqInfoFormGroup('before') : this.getTankGasInfoFormGroup('before');
-    this.tankAfterInfoForm = this.isLiquidProduct ? this.getTankLiqInfoFormGroup('after') : this.getTankGasInfoFormGroup('after');
+    this.vesselGasInfoForm = this.fb.group({
+      gov: ['', [Validators.required]],
+      gsv: ['', [Validators.required]],
+      arrivalDate: ['', [Validators.required]],
+      shoreDate: ['', [Validators.required]],
+      mtTonsVacQtyBefReceipt: ['', [Validators.required]],
+      mtonsVacQtyAftReceipt: ['', [Validators.required]],
+      mtonsVacQtyReceived: [{value: '', disabled: true}, [Validators.required]],
+      mtonsAirQtyBefReceipt: ['', [Validators.required]],
+      mtonsAirQtyAftReceipt: ['', [Validators.required]],
+      mtonsAirQtyReceived: [{value: '', disabled: true}, [Validators.required]],
+    })
+
+    this.tankBeforeInfoForm = this.isLiquidProduct ? this.getTankLiqProdFormGroup('before') : this.getTankGasProdFormGroup('before');
+    this.tankAfterInfoForm = this.isLiquidProduct ? this.getTankLiqProdFormGroup('after') : this.getTankGasProdFormGroup('after');
 
     this.tankBeforeFormTemplateCtx = {
       formGroup: this.tankBeforeInfoForm
@@ -234,7 +248,7 @@ export class CoqApplicationFormComponent
     this.coqService.getCOQById(this.coqId).subscribe({
       next: (res) => {
         this.coq = res.data;
-        this.initialForms(this.coq);
+        this.initForms(this.coq);
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -267,7 +281,7 @@ export class CoqApplicationFormComponent
     return this.noaApplication === undefined ? null : (this.noaApplication && ['AGO', 'LPG'].includes(this.noaApplication?.product));
   }
 
-  public getTankLiqInfoFormGroup(status?: string) {
+  public getTankLiqProdFormGroup(status?: string) {
     return this.fb.group({
       tank: [this.configuredTank.value || '', [Validators.required]],
       status: [status || '', [Validators.required]],
@@ -285,13 +299,13 @@ export class CoqApplicationFormComponent
     })
   }
 
-  public getTankGasInfoFormGroup(status?: string) {
-    return this.fb.group({
+  public getTankGasProdFormGroup(status?: string) {
+    let gasInfoForm = this.fb.group({
       tank: ['', [Validators.required]], 
-      status: ['', [Validators.required]], 
+      status: [status || '', [Validators.required]], 
       tankLevel: ['', [Validators.required]], 
       molWt: ['', [Validators.required]],
-      totalObsVol: '', 
+      totalObsVol: [{value: '', disabled: true}, [Validators.required]], 
       liquidVol: ['', [Validators.required]],
       tankTemp: ['', [Validators.required]],
       vcf: ['', [Validators.required]], 
@@ -302,21 +316,37 @@ export class CoqApplicationFormComponent
       shrinkageCorrVol: ['', [Validators.required]], 
       mtAir: ['', [Validators.required]],
       mtVac: ['', [Validators.required]],
-      totalMtTonsAir: ['', [Validators.required]],
-      totalMtTonsVac: ['', [Validators.required]],
+      totalMtVac: [{value: '', disabled: true}, [Validators.required]],
+      totalMtAir: [{value: '', disabled: true}, [Validators.required]],
       tankCargoTemp: ['', [Validators.required]],
       tankCargoPress: ['', [Validators.required]],
       tankCapacity: ['', [Validators.required]],
       vaporVol: ['', [Validators.required]],
       gasFactor: ['', [Validators.required]], 
-      corrVaporVol: ['', [Validators.required]],
-      vapMTonsKiloAir: ['', [Validators.required]], 
-      vapMTonKiloVac: ['', [Validators.required]], 
+      corrVaporVol: [{value: '', disabled: true}, [Validators.required]],
+      vapMtAir: ['', [Validators.required]], 
+      vapMtVac: ['', [Validators.required]], 
       liqPlusVapVac: ['', [Validators.required]], 
       receivedQtyVac: ['', [Validators.required]], 
-      corrDensity: ['', [Validators.required]],
-      mtTonsKiloAir: ['', [Validators.required]]
+      corrDensity: [{value: '', disabled: true}, [Validators.required]],
+      mtTonsKiloAir: ['', [Validators.required]],
+      vapFactor: ['', [Validators.required]]
     })
+
+    gasInfoForm.valueChanges.subscribe((val) => {
+      if (val.vaporVol && val.shrinkageFactor) {
+        gasInfoForm.controls['corrVaporVol'].setValue(String(parseFloat(val.vaporVol) * parseFloat(val.shrinkageFactor)));
+      }
+      if (val.mtAir && val.vapMtAir) {
+        gasInfoForm.controls['totalMtAir'].setValue(String(parseFloat(val.mtAir) + parseFloat(val.vapMtAir)));
+      }
+      if (val.mtVac && val.vapMtVac) {
+        gasInfoForm.controls['totalMtVac'].setValue(String(parseFloat(val.mtVac) + parseFloat(val.vapMtVac)));
+      }
+      
+    })
+
+    return gasInfoForm;
   }
 
   public getUploadDocuments() {
@@ -467,7 +497,7 @@ export class CoqApplicationFormComponent
     }
 
     let data: ICoQApplication = {
-      ...this.vesselInfoForm.value,
+      ...this.vesselLiqInfoForm.value,
       appId: this.appId,
       depotId: this.selectedDepotId,
     };
