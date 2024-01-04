@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
-import { decodeUser } from 'src/app/helpers/tokenUtils';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
@@ -304,13 +304,20 @@ export class SidebarComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices
-    const currentUser = decodeUser();
-    if (
-      currentUser &&
-      (!currentUser?.location || currentUser.location !== 'FO')
-    ) {
+    if (!currentUser?.location || currentUser?.location !== 'FO') {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
+    }
+
+    // Show NOA Applications and All Applications only to Admins and HQ staffs
+    if (!['SuperAdmin', 'Admin'].includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
+    }
+
+    // Show settings only SuperAdmin
+    if (!['SuperAdmin'].includes(currentUser?.userRoles)) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
     }
 
     this.isCollapsed$.subscribe((val: boolean) => {

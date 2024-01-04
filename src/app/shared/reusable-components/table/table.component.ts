@@ -54,6 +54,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
+  @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
+    false;
+  @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
+    false;
+  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean =
+    false;
+  @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
+    false;
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders = {};
   @Input() table_controls_horizontal = false;
@@ -64,6 +72,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onEditData = new EventEmitter<any>();
   @Output() onInitiateCoQ = new EventEmitter<any>();
   @Output() onViewData = new EventEmitter<any>();
+  @Output() onViewCoQCerts = new EventEmitter<any>();
+  @Output() onViewCoQCert = new EventEmitter<any>();
+  @Output() onViewDebitNotes = new EventEmitter<any>();
+  @Output() onViewDebitNote = new EventEmitter<any>();
   @Output() onGenerateRRR = new EventEmitter<any>();
   @Output() onConfirmPayment = new EventEmitter<any>();
   @Output() onUploadDocument = new EventEmitter<any>();
@@ -129,6 +141,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -178,6 +191,38 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'view_control',
         header: '',
         cell: (item) => 'view_schedule_control',
+      });
+    }
+
+    if (this.enableViewCoQCertsControl) {
+      this.columns.push({
+        columnDef: 'view_coq_certs_control',
+        header: '',
+        cell: (item) => 'view_coq_certs_control'
+      });
+    }
+
+    if (this.enableViewDebitNotesControl) {
+      this.columns.push({
+        columnDef: 'view_debit_notes_control',
+        header: '',
+        cell: (item) => 'view_debit_notes_control'
+      });
+    }
+
+    if (this.enableViewCoQCertControl) {
+      this.columns.push({
+        columnDef: 'view_coq_cert_control',
+        header: '',
+        cell: (item) => 'view_coq_cert_control'
+      });
+    }
+
+    if (this.enableViewDebitNoteControl) {
+      this.columns.push({
+        columnDef: 'view_debit_note_control',
+        header: '',
+        cell: (item) => 'view_debit_note_control'
       });
     }
 
@@ -233,8 +278,24 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onEditData.emit(row);
   }
 
-  viewData(row) {
+  viewData(row: any) {
     this.onViewData.emit(row);
+  }
+
+  viewDebitNotes(row: any) {
+    this.onViewDebitNotes.emit(row);
+  }
+
+  viewCoQCerts(row: any) {
+    this.onViewCoQCerts.emit(row);
+  }
+
+  viewCoQCert(row: any) {
+    this.onViewCoQCert.emit(row);
+  }
+
+  viewDebitNote(row: any) {
+    this.onViewDebitNote.emit(row);
   }
 
   initiateCoQ(row: any) {

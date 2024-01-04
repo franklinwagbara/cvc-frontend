@@ -11,9 +11,11 @@ export const tokenNotExpired = (): boolean => {
   return !isExpired;
 };
 
-export const decodeUser = (): any => {
+export const decodeFullUserInfo = (): any => {
   const jwtHelper = new JwtHelperService();
   const token = localStorage.getItem('token');
-
-  return jwtHelper.decodeToken(token);
+  const userFromApi = JSON.parse(localStorage.getItem('currentUser'));
+  const decodedUser = jwtHelper.decodeToken(token);
+  if (!userFromApi) return decodedUser;
+  return { ...userFromApi, ...decodedUser }
 }

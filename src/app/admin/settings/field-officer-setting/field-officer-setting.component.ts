@@ -11,6 +11,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-field-officer-setting',
@@ -38,6 +39,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     private depotOfficerService: DepotOfficerService,
     private libService: LibaryService,
     private spinner: SpinnerService,
+    private progressBar: ProgressBarService,
     private popUp: PopupService
   ) {}
 
@@ -88,46 +90,47 @@ export class FieldOfficerSettingComponent implements OnInit {
     });
   }
 
-  deleteData(event: any) {
-    const listOfDataToDelete = event.filter((s) => {
-      if (s.appCount > 0) {
-        this.popUp.open(
-          'Cannot delete a field officer with an assigned depot',
-          'error'
-        );
-      }
-      return s.appCount === 0;
-    });
-
-    const requests = (listOfDataToDelete as any[]).map((req) => {
-      return this.adminService.deleteStaff(req.id);
-    });
-
-    this.spinner.open();
-
-    forkJoin(requests).subscribe({
-      next: (res) => {
-        if (res && res.length > 0) {
+  deleteData(selected: any[]) {
+    if (selected?.length) {
+      const listOfDataToDelete = selected.filter((s) => {
+        if (s.appCount > 0) {
           this.popUp.open(
-            `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
-            'success'
+            'Cannot delete a field officer with an assigned depot',
+            'error'
           );
-
-          const responses = res
-            .map((r) => r.data.data)
-            .sort((a, b) => a.length - b.length);
-
-          this.allUsers = responses[0];
         }
-
-        this.spinner.close();
-      },
-      error: (error: unknown) => {
-        this.popUp.open('Something went wrong while deleting data!', 'error');
-
-        this.spinner.close();
-      },
-    });
+        return s.appCount === 0;
+      });
+  
+      const requests = (listOfDataToDelete as any[]).map((req) => {
+        return this.adminService.deleteStaff(req.id);
+      });
+  
+      this.progressBar.open();
+  
+      forkJoin(requests).subscribe({
+        next: (res) => {
+          if (res && res.length > 0) {
+            this.popUp.open(
+              `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
+              'success'
+            );
+  
+            const responses = res
+              .map((r) => r.data.data)
+              .sort((a, b) => a.length - b.length);
+  
+            this.allUsers = responses[0];
+          }
+  
+          this.progressBar.close();
+        },
+        error: (error: unknown) => {
+          this.progressBar.close();
+          this.popUp.open('Something went wrong while deleting data!', 'error');
+        },
+      });
+    }
   }
 
   editData(event: Event) {

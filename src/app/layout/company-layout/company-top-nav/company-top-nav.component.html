@@ -7,10 +7,10 @@
   <div class="nav-wrapper">
     <div class="nav-list">
       <app-dropdown
-        title="DASHBOARD"
-        path="company/dashboard"
-        [menu-items]="dashboardMenuItems"
-      >
+      title="DASHBOARD"
+      path="company/dashboard"
+      [menu-items]="dashboardMenuItems"
+    >
       </app-dropdown>
       <app-dropdown title="APPLICATIONS" [menu-items]="applicationsMenuItems">
       </app-dropdown>
@@ -18,25 +18,53 @@
       </app-dropdown>
       <app-dropdown title="MY CERTIFICATE" path="company/mycertificates">
       </app-dropdown>
-      <!-- <app-dropdown title="TEMPLATES" [menu-items]="templateMenuItems">
-      </app-dropdown> -->
     </div>
+    
+    <ng-container *ngIf="currWindowWidth >= 921">
+      <ng-container *ngTemplateOutlet="userprofile"></ng-container>
+    </ng-container>
+    
+    <button id="company-navmenu-trigger" class="mr-8" mat-fab [matMenuTriggerFor]="navmenu">
+      <mat-icon class="menu">menu</mat-icon>
+    </button>
+    <mat-menu #navmenu class="company-navmenu">
+      <button mat-menu-item routerLink="/company/dashboard">Dashboard</button>
+      <button mat-menu-item [mat-menu-trigger-for]="applicationsdropdown">
+        Applications
+      </button>
+      <mat-menu #applicationsdropdown>
+        <button mat-menu-item routerLink="/company/apply">Apply</button>
+        <button mat-menu-item routerLink="/company/myapplication">My Applications</button>
+      </mat-menu>
+      <button mat-menu-item [mat-menu-trigger-for]="accountdropdown">My Account</button>
+      <mat-menu #accountdropdown>
+        <button mat-menu-item routerLink="/company/companyinformation">Company Profile</button>
+        <button mat-menu-item routerLink="/company/changepassword">Change Password</button>
+        <button mat-menu-item routerLink="/company/messages">Messages</button>
+        <button mat-menu-item routerLink="/company/myschedule">My Schedule</button>
+      </mat-menu>
+      <button mat-menu-item routerLink="/company/mycertificates">My Certificates</button>
+      <hr />
+      <ng-container *ngTemplateOutlet="userprofile"></ng-container>
+    </mat-menu>
 
-    <div class="user-group">
-      <div class="user">
-        <svg-icon [icon]="'user'" fill="black" [size]="32"></svg-icon>
-        <span>{{ currentUsername.lastName }}</span>
+    <ng-template #userprofile>
+      <div class="user-group">
+        <div class="user">
+          <svg-icon [icon]="'user'" fill="black" [size]="32"></svg-icon>
+          <span>{{ currentUsername.lastName }}</span>
+        </div>
+  
+        <div class="logout" (click)="auth.logout()">
+          <svg-icon
+            [icon]="'logout'"
+            fill="none"
+            stroke="black"
+            [size]="20"
+          ></svg-icon>
+          <span>Log out</span>
+        </div>
       </div>
-
-      <div class="logout" (click)="auth.logout()">
-        <svg-icon
-          [icon]="'logout'"
-          fill="none"
-          stroke="black"
-          [size]="20"
-        ></svg-icon>
-        <span>logout</span>
-      </div>
-    </div>
+    </ng-template>
   </div>
 </nav>

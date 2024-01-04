@@ -41,6 +41,8 @@ import { RenewApplicationComponent } from './apply/renew-application/renew-appli
 import { ViewApplicationComponent } from './view-application/view-application.component';
 import { ApplicationViewTableComponent } from './view-application/application-view-table/application-view-table.component';
 import { ViewMessageComponent } from './messages/view-message/view-message.component';
+import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
+import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
 
 @NgModule({
   imports: [
@@ -86,6 +88,8 @@ import { ViewMessageComponent } from './messages/view-message/view-message.compo
     ViewApplicationComponent,
     ApplicationViewTableComponent,
     ViewMessageComponent,
+    ViewCoqCertsComponent,
+    ViewDebitNotesComponent,
   ],
   providers: [],
 })

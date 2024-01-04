@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ICoQApplication } from '../interfaces/ICoQApplication';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 const API = `${environment.apiUrl}/CoQ`;
 
@@ -34,6 +34,18 @@ export class CoqService {
 
   submit(id: number): Observable<any> {
     return this.http.post<any>(`${API}/submit`, null, { params: { id } });
+  }
+
+  getAllCoQCerts(appId: number): Observable<any> {
+    return of([]);
+  }
+
+  getAllDebitNotes(appId: number): Observable<any> {
+    return of([]);
+  }
+
+  getDebitNoteById(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/debit-note/${id}`);
   }
 
   processApplication(model: {

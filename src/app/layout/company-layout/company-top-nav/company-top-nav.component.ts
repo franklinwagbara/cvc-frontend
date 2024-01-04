@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, Subject } from 'rxjs';
 import {
@@ -22,6 +22,8 @@ export class CompanyTopNavComponent implements OnInit {
   public categories: Category[];
   public permitTypes: Phase[];
   public currentUsername: LoginModel;
+
+  currWindowWidth: number;
 
   public dashboardMenuItems: IMenuItem[] = [];
   public applicationsMenuItems: IMenuItem[] = [
@@ -82,6 +84,7 @@ export class CompanyTopNavComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getCategoriesAndPermitTypes();
+    this.currWindowWidth = window.innerWidth;
     this.currentUsername = this.auth.currentUser;
 
     // this.categories$.subscribe((cats: Category[]) => {
@@ -134,5 +137,10 @@ export class CompanyTopNavComponent implements OnInit {
         this.spinner.close();
       },
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.currWindowWidth = window.innerWidth;
   }
 }

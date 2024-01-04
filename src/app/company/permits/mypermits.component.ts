@@ -78,4 +78,12 @@ export class MypermitsComponent implements OnInit, AfterViewInit {
       `${environment.apiUrl}/licenses/view_license?id=${event.id}`
     );
   }
+
+  viewCoQCerts(row: any) {
+    this.router.navigateByUrl(`/company/mycertificates/${row.id}/coqs`);
+  }
+
+  viewDebitNotes(row: any) {
+    this.router.navigateByUrl(`/company/mycertificates/${row.id}/debit-notes`);
+  }
 }

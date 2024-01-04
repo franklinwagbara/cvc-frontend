@@ -1,0 +1,15 @@
+h6 {
+  @apply shadow-md p-4;
+}
+
+.my-accordion {
+  @apply relative mb-3;
+}
+
+.accordion-open > div {
+  @apply h-52;
+}
+
+.accordion-open i {
+  @apply rotate-180;
+}

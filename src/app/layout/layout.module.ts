@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedModule } from '../shared/shared.module';
-
+import { MatMenuModule } from '@angular/material/menu';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -36,6 +36,7 @@ import { CompanyTopNavComponent } from './company-layout/company-top-nav/company
     ReactiveFormsModule,
     // NgbModule,
     SharedModule,
+    MatMenuModule,
     MatIconModule,
   ],
   exports: [
