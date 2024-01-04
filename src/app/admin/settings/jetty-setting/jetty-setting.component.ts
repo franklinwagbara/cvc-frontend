@@ -3,7 +3,7 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { IJetty } from '../../../../../src/app/shared/interfaces/ijetty';
+import { IJetty } from '../../../../../src/app/shared/interfaces/IJetty';
 import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
 import { JettyService } from '../../../../../src/app/shared/services/jetty.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
