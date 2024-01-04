@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -37,7 +37,8 @@ export class DocumentUploadComponent implements OnInit {
     public dialog: MatDialog,
     public appService: ApplicationService,
     private popUp: PopupService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -70,12 +71,14 @@ export class DocumentUploadComponent implements OnInit {
         this.documentConfig = res.data.apiData;
 
         this.progressBar.close();
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
         this.progressBar.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -127,12 +130,14 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File was uploaded successfully!', null, {
             panelClass: ['success'],
           });
+          this.cd.markForCheck();
         },
         error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
           });
+          this.cd.markForCheck();
         },
       });
   }

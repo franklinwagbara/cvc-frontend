@@ -2,32 +2,7 @@
 .side-nav {
   width: 300px;
   border-color: transparent !important;
-  background: #ad5389; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #3c1053,
-    #ad5389
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  @apply fixed top-0 left-0 z-50 bg-primary pt-9 h-full pr-4 overflow-y-auto bg-gradient-to-r from-[#3c1053] to-[#ad5389];
-}
-
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #EDF5F9;
-}
-
-::-webkit-scrollbar-thumb {
-  width: 8px;
-  background: #7f7fd5; /* fallback for old browsers */
-  background: linear-gradient(
-    to right,
-    #3c1053e9,
-    #ad5389d4
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  border-radius: 4px;
+  @apply fixed top-0 left-0 z-50 bg-slate-100 pt-9 h-full pr-4 overflow-y-auto;
 }
 
 .logo-title {

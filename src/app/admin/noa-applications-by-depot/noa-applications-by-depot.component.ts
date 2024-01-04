@@ -5,6 +5,10 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { forkJoin } from 'rxjs';
+import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
+import { AuthenticationService } from 'src/app/shared/services';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
 @Component({
   selector: 'app-noa-applications-by-depot',
@@ -13,6 +17,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
 })
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
+  depotOfficerMappings: any[];
 
   public tableTitles = {
     applications: 'NOA Applications',
@@ -31,7 +36,8 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     private spinner: SpinnerService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private popUp: PopupService
+    private popUp: PopupService,
+    private depotOfficerService: DepotOfficerService,
   ) {}
 
   ngOnInit(): void {
@@ -41,24 +47,38 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   public fetchAllData() {
     this.spinner.open();
 
-    this.applicationService.viewApplicationByDepot(1).subscribe({
-      next: (res) => {
-        this.applications = res.data;
-        this.spinner.close();
-        this.cdr.markForCheck();
+    this.depotOfficerService.getAllMappings().subscribe({
+      next: (res: any) => {
+        this.depotOfficerMappings = res?.data;
+        const currUser = decodeFullUserInfo();
+        const officerMapping = this.depotOfficerMappings.find((val) => val.userId === currUser.userUUID);
+        
+        this.applicationService.viewApplicationByDepot(officerMapping?.depotID || 1).subscribe({
+          next: (res) => {
+            this.applications = res.data;
+            this.spinner.close();
+            this.cdr.markForCheck();
+          },
+          error: (error: unknown) => {
+            console.log(error);
+            this.popUp.open('Something went wrong while retrieving data.', 'error');
+            this.spinner.close();
+            this.cdr.markForCheck();
+          },
+        });
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
+        console.log(error);
         this.popUp.open('Something went wrong while retrieving data.', 'error');
-
         this.spinner.close();
         this.cdr.markForCheck();
-      },
-    });
+      }
+    })
+
   }
 
   initiateCoq(event: any) {
     const row = event;
-    // Call the endpoint to create an empty coq
     this.router.navigate([
       `/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`,
     ]);

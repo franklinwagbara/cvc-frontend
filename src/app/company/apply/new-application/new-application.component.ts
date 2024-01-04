@@ -78,8 +78,6 @@ export class NewApplicationComponent implements OnInit {
       productId: ['', Validators.required],
     });
 
-    this.isLoading = true;
-
     this.stateControl.valueChanges.subscribe((value) => {
       if (!value) return;
       this.getLGAByStateId(value);
@@ -237,6 +235,7 @@ export class NewApplicationComponent implements OnInit {
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -256,6 +255,7 @@ export class NewApplicationComponent implements OnInit {
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -271,6 +271,7 @@ export class NewApplicationComponent implements OnInit {
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -286,6 +287,7 @@ export class NewApplicationComponent implements OnInit {
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }

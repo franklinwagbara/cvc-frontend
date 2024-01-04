@@ -83,7 +83,7 @@
           <div>
             <h5>Discharge Port</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.name else noData">
+            <ng-container *ngIf="application?.vessel.dischargePort else noData">
               <span>{{ application?.vessel.dischargePort }}</span>
             </ng-container>
           </div>
@@ -116,7 +116,7 @@
           <div>
             <h5>Payment Date</h5>
             <hr />
-            <ng-container *ngIf="!application?.paymnetDate else noData">
+            <ng-container *ngIf="application?.paymnetDate else noData">
               <span>{{ application?.paymnetDate | formatTimeAmPm }}</span>
             </ng-container>
           </div>

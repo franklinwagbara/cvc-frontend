@@ -116,7 +116,7 @@
                 class="border border-t border-b rounded-r p-2"
                 formControlName="productId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Product --</option>
                 <option *ngFor="let p of products" [ngValue]="p.id">
                   {{ p.name }}
                 </option>

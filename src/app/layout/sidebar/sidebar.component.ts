@@ -306,15 +306,18 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices
-    console.log('DecodedUser Full Info ============= ', currentUser);
     if (!currentUser?.location || currentUser?.location !== 'FO') {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (!currentUser?.location || currentUser?.location !== 'HQ' || 
-      ['SuperAdmin', 'Admin'].includes(currentUser?.userRoles)) {
+    if (!['SuperAdmin', 'Admin'].includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
+    }
+
+    // Show settings only SuperAdmin
+    if (!['SuperAdmin'].includes(currentUser?.userRoles)) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
     }
 
     this.isCollapsed$.subscribe((val: boolean) => {
