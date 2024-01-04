@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { forkJoin } from 'rxjs';
-import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
-import { IBranch } from 'src/app/shared/interfaces/IBranch';
-import { MoveApplicationFormComponent } from 'src/app/shared/reusable-components/move-application-form/move-application-form.component';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { UserFormComponent } from '../../../../../src/app/shared/reusable-components/user-form/user-form.component';
+import { IBranch } from '../../../../../src/app/shared/interfaces/IBranch';
+import { MoveApplicationFormComponent } from '../../../../../src/app/shared/reusable-components/move-application-form/move-application-form.component';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { FieldOffice } from '../field-zonal-office/field-zonal-office.component';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-all-staff',

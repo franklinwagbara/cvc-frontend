@@ -6,16 +6,16 @@ import { forkJoin } from 'rxjs';
 import {
   IVesselType,
   PermitStageDocFormComponent,
-} from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { AppStageDocumentService } from 'src/app/shared/services/app-stage-document.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+} from '../../../../../src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { AppStageDocumentService } from '../../../../../src/app/shared/services/app-stage-document.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
   IApplicationType,
   IFacilityType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import {
   Category,
   PermitStage,

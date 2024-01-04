@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-payment-report',

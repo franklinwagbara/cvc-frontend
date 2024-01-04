@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { IApplicationFormDTO } from 'src/app/company/apply/new-application/new-application.component';
+import { environment } from '../../../../src/environments/environment';
+import { IApplicationFormDTO } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { Observable } from 'rxjs';
 
 const API = `${environment.apiUrl}/application`;

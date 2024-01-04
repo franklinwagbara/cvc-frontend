@@ -1,7 +1,7 @@
 import {
   Category,
   Phase,
-} from 'src/app/admin/settings/modules-setting/modules-setting.component';
+} from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

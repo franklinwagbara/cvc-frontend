@@ -1,7 +1,7 @@
 import {
   PermitStage,
   Phase,
-} from 'src/app/admin/settings/modules-setting/modules-setting.component';
+} from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplyService } from 'src/app/shared/services/apply.service';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 
 @Component({
@@ -60,8 +60,8 @@ export class DocumentUploadComponent implements OnInit {
         this.documents = res.data.docs;
         this.documents = this.documents.map((d) => {
           d.source = d.docSource
-            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-            : `<img width="20" src="assets/image/no-document.png" />`;
+            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+            : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
@@ -118,8 +118,8 @@ export class DocumentUploadComponent implements OnInit {
               d.fileId = res.fileId;
               d.available = 'Document Uploaded';
               d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" src="assets/image/no-document.png" />`;
+                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
             }
 
             return d;
@@ -177,8 +177,8 @@ export class DocumentUploadComponent implements OnInit {
               d.fileId = res.fileId;
               d.available = 'Document Uploaded';
               d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" src="assets/image/no-document.png" />`;
+                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
             }
 
             return d;

@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { LibaryService } from '../../../../src/app/shared/services/libary.service';
 import { uploadFile } from '../../shared/models/apply.model';
 import { GenericService } from '../../shared/services';
 import { ApplyService } from '../../shared/services/apply.service';

@@ -3,11 +3,11 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { INominatedSurveyor } from 'src/app/shared/interfaces/INominatedSurveyor';
-import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
-import { NominatedSurveyorService } from 'src/app/shared/services/nominated-surveyor.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { INominatedSurveyor } from '../../../../../src/app/shared/interfaces/INominatedSurveyor';
+import { FormDialogComponent, FormKeysProp } from '../../../../../src/app/shared/reusable-components/form-dialog/form-dialog.component';
+import { NominatedSurveyorService } from '../../../../../src/app/shared/services/nominated-surveyor.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-nominated-surveyor-setting',

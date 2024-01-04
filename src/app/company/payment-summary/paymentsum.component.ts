@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { environment } from 'src/environments/environment';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { environment } from '../../../../src/environments/environment';
 
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AuthenticationService, GenericService } from '../../shared/services';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'paymentsum.component.html',

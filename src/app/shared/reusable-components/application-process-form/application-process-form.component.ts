@@ -6,12 +6,12 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PermitStage } from 'src/app/admin/settings/modules-setting/modules-setting.component';
+import { PermitStage } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 import {
   IApplicationType,
   IFacilityType,
   IVessel,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { IAction } from '../../interfaces/IAction';
 import { IApplicationProcess } from '../../interfaces/IApplicationProcess';
 import { IBranch } from '../../interfaces/IBranch';
@@ -23,7 +23,7 @@ import { PermitStageDocFormComponent } from '../permit-stage-doc-form/permit-sta
 import { ApplicationProcessesService } from '../../services/application-processes.service';
 import { LibaryService } from '../../services/libary.service';
 import { PopupService } from '../../services/popup.service';
-import { ILocation } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { ILocation } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 
 const RATES = [
   '0%',

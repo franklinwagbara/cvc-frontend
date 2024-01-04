@@ -2,17 +2,17 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
   IDepot,
   IApplicationType,
   IState,
-} from 'src/app/company/apply/new-application/new-application.component';
-import { LocationService } from 'src/app/shared/services/location/location.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { AppDepotFormComponent } from 'src/app/shared/reusable-components/app-depot-form/app-depot-form.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
+import { LocationService } from '../../../../../src/app/shared/services/location/location.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { AppDepotFormComponent } from '../../../../../src/app/shared/reusable-components/app-depot-form/app-depot-form.component';
 
 @Component({
   selector: 'app-app-depot',

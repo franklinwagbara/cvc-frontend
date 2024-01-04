@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry, map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 
 const API = `${environment.apiUrl}/company`;
 @Injectable({ providedIn: 'root' })

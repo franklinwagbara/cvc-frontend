@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IDepot } from 'src/app/company/apply/new-application/new-application.component';
-import { environment } from 'src/environments/environment';
+import { IDepot } from '../../../../../src/app/company/apply/new-application/new-application.component';
+import { environment } from '../../../../../src/environments/environment';
 
 const api = `${environment.apiUrl}/location`;
 
