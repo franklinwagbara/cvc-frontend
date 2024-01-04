@@ -40,6 +40,7 @@ import { NewApplicationComponent } from './apply/new-application/new-application
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
 import { ViewApplicationComponent } from './view-application/view-application.component';
 import { ApplicationViewTableComponent } from './view-application/application-view-table/application-view-table.component';
+import { ViewMessageComponent } from './messages/view-message/view-message.component';
 import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
 
@@ -86,6 +87,7 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
     RenewApplicationComponent,
     ViewApplicationComponent,
     ApplicationViewTableComponent,
+    ViewMessageComponent,
     ViewCoqCertsComponent,
     ViewDebitNotesComponent,
   ],

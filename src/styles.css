@@ -91,3 +91,7 @@ button:disabled {
 .chart-title span {
   @apply py-3 px-7 font-semibold rounded-full bg-gradient-to-r from-yellow-200 to-yellow-400;
 }
+
+.view-message-content .mat-dialog-container {
+  padding: 0px !important; /* Set padding to 0 or adjust as needed */
+}
