@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
+import { IApplication } from '../../../../../../src/app/shared/interfaces/IApplication';
 
 @Component({
   selector: 'app-paymentfilterleft',

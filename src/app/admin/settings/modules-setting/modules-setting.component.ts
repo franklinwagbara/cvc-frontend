@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { PhaseFormComponent } from 'src/app/shared/reusable-components/phase-form/phase-form.component';
-import { CategoryFormComponent } from 'src/app/shared/reusable-components/category-form/category-form.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { PhaseFormComponent } from '../../../../../src/app/shared/reusable-components/phase-form/phase-form.component';
+import { CategoryFormComponent } from '../../../../../src/app/shared/reusable-components/category-form/category-form.component';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { StageFormComponent } from 'src/app/shared/reusable-components/stage-form/stage-form.component';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { StageFormComponent } from '../../../../../src/app/shared/reusable-components/stage-form/stage-form.component';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-modules-setting',

@@ -3,10 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   ICOQ,
   ICoQApplication,
-} from 'src/app/shared/interfaces/ICoQApplication';
-import { CoqService } from 'src/app/shared/services/coq.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+} from '../../../../src/app/shared/interfaces/ICoQApplication';
+import { CoqService } from '../../../../src/app/shared/services/coq.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-coq-applications-by-depot',
