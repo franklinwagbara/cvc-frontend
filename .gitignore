@@ -45,3 +45,7 @@ Thumbs.db
 # Generated code
 /sdk
 openapitools.json
+
+# build
+.angular/
+www/
