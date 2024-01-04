@@ -124,7 +124,7 @@ export class CoqApplicationFormComponent
 
   ngOnInit(): void {
     this.getNoaApplication();
-    this.getVesselDetails();
+    // this.getVesselDetails();
     this.getDepots();
     this.getUploadDocuments();
     this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
@@ -300,53 +300,23 @@ export class CoqApplicationFormComponent
   }
 
   public getTankGasProdFormGroup(status?: string) {
-    let gasInfoForm = this.fb.group({
+    return this.fb.group({
       tank: ['', [Validators.required]], 
       status: [status || '', [Validators.required]], 
-      tankLevel: ['', [Validators.required]], 
-      molWt: ['', [Validators.required]],
-      totalObsVol: [{value: '', disabled: true}, [Validators.required]], 
-      liquidVol: ['', [Validators.required]],
-      tankTemp: ['', [Validators.required]],
+      liqDensityVac: ['', [Validators.required]], 
+      obsSounding: ['', [Validators.required]], 
+      tapeCorr: ['', [Validators.required]],
+      liqTemp: ['', [Validators.required]],
+      observedLiqVol: ['', [Validators.required]], 
+      shrinkageFactor: ['', [Validators.required]],
+      corrLiqVol: ['', [Validators.required]],
       vcf: ['', [Validators.required]], 
-      liquidStVol: ['', [Validators.required]],
-      cargoDensityVac: ['', [Validators.required]],
-      cargoDensityAir: ['', [Validators.required]], 
-      shrinkageFactor: ['', [Validators.required]], 
-      shrinkageCorrVol: ['', [Validators.required]], 
-      mtAir: ['', [Validators.required]],
-      mtVac: ['', [Validators.required]],
-      totalMtVac: [{value: '', disabled: true}, [Validators.required]],
-      totalMtAir: [{value: '', disabled: true}, [Validators.required]],
-      tankCargoTemp: ['', [Validators.required]],
-      tankCargoPress: ['', [Validators.required]],
-      tankCapacity: ['', [Validators.required]],
-      vaporVol: ['', [Validators.required]],
-      gasFactor: ['', [Validators.required]], 
-      corrVaporVol: [{value: '', disabled: true}, [Validators.required]],
-      vapMtAir: ['', [Validators.required]], 
-      vapMtVac: ['', [Validators.required]], 
-      liqPlusVapVac: ['', [Validators.required]], 
-      receivedQtyVac: ['', [Validators.required]], 
-      corrDensity: [{value: '', disabled: true}, [Validators.required]],
-      mtTonsKiloAir: ['', [Validators.required]],
-      vapFactor: ['', [Validators.required]]
+      tankVol100: ['', [Validators.required]], 
+      vapTemp: ['', [Validators.required]], 
+      vapPressure: ['', [Validators.required]],
+      molWt: ['', [Validators.required]],
+      vapFactor: ['', [Validators.required]],
     })
-
-    gasInfoForm.valueChanges.subscribe((val) => {
-      if (val.vaporVol && val.shrinkageFactor) {
-        gasInfoForm.controls['corrVaporVol'].setValue(String(parseFloat(val.vaporVol) * parseFloat(val.shrinkageFactor)));
-      }
-      if (val.mtAir && val.vapMtAir) {
-        gasInfoForm.controls['totalMtAir'].setValue(String(parseFloat(val.mtAir) + parseFloat(val.vapMtAir)));
-      }
-      if (val.mtVac && val.vapMtVac) {
-        gasInfoForm.controls['totalMtVac'].setValue(String(parseFloat(val.mtVac) + parseFloat(val.vapMtVac)));
-      }
-      
-    })
-
-    return gasInfoForm;
   }
 
   public getUploadDocuments() {

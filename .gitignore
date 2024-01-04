@@ -42,5 +42,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
-# sdk
-sdk/
+# Generated code
+/sdk
+openapitools.json
+
+# build
+.angular/
+www/
