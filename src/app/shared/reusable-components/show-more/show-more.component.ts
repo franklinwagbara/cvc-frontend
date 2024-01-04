@@ -5,8 +5,8 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
@@ -89,8 +89,8 @@ export class ShowMoreComponent implements OnInit {
       this.dataToDisplay = (data.data.applicationDocs as Array<any>).map(
         (d) => {
           d.docSource = d.docSource
-            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-            : `<img width="20" src="assets/image/no-document.png" />`;
+            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../../src="assets/image/pdfIcon.png" /></a>`
+            : `<img width="20" ../../../../../src="assets/image/no-document.png" />`;
 
           return d;
         }

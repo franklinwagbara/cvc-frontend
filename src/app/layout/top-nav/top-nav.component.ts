@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { LoginModel } from 'src/app/shared/models/login-model';
-import { AuthenticationService } from 'src/app/shared/services';
-import { PageManagerService } from 'src/app/shared/services/page-manager.service';
+import { LoginModel } from '../../../../src/app/shared/models/login-model';
+import { AuthenticationService } from '../../../../src/app/shared/services';
+import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 
 @Component({
   selector: 'app-top-nav',

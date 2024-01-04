@@ -18,8 +18,8 @@ import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import {
   ILocation,
   Staff,
-} from 'src/app/admin/settings/all-staff/all-staff.component';
-import { FieldOffice } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
+} from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
+import { FieldOffice } from '../../../../../src/app/admin/settings/field-zonal-office/field-zonal-office.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
 import { IBranch } from '../../interfaces/IBranch';

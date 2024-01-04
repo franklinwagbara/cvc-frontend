@@ -1,4 +1,4 @@
-import { Category } from 'src/app/admin/settings/modules-setting/modules-setting.component';
+import { Category } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { AdminService } from '../../services/admin.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { PopupService } from '../../services/popup.service';
 import { IDepot } from '../../interfaces/IDepot';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { DepotOfficerService } from '../../services/depot-officer/depot-officer.service';
 
 @Component({

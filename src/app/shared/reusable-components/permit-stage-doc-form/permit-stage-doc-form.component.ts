@@ -16,17 +16,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   AppType,
   Doc,
-} from 'src/app/admin/settings/app-stage-docs/app-stage-docs.component';
+} from '../../../../../src/app/admin/settings/app-stage-docs/app-stage-docs.component';
 import {
   Category,
   PermitStage,
   Phase,
-} from 'src/app/admin/settings/modules-setting/modules-setting.component';
+} from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import {
   IApplicationType,
   IFacilityType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { AppException } from '../../exceptions/AppException';
 import { AdminService } from '../../services/admin.service';
 import { ProgressBarService } from '../../services/progress-bar.service';

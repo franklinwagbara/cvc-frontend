@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { CoQData, LiquidProductData, LocalDataKey } from 'src/app/admin/coq-application-form/coq-application-form.component';
-import { DialogData, EditCoqFormComponent } from 'src/app/admin/coq-application-form/edit-coq-form/edit-coq-form.component';
+import { CoQData, LiquidProductData, LocalDataKey } from '../../../../src/app/admin/coq-application-form/coq-application-form.component';
+import { DialogData, EditCoqFormComponent } from '../../../../src/app/admin/coq-application-form/edit-coq-form/edit-coq-form.component';
 
 @Injectable({
   providedIn: 'root'

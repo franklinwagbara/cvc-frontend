@@ -8,15 +8,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { LicenceService } from 'src/app/shared/services/licence.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { environment } from 'src/environments/environment';
+import { AppSource } from '../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
+import { AdminService } from '../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { LicenceService } from '../../../../src/app/shared/services/licence.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { environment } from '../../../../src/environments/environment';
 import { Category } from '../settings/modules-setting/modules-setting.component';
 
 @Component({

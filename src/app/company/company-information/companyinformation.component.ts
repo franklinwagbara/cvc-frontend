@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GenericService } from 'src/app/shared/services';
+import { GenericService } from '../../../../src/app/shared/services';
 
 @Component({
   templateUrl: 'companyinformation.component.html',

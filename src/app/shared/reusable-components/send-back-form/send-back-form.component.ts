@@ -7,7 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
