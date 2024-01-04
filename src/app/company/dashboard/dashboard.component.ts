@@ -129,7 +129,7 @@ export interface IDashboard {
 }
 
 export interface IMessage {
-  id: string;
+  id: number;
   subject: string;
   seen: boolean;
   content: string;

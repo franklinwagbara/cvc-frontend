@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry, map } from 'rxjs/operators';
+import { IMessage } from 'src/app/company/dashboard/dashboard.component';
 import { environment } from 'src/environments/environment';
 
 const API = `${environment.apiUrl}/company`;
@@ -60,5 +61,9 @@ export class CompanyService {
 
   public getCompanyMessages() {
     return this.http.get<any>(`${API}/get-all-message`);
+  }
+
+  public getMessagesById(id: number) {
+    return this.http.get<any>(`${API}/Get-Message-ById?id=${id}`);
   }
 }
