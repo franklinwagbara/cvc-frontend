@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   IAppFee,
   IApplicationType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { AdminService } from '../../services/admin.service';

@@ -1,4 +1,4 @@
-import { Category } from 'src/app/admin/settings/modules-setting/modules-setting.component';
+import { Category } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';

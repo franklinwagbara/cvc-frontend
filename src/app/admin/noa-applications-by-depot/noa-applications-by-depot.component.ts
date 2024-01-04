@@ -1,14 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApplication } from '../../shared/interfaces/IApplication';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { forkJoin } from 'rxjs';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
-import { AuthenticationService } from 'src/app/shared/services';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { DepotOfficerService } from '../../../../src/app/shared/services/depot-officer/depot-officer.service';
+import { AuthenticationService } from '../../../../src/app/shared/services';
+import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 
 @Component({
   selector: 'app-noa-applications-by-depot',

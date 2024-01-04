@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit } from '@angular/core';
-import { Util } from 'src/app/shared/lib/Util';
+import { Util } from '../../../../../src/app/shared/lib/Util';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { CoqAppFormService } from '../../../../../src/app/shared/services/coq-app-form.service';
 import { LocalDataKey } from '../coq-application-form.component';
 
 

@@ -13,28 +13,28 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { FileuploadWithProgressService } from '../../shared/services/fileupload-with-progress.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CoqService } from 'src/app/shared/services/coq.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { CoqService } from '../../../../src/app/shared/services/coq.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import {
   ICOQ,
   ICoQApplication,
-} from 'src/app/shared/interfaces/ICoQApplication';
-import { environment } from 'src/environments/environment';
+} from '../../../../src/app/shared/interfaces/ICoQApplication';
+import { environment } from '../../../../src/environments/environment';
 import {
   DocumentConfig,
   DocumentInfo,
   IUploadDocInfo,
-} from 'src/app/company/document-upload/document-upload.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { IDepot } from 'src/app/shared/interfaces/IDepot';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { Util } from 'src/app/shared/lib/Util';
-import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+} from '../../../../src/app/company/document-upload/document-upload.component';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { IDepot } from '../../../../src/app/shared/interfaces/IDepot';
+import { LibaryService } from '../../../../src/app/shared/services/libary.service';
+import { Util } from '../../../../src/app/shared/lib/Util';
+import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 import { MatStepper } from '@angular/material/stepper';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
+import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
+import { DepotOfficerService } from '../../../../src/app/shared/services/depot-officer/depot-officer.service';
 
 @Component({
   selector: 'app-coq-application-form',

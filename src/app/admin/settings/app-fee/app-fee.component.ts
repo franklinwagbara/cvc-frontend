@@ -2,21 +2,17 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { IApplicationProcess } from 'src/app/shared/interfaces/IApplicationProcess';
-import { IBranch } from 'src/app/shared/interfaces/IBranch';
-import { IRole } from 'src/app/shared/interfaces/IRole';
-import { ApplicationProcessFormComponent } from 'src/app/shared/reusable-components/application-process-form/application-process-form.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationProcessesService } from 'src/app/shared/services/application-processes.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { ApplicationProcessesService } from '../../../../../src/app/shared/services/application-processes.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
   IAppFee,
   IApplicationType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { PermitStage } from '../modules-setting/modules-setting.component';
-import { AppFeeFormComponent } from 'src/app/shared/reusable-components/app-fee-form/app-fee-form.component';
+import { AppFeeFormComponent } from '../../../../../src/app/shared/reusable-components/app-fee-form/app-fee-form.component';
 import { number } from '@amcharts/amcharts4/core';
 
 @Component({

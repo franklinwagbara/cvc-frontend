@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { companyProfile } from 'src/app/shared/models/apply.model';
-import { LoginModel } from 'src/app/shared/models/login-model';
-import { AuthenticationService } from 'src/app/shared/services';
-import { CompanyService } from 'src/app/shared/services/company.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { companyProfile } from '../../../../../src/app/shared/models/apply.model';
+import { LoginModel } from '../../../../../src/app/shared/models/login-model';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { CompanyService } from '../../../../../src/app/shared/services/company.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
 
 @Component({
   templateUrl: 'companydirector.component.html',
