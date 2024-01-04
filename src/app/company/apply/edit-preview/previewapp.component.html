@@ -255,7 +255,7 @@
                 <td
                   *ngFor="let h of columns"
                   [ngStyle]="{
-                    color: row[h.columnDef] == 'NO' ? 'red' : 'black'
+                    color: row[h.columnDef] === 'NO' ? 'red' : 'black'
                   }"
                 >
                   {{ row[h.columnDef] }}

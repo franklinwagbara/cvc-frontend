@@ -1,15 +1,14 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
+  HostListener,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { GuardsCheckEnd, Router, ActivatedRoute } from '@angular/router';
-import { AuthenticationService, GenericService } from '../shared/services';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment as envr } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService, GenericService } from '../shared/services';
 import { UserType } from '../shared/constants/userType';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,14 +18,14 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class homeComponent implements OnInit {
   public isLoading$ = new BehaviorSubject<boolean>(false);
-  title = 'AUS2FrontEnd';
+  title = 'CVCFrontEnd';
   emailModal = false;
-  loginForm: FormGroup;
   email: string;
   public userId: string;
   genk: GenericService;
   appid: string;
   elpsbase: string;
+  windowScreenSize: number;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -43,14 +42,14 @@ export class homeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.windowScreenSize = window.innerWidth;
     if (this.auth.isLoggedIn) {
       const user = JSON.parse(localStorage.getItem('currentUser'));
+      const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
-      let returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-
-      if (user.userType === UserType.Company)
+      if (user.userRoles.includes(UserType.Company)) {
         this.router.navigate([returnUrl || '/company/dashboard']);
-      else this.router.navigate([returnUrl || '/admin']);
+      } else this.router.navigate([returnUrl || '/admin']);
       return;
     }
 
@@ -58,7 +57,6 @@ export class homeComponent implements OnInit {
       // this.email = params['email'];
       this.userId = params['id'];
 
-      // debugger;
       if (!this.auth.isLoggedIn && this.userId) {
         this.isLoading$.next(true);
 
@@ -69,7 +67,7 @@ export class homeComponent implements OnInit {
           )
           .subscribe((user) => {
             if (user) {
-              let returnUrl =
+              const returnUrl =
                 this.route.snapshot.queryParamMap.get('returnUrl');
               if (user.userRoles === UserType.Company) {
                 this.router.navigate([returnUrl || '/company/dashboard']);
@@ -84,12 +82,8 @@ export class homeComponent implements OnInit {
     });
   }
 
-  // toggleEmailModal() {
-  //   if (!this.emailModal) {
-  //     this.emailModal = true;
-  //   } else {
-  //     this.emailModal = false;
-  //   }
-  //   this.cd.markForCheck();
-  // }
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.windowScreenSize = window.innerWidth;
+  }
 }

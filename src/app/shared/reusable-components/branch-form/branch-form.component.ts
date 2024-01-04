@@ -55,7 +55,7 @@ export class BranchFormComponent {
         this.progressBarService.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not create the Branch!',
           null,

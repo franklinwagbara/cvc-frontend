@@ -19,11 +19,11 @@ import {
 } from '@angular/material/dialog';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
+import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
 import { AppException } from '../../exceptions/AppException';
 import { AdminService } from '../../services/admin.service';
-import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import { ProgressBarService } from '../../services/progress-bar.service';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
 import { GenericService } from '../../services';
 import { IApplication } from '../../interfaces/IApplication';
 import { UserRole } from '../../constants/userRole';
@@ -133,7 +133,7 @@ export class AssignApplicationFormComponent
       newStaffId: this.form.get('id').value[0].id,
       oldStaffId: null,
       comment: this.form.get('comment').value,
-      apps: [...this.selectedApplications.map((app) => app.id)],
+      apps: [...this.selectedApplications.map((app) => app.applicationTypeId)],
     };
 
     this.adminServe.assignApplication(model).subscribe({

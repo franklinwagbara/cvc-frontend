@@ -6,11 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 import { uploadFile } from '../../shared/models/apply.model';
 import { GenericService } from '../../shared/services';
 import { ApplyService } from '../../shared/services/apply.service';
 import { ModalService } from '../../shared/services/modal.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   templateUrl: 'upload.component.html',
@@ -23,7 +23,7 @@ export class UploadComponent implements OnInit {
   phaseList: any;
   phaseId: number;
   sizePerPage = 10;
-  categoryId: string = '';
+  categoryId = '';
   uploadForm: FormGroup;
   state: string;
   lga: string;
@@ -39,9 +39,9 @@ export class UploadComponent implements OnInit {
   lgalist = [];
   statelist = [];
   category: string;
-  address: string = '';
+  address = '';
   phase: string;
-  applicationTypeId: string = '';
+  applicationTypeId = '';
   stagelist = [];
   phasestages: any;
 
@@ -51,7 +51,8 @@ export class UploadComponent implements OnInit {
     private modalService: ModalService,
     private router: Router,
     private gen: GenericService,
-    private libraryService: LibaryService
+    private libraryService: LibaryService,
+    private formBuilder: FormBuilder
   ) {
     this.genk = gen;
   }
@@ -65,14 +66,14 @@ export class UploadComponent implements OnInit {
   }
 
   initForm() {
-    this.uploadApplyForm = new FormGroup({
-      categoryId: new FormControl(this.categoryId, [Validators.required]),
-      phaseId: new FormControl(this.phaseId, [Validators.required]),
-      phaseStageId: new FormControl('', [Validators.required]),
-      lgaId: new FormControl(this.LgaId),
-      location: new FormControl(this.address, [Validators.required]),
-      file: new FormControl('', [Validators.required]),
-      doc: new FormControl('', [Validators.required]),
+    this.uploadApplyForm = this.formBuilder.group({
+      categoryId: [this.categoryId, [Validators.required]],
+      phaseId: [this.phaseId, [Validators.required]],
+      phaseStageId: ['', [Validators.required]],
+      lgaId: [this.LgaId],
+      location: [this.address, [Validators.required]],
+      file: ['', [Validators.required]],
+      doc: ['', [Validators.required]],
     });
   }
 

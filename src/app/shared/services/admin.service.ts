@@ -6,7 +6,9 @@ import { map, retry } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
-import { Schedule } from '../reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
+import { IAppFee } from 'src/app/company/apply/new-application/new-application.component';
+import { IRole } from '../interfaces/IRole';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -124,12 +126,46 @@ export class AdminService {
   }
 
   getRoles() {
-    return this.http.get<any>(`${environment.apiUrl}/Library/Roles`, {}).pipe(
+    // return this.http.get<any>(`${environment.apiUrl}/Library/Roles`, {}).pipe(
+    return this.http.get<any>(`${environment.apiUrl}/Role/get-roles`).pipe(
       retry(this.num),
       map((res) => {
         return res;
       })
     );
+  }
+
+  addRoles(data: IRole) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Role/add-role`, data)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  editRoles(data: IRole) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Role/edit-role`, data)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
+  }
+
+  deleteRoles(id: any) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/Role/delete-role?id=${id}`)
+      .pipe(
+        retry(this.num),
+        map((res) => {
+          return res;
+        })
+      );
   }
 
   getCompanyResource(companyCode: string) {
@@ -289,7 +325,7 @@ export class AdminService {
 
   getOffices() {
     return this.http
-      .get<any>(`${environment.apiUrl}/configuration/field-offices`)
+      .get<any>(`${environment.apiUrl}/Library/All-Offices`)
       .pipe(retry(this.num));
   }
 
@@ -315,7 +351,7 @@ export class AdminService {
 
   getBranches() {
     return this.http
-      .get<any>(`${environment.apiUrl}/configuration/branches`)
+      .get<any>(`${environment.apiUrl}/Library/All-Locations`)
       .pipe(retry(this.num));
   }
 
@@ -362,5 +398,35 @@ export class AdminService {
       `${environment.apiUrl}/admin/schedule-meeting`,
       model
     );
+  }
+
+  public getAppFees() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-all-fees`)
+      .pipe(retry(this.num));
+  }
+
+  public addAppFees(data: IAppFee) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/AppFee/add-fee`, data)
+      .pipe(retry(this.num));
+  }
+
+  public editAppFees(data: IAppFee) {
+    return this.http
+      .put<any>(`${environment.apiUrl}/AppFee/edit-fee`, data)
+      .pipe(retry(this.num));
+  }
+
+  public getAppFeeById(id: IAppFee) {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-fee-byId?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public deleteAppFee(id: IAppFee) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .pipe(retry(this.num));
   }
 }

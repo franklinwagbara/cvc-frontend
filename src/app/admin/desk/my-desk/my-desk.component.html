@@ -16,7 +16,7 @@
           </button>
         </div>
         <generic-table
-          [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+          [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
           [EnableViewControl]="true"
           [noAddOrDeleteButton]="true"
@@ -28,7 +28,5 @@
         </generic-table>
       </div>
     </div>
-    <!-- </mat-tab>
-    </mat-tab-group> -->
   </div>
 </div>

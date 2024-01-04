@@ -1,4 +1,8 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService } from 'src/app/shared/services';
+import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 @Component({
@@ -7,13 +11,37 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
   styleUrls: ['./admin-layout.component.css'],
 })
 export class AdminLayoutComponent implements OnInit {
-  public isCollapse: boolean = false;
+  public isCollapse = false;
+  isCollapsed$ = new BehaviorSubject<boolean>(false);
 
-  constructor() {}
+  constructor(
+    private pageManagerService: PageManagerService,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Check if user login is still valid
+    if (!this.authService.isLoggedIn) {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('token');
+      this.router.navigateByUrl('/');
+    }
+    this.isCollapsed$.subscribe((val: boolean) => {
+      this.isCollapse = val;
+    })
+    this.pageManagerService.adminSidebarHover.subscribe({
+      next: (value: boolean) => {
+        this.isCollapse = !value;
+      },
+      error: (err: unknown) => {
+        console.error(err);
+      }
+    })
+    
+  }
 
-  onMenuOpen(open: Event) {
-    this.isCollapse = !this.isCollapse;
+  onMenuOpen(open: boolean) {
+    this.isCollapsed$.next(!open);
   }
 }

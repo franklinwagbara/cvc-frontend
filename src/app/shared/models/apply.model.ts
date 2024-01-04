@@ -3,7 +3,7 @@ import { string } from '@amcharts/amcharts4/core';
 export class uploadFile {
   constructor() {}
 
-  id: number = 0;
+  id = 0;
   upload;
 }
 

@@ -11,6 +11,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SubRouteInfo } from '../sidebar/sidebar.component';
 
+
 @Component({
   selector: 'app-nav-item',
   templateUrl: './nav-item.component.html',
@@ -20,7 +21,7 @@ export class NavItemComponent implements OnInit, OnChanges {
   public isSidebarCollapsed = false;
   public active = false;
   public isSubMenuActive = false;
-  public activeSubMenuItem: number = -1;
+  public activeSubMenuItem = -1;
   public title = '';
   public subItems = null;
   public iconN = 'assets/svgs/apps.svg#$Outline';
@@ -32,25 +33,27 @@ export class NavItemComponent implements OnInit, OnChanges {
   @Input('sub-items') subItemsProp: SubRouteInfo[];
   @Input('icon-name_svg') iconName: string;
   @Input('icon-id_svg') iconId: string;
-  @Input('icon-color') iconColor: string = 'black';
+  @Input('icon-color') iconColor = 'black';
 
-  @Output('onActive') onActive = new EventEmitter();
+  @Output() onActive = new EventEmitter();
 
-  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+  constructor(
+    iconRegistry: MatIconRegistry, 
+    sanitizer: DomSanitizer,
+  ) {
     iconRegistry.addSvgIcon(
       'my-star-icon',
       sanitizer.bypassSecurityTrustResourceUrl('../../../assets/svgs/apps.svg')
     );
     this.iconN = `assets/svgs/apps.svg#Outline`;
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     this.isSidebarCollapsed = this.isSideBarCollapsedProp;
     this.title = this.titleProp;
     this.active = this.activeProp || false;
     this.isSubMenuActive = this.subMenuActiveProp;
     this.subItems = this.subItemsProp;
-
-    console.log('iscollapsed', this.isSideBarCollapsedProp);
   }
 
   ngOnInit(): void {
@@ -59,8 +62,7 @@ export class NavItemComponent implements OnInit, OnChanges {
     this.active = this.activeProp || false;
     this.isSubMenuActive = this.subMenuActiveProp;
     this.subItems = this.subItemsProp;
-    // this.iconN = `assets/svgs/${this.iconName}.svg#${this.iconId}`;
-    this.iconN = `assets/svgs/apps.svg#Outline`;
+    this.iconN = `assets/svgs/${this.iconName}.svg#${this.iconId}`;
   }
 
   setActiveNavItem(navItem: string) {

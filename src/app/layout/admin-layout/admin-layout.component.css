@@ -1,24 +1,22 @@
 /** Toggle side nav css */
 .dashboard {
-  width: 100vw;
-  @apply relative flex flex-col min-h-screen bg-background;
+  width: calc(100% - 19rem);
+  margin-left: 19rem;
+  @apply relative min-h-screen bg-background transition-all ease-in-out delay-150 duration-500;
 }
 
 .content-area {
-  /* @apply mt-12 bg-[#e5f0f6]; */
-  @apply mt-12 bg-background;
+  margin-top: 4rem;
+  min-height: 100%;
+  @apply bg-slate-200;
 }
 
 .progress-bar {
   @apply absolute w-screen h-screen;
 }
 
-.collapse-dashboard {
-  /* margin-left: -220px; */
-  @apply transition-all ease-in-out delay-150 duration-500;
-}
-
-.unCollapse-dashboard {
-  margin-left: 0px;
+.dashboard-expanded {
+  width: calc(100% - 100px);
+  margin-left: 100px;
   @apply transition-all ease-in-out delay-150 duration-500;
 }

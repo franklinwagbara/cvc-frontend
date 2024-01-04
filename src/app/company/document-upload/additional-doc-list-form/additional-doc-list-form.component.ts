@@ -96,7 +96,7 @@ export class AdditionalDocListFormComponent implements OnInit {
         this.loading$.next(false);
         this.modalSize$.next(true);
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while trying to add additional documents.',
           null,
@@ -113,7 +113,7 @@ export class AdditionalDocListFormComponent implements OnInit {
   }
 
   addDocuments() {
-    let docTypes: DocumentType[] = this.form.value.doc;
+    const docTypes: DocumentType[] = this.form.value.doc;
     let newDocTypes: DocumentType[] = [];
 
     docTypes.forEach((dt) => {

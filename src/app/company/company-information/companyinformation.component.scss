@@ -14,6 +14,7 @@
 .nav {
   margin-top: 20px;
   margin-left: 10px;
+  @apply flex gap-3
 }
 
 a {

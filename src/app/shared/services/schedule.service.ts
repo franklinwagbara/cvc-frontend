@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Schedule } from '../reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
 
 const API = `${environment.apiUrl}/schedules`;
 

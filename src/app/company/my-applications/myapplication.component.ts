@@ -6,14 +6,15 @@ import { Subject } from 'rxjs';
 import { GenericService } from 'src/app/shared/services';
 import { ApplyService } from 'src/app/shared/services/apply.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { PaymentSummary } from '../paymnet-summary/paymentsum.component';
 import { ApplicationService } from 'src/app/shared/services/application.service';
 import { AppSource } from 'src/app/shared/constants/appSource';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
   IFacility,
   ITankDTO,
 } from '../apply/new-application/new-application.component';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'myapplication.component.html',
@@ -53,7 +54,8 @@ export class MyApplicationComponent implements OnInit {
     private snackBar: MatSnackBar,
     private applicationService: ApplicationService,
     private cd: ChangeDetectorRef,
-    private popUp: PopupService
+    private popUp: PopupService,
+    private spinner: SpinnerService
   ) {
     this.genk = gen;
     this.rrr$.subscribe((data) => {
@@ -67,6 +69,7 @@ export class MyApplicationComponent implements OnInit {
 
   getCompanyApplication() {
     this.progressbar.open();
+    this.spinner.open();
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
@@ -75,12 +78,14 @@ export class MyApplicationComponent implements OnInit {
 
           //todo: display success dialog
           this.progressbar.close();
+          this.spinner.close();
           this.cd.markForCheck();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         //todo: display error dialog
         this.progressbar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -88,6 +93,7 @@ export class MyApplicationComponent implements OnInit {
 
   generateRRR(app: Application) {
     this.progressbar.open();
+    this.spinner.open();
     this.applicationServer.createPayment_RRR(app.id).subscribe({
       next: (res) => {
         if (res.success) {
@@ -101,12 +107,14 @@ export class MyApplicationComponent implements OnInit {
 
           this.popUp.open('RRR was generated successfully!', 'success');
           this.progressbar.close();
+          this.spinner.close();
           this.cd.markForCheck();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.popUp.open('RRR generation failed!', 'error');
         this.progressbar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -114,13 +122,16 @@ export class MyApplicationComponent implements OnInit {
 
   confirmPayment(app: Application) {
     this.progressbar.open();
+    this.spinner.open();
 
     this.applicationServer.confirmPayment(app.id).subscribe({
       next: (res) => {
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Payment confirmation not successfull. Please contact support or proceed to pay online.',
           null,
@@ -130,6 +141,8 @@ export class MyApplicationComponent implements OnInit {
         );
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();
+        this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -196,6 +209,8 @@ export interface Application {
   createdDate: string;
   paymnetDate: string;
   paymnetStatus: string;
+  paymentStatus: string;
+  paymentDescription: string;
   email: string;
   reference: string;
   applicationTypeId: number;
@@ -220,6 +235,8 @@ export interface Vessel {
   operator: string;
   vesselType: string;
   placeOfBuild: string;
+  loadingPort: string;
+  dischargePort: string;
   yearOfBuild: number;
   flag: string;
   callSIgn: string;

@@ -1,0 +1,27 @@
+<div class="">
+  <div class="flex bg-gray-300 justify-between items-center">
+    <h5 class="px-2">{{ message.subject }}</h5>
+    <i
+      mat-dialog-close
+      (click)="closeDialog()"
+      class="material-icons bg-gray-500 p-2 hover:text-white cursor-pointer hover:!bg-red-500"
+      >close</i
+    >
+  </div>
+  <div class="p-2" [innerHTML]="content"></div>
+  <div class="flex justify-between p-8">
+    <i
+      (click)="back()"
+      [ngClass]="{ 'opacity-25': index === 0 }"
+      class="material-icons cursor-pointer"
+      >arrow_back_ios</i
+    >
+    <i
+      (click)="next()"
+      [ngClass]="{ 'opacity-25': index === messages.length - 1 }"
+      class="material-icons cursor-pointer"
+      >arrow_forward_ios</i
+    >
+  </div>
+  <div class="text-center">{{ index + 1 }}/{{ messages.length }}</div>
+</div>

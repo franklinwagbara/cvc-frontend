@@ -6,8 +6,6 @@ import { Injectable } from '@angular/core';
 export class SpinnerService {
   private openState = false;
 
-  constructor() {}
-
   public open() {
     this.openState = true;
   }

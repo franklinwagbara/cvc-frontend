@@ -1,36 +1,27 @@
-* {
-  margin: 0px;
-}
-
 .homeContainer {
-  width: 100%;
-  height: 100%;
   background-image: url("/assets/image/background.jpg");
   background-size: cover;
-  /* font-family: Arial, Helvetica, sans-serif; */
+  background-position: center;
+  @apply w-full flex justify-center items-center min-h-screen;
 }
 
 .overlay {
-  width: 100%;
-  height: 100vh;
+  @apply flex flex-row flex-wrap w-full min-h-screen p-6;
   background: rgba(23, 65, 29, 0.29);
-  backdrop-filter: blur(20px);
-  display: flex;
-  flex-direction: row;
+  backdrop-filter: blur(7px);
   justify-content: center;
   align-items: center;
   gap: 3rem;
 }
 
 .main-area {
-  width: 443px;
   height: 562px;
   left: 34px;
   top: 136px;
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  flex: 0.4;
   background: linear-gradient(
     180deg,
     #edf8ef 0%,
@@ -38,6 +29,7 @@
   );
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
+  padding-bottom: 4rem;
 }
 
 .logo-wrapper img {
@@ -62,12 +54,21 @@
 .buttons-wrapper button {
   width: 170px;
   height: 43px;
-  background: #008a71;
   box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.6);
   border: 0px;
-  color: white;
-  border-radius: 10px;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 14px;
+  padding: 4px;
   cursor: pointer;
+}
+
+.buttons-wrapper button a {
+  color: black;
+}
+
+.buttons-wrapper button:hover > a {
+  color: white;
 }
 
 .buttons-wrapper div {
@@ -76,28 +77,49 @@
   gap: 40px;
 }
 
+.buttons-wrapper .green {
+  border-color: #02a083;
+  background-color: white;
+}
+
+.buttons-wrapper .green:hover {
+  background: #02a083;
+}
+
 .buttons-wrapper .blue {
-  background-color: #00618a;
+  border-color: #056d99;
+  background-color: white;
+}
+
+.buttons-wrapper .blue:hover {
+  background-color: #056d99;
 }
 
 .buttons-wrapper .yellow {
-  background-color: #8a7c00;
+  border-color: #a19102;
+  background-color: white;
+}
+
+.buttons-wrapper .yellow:hover {
+  background-color: #a19102;
 }
 
 .buttons-wrapper .red {
-  background-color: #8a003a;
+  border-color: #9c0443;
+  background-color: white;
+}
+
+.buttons-wrapper .red:hover {
+  background-color: #9c0443;
 }
 
 .side-area {
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col;
+  flex: 0.6;
   gap: 2.5rem;
 }
 
 .title-wrapper {
-  width: 750px;
-  height: 87px;
-
   background: linear-gradient(
     180deg,
     rgba(119, 217, 133, 0.6499) 0%,
@@ -105,14 +127,12 @@
   );
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.8));
   border-radius: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
+  @apply flex flex-col w-full h-[87px] justify-center items-center text-white;
 }
 
 .cards-wrapper {
   display: flex;
+  justify-content: space-between;
   gap: 2rem;
 }
 
@@ -123,7 +143,6 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   font-weight: bold;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,6 +168,7 @@
 }
 
 .footer-wrapper {
+  width: 100%;
   height: 180px;
   background: linear-gradient(
     180deg,

@@ -1,6 +1,4 @@
 .card {
-  display: flex;
-  flex: 1;
   border-radius: 30px;
   background: linear-gradient(
     270deg,
@@ -9,7 +7,7 @@
   );
   box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
   min-width: 15rem;
-  @apply h-40 p-2 flex justify-center;
+  @apply h-40 p-2 flex flex-1 justify-center;
 }
 
 .card h1 {
@@ -35,21 +33,24 @@
   }
 }
 
+.dashboard-container {
+  background: #ECE9E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 .dashboard-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  background: #6aad9e;
   box-shadow: 0px 0px 7px 4px rgba(0, 0, 0, 0.25) inset;
   @apply min-h-[18rem] flex items-center p-4;
 }
 
-.purple-card {
-  background: linear-gradient(
-    270deg,
-    #ff43ec 0%,
-    rgba(255, 207, 244, 0.94) 100%
-  );
+.blue-card {
+  background: #7F7FD5;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .orange-card {

@@ -9,13 +9,14 @@ import { ApplicationProcessFormComponent } from 'src/app/shared/reusable-compone
 import { AdminService } from 'src/app/shared/services/admin.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { PermitStage } from '../modules-setting/modules-setting.component';
 import { ApplicationProcessesService } from 'src/app/shared/services/application-processes.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import {
   IApplicationType,
   IFacilityType,
 } from 'src/app/company/apply/new-application/new-application.component';
+import { PermitStage } from '../modules-setting/modules-setting.component';
+import { ILocation } from '../all-staff/all-staff.component';
 
 @Component({
   selector: 'app-app-process',
@@ -28,6 +29,7 @@ export class AppProcessComponent implements OnInit {
   public branches: IBranch[];
   public roles: IRole[];
   public actions: string[];
+  public locations: ILocation[];
   public statuses: string[];
   public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
@@ -61,7 +63,6 @@ export class AppProcessComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBarService.open();
     this.spinner.open();
 
     forkJoin([
@@ -71,6 +72,7 @@ export class AppProcessComponent implements OnInit {
       this.libraryService.getAppStatuses(),
       this.libraryService.getFacilityTypes(),
       this.libraryService.getApplicationTypes(),
+      this.libraryService.getAllLocations(),
       // this.adminHttpService.getBranches(),
       // this.adminHttpService.getPhaseCategories(),
     ]).subscribe({
@@ -89,13 +91,15 @@ export class AppProcessComponent implements OnInit {
 
         if (res[5].success) this.applicationTypes = res[5].data;
 
+        if (res[6].success) this.locations = res[6].data;
+
         // if (res[4].success) this.permitStages = res[4].data.data.permitStages;
         // if (res[1].success) this.branches = res[1].data.data;
         // this.progressBarService.close();
         this.spinner.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -114,11 +118,13 @@ export class AppProcessComponent implements OnInit {
     const operationConfiguration = {
       applicationProcesses: {
         data: {
+          editMode: false,
           permitStages: this.permitStages,
           branches: this.branches,
           roles: this.roles,
           actions: this.actions,
           statuses: this.statuses,
+          locations: this.locations,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
         },
@@ -126,20 +132,22 @@ export class AppProcessComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 
@@ -189,7 +197,7 @@ export class AppProcessComponent implements OnInit {
         this.cd.markForCheck();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });
@@ -204,11 +212,13 @@ export class AppProcessComponent implements OnInit {
     const operationConfiguration = {
       applicationProcesses: {
         data: {
+          editMode: true,
           permitStages: this.permitStages,
           branches: this.branches,
           roles: this.roles,
           actions: this.actions,
           statuses: this.statuses,
+          locations: this.locations,
           applicationProcess: event,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
@@ -217,7 +227,7 @@ export class AppProcessComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },

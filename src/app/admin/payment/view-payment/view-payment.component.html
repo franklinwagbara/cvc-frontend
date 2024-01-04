@@ -1,0 +1,12 @@
+<div class="view-application">
+  <h2 mat-dialog-title class="text-center title">
+    PAYMENT REFERENCE : {{ payment?.appReference }}
+  </h2>
+  <div mat-dialog-content class="content">
+    <div class="application-view">
+      <app-payment-view-table [payment]="payment"></app-payment-view-table>
+    </div>
+  </div>
+
+  <!-- <button class="btn" (click)="viewApplicationInFull()">View Application Details In Full</button> -->
+</div>

@@ -22,6 +22,7 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
 } from '@angular/material/snack-bar';
 
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FormDialogComponent } from './reusable-components/form-dialog/form-dialog.component';
 import { PhaseFormComponent } from './reusable-components/phase-form/phase-form.component';
 import { TableComponent } from './reusable-components/table/table.component';
@@ -30,7 +31,6 @@ import { StageFormComponent } from './reusable-components/stage-form/stage-form.
 import { ProgressBarComponent } from './reusable-components/progress-bar/progress-bar.component';
 import { PermitStageFormComponent } from './reusable-components/permit-stage-form/permit-stage-form.component';
 import { PermitStageDocFormComponent } from './reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
-import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { FieldOfficeFormComponent } from './reusable-components/field-office-form/field-office-form.component';
 import { BranchFormComponent } from './reusable-components/branch-form/branch-form.component';
 import { UserFormComponent } from './reusable-components/user-form/user-form.component';
@@ -38,12 +38,23 @@ import { ApplicationProcessFormComponent } from './reusable-components/applicati
 import { MoveApplicationFormComponent } from './reusable-components/move-application-form/move-application-form.component';
 import { ApproveFormComponent } from './reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from './reusable-components/send-back-form/send-back-form.component';
-import { AddScheduleFormComponent } from './reusable-components/add-schedule-form copy/add-schedule-form.component';
+import { AddScheduleFormComponent } from './reusable-components/add-schedule-form/add-schedule-form.component';
 import { FlatTableComponent } from './reusable-components/flat-table/flat-table.component';
 import { SpinnerComponent } from './reusable-components/spinner/spinner.component';
 import { AssignApplicationFormComponent } from './reusable-components/assign-application-form/assign-application-form.component';
 import { SvgIconComponent } from './reusable-components/svg-icon/svg-icon.component';
 import { DropdownComponent } from './reusable-components/dropdown/dropdown.component';
+import { AppFeeFormComponent } from './reusable-components/app-fee-form/app-fee-form.component';
+import { FirstNPipe } from './pipes/first-n.pipe';
+import { FormatTimeAmPmPipe } from './pipes/format-time-am-pm.pipe';
+import { ViewApplicationInFullComponent } from './reusable-components/view-application-in-full/view-application-in-full.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-depot-form.component';
+import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DepotOfficerFormComponent } from './reusable-components/depot-officer-form/depot-officer-form.component';
+
 
 @NgModule({
   declarations: [
@@ -68,6 +79,13 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     AssignApplicationFormComponent,
     SvgIconComponent,
     DropdownComponent,
+    AppFeeFormComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe,
+    ViewApplicationInFullComponent,
+    AppDepotFormComponent,
+    RoleFormComponent,
+    DepotOfficerFormComponent,
   ],
   imports: [
     CommonModule,
@@ -78,6 +96,8 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
+    MatExpansionModule,
+    MatIconModule,
     MatInputModule,
     MatPaginatorModule,
     MatSortModule,
@@ -86,6 +106,7 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     MatProgressBarModule,
     MatDatepickerModule,
     MatCardModule,
+    MatProgressSpinnerModule,
     MatNativeDateModule,
     MatSelectModule,
     NgxMaterialTimepickerModule,
@@ -103,6 +124,8 @@ import { DropdownComponent } from './reusable-components/dropdown/dropdown.compo
     ProgressBarComponent,
     SvgIconComponent,
     DropdownComponent,
+    FirstNPipe,
+    FormatTimeAmPmPipe,
   ],
 })
 export class SharedModule {}

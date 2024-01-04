@@ -2,12 +2,14 @@ import {
   Component,
   OnInit,
   Input,
-  Pipe,
-  PipeTransform,
+  HostListener,
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { PageManagerService } from 'src/app/shared/services/page-manager.service';
 
 export interface SubRouteInfo {
   id: number;
@@ -30,10 +32,10 @@ const ROUTES: RouteInfo[] = [
   {
     id: 1,
     title: 'DASHBOARD',
-    iconName: 'home',
-    iconId: 'Outline',
-    iconColor: 'yellow',
-    active: true,
+    iconName: 'dashboard',
+    iconId: 'dashboard',
+    iconColor: 'white',
+    active: false,
     subMenuActive: false,
 
     subRoutes: [
@@ -47,9 +49,9 @@ const ROUTES: RouteInfo[] = [
   {
     id: 2,
     title: 'DESK',
-    iconName: 'home',
-    iconId: 'Outline',
-    iconColor: 'yellow',
+    iconName: 'app-desk',
+    iconId: 'app_desk',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -68,10 +70,32 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 3,
+    title: 'CoQ',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+
+    subRoutes: [
+      {
+        id: 1,
+        title: 'NOA Applications',
+        url: '/admin/noa-applications-by-depot',
+      },
+      {
+        id: 2,
+        title: 'COQ Applications',
+        url: '/admin/certificate-of-quantity/all-applications-by-depot',
+      },
+    ],
+  },
+  {
+    id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'red',
+    iconId: 'dashboard_outline',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -84,28 +108,28 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
-    title: 'LICENCES',
-    iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'blue',
+    id: 5,
+    title: 'NOA APPLICATIONS',
+    iconName: 'licence-outline',
+    iconId: 'licence_outline',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
     subRoutes: [
       {
         id: 1,
-        title: 'ALL LICENCES',
+        title: 'ALL NOA APPLICATIONS',
         url: '/admin/licences',
       },
     ],
   },
   {
-    id: 3,
+    id: 6,
     title: 'SCHEDULES',
-    iconName: 'apps',
-    iconId: 'Outline',
-    iconColor: 'blue',
+    iconName: 'schedules',
+    iconId: 'schedules',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -118,11 +142,11 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 7,
     title: 'PAYMENTS',
-    iconName: 'money-bill-wave',
-    iconId: 'Layer_1',
-    iconColor: 'green',
+    iconName: 'payment',
+    iconId: 'payment_fluent',
+    iconColor: 'white',
     active: false,
     subMenuActive: false,
 
@@ -130,7 +154,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'ALL PAYMENTS',
-        url: '#',
+        url: '/admin/payments',
       },
       {
         id: 2,
@@ -140,7 +164,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 5,
+    id: 8,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -167,10 +191,10 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 9,
     title: 'SETTINGS',
-    iconName: 'settings',
-    iconId: 'Layer_1',
+    iconName: 'setting',
+    iconId: 'setting',
     iconColor: 'white',
     active: false,
     subMenuActive: false,
@@ -206,6 +230,36 @@ const ROUTES: RouteInfo[] = [
         title: 'APPLICATION PROCESS',
         url: '/admin/application-process',
       },
+      {
+        id: 7,
+        title: 'FIELD OFFICER SETUP',
+        url: '/admin/field-officer-setting',
+      },
+      {
+        id: 8,
+        title: 'APPLICATION FEE',
+        url: '/admin/app-fees',
+      },
+      {
+        id: 9,
+        title: 'APPLICATION DEPOT',
+        url: '/admin/app-depots',
+      },
+      {
+        id: 10,
+        title: 'JETTY CONFIGURATION',
+        url: '/admin/jetty-setting'
+      },
+      {
+        id: 10,
+        title: 'SURVEYOR CONFIGURATION',
+        url: '/admin/nominated-surveyor-setting'
+      },
+      {
+        id: 11,
+        title: 'ROLE SETTINGS',
+        url: '/admin/roles',
+      },
     ],
   },
 ];
@@ -219,22 +273,66 @@ export class SidebarComponent implements OnInit, OnChanges {
   user: any[];
   public menuItems: RouteInfo[];
   public submenuItems: SubRouteInfo[];
-  public isCollapsed = false;
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
 
-  @Input('isCollapsed') isCollapsedInput;
+  isCollapsed = false;
+  @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router) {}
-  ngOnChanges(changes: SimpleChanges): void {
-    this.isCollapsed = this.isCollapsedInput;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private pageManagerService: PageManagerService
+  ) {
+    this.menuItems = [...ROUTES];
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        let foundActiveNav = false;
+        for (let item of this.menuItems) {
+          for (let subItem of item.subRoutes) {
+            if (this.router.url === subItem.url) {
+              item.active = true;
+              item.subMenuActive = true;
+              foundActiveNav = true;
+              break;
+            }
+          }
+          if (foundActiveNav) break;
+        }
+      });
   }
 
   ngOnInit() {
-    this.isCollapsed = this.isCollapsedInput;
-    this.menuItems = [...ROUTES];
+    const currentUser = decodeFullUserInfo();
+    // Show CoQ nav only to Staffs in Field Offices
+    if (!currentUser?.location || currentUser?.location !== 'FO') {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
+    }
+
+    // Show NOA Applications and All Applications only to Admins and HQ staffs
+    if (!['SuperAdmin', 'Admin'].includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
+    }
+
+    // Show settings only SuperAdmin
+    if (!['SuperAdmin'].includes(currentUser?.userRoles)) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
+    }
+
+    this.isCollapsed$.subscribe((val: boolean) => {
+      this.isCollapsed = val;
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) {
+          return { ...item, subMenuActive: !val };
+        }
+        return item;
+      });
+    });
     this.user = JSON.parse(localStorage.getItem('currentUser'));
   }
+
+  ngOnChanges(changes: SimpleChanges): void {}
 
   setActiveNavItem(navItem: string) {
     this.activeNavItem = navItem;
@@ -242,13 +340,51 @@ export class SidebarComponent implements OnInit, OnChanges {
       if (menu.title === navItem) {
         menu.active = true;
         menu.subMenuActive = true;
-      } else {
-        menu.active = false;
-        menu.subMenuActive = false;
       }
-
+      if (menu.title !== navItem) {
+        let subMenuActive = menu.subRoutes.some(
+          (val) => val.url === this.router.url
+        );
+        menu.active = subMenuActive;
+        menu.subMenuActive = subMenuActive;
+      }
       return menu;
     });
     this.menuItems = [...this.menuItems];
+  }
+
+  @HostListener('mouseover', ['$event'])
+  onMouseover(event: MouseEvent) {
+    if (!this.pageManagerService.adminSidebarMenuOpen) {
+      this.isCollapsed = false;
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) {
+          return { ...item, subMenuActive: true };
+        }
+        return item;
+      });
+      this.pageManagerService.adminSidebarHover.emit(true);
+    }
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  onMouseLeave(event: MouseEvent) {
+    if (!this.pageManagerService.adminSidebarMenuOpen) {
+      this.isCollapsed = true;
+      // Collapse active nav item
+      this.menuItems = this.menuItems.map((item) => {
+        if (item.active) {
+          let isCurrentRoute = item.subRoutes.some(
+            (val) => val.url === this.router.url
+          );
+          if (!isCurrentRoute) {
+            return { ...item, active: false, subMenuActive: false };
+          }
+          return { ...item, subMenuActive: false };
+        }
+        return item;
+      });
+      this.pageManagerService.adminSidebarHover.emit(false);
+    }
   }
 }

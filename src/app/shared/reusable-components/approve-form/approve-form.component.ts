@@ -9,15 +9,16 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
 import { PopupService } from '../../services/popup.service';
-import { Router } from '@angular/router';
+import { CoqService } from '../../services/coq.service';
 
 @Component({
   selector: 'app-approve-form',
@@ -28,6 +29,8 @@ export class ApproveFormComponent implements OnInit {
   public form: FormGroup;
   public application: IApplication;
   public currentUser: Staff;
+  public isFO: boolean;
+  public coqId: number;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
@@ -39,9 +42,12 @@ export class ApproveFormComponent implements OnInit {
     private auth: AuthenticationService,
     private popup: PopupService,
     private cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private coqService: CoqService
   ) {
     this.application = data.data.application;
+    this.isFO = data.data.isFO;
+    this.coqId = data.data.coqId;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
@@ -59,7 +65,7 @@ export class ApproveFormComponent implements OnInit {
         this.progressBarService.close();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
         this.popup.open(
           'Operation failed! Could not user information!',
           'error'
@@ -73,11 +79,16 @@ export class ApproveFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  approve() {
+  public approve() {
+    if (this.isFO) this.approveFO();
+    else this.approveOther();
+  }
+
+  private approveOther() {
     this.progressBarService.open();
-    debugger;
+
     const model = {
-      applicationId: this.application.id,
+      applicationId: this.application.applicationTypeId,
       action: ApplicationActionType.Approve,
       comment: this.form.controls['comment'].value,
       // currentUserId: this.currentUser.id,
@@ -96,7 +107,39 @@ export class ApproveFormComponent implements OnInit {
         this.cd.markForCheck();
       },
 
-      error: (error) => {
+      error: (error: unknown) => {
+        this.popup.open(
+          'Operation failed! Could not user information!',
+          'error'
+        );
+
+        this.progressBarService.close();
+      },
+    });
+  }
+
+  private approveFO() {
+    this.progressBarService.open();
+
+    const model = {
+      applicationId: this.coqId,
+      action: ApplicationActionType.Approve,
+      comment: this.form.controls['comment'].value,
+    };
+
+    this.coqService.processApplication(model).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.popup.open('Operation was successfully!', 'success');
+          this.dialogRef.close();
+        }
+
+        this.progressBarService.close();
+        this.router.navigate(['/admin/my-desk']);
+        this.cd.markForCheck();
+      },
+
+      error: (error: unknown) => {
         this.popup.open(
           'Operation failed! Could not user information!',
           'error'

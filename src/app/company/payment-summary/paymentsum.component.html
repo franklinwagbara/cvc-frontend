@@ -1,0 +1,123 @@
+<div class="card-group">
+  <mat-card class="card">
+    <mat-card-header class="card-header">
+      <div class="title">
+        <mat-card-title>APPLICATION PAYMENT DETAILS</mat-card-title>
+      </div>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content class="card-content">
+      <div class="container">
+        <div class="payment-details__container">
+          <br />
+          <h3 class="sub-title">Please Note</h3>
+          <ol style="font-family: candara">
+            <li>
+              Processing of your application shall commence upon confirmation of
+              payment
+            </li>
+            <li>
+              Kindly review the following information carefully before
+              proceeding to make payment
+            </li>
+            <li>
+              Application information can not be changed after payment and
+              submission have been completed
+            </li>
+          </ol>
+          <div class="payment-details__table-container">
+            <h3 class="sub-title">Payment Details</h3>
+            <hr />
+            <div class="payment-details__table-wrapper">
+              <table class="table" cellspacing="0">
+                <tbody>
+                  <tr>
+                    <td class="col-title">Reference No</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.appReference }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Vessel Name</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.vesselName }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">RRR</td>
+                    <td class="font-bold">
+                      {{ rrr$ | async }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Application Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.applicationFee }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">NOA Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.noaFee }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">CoQ Fee</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.coqFee }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Service Charge</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.serviceCharge }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Total Amount</td>
+                    <td class="font-bold">{{ paymentSummary?.total }}</td>
+                  </tr>
+                  <tr>
+                    <td class="col-title">Documents</td>
+                    <td class="font-bold">
+                      <ul>
+                        <li *ngFor="let doc of paymentSummary?.docList">
+                          {{ doc }}
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-actions class="btns">
+      <a mat-flat-button class="neutral">Go Back</a>
+      <a
+        mat-flat-button
+        *ngIf="isPaymentNotComfirmed$ | async"
+        (click)="submitPayment()"
+        class="pay-color"
+        >Pay Online</a
+      >
+      <a
+        mat-flat-button
+        *ngIf="!(rrr$ | async)"
+        (click)="generateRRR()"
+        class="grrr-color"
+        >Generate RRR</a
+      >
+      <a
+        mat-flat-button
+        *ngIf="isPaymentConfirmed$ | async"
+        (click)="uploadDocument()"
+        color="primary"
+        >Upload Document</a
+      >
+    </mat-card-actions>
+  </mat-card>
+</div>

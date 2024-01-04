@@ -80,3 +80,7 @@ button {
     @apply relative -mt-7 px-3 py-1;
   }
 }
+
+.hide {
+  display: none;
+}

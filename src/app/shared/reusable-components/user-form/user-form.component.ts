@@ -13,12 +13,15 @@ import {
 } from '@angular/material/dialog';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AdminService } from '../../services/admin.service';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { ProgressBarService } from '../../services/progress-bar.service';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import {
+  ILocation,
+  Staff,
+} from 'src/app/admin/settings/all-staff/all-staff.component';
 import { FieldOffice } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
+import { ProgressBarService } from '../../services/progress-bar.service';
+import { AdminService } from '../../services/admin.service';
 import { IBranch } from '../../interfaces/IBranch';
 
 @Component({
@@ -28,11 +31,12 @@ import { IBranch } from '../../interfaces/IBranch';
 })
 export class UserFormComponent implements OnInit {
   public form: FormGroup;
-  public usersFromAus2: StaffWithName[];
+  public usersFromCvc: StaffWithName[];
   public userTypes = [''];
   public offices: FieldOffice[];
-  public branches: IBranch[];
+  // public branches: IBranch[];
   public roles: any;
+  public locations: ILocation[];
   public currentValue: Staff | null;
   public usersFromElps: StaffWithName[];
   public file: File | null = null;
@@ -49,10 +53,11 @@ export class UserFormComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService
   ) {
-    this.usersFromAus2 = data.data.users;
+    this.usersFromCvc = data.data.users;
     this.offices = data.data.offices;
-    this.branches = data.data.branches;
+    // this.branches = data.data.branches;
     this.roles = data.data.roles;
+    this.locations = data.data.locations;
     this.usersFromElps = data.data.staffList;
     this.currentValue = data.data?.currentValue;
     let currentUserId: string;
@@ -60,7 +65,6 @@ export class UserFormComponent implements OnInit {
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
     this.usersFromElps = this.usersFromElps?.map((user) => {
       user.name = `${user?.lastName}, ${user?.firstName} (${user?.email})`;
-
       if (this.currentValue && user.email === this.currentValue.email)
         currentUserId = user.id;
       return user;
@@ -69,30 +73,61 @@ export class UserFormComponent implements OnInit {
     this.selectedUserFromElps = this.usersFromElps[0];
 
     this.form = this.formBuilder.group({
-      elpsId: [this.currentValue ? currentUserId : '', Validators.required],
-      id: [this.currentValue ? this.currentValue.id : '0', Validators.required],
-      firstName: [this.currentValue ? this.currentValue.firstName : ''],
-      lastName: [this.currentValue ? this.currentValue.lastName : ''],
+      elpsId: [
+        { value: this.currentValue ? currentUserId : '', disabled: true },
+        Validators.required,
+      ],
+      id: [
+        {
+          value: this.currentValue ? this.currentValue.id : '0',
+          disabled: true,
+        },
+        Validators.required,
+      ],
+      firstName: [
+        {
+          value: this.currentValue ? this.currentValue.firstName : '',
+          disabled: true,
+        },
+      ],
+      lastName: [
+        {
+          value: this.currentValue ? this.currentValue.lastName : '',
+          disabled: true,
+        },
+      ],
       email: [
-        this.currentValue ? this.currentValue.email : '',
+        {
+          value: this.currentValue ? this.currentValue.email : '',
+          disabled: true,
+        },
         Validators.required,
       ],
-      phone: [this.currentValue ? this.currentValue.phoneNo : ''],
+      phone: [
+        {
+          value: this.currentValue ? this.currentValue.phoneNo : '',
+          disabled: true,
+        },
+      ],
       userType: [this.currentValue ? this.currentValue.userType : ''],
-      roleId: [
-        this.currentValue ? this.currentValue.role : '',
-        Validators.required,
-      ],
+      roleId: ['', Validators.required],
+
+      locationId: [this.currentValue ? this.currentValue.locationId : ''],
+
+      officeId: [this.currentValue ? this.currentValue.officeId : ''],
+
       // officeId: [this.currentValue ? this.currentValue.officeId : ''],
       // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
         this.currentValue ? this.currentValue.status : '',
         Validators.required,
       ],
-      signatureImage: [
-        this.currentValue ? this.currentValue.signatureImage : '',
-      ],
+      // signatureImage: [
+      //   this.currentValue ? this.currentValue.signatureImage : '',
+      // ],
     });
+    // console.log(this.currentValue);
+    // this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
@@ -109,13 +144,11 @@ export class UserFormComponent implements OnInit {
   }
 
   createUser() {
-    this.progressBar.open();
-    debugger;
-
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
-
+    this.progressBar.open();
     const formDataToSubmit = new FormData();
 
+    formDataToSubmit.append('id', '0');
     formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
     formDataToSubmit.append('firstName', this.form.get('firstName').value);
     formDataToSubmit.append('lastName', this.form.get('lastName').value);
@@ -123,12 +156,14 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
+    formDataToSubmit.append('locationId', this.form.get('locationId').value);
+    formDataToSubmit.append('officeId', this.form.get('officeId').value);
     // formDataToSubmit.append('officeId', this.form.get('officeId').value);
     // formDataToSubmit.append('branchId', this.form.get('branchId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
-    formDataToSubmit.append('signatureImage', this.file);
+    //formDataToSubmit.append('signatureImage', this.file);
 
-    this.adminService.createStaff(this.form.value).subscribe({
+    this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {
         if (res.success) {
           this.snackBar.open('Staff was created successfully!', null, {
@@ -138,9 +173,9 @@ export class UserFormComponent implements OnInit {
           this.dialogRef.close();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
-          'Operation failed! Could not create the Staff account.',
+          'Operation failed! Could not create the Staff account.' + error,
           null,
           {
             panelClass: ['error'],
@@ -158,17 +193,10 @@ export class UserFormComponent implements OnInit {
 
     const formDataToSubmit = new FormData();
 
-    // formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
-    formDataToSubmit.append('id', this.form.get('id').value);
-    formDataToSubmit.append('firstName', this.form.get('firstName').value);
-    formDataToSubmit.append('lastName', this.form.get('lastName').value);
-    formDataToSubmit.append('email', this.form.get('email').value);
-    formDataToSubmit.append('phone', this.form.get('phone').value);
-    formDataToSubmit.append('userType', this.form.get('userType').value);
-    formDataToSubmit.append('roleId', this.form.get('roleId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
-    formDataToSubmit.append('isActive', this.form.get('isActive').value);
+    const formKeys = ['id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
+    formKeys.forEach((key) => {
+      formDataToSubmit.append(key, this.form.get(key).value);
+    })
     formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
@@ -181,7 +209,7 @@ export class UserFormComponent implements OnInit {
           this.dialogRef.close();
         }
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open(
           'Operation failed! Could not update the Staff account.',
           null,
@@ -218,9 +246,7 @@ export class UserFormComponent implements OnInit {
 
   toggleCloseDropdownSelection() {
     this.closeDropdownSelection = !this.closeDropdownSelection;
-    this.usersDropdownSettings = Object.assign({}, this.usersDropdownSettings, {
-      closeDropDownOnSelection: this.closeDropdownSelection,
-    });
+    this.usersDropdownSettings = { ...this.usersDropdownSettings, closeDropDownOnSelection: this.closeDropdownSelection };
   }
 
   onDeSelect(event: ListItem) {
@@ -236,6 +262,8 @@ export class UserFormComponent implements OnInit {
     this.form.controls['email'].setValue(user.email);
     this.form.controls['phone'].setValue(user.phoneNo);
     this.form.controls['userType'].setValue('Staff');
+    // this.form.controls['locationId'].setValue(user.locationId);
+    // this.form.controls['locationId'].setValue(user.locationId);
   }
 }
 

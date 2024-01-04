@@ -94,7 +94,7 @@ export class ModulesSettingComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
@@ -170,7 +170,7 @@ export class ModulesSettingComponent implements OnInit {
         }
         this.progressBar.close();
       },
-      error: (error) => {
+      error: (error: unknown) => {
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });
@@ -203,7 +203,7 @@ export class ModulesSettingComponent implements OnInit {
       },
     };
 
-    let dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },

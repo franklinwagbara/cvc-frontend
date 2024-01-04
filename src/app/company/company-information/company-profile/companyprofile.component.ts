@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit , ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
 import { CompanyService } from 'src/app/shared/services/company.service';
@@ -15,7 +15,7 @@ import { companyProfile } from 'src/app/shared/models/apply.model';
 export class CompanyProfileComponent implements OnInit {
   profileForm: FormGroup;
   public currentUsername: LoginModel;
-  private email: string = '';
+  private email = '';
 
   private cd: ChangeDetectorRef;
   countries: any;
@@ -26,7 +26,8 @@ export class CompanyProfileComponent implements OnInit {
     private companyService: CompanyService,
     private popupService: PopupService,
     private auth: AuthenticationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder
   ) {
     this.cd = cdr;
     this.currentUsername = this.auth.currentUser;
@@ -41,25 +42,22 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   createForm() {
-    this.profileForm = new FormGroup(
-      {
-        name: new FormControl('', [Validators.required]),
-        contact_FirstName: new FormControl('', [Validators.required]),
-        contact_LastName: new FormControl('', [Validators.required]),
-        contact_Phone: new FormControl('', [Validators.required]),
-        nationality: new FormControl('', [Validators.required]),
-        email: new FormControl('', [Validators.required]),
-        business_Type: new FormControl('', [Validators.required]),
-        total_Asset: new FormControl('', [Validators.required]),
-        rC_Number: new FormControl('', [Validators.required]),
-        tin_Number: new FormControl('', [Validators.required]),
-        no_Staff: new FormControl('', [Validators.required]),
-        year_Incorporated: new FormControl('', [Validators.required]),
-        yearly_Revenue: new FormControl('', [Validators.required]),
-        no_Expatriate: new FormControl('', [Validators.required]),
-      },
-      {}
-    );
+    this.profileForm = this.formBuilder.group({
+      name: ['', [Validators.required]],
+      contact_FirstName: ['', [Validators.required]],
+      contact_LastName: ['', [Validators.required]],
+      contact_Phone: ['', [Validators.required]],
+      nationality: ['', [Validators.required]],
+      email: ['', [Validators.required]],
+      business_Type: ['', [Validators.required]],
+      total_Asset: ['', [Validators.required]],
+      rC_Number: ['', [Validators.required]],
+      tin_Number: ['', [Validators.required]],
+      no_Staff: ['', [Validators.required]],
+      year_Incorporated: ['', [Validators.required]],
+      yearly_Revenue: ['', [Validators.required]],
+      no_Expatriate: ['', [Validators.required]],
+    })
   }
 
   getCompanyProfile(email) {
@@ -84,7 +82,7 @@ export class CompanyProfileComponent implements OnInit {
   save() {
     //this.isSubmitted = true;
     //if (this.profileForm.invalid) return;
-    let userData = this.profileForm.value;
+    const userData = this.profileForm.value;
     if (userData.nationality == this.currentValue.text)
       userData.nationality = this.currentValue.value;
     console.log(userData);
@@ -92,9 +90,9 @@ export class CompanyProfileComponent implements OnInit {
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },
-      error: (error) => {
+      error: (error: any) => {
         console.log(error);
-        this.popupService.open(error.error, 'error');
+        this.popupService.open(error?.error, 'error');
       },
     });
   }

@@ -15,7 +15,7 @@ module.exports = {
         content_area: "#e5f0f6",
       },
       width: {
-        side_nav: "17rem",
+        side_nav: "19rem",
       },
 
       height: {

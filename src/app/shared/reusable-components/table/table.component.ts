@@ -9,7 +9,6 @@ import {
   Output,
   EventEmitter,
   ElementRef,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
@@ -19,6 +18,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Application } from 'src/app/company/my-applications/myapplication.component';
 import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { IApplication } from '../../interfaces/IApplication';
 
 interface IColumn {
   columnDef: string;
@@ -35,48 +35,61 @@ const PAGESIZE = 10;
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit, OnChanges, AfterViewInit {
-  @Input('flat') flat = false;
-  @Input('enableMoveApplication') enableMoveApplication: boolean = false;
-  @Input('enableGenerateRRR') enableGenerateRRR: boolean = false;
-  @Input('enableConfirmPayment') enableConfirmPayment: boolean = false;
-  @Input('enableUploadDocument') enableUploadDocument: boolean = false;
+  @Input() flat = false;
+  @Input() enableMoveApplication = false;
+  @Input() enableGenerateRRR = false;
+  @Input() enableConfirmPayment = false;
+  @Input() enableUploadDocument = false;
   @Input('title-color') titleColorProp?: string = 'slate';
-  @Input('noTitle') noTitle: boolean = false;
-  @Input('noControls') noControls?: boolean = false;
-  @Input('noFilter') noFilter?: boolean = false;
-  @Input('noAddOrDeleteButton') noAddOrDeleteButton?: boolean = false;
-  @Input('noAddButton') noAddButton?: boolean = false;
-  @Input('noDeleteButton') noDeleteButton?: boolean = false;
-  @Input('noCheckControls') noCheckControls?: boolean = false;
-  @Input('noEditControl') noEditControl?: boolean = false;
+  @Input() noTitle = false;
+  @Input() noControls?: boolean = false;
+  @Input() noFilter?: boolean = false;
+  @Input() noAddOrDeleteButton?: boolean = false;
+  @Input() noAddButton?: boolean = false;
+  @Input() noDeleteButton?: boolean = false;
+  @Input() noCheckControls?: boolean = false;
+  @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
+  @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
+  @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
+    false;
+  @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
+    false;
+  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean =
+    false;
+  @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
+    false;
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders = {};
-  @Input('table_controls_horizontal') table_controls_horizontal: boolean =
-    false;
-  @Input('table_title') title: string = 'Title';
+  @Input() table_controls_horizontal = false;
+  @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
-  @Output('onAddData') onAddData = new EventEmitter<any>();
-  @Output('onDeleteData') onDeleteData = new EventEmitter<any>();
-  @Output('onEditData') onEditData = new EventEmitter<any>();
-  @Output('onViewData') onViewData = new EventEmitter<any>();
-  @Output('onGenerateRRR') onGenerateRRR = new EventEmitter<any>();
-  @Output('onConfirmPayment') onConfirmPayment = new EventEmitter<any>();
-  @Output('onUploadDocument') onUploadDocument = new EventEmitter<any>();
-  @Output('onFileUpload') onFileUpload = new EventEmitter<any>();
-  @Output('onMoveApplication') onMoveApplication = new EventEmitter<any>();
-  @Output('onSelect') onSelect = new EventEmitter<any>();
+  @Output() onAddData = new EventEmitter<any>();
+  @Output() onDeleteData = new EventEmitter<any>();
+  @Output() onEditData = new EventEmitter<any>();
+  @Output() onInitiateCoQ = new EventEmitter<any>();
+  @Output() onViewData = new EventEmitter<any>();
+  @Output() onViewCoQCerts = new EventEmitter<any>();
+  @Output() onViewCoQCert = new EventEmitter<any>();
+  @Output() onViewDebitNotes = new EventEmitter<any>();
+  @Output() onViewDebitNote = new EventEmitter<any>();
+  @Output() onGenerateRRR = new EventEmitter<any>();
+  @Output() onConfirmPayment = new EventEmitter<any>();
+  @Output() onUploadDocument = new EventEmitter<any>();
+  @Output() onFileUpload = new EventEmitter<any>();
+  @Output() onMoveApplication = new EventEmitter<any>();
+  @Output() onSelect = new EventEmitter<any>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
-  public titleColor: string = 'slate';
+  public titleColor = 'slate';
 
-  public divFlexDirection: string = 'column';
+  public divFlexDirection = 'column';
 
   public headers: string[];
   public keys: string[];
@@ -93,6 +106,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   public selection = new SelectionModel<any>(true, []);
 
   ngOnInit(): void {
+    this.initialComponents();
+  }
+
+  private initialComponents() {
     this.headers = Object.values(this.keysMappedToHeaders);
     this.keys = Object.keys(this.keysMappedToHeaders);
 
@@ -114,6 +131,17 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+    if (this.enableInitiateCoQControl) {
+      this.columns.push({
+        columnDef: 'action_controls',
+        header: '',
+        cell: (item: IApplication) => {
+          if (item) return 'initiate_coq_control'
+          else return '';
+        },
+      });
+    }
+
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -123,10 +151,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'action_controls',
         header: 'Action Controls',
         cell: (item: Application) => {
-          if (item.rrr && item.status === 'Processing') return '';
-          else if (item.rrr && item.status === 'PaymentConfirmed')
+          if (item.rrr && item.paymentStatus === 'Processing') return '';
+          else if (item.rrr && item.paymentStatus === 'Payment confirmed')
             return 'uploadDocument_control';
-          else if (item.rrr && item.status !== 'PaymentConfirmed')
+          else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
             return 'confirmPayment_control';
           else if (!item.rrr) return 'rrr_control';
           else return '';
@@ -166,6 +194,38 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
+    if (this.enableViewCoQCertsControl) {
+      this.columns.push({
+        columnDef: 'view_coq_certs_control',
+        header: '',
+        cell: (item) => 'view_coq_certs_control'
+      });
+    }
+
+    if (this.enableViewDebitNotesControl) {
+      this.columns.push({
+        columnDef: 'view_debit_notes_control',
+        header: '',
+        cell: (item) => 'view_debit_notes_control'
+      });
+    }
+
+    if (this.enableViewCoQCertControl) {
+      this.columns.push({
+        columnDef: 'view_coq_cert_control',
+        header: '',
+        cell: (item) => 'view_coq_cert_control'
+      });
+    }
+
+    if (this.enableViewDebitNoteControl) {
+      this.columns.push({
+        columnDef: 'view_debit_note_control',
+        header: '',
+        cell: (item) => 'view_debit_note_control'
+      });
+    }
+
     this.columns.unshift({
       columnDef: 'select',
       header: '',
@@ -176,6 +236,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.initialComponents();
+
     //this.dataSource.setData(this.items);
     this.dataSource.data = this.items;
   }
@@ -216,8 +278,28 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onEditData.emit(row);
   }
 
-  viewData(row) {
+  viewData(row: any) {
     this.onViewData.emit(row);
+  }
+
+  viewDebitNotes(row: any) {
+    this.onViewDebitNotes.emit(row);
+  }
+
+  viewCoQCerts(row: any) {
+    this.onViewCoQCerts.emit(row);
+  }
+
+  viewCoQCert(row: any) {
+    this.onViewCoQCert.emit(row);
+  }
+
+  viewDebitNote(row: any) {
+    this.onViewDebitNote.emit(row);
+  }
+
+  initiateCoQ(row: any) {
+    this.onInitiateCoQ.emit(row);
   }
 
   onSelectChange() {

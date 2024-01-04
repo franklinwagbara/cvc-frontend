@@ -2,12 +2,12 @@
   class="side-nav"
   [ngClass]="{
     'collapse-sidenav': isCollapsed,
-    'unCollapse-sidenav': !isCollapsed
+    'uncollapse-sidenav': !isCollapsed
   }"
 >
   <div class="logo-title">
     <img src="../../../assets/img/brand/logo.png" alt="NUPRC" />
-    <h4 class="text-slate-200">BUNKERING</h4>
+    <h4 *ngIf="!isCollapsed" class="text-slate-200">CVC</h4>
   </div>
 
   <div class="nav-items">
@@ -24,4 +24,7 @@
       (onActive)="setActiveNavItem(menu.title)"
     ></app-nav-item>
   </div>
+
+  <br />
+  <br />
 </div>
