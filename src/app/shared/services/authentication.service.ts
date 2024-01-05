@@ -59,7 +59,7 @@ export class AuthenticationService {
     // this.currentUserSubject.next(null);
     this._isLoggedIn = false;
 
-    window.location.assign(`${environment.apiUrl}/auth/log-out`);
+    window.location.assign(`${environment.apiUrl}/account/logout`);
   }
 
   public get isCompany() {

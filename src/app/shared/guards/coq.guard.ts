@@ -18,11 +18,11 @@ export class CoqGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    const currentUser = decodeFullUserInfo();
-    if (currentUser && (!currentUser.location || currentUser.location !== 'FO')) {
-      this.router.navigateByUrl('/admin');
-      return false;
-    }
+    // const currentUser = decodeFullUserInfo();
+    // if (currentUser && (!currentUser.location || currentUser.location !== 'FO')) {
+    //   this.router.navigateByUrl('/admin');
+    //   return false;
+    // }
     return true;
   }
   

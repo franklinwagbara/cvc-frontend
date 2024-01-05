@@ -1,129 +1,270 @@
-<form [formGroup]="form" class="form">
-  <div class="text-right ">
-    <button mat-icon-button class="close-btn" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
-  </div>
-  <h5 class="text-center">Edit  <span class="text-slate-500 font-medium">{{ data.title }}</span></h5>
-  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1">
-    <div class="md:col-span-1">
-      <label>DIP(m) <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="dip"
-        formControlName="dip"
-        class="form-field"
-        required
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>WATER DIP <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="waterDIP"
-        formControlName="waterDIP"
-        class="form-field"
-        required
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>TOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="tov"
-        formControlName="tov"
-        class="form-field"
-        required
-      />
-    </div>
+<div class="text-right ">
+  <button mat-icon-button class="close-btn" (click)="closeDialog()"><mat-icon>close</mat-icon></button>
+</div>
+<h5 class="text-center">Edit  <span class="text-slate-500 font-medium">{{ data.title }}</span></h5>
 
-    <div class="md:col-span-1">
-      <label>WATER VOI <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="waterVOI"
-        formControlName="waterVOI"
-        class="form-field"
-        required
-      />
+<ng-container *ngIf="!isGasProduct">
+  <form [formGroup]="form" class="form">
+    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1">
+      <div class="md:col-span-1">
+        <label>DIP(m) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="dip"
+          formControlName="dip"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>WATER DIP <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="waterDIP"
+          formControlName="waterDIP"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>TOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="tov"
+          formControlName="tov"
+          class="form-field"
+          required
+        />
+      </div>
+  
+      <div class="md:col-span-1">
+        <label>WATER VOI <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="waterVOI"
+          formControlName="waterVOI"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>CORR(m<sup>3</sup>)</label>
+        <input
+          type="number"
+          name="corr"
+          formControlName="corr"
+          class="form-field"
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          formControlName="gov"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>TEMP(<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="temp"
+          formControlName="temp"
+          class="form-field"
+          required
+        />
+      </div>
+  
+      <div class="md:col-span-1">
+        <label>DENSITY <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="density"
+          formControlName="density"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>VCF <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="vcf"
+          formControlName="vcf"
+          class="form-field"
+        />
+      </div>
+  
+      <div class="md:col-span-1">
+        <label>GSV <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="gsv"
+          formControlName="gsv"
+          class="form-field"
+          required
+        />
+      </div>
+      <div class="md:col-span-1">
+        <label>MT(VAC) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="mtVAC"
+          formControlName="mtVAC"
+          class="form-field"
+          required
+        />
+      </div>
+  
+      <div *ngIf="form.valid" class="md:col-span-1 text-right">
+        <button
+          mat-raised-button
+          type="submit"
+          (click)="edit()"
+          color="primary"
+        >
+          Update
+        </button>
+      </div>
     </div>
-    <div class="md:col-span-1">
-      <label>CORR(m<sup>3</sup>)</label>
-      <input
-        type="number"
-        name="corr"
-        formControlName="corr"
-        class="form-field"
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        formControlName="gov"
-        class="form-field"
-        required
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>TEMP(<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="temp"
-        formControlName="temp"
-        class="form-field"
-        required
-      />
-    </div>
+  </form>
+</ng-container>
 
-    <div class="md:col-span-1">
-      <label>DENSITY <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="density"
-        formControlName="density"
-        class="form-field"
-        required
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>VCF <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="vcf"
-        formControlName="vcf"
-        class="form-field"
-      />
-    </div>
+<ng-container *ngIf="isGasProduct">
+  <form [formGroup]="form">
+    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1">
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-dip">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="liqDensityVac"
+          formControlName="liqDensityVac"
+          id="coq-liquid-product-liqDensityVac"
+          class="form-field"
+        />
+      </div>
 
-    <div class="md:col-span-1">
-      <label>GSV <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="gsv"
-        formControlName="gsv"
-        class="form-field"
-        required
-      />
-    </div>
-    <div class="md:col-span-1">
-      <label>MT(VAC) <sup class="text-red-700">*</sup></label>
-      <input
-        type="number"
-        name="mtVAC"
-        formControlName="mtVAC"
-        class="form-field"
-        required
-      />
-    </div>
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-dip">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="obsSounding"
+          formControlName="obsSounding"
+          id="coq-liquid-product-obsSounding"
+          class="form-field"
+        />
+      </div>
+    
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-tapeCorr">Tape Correction (m) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="tapeCorr"
+          formControlName="tapeCorr"
+          id="coq-liquid-product-tapeCorr"
+          class="form-field"
+        />
+      </div>
+    
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-liqTemp">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="liqTemp"
+          formControlName="liqTemp"
+          id="coq-liquid-product-liqTemp"
+          class="form-field"
+        />
+      </div>
 
-    <div *ngIf="form.valid" class="md:col-span-1 text-right">
-      <button
-        mat-raised-button
-        type="submit"
-        (click)="edit()"
-        color="primary"
-      >
-        Update
-      </button>
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-observedLiqVol">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="observedLiqVol"
+          formControlName="observedLiqVol"
+          id="coq-liquid-product-observedLiqVol"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-shrinkageFactor">Shrinkage Factor <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="shrinkageFactor"
+          formControlName="shrinkageFactor"
+          id="coq-liquid-product-shrinkageFactor"
+          class="form-field form-control"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-vcf">VCF (ASTM Table 54) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="vcf"
+          formControlName="vcf"
+          id="coq-liquid-product-vcf"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-tankVol100">100% Tank Volume <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="tankVol100"
+          formControlName="tankVol100"
+          id="coq-liquid-product-tankVol100"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-vapTemp">Vapor Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="vapTemp"
+          formControlName="vapTemp"
+          id="coq-liquid-product-vapTemp"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-vapPressure">Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="vapPressure"
+          formControlName="vapPressure"
+          id="coq-liquid-product-vapPressure"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-molWt">Molecular Weight <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="molWt"
+          formControlName="molWt"
+          id="coq-liquid-product-molWt"
+          class="form-field"
+        />
+      </div>
+
+      <div class="md:col-span-1">
+        <label for="coq-liquid-product-vapFactor">Vapor Factor <sup class="text-red-700">*</sup></label>
+        <input
+          type="number"
+          name="vapFactor"
+          formControlName="vapFactor"
+          id="coq-liquid-product-vapFactor"
+          class="form-field"
+        />
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</ng-container>

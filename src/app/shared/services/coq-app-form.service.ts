@@ -21,20 +21,30 @@ export class CoqAppFormService {
         return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
       });
     })
+    this.gasProductReviewData$.subscribe((val: any[]) => {
+      this.gasProductReviewData = val.filter((val: CoQData) => {
+        return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
+      });
+    })
   }
 
   public hasMeterCubeUnit(colKey: string) {
-    const cols = ['tov', 'corr', 'gov', 'gsv'];
+    const cols = ['tov', 'corr', 'gov', 'gsv', 'observedLiqVol'];
+    return cols.includes(colKey);
+  }
+
+  public hasMeterUnit(colKey: string) {
+    const cols = ['tapeCorr', 'obsSounding'];
     return cols.includes(colKey);
   }
 
   public hasTempUnit(colKey: string) {
-    const cols = ['temp'];
+    const cols = ['temp', 'vacTemp', 'liqTemp'];
     return cols.includes(colKey);
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'corr', 'gov', 'gsv', 'temp'];
+    const colsWithUnit = ['tov', 'corr', 'gov', 'gsv', 'temp', 'tankVol100', 'vcf', 'shrinkageFactor', 'vapPressure', 'molWt', 'obsSounding', 'tapeCorr', 'liqTemp', 'observedLiqVol'];
     return !colsWithUnit.includes(colKey);
   }
 
@@ -95,7 +105,7 @@ export class CoqAppFormService {
     });
   }
 
-  removeFormData(data: any, localDataKey: LocalDataKey): void {
+  removeFormData(data: any, localDataKey: LocalDataKey, isGasProduct: boolean): void {
     const { tank, status } = data;
     let localData = JSON.parse(localStorage.getItem(localDataKey));
     if (Array.isArray(localData) && localData.length) {
@@ -104,7 +114,11 @@ export class CoqAppFormService {
         if (localData[i][status.toLowerCase()].tank === tank) {
           localData = localData.slice(0, i).concat(localData.slice(i+1));
 
-          this.liquidProductReviewData$.next(localData);
+          if (isGasProduct) {
+            this.gasProductReviewData$.next(localData);
+          } else {
+            this.liquidProductReviewData$.next(localData);
+          }
           
           localStorage.setItem(localDataKey, JSON.stringify(localData));
           this.formDataEvent.emit('removed');

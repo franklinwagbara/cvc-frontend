@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.auth.logout();
     // this.router.navigate([]);
-    window.location.href = environment.apiUrl + '/auth/log-out';
+    window.location.href = environment.apiUrl + '/account/logout';
   }
 }
 

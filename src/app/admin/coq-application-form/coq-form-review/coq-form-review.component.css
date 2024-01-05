@@ -3,13 +3,18 @@ h6 {
 }
 
 .my-accordion {
-  @apply relative mb-3;
+  @apply relative mb-3 shadow-md;
 }
 
-.accordion-open > div {
-  @apply h-52;
+.accordion-open > .accordion-content-open {
+  @apply h-60 overflow-auto;
 }
 
 .accordion-open i {
   @apply rotate-180;
+}
+
+.table td:not(last-child),
+.table th:not(last-child) {
+  margin-right: 10px;
 }
