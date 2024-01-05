@@ -10,6 +10,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
+import { Util } from 'src/app/shared/lib/Util';
 
 export interface SubRouteInfo {
   id: number;
@@ -311,12 +312,12 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (!['SuperAdmin', 'Admin'].includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
+    if (!Util.adminRoles.includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
     }
 
     // Show settings only SuperAdmin
-    if (!['SuperAdmin'].includes(currentUser?.userRoles)) {
+    if (!Util.adminRoles.includes(currentUser?.userRoles)) {
       this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
     }
 

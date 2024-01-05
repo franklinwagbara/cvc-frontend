@@ -33,7 +33,6 @@ import { LibaryService } from '../../../../src/app/shared/services/libary.servic
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 import { MatStepper } from '@angular/material/stepper';
-import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { DepotOfficerService } from '../../../../src/app/shared/services/depot-officer/depot-officer.service';
 
 @Component({
@@ -48,8 +47,10 @@ export class CoqApplicationFormComponent
   configuredTank =  new FormControl('', {validators: [Validators.required, this.isUniqueTank()]});
   tankLiqInfoForm: FormGroup;
   tankGasInfoForm: FormGroup;
-  tankBeforeInfoForm: FormGroup;
-  tankAfterInfoForm: FormGroup;
+  tankLiqBeforeInfoForm: FormGroup;
+  tankLiqAfterInfoForm: FormGroup;
+  tankGasBeforeInfoForm: FormGroup;
+  tankGasAfterInfoForm: FormGroup;
   vesselLiqInfoForm: FormGroup;
   vesselGasInfoForm: FormGroup;
   displayedColumns = ['document', 'action', 'progress'];
@@ -67,24 +68,27 @@ export class CoqApplicationFormComponent
   coq: ICOQ;
   noaApplication: any;
 
+  isGasProduct = true;
+
   liquidProductColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC'];
   gasProductColumns = [
-    'tank', 'status', 'tankLevel', 'molWt', 'totalObsVol', 'liquidVol', 'tankTemp', 'vcf', 'liquidStVol', 'cargoDensityVac', 'cargoDensityAir', 
-    'shrinkageFactor', 'shrinkageCorrVol', 'mtAir', 'mtVac', 'totalMtTonsAir', 'totalMtTonsVac', 'tankCargoTemp', 'tankCargoPress', 'tankCapacity',
-    'liquidVol', 'vaporVol', 'gasFactor', 'corrVaporVol', 'vapMTonsKiloAir', 'vapMTonKiloVac', 'liqPlusVapVac', 'receivedQtyVac', 'corrDensity',
-    'mtTonsKiloAir', 'receivedQtyAir'
+    'tank', 'status', 'liqDensityVac', 'obsSounding', 'tapeCorr', 'liqTemp', 'observedLiqVol',
+    'shrinkageFactor', 'vcf', 'tankVol100', 'vapTemp', 'vapPressure', 'molWt', 'vapFactor'
   ]
 
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
 
-  tankBeforeFormTemplateCtx: any;
-  tankAfterFormTemplateCtx: any;
+  tankLiqBeforeFormTempCtx: any;
+  tankLiqAfterFormTempCtx: any;
+  tankGasBeforeFormTempCtx: any;
+  tankGasAfterFormTempCtx: any;
 
   viewOnly: boolean = false;
 
+  currentYear = new Date().getFullYear();
   dateValidation = {
-    minDate: '',
-    maxDate: new Date(),
+    min: new Date(this.currentYear - 10, 0, 1),
+    max: new Date(),
   };
 
   uploadedDocs: File[] = [];
@@ -123,13 +127,9 @@ export class CoqApplicationFormComponent
   }
 
   ngOnInit(): void {
-    this.getNoaApplication();
-    // this.getVesselDetails();
-    this.getDepots();
-    this.getUploadDocuments();
-    this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
-
+  
     if (this.coqId) this.getCOQ();
+
     this.initForms(null);
 
     this.uploadedDoc$.subscribe((file) => {
@@ -141,33 +141,24 @@ export class CoqApplicationFormComponent
     this.documents$.subscribe((res) => {
       this.setDataSource();
     });
-
     
-    this.subscribeReviewData();
     this.restoreReviewData();
+    this.subscribeReviewData();
+
+    this.getNoaApplication();
+    this.getVesselDetails();
+    this.getDepots();
+    this.getUploadDocuments();
+    this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
+
   }
 
   public getNoaApplication() {
     this.spinner.open();
-    this.depotOfficerService.getAllMappings().subscribe({
+    this.applicationService.viewApplication(this.appId).subscribe({
       next: (res: any) => {
-        const mappings = res?.data;
-        const currUser = decodeFullUserInfo();
-        const officerMapping = mappings.find((val: any) => val.userId === currUser.userUUID);
-        
-        this.applicationService.viewApplicationByDepot(officerMapping?.depotID || 1).subscribe({
-          next: (res) => {
-            const noaApps = res.data;
-            this.noaApplication = noaApps.find((val: any) => val.id === this.appId);
-            console.log('Noa Application =======> ', this.noaApplication);
-            this.spinner.close();
-          },
-          error: (error: unknown) => {
-            console.log(error);
-            this.popUp.open('Something went wrong while retrieving data.', 'error');
-            this.spinner.close();
-          },
-        });
+        this.noaApplication = res.data;
+        this.spinner.close();
       },
       error: (error: any) => {
         console.log(error);
@@ -210,36 +201,46 @@ export class CoqApplicationFormComponent
     }
 
     this.vesselGasInfoForm = this.fb.group({
-      gov: ['', [Validators.required]],
-      gsv: ['', [Validators.required]],
-      arrivalDate: ['', [Validators.required]],
-      shoreDate: ['', [Validators.required]],
-      mtTonsVacQtyBefReceipt: ['', [Validators.required]],
-      mtonsVacQtyAftReceipt: ['', [Validators.required]],
-      mtonsVacQtyReceived: [{value: '', disabled: true}, [Validators.required]],
-      mtonsAirQtyBefReceipt: ['', [Validators.required]],
-      mtonsAirQtyAftReceipt: ['', [Validators.required]],
-      mtonsAirQtyReceived: [{value: '', disabled: true}, [Validators.required]],
+      vesselArrivalDate: ['', [Validators.required]],
+      prodDischargeCommenceDate: ['', [Validators.required]],
+      prodDischargeCompletionDate: ['', [Validators.required]],
+      qtyBillLadingMtAir: ['', [Validators.required]],
+      arrivalShipMtAir: ['', [Validators.required]],
+      shipDischargedMtAir: ['', [Validators.required]],
+      nameOfConsignor: ['', [Validators.required]],
     })
 
-    this.tankBeforeInfoForm = this.isLiquidProduct ? this.getTankLiqProdFormGroup('before') : this.getTankGasProdFormGroup('before');
-    this.tankAfterInfoForm = this.isLiquidProduct ? this.getTankLiqProdFormGroup('after') : this.getTankGasProdFormGroup('after');
-
-    this.tankBeforeFormTemplateCtx = {
-      formGroup: this.tankBeforeInfoForm
+    this.tankLiqBeforeInfoForm = this.getTankLiqProdFormGroup('before');
+    this.tankLiqBeforeFormTempCtx = {
+      formGroup: this.tankLiqBeforeInfoForm
     }
 
-    this.tankAfterFormTemplateCtx = {
-      formGroup: this.tankAfterInfoForm
+    this.tankLiqAfterInfoForm = this.getTankLiqProdFormGroup('after');
+    this.tankLiqAfterFormTempCtx = {
+      formGroup: this.tankLiqAfterInfoForm
     }
 
-    this.allSubscriptions.add(
-      this.configuredTank.valueChanges.subscribe((val) => {
+    this.tankGasBeforeInfoForm = this.getTankGasProdFormGroup('before');
+    this.tankGasBeforeFormTempCtx = {
+      formGroup: this.tankGasBeforeInfoForm
+    }
+
+    this.tankGasAfterInfoForm = this.getTankGasProdFormGroup('after');
+    this.tankGasAfterFormTempCtx = {
+      formGroup: this.tankGasAfterInfoForm
+    }
+
+    this.configuredTank.valueChanges.subscribe((val) => {
       if (val) {
-        this.tankBeforeInfoForm.controls['tank'].setValue(val);
-        this.tankAfterInfoForm.controls['tank'].setValue(val);
+        if (!this.isGasProduct) {
+          this.tankLiqBeforeInfoForm.controls['tank'].setValue(val);
+          this.tankLiqAfterInfoForm.controls['tank'].setValue(val);
+        } else if (this.isGasProduct) {
+          this.tankGasBeforeInfoForm.controls['tank'].setValue(val);
+          this.tankGasAfterInfoForm.controls['tank'].setValue(val);
+        }
       }
-    }))
+    })
 
     this.cd.markForCheck();
   }
@@ -277,13 +278,13 @@ export class CoqApplicationFormComponent
     }));
   }
 
-  get isLiquidProduct(): boolean | null {
-    return this.noaApplication === undefined ? null : (this.noaApplication && ['AGO', 'LPG'].includes(this.noaApplication?.product));
+  public checkProductType(): void {
+    this.isGasProduct = true;
   }
 
   public getTankLiqProdFormGroup(status?: string) {
     return this.fb.group({
-      tank: [this.configuredTank.value || '', [Validators.required]],
+      tank: ['', [Validators.required]],
       status: [status || '', [Validators.required]],
       dip: ['', [Validators.required]],
       waterDIP: ['', [Validators.required]],
@@ -309,7 +310,6 @@ export class CoqApplicationFormComponent
       liqTemp: ['', [Validators.required]],
       observedLiqVol: ['', [Validators.required]], 
       shrinkageFactor: ['', [Validators.required]],
-      corrLiqVol: ['', [Validators.required]],
       vcf: ['', [Validators.required]], 
       tankVol100: ['', [Validators.required]], 
       vapTemp: ['', [Validators.required]], 
@@ -327,7 +327,6 @@ export class CoqApplicationFormComponent
         this.documentConfig = res.data.apiData;
         this.documents = res.data.docs;
         this.documents$.next(this.documents);
-        this.hasUploadedAllRequiredDocs;
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -491,7 +490,7 @@ export class CoqApplicationFormComponent
     });
   }
 
-  public submit() {
+  submit() {
     this.coqService.submit(this.coqId).subscribe({
       next: (res) => {
         this.popup.open(
@@ -534,7 +533,11 @@ export class CoqApplicationFormComponent
   restoreReviewData(): void {
     const localFormReviewData = JSON.parse(localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA));
     if (Array.isArray(localFormReviewData) && localFormReviewData.length) {
-      this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+      if (!this.isGasProduct) {
+        this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+      } else if (this.isGasProduct) {
+        this.coqFormService.gasProductReviewData$.next(localFormReviewData);
+      }
     }
   }
 
@@ -555,53 +558,79 @@ export class CoqApplicationFormComponent
 
   isUniqueTank(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      return !this.coqFormService.liquidProductReviewData.some((val) => val.before.tank.toLowerCase() === control.value.toLowerCase()) ?
-        null : { duplicate: control.value };
+      if (!this.isGasProduct) {
+        return !this.coqFormService.liquidProductReviewData.some((val) => val.before.tank.toLowerCase() === control.value.toLowerCase()) ?
+          null : { duplicate: control.value };
+      } else {
+        return !this.coqFormService.gasProductReviewData.some((val) => val.before.tank.toLowerCase() === control.value.toLowerCase()) ?
+          null : { duplicate: control.value };
+      }
     }
   }
 
   saveToReview(): void {
-    const coqData: CoQData = {
-      before: this.tankBeforeInfoForm.value, 
-      after: this.tankAfterInfoForm.value, 
-      diff: {}
-    };
+    let coqData: CoQData;
 
-    coqData['diff'] = {
-      status: 'DIFF',
-      tank: coqData.before.tank,
-      dip: parseFloat(coqData.after.dip) - parseFloat(coqData.before.dip),
-      waterDIP: parseFloat(coqData.after.waterDIP) - parseFloat(coqData.before.waterDIP),
-      tov: parseFloat(coqData.after.tov) - parseFloat(coqData.before.tov),
-      waterVOI: parseFloat(coqData.after.waterVOI) - parseFloat(coqData.before.waterVOI),
-      corr: parseFloat(coqData.after.corr) - parseFloat(coqData.before.corr),
-      gov: parseFloat(coqData.after.gov) - parseFloat(coqData.before.gov),
-      temp: parseFloat(coqData.after.temp) - parseFloat(coqData.before.temp),
-      density: parseFloat(coqData.after.density) - parseFloat(coqData.before.density),
-      vcf: parseFloat(coqData.after.vcf) - parseFloat(coqData.before.vcf),
-      gsv: parseFloat(coqData.after.gsv) - parseFloat(coqData.before.gsv),
-      mtVAC: parseFloat(coqData.after.mtVAC) - parseFloat(coqData.before.mtVAC),
+    if (!this.isGasProduct) {
+      coqData = {
+        before: this.tankLiqBeforeInfoForm.value, 
+        after: this.tankLiqAfterInfoForm.value,
+        diff: {}
+      };
+      coqData['diff'] = {
+        status: 'DIFF',
+        tank: coqData.before.tank,
+        dip: parseFloat(coqData.after.dip) - parseFloat(coqData.before.dip),
+        waterDIP: parseFloat(coqData.after.waterDIP) - parseFloat(coqData.before.waterDIP),
+        tov: parseFloat(coqData.after.tov) - parseFloat(coqData.before.tov),
+        waterVOI: parseFloat(coqData.after.waterVOI) - parseFloat(coqData.before.waterVOI),
+        corr: parseFloat(coqData.after.corr) - parseFloat(coqData.before.corr),
+        gov: parseFloat(coqData.after.gov) - parseFloat(coqData.before.gov),
+        temp: parseFloat(coqData.after.temp) - parseFloat(coqData.before.temp),
+        density: parseFloat(coqData.after.density) - parseFloat(coqData.before.density),
+        vcf: parseFloat(coqData.after.vcf) - parseFloat(coqData.before.vcf),
+        gsv: parseFloat(coqData.after.gsv) - parseFloat(coqData.before.gsv),
+        mtVAC: parseFloat(coqData.after.mtVAC) - parseFloat(coqData.before.mtVAC),
+      }
+    } else if (this.isGasProduct) {
+      coqData = {
+        before: this.tankGasBeforeInfoForm.value,
+        after: this.tankGasAfterInfoForm.value,
+      }
     }
     
-    // Check for form preview data in local storage
+    // Check for form review data in local storage
     let coqFormDataArr = JSON.parse(localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA));
     if (Array.isArray(coqFormDataArr) && coqFormDataArr.length) {
       coqFormDataArr.push(coqData);
     } else {
       coqFormDataArr = [coqData];
     }
-    this.coqFormService.liquidProductReviewData$.next(coqFormDataArr);
-    localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqFormDataArr));
 
-    for (let control in this.tankBeforeInfoForm.controls) {
-      if (control !== 'status') {
-        this.tankBeforeInfoForm.controls[control].setValue('');
-        this.tankAfterInfoForm.controls[control].setValue('');
+    if (!this.isGasProduct) {
+      this.coqFormService.liquidProductReviewData$.next(coqFormDataArr);
+      for (let control in this.tankLiqBeforeInfoForm.controls) {
+        if (control !== 'status') {
+          this.tankLiqBeforeInfoForm.controls[control].setValue('');
+          this.tankLiqAfterInfoForm.controls[control].setValue('');
+        }
+      }
+    } else if (this.isGasProduct) {
+      this.coqFormService.gasProductReviewData$.next(coqFormDataArr);
+      for (let control in this.tankGasBeforeInfoForm.controls) {
+        if (control !== 'status') {
+          this.tankGasBeforeInfoForm.controls[control].setValue('');
+          this.tankGasAfterInfoForm.controls[control].setValue('');
+        }
       }
     }
+  
+    localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqFormDataArr));
 
     this.configuredTank.setValue('');
     this.tankInfoStepper.selectedIndex = 0;
+
+    this.cd.markForCheck();
   }
 
   updateConfiguredTanks() {
@@ -615,7 +644,10 @@ export class CoqApplicationFormComponent
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
-    if (["e", "E", "+"].includes(evt.key)) {
+    if (["e", "E", "+"].includes(evt.key) && 
+      (evt.target as HTMLElement).tagName.toLowerCase() === 'input' && 
+      (evt.target as HTMLInputElement).type !== 'text'
+    ) {
       evt.preventDefault()
     } 
   }
@@ -642,7 +674,7 @@ export interface LiquidProductData {
 export interface CoQData {
   before: any;
   after: any;
-  diff: any;
+  diff?: any;
 }
 
 export enum LocalDataKey {

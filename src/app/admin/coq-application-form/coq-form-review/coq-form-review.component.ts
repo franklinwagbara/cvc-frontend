@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Util } from '../../../../../src/app/shared/lib/Util';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,29 +12,45 @@ import { LocalDataKey } from '../coq-application-form.component';
   styleUrls: ['./coq-form-review.component.css']
 })
 export class CoqFormReviewComponent implements OnInit {
-  displayedColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC', 'actions'];
+  liqProductColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC', 'actions'];
+  gasProductColumns = [
+    'tank', 'status', 'liqDensityVac', 'obsSounding', 'tapeCorr', 'liqTemp', 'observedLiqVol',
+    'shrinkageFactor', 'vcf', 'tankVol100', 'vapTemp', 'vapPressure', 'molWt', 'vapFactor', 'actions'
+  ]
+  displayedColumns: string[];
   localDataKey = LocalDataKey.COQFORMREVIEWDATA;
   dataSources: MatTableDataSource<any[]>[] = [];
   formData: any[] = [];
-
+  @Input() isGasProduct = false;
 
   objNotEmpty = Util.objNotEmpty;
 
   constructor(
-    public coqForm: CoqAppFormService,
+    public coqFormService: CoqAppFormService,
     public dialog: MatDialog,
     private elRef: ElementRef
   ) { }
 
   ngOnInit(): void {
-    this.coqForm.liquidProductReviewData$.subscribe((val) => {
+    this.coqFormService.liquidProductReviewData$.subscribe((val) => {
       this.dataSources = [];
-      this.formData = this.coqForm.flattenCoQDataArr(val);
+      this.formData = this.coqFormService.flattenCoQDataArr(val);
       for (let i = 0; i < this.formData.length; i += 3) {
         const tableData = [this.formData[i], this.formData[i+1], this.formData[i+2]];
         this.dataSources.push(new MatTableDataSource<any[]>(tableData));
       }
     })
+
+    this.coqFormService.gasProductReviewData$.subscribe((val) => {
+      this.dataSources = [];
+      this.formData = this.coqFormService.flattenCoQDataArr(val);
+      for (let i = 0; i < this.formData.length; i += 2) {
+        const tableData = [this.formData[i], this.formData[i+1]];
+        this.dataSources.push(new MatTableDataSource<any[]>(tableData));
+      }
+    })
+
+    this.displayedColumns = this.isGasProduct ? this.gasProductColumns : this.liqProductColumns;
   }
 
   openAccordion(index: number): void {
