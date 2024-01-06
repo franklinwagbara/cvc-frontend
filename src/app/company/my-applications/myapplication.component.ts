@@ -77,7 +77,7 @@ export class MyApplicationComponent implements OnInit {
             return new Date(a.createdDate) > new Date(b.createdDate) ? -1 :
               new Date(a.createdDate) < new Date(b.createdDate) ? 1 : 0;
           });
-          this.applications$.next(res.data);
+          this.applications$.next(res.data)
 
           //todo: display success dialog
           this.progressbar.close();
