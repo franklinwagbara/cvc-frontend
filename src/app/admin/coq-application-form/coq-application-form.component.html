@@ -81,7 +81,7 @@
                   </mat-select>
                 </mat-form-field>
                 <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
-                  {{ !!configuredTank?.controls['id'].errors['duplicate'] && 'Tank readings already exist'}}
+                  {{ !!configuredTank?.controls['id'].hasError('duplicate') ? 'Tank readings already exist' : ''}}
                 </mat-error>
               </form>
               <div class="text-right">
@@ -679,16 +679,29 @@
                 />
               </div>
               <div class="md:col-span-6">
-                <label for="coq-gas-product-nameOfConsignor"
+                <label for="coq-gas-product-depotPrice"
+                  >Depot Price <sup class="text-red-700">*</sup></label
+                >
+                <input
+                  type="number"
+                  name="depotPrice"
+                  formControlName="depotPrice"
+                  id="coq-gas-product-depotPrice"
+                  class="form-field form-control"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['depotPrice'].touched && vesselGasInfoForm.controls['depotPrice'].invalid}"
+                />
+              </div>
+              <div class="md:col-span-6">
+                <label for="coq-gas-product-nameConsignee"
                   >Name of Consignor/Consignee <sup class="text-red-700">*</sup></label
                 >
                 <input
                   type="text"
-                  name="nameOfConsignor"
-                  formControlName="nameOfConsignor"
-                  id="coq-gas-product-nameOfConsignor"
+                  name="nameConsignee"
+                  formControlName="nameConsignee"
+                  id="coq-gas-product-nameConsignee"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['nameOfConsignor'].touched && vesselGasInfoForm.controls['nameOfConsignor'].invalid}"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['nameConsignee'].touched && vesselGasInfoForm.controls['nameConsignee'].invalid}"
                 />
               </div>
             </div>
@@ -750,16 +763,6 @@
                     <ng-container *ngIf="column === 'document'">
                       <div class="flex justify-start align-middle">
                         <span class="truncate" [title]="element.docName"> {{ element?.docName }}</span>&nbsp;
-                        <a
-                          *ngIf="element?.docSource"
-                          [href]="element.docSource"
-                          target="_blank"
-                          download
-                          ><img
-                            src="../../../assets/image/pdfIcon.png"
-                            width="25"
-                            height="25"
-                        /></a>
                       </div>
                     </ng-container>
   
@@ -769,8 +772,9 @@
                         class="upload-btn"
                         (click)="uploadDoc(i)"
                       >
-                        Upload
+                        {{ element?.docSource ? 'Replace' : 'Upload' }}
                       </button>
+                      
                       <input
                         class="d-none file-input"
                         type="file"
@@ -790,6 +794,16 @@
                               "Kb)"
                           }}</span
                         >
+                        <a
+                          *ngIf="element?.docSource && element.percentProgress === 100"
+                          [href]="element.docSource"
+                          target="_blank"
+                          download
+                        ><img
+                          src="../../../assets/image/pdfIcon.png"
+                          width="40"
+                          height="25"
+                        /></a>
                         <mat-progress-bar
                           mode="determinate"
                           [value]="
@@ -823,24 +837,15 @@
             </div>
   
             <div
-              *ngIf="
-                vesselLiqInfoForm.valid &&
-                hasUploadedAllRequiredDocs &&
-                !isSubmitted
-              "
+              *ngIf="hasUploadedAllRequiredDocs && !isSubmitted"
               class="text-right mt-8"
             >
               <button
-                type="submit"
-                (click)="save()"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              >
-                Save
-              </button>
-              <button
+                *ngIf="!isSubmitted"
                 type="submit"
                 (click)="submit()"
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                [disabled]="isSubmitting"
               >
                 Submit
               </button>

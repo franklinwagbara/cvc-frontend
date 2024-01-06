@@ -64,7 +64,7 @@ export class CoqApplicationFormComponent
   vesselInfo: IVesselDetail;
   appId: number;
   documentConfig: DocumentConfig;
-  uploadDocInfo: IUploadDocInfo;
+  uploadedDocInfo: any[];
   documents: DocumentInfo[] = [];
   depots: IDepot[];
   selectedDepotId: number;
@@ -73,6 +73,9 @@ export class CoqApplicationFormComponent
   coqId: number;
   coq: ICOQ;
   noaApplication: any;
+
+  isSubmitted = false;
+  isSubmitting = false;
 
   isGasProduct = true;
 
@@ -97,8 +100,6 @@ export class CoqApplicationFormComponent
     max: new Date(),
   };
 
-  uploadedDocs: File[] = [];
-  uploadedDoc$ = new BehaviorSubject<File>(null);
   documents$: BehaviorSubject<any[]> = new BehaviorSubject([]);
 
   dummyTanks = [{id: 1, name: 'Tank 1'}, {id: 2, name: 'Tank 2'}]
@@ -112,12 +113,10 @@ export class CoqApplicationFormComponent
     public spinner: SpinnerService,
     private router: Router,
     private route: ActivatedRoute,
-    private appService: ApplicationService,
     private popup: PopupService,
     private libService: LibaryService,
     private cd: ChangeDetectorRef,
     public coqFormService: CoqAppFormService,
-    private depotOfficerService: DepotOfficerService,
     private popUp: PopupService,
     private applicationService: ApplicationService,
     private progressBar: ProgressBarService,
@@ -140,23 +139,36 @@ export class CoqApplicationFormComponent
 
     this.initForms(null);
 
-    this.uploadedDoc$.subscribe((file) => {
-      this.uploadedDocs.push(file);
-    });
-
     this.dataSource = new MatTableDataSource<any>([]);
 
     this.documents$.subscribe((res) => {
-      this.setDataSource();
+      if (res) {
+        this.documents = res;
+        this.setDataSource();
+      }
     });
+
+    // Subscribe to uploaded data responses
+    this.allSubscriptions.add(
+      this.fileUpload.uploadResponses$.subscribe((val) => {
+        if (Array.isArray(val) && val.length) {
+          this.uploadedDocInfo = val;
+          this.documents = this.documents.map((el) => {
+            const found = this.uploadedDocInfo.find((doc) => el.docId == doc?.docId && el.docType == doc?.docType);
+            if (found) {
+              return { ...el, docSource: found?.docSource }
+            }
+            return el;
+          })
+        }
+      })
+    )
     
     this.restoreReviewData();
     this.subscribeReviewData();
 
     this.getNoaApplication();
     this.getDepots();
-    this.getUploadDocuments();
-    this.coqFormService.configuredTanks = this.fetchConfiguredTanks();
   }
 
   public getNoaApplication() {
@@ -213,7 +225,8 @@ export class CoqApplicationFormComponent
       qtyBillLadingMtAir: ['', [Validators.required]],
       arrivalShipMtAir: ['', [Validators.required]],
       shipDischargedMtAir: ['', [Validators.required]],
-      nameOfConsignor: ['', [Validators.required]],
+      nameConsignee: ['', [Validators.required]],
+      depotPrice: ['', [Validators.required]]
     })
 
     this.tankLiqBeforeInfoForm = this.getTankLiqProdFormGroup('before');
@@ -236,10 +249,10 @@ export class CoqApplicationFormComponent
       formGroup: this.tankGasAfterInfoForm
     }
 
-    this.configuredTank.valueChanges.subscribe((val) => {
+    this.configuredTank.controls['id'].valueChanges.subscribe((val) => {
       if (val) {
         // Populate tankName control
-        const tankName = this.requirement.tanks.find((t) => t?.id == val)?.name;
+        const tankName = this.requirement.tanks.find((t) => t?.id === parseInt(val))?.name;
         this.configuredTank.controls['name'].setValue(tankName || '');
         if (!this.isGasProduct) {
           this.tankLiqBeforeInfoForm.controls['tank'].setValue(tankName);
@@ -286,6 +299,9 @@ export class CoqApplicationFormComponent
         if (!this.requirement?.tanks?.length) {
           this.popUp.open('No tanks configured for this depot. You may not proceed to next step.', 'error');
         }
+        this.documents$.next(this.requirement.requiredDocuments.map((el) => {
+          return { ...el, success: null, percentProgress: el.docSource ? 100 : 0 }
+        }))
         this.fetchingRequirement = false;
         this.spinner.close();
       },
@@ -339,25 +355,6 @@ export class CoqApplicationFormComponent
     })
   }
 
-  public getUploadDocuments() {
-    this.spinner.open();
-    this.allSubscriptions.add(
-      this.appService.getUploadDocuments(this.appId).subscribe({
-      next: (res) => {
-        this.documentConfig = res.data.apiData;
-        this.documents = res.data.docs;
-        this.documents$.next(this.documents);
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (e) => {
-        this.spinner.close();
-        this.popup.open(e?.message, 'error');
-        this.cd.markForCheck();
-      },
-    }));
-  }
-
   public getDepots() {
     this.spinner.open();
     this.libService.getAllDepotByNoaAppId(this.appId).subscribe({
@@ -388,7 +385,7 @@ export class CoqApplicationFormComponent
 
   get hasUploadedAllRequiredDocs(): boolean {
     if (this.documents.length) {
-      return this.documents.every((info) => info.docSource);
+      return this.documents.every((info) => !!info.docSource);
     }
     return false;
   }
@@ -425,22 +422,32 @@ export class CoqApplicationFormComponent
         return el;
       });
 
-      const dateId = Date.now();
-      // To update with actual dynamic data
-      const { docTypeId, compId, email, apiHash, docName, uniqueid } = {
-        docTypeId: doc.docId,
-        compId: this.documentConfig.companyElpsId,
-        email: this.documentConfig.apiEmail,
-        apiHash: this.documentConfig.apiHash,
-        docName: doc.docName,
+      let uploadParams = {
+        docTypeId: this.documents[index].docId,
+        compId: this.requirement?.apiData.companyElpsId,
+        email: this.requirement?.apiData.apiEmail,
+        apiHash: this.requirement?.apiData.apiHash,
+        docName: this.documents[index].docName,
         uniqueid: '',
+        facilityId: this.requirement?.apiData?.facilityElpsId
       };
 
-      const uploadUrl = `${environment.elpsBase}/api/UploadCompanyDoc/${docTypeId}/${compId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
+      let uploadUrl = '';
+
+      // If replacing the existing file
+      if (this.documents[index]?.docSource) {
+        let { docTypeId, facilityId } = uploadParams;
+        uploadUrl = `${environment.elpsBase}/api/FacilityDocument/UpdateFile/${docTypeId}/${facilityId}?docid=${docTypeId}`;
+      } else {
+        // Uploading for the first time
+        let { docTypeId, compId, facilityId, email, apiHash, docName, uniqueid} = uploadParams;
+        uploadUrl = `${environment.elpsBase}/api/Facility/UploadFile/${docTypeId}/${compId}/${facilityId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
+      }
 
       this.allSubscriptions.add(
         this.fileUpload.uploadFile(file, uploadUrl).subscribe({
           next: (val: number) => {
+            // Update file upload progress
             this.documents = this.documents.map((el, i) => {
               if (i === index) {
                 return {
@@ -516,15 +523,16 @@ export class CoqApplicationFormComponent
 
     if (this.isGasProduct) {
       payload = {
-        plantId: null,
+        plantId: this.depotSelection.value,
         noaAppId: this.appId,
         quauntityReflectedOnBill: this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
         arrivalShipFigure: this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
         dischargeShipFigure: this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
         dateOfVesselArrival: new Date(this.vesselGasInfoForm.controls['vesselArrivalDate'].value).toISOString(),
-        dateOfVesselUllage: null,
-        dateOfSTAfterDischarge: null,
-        depotPrice: null,
+        dateOfVesselUllage: new Date(this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value).toISOString(),
+        dateOfSTAfterDischarge: new Date(this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value).toISOString(),
+        depotPrice: this.vesselGasInfoForm.controls['depotPrice'].value,
+        nameConsignee: this.vesselGasInfoForm.controls['nameConsignee'].value,
         tankBeforeReadings: [],
         tankAfterReadings: [],
         submitDocuments: []
@@ -537,45 +545,45 @@ export class CoqApplicationFormComponent
         payload.tankAfterReadings.push(this.getGasPayload(el.after));
       })
 
-      this.uploadedDocs.forEach((doc) => {
-        payload.submitDocuments.push(doc);
+      this.documents.forEach((doc) => {
+        payload.submitDocuments.push({ 
+          fileId: doc.fileId, 
+          docType: doc.docType,
+          docName: doc.docName,
+          docSource: doc.docSource
+        });
       })
 
-      this.progressBar.open();
+      this.isSubmitting = true;
+      this.spinner.show('Submitting CoQ Application...');
       this.coqService.createGasProductCoq(payload).subscribe({
         next: (res: any) => {
-          this.progressBar.close();
-          this.popUp.open('CoQ Application Created Successfully', 'success');
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.spinner.close();
+          if (res?.success) {
+            this.popUp.open('CoQ Application Created Successfully', 'success');
+          } else {
+            this.popUp.open('CoQ Application Creation Failed', 'error');
+          }
           this.cd.markForCheck();
         },
         error: (error: unknown) => {
+          this.isSubmitting = false;
           console.log(error);
-          this.progressBar.close();
+          this.spinner.close();
           this.popUp.open('CoQ Application Creation Failed', 'error');
           this.cd.markForCheck();
         }
       })
+    } else {
+      // this.coqService.createLiqProductCoq(payload).subscribe()
     }
-    this.coqService.submit(this.coqId).subscribe({
-      next: (res) => {
-        this.popup.open(
-          'COQ Application was submitted successfully.',
-          'success'
-        );
-        this.spinner.close();
-        this.getCOQ();
-        this.cd.markForCheck();
-      },
-      error: (e) => {
-        this.spinner.close();
-        this.popup.open(e?.message, 'error');
-        this.cd.markForCheck();
-      },
-    });
   }
 
   public getGasPayload(data: GasTankReading) {
-    const { 
+    const {
+      tank,
       liquidDensityVac, 
       observedSounding,
       tapeCorrection,
@@ -591,19 +599,26 @@ export class CoqApplicationFormComponent
       vapourFactor
     } = data;
 
-    return { liquidDensityVac, 
-      observedSounding,
-      tapeCorrection,
-      liquidTemperature,
-      observedLiquidVolume,
-      shrinkageFactorLiquid,
-      vcf,
-      tankVolume,
-      shrinkageFactorVapour,
-      vapourTemperature,
-      vapourPressure,
-      molecularWeight,
-      vapourFactor 
+    // There will be issue here if tank name is not unique per id
+    const tankId = this.requirement.tanks.find((el) => el?.name === tank)?.id;
+
+    return {
+      tankId,
+      coQGasTankDTO: {
+        liquidDensityVac, 
+        observedSounding,
+        tapeCorrection,
+        liquidTemperature,
+        observedLiquidVolume,
+        shrinkageFactorLiquid,
+        vcf,
+        tankVolume,
+        shrinkageFactorVapour,
+        vapourTemperature,
+        vapourPressure,
+        molecularWeight,
+        vapourFactor 
+      }
     }
   }
 
@@ -618,14 +633,6 @@ export class CoqApplicationFormComponent
       ],
       { queryParams: { depotId: depotId, view: true, coqId: coqId } }
     );
-  }
-
-  public get isSubmitted() {
-    return this.coq && this.coq.submittedDate;
-  }
-
-  fetchConfiguredTanks(): string[] {
-    return ['Tank 1', 'Tank 2', 'Tank 3'];
   }
 
   restoreReviewData(): void {
@@ -656,11 +663,12 @@ export class CoqApplicationFormComponent
 
   isUniqueTank(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
+      const tankName = this.requirement?.tanks.find((t) => t.id === parseInt(control.value))?.name;
       if (!this.isGasProduct) {
-        return !this.coqFormService.liquidProductReviewData.some((val) => val.before.tank === control.value) ?
+        return !this.coqFormService.liquidProductReviewData.some((val) => val.before.tank === tankName) ?
           null : { duplicate: control.value };
       } else {
-        return !this.coqFormService.gasProductReviewData.some((val) => val.before.tank === control.value.toLowerCase()) ?
+        return !this.coqFormService.gasProductReviewData.some((val) => val.before.tank === tankName) ?
           null : { duplicate: control.value };
       }
     }
@@ -725,19 +733,10 @@ export class CoqApplicationFormComponent
   
     localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqFormDataArr));
 
-    this.configuredTank.controls['tankId'].setValue('');
+    this.configuredTank.reset();
     this.tankInfoStepper.selectedIndex = 0;
 
     this.cd.markForCheck();
-  }
-
-  updateConfiguredTanks() {
-    const tanksInReview = this.coqFormService.liquidProductReviewData.map((coqData) => {
-      if (Object.keys(coqData.before).length && Object.keys(coqData.after).length) {
-        return coqData.before.tank;
-      }
-    });
-    this.coqFormService.configuredTanks = this.fetchConfiguredTanks().filter((tank) => !tanksInReview.includes(tank));
   }
 
   @HostListener('keydown', ['$event'])
