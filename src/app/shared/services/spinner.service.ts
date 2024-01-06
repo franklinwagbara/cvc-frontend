@@ -5,9 +5,15 @@ import { Injectable } from '@angular/core';
 })
 export class SpinnerService {
   private openState = false;
+  public message: string;
 
-  public open() {
+  public open(): void {
     this.openState = true;
+  }
+
+  public show(message: string): void {
+    this.openState = true;
+    this.message = message;
   }
 
   public close() {

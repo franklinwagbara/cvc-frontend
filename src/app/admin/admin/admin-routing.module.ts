@@ -33,6 +33,7 @@ import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.c
 import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
+import { ViewCoqApplicationComponent } from '../view-coq-application/view-coq-application.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -79,8 +80,13 @@ const routes: Routes = [
     canActivate: [CoqGuard]
   },
   {
-    path: 'certificate-of-quantity/all-applications-by-depot',
+    path: 'certificate-of-quantity/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
+    canActivate: [CoqGuard]
+  },
+  {
+    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
+    component: ViewCoqApplicationComponent,
     canActivate: [CoqGuard]
   },
   {

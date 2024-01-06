@@ -15,7 +15,7 @@ import { SpinnerService } from '../../../../../../src/app/shared/services/spinne
 import { ShowMoreComponent } from '../../../../shared/reusable-components/show-more/show-more.component';
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })

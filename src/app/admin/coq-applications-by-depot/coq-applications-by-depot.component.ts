@@ -7,6 +7,7 @@ import {
 import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 
 @Component({
   selector: 'app-coq-applications-by-depot',
@@ -15,10 +16,6 @@ import { SpinnerService } from '../../../../src/app/shared/services/spinner.serv
 })
 export class CoqApplicationsByDepotComponent implements OnInit {
   public coqs: ICoQApplication[];
-
-  public tableTitles = {
-    coqs: 'Certificate of Quality(s)',
-  };
 
   public coqKeysMappedToHeaders = {
     importName: 'Importer',
@@ -36,6 +33,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private popUp: PopupService,
     private coqService: CoqService,
+    public coqFormService: CoqAppFormService,
     private router: Router
   ) {}
 
@@ -66,10 +64,9 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     this.router.navigate(
       [
         'admin',
-        'noa-applications-by-depot',
-        event.appId,
         'certificate-of-quantity',
-        'new-application',
+        'coq-applications-by-depot',
+        event.id,
       ],
       { queryParams: { depotId: event.depotId, view: true, coqId: event.id } }
     );

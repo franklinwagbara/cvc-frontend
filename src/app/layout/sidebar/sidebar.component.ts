@@ -87,7 +87,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'COQ Applications',
-        url: '/admin/certificate-of-quantity/all-applications-by-depot',
+        url: '/admin/certificate-of-quantity/coq-applications-by-depot',
       },
     ],
   },
