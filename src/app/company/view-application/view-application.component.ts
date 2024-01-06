@@ -19,7 +19,7 @@ import { Util } from '../../../../src/app/shared/lib/Util';
 
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })

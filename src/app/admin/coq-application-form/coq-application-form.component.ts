@@ -45,7 +45,10 @@ export class CoqApplicationFormComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   depotSelection = new FormControl('', Validators.required);;
-  configuredTank =  new FormControl('', {validators: [Validators.required, this.isUniqueTank()]});
+  configuredTank =  this.fb.group({
+    id: ['', [Validators.required, this.isUniqueTank()]],
+    name: ['', [Validators.required]],
+  })
   tankLiqInfoForm: FormGroup;
   tankGasInfoForm: FormGroup;
   tankLiqBeforeInfoForm: FormGroup;
@@ -133,7 +136,6 @@ export class CoqApplicationFormComponent
   }
 
   ngOnInit(): void {
-  
     if (this.coqId) this.getCOQ();
 
     this.initForms(null);
@@ -236,12 +238,15 @@ export class CoqApplicationFormComponent
 
     this.configuredTank.valueChanges.subscribe((val) => {
       if (val) {
+        // Populate tankName control
+        const tankName = this.requirement.tanks.find((t) => t?.id == val)?.name;
+        this.configuredTank.controls['name'].setValue(tankName || '');
         if (!this.isGasProduct) {
-          this.tankLiqBeforeInfoForm.controls['tank'].setValue(val);
-          this.tankLiqAfterInfoForm.controls['tank'].setValue(val);
+          this.tankLiqBeforeInfoForm.controls['tank'].setValue(tankName);
+          this.tankLiqAfterInfoForm.controls['tank'].setValue(tankName);
         } else if (this.isGasProduct) {
-          this.tankGasBeforeInfoForm.controls['tank'].setValue(val);
-          this.tankGasAfterInfoForm.controls['tank'].setValue(val);
+          this.tankGasBeforeInfoForm.controls['tank'].setValue(tankName);
+          this.tankGasAfterInfoForm.controls['tank'].setValue(tankName);
         }
       }
     })
@@ -272,23 +277,23 @@ export class CoqApplicationFormComponent
   }
 
   fetchRequirement(depotId: number): void {
-    this.progressBar.open();
+    this.spinner.show('Fetching requirement data...');
     this.fetchingRequirement = true;
     this.allSubscriptions.add(this.coqService.getCoqRequirement(this.appId, depotId).subscribe({
       next: (res: any) => {
         this.requirement = res?.data;
-        this.isGasProduct = this.requirement?.productType === 'GAS';
+        this.isGasProduct = this.requirement?.productType.toLowerCase() === 'gas';
         if (!this.requirement?.tanks?.length) {
           this.popUp.open('No tanks configured for this depot. You may not proceed to next step.', 'error');
         }
         this.fetchingRequirement = false;
-        this.progressBar.close();
+        this.spinner.close();
       },
       error: (error: unknown) => {
         console.log(error);
         this.fetchingRequirement = false;
         this.popUp.open('Something went wrong while fetching requirement data.', 'error');
-        this.progressBar.close();
+        this.spinner.close();
       }
     }))
   }
@@ -720,7 +725,7 @@ export class CoqApplicationFormComponent
   
     localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqFormDataArr));
 
-    this.configuredTank.setValue('');
+    this.configuredTank.controls['tankId'].setValue('');
     this.tankInfoStepper.selectedIndex = 0;
 
     this.cd.markForCheck();

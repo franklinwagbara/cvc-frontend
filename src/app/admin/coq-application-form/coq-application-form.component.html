@@ -60,7 +60,7 @@
               mat-raised-button 
               matStepperNext
               (click)="depotSelection.markAllAsTouched()"
-              [disabled]="!depotSelection.valid || fetchingRequirement"
+              [disabled]="!depotSelection.valid || fetchingRequirement || !requirement?.tanks?.length"
             >Next</button>
           </div>
         </mat-step>
@@ -68,20 +68,22 @@
         <mat-step label="Tank(s) BEFORE & AFTER Data Entry">
           <mat-stepper #tankInfoStepper linear>
             <mat-step [stepControl]="configuredTank" label="Select Tank">
-              <mat-form-field>
-                <mat-label>Tank Name</mat-label>
-                <mat-select
-                  name="depot"
-                  [formControl]="configuredTank"
-                >
-                  <mat-option *ngFor="let tank of dummyTanks" [value]="tank?.id">
-                    {{ tank?.name }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
-                {{ !!configuredTank?.errors['duplicate'] && 'Tank name already exists'}}
-              </mat-error>
+              <form [formGroup]="configuredTank">
+                <mat-form-field>
+                  <mat-label>Tank Name</mat-label>
+                  <mat-select
+                    name="depot"
+                    formControlName="id"
+                  >
+                    <mat-option *ngFor="let tank of requirement?.tanks" [value]="tank?.id">
+                      {{ tank?.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
+                  {{ !!configuredTank?.controls['id'].errors['duplicate'] && 'Tank readings already exist'}}
+                </mat-error>
+              </form>
               <div class="text-right">
                 <button mat-raised-button matStepperNext color="primary" [disabled]="!configuredTank?.valid">Continue</button>
               </div>
@@ -439,7 +441,7 @@
 
         <mat-step 
           [stepControl]="!isGasProduct ? vesselLiqInfoForm : vesselGasInfoForm" 
-          [label]="!isGasProduct ? 'Vessel Details Entry' : 'Shore Tank Ullage Details Entry'"
+          label="'Shore Tank Ullage Details Entry'"
         >
           <ng-container *ngIf="!isGasProduct">
             <ng-container *ngTemplateOutlet="vesselLiqInfoFormTmp"></ng-container>

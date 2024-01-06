@@ -57,18 +57,18 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   getApplication() {
-    this.spinner.open();
+    this.progressBar.open();
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
           this.application = res.data;
         }
-
         this.progressBar.close();
-        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
+        this.progressBar.close();
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -77,8 +77,6 @@ export class ViewApplicationInFullComponent implements OnInit {
           }
         );
 
-        this.progressBar.close();
-        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -133,9 +131,12 @@ export class ViewApplicationInFullComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
+      if (res) {
+        this.progressBar.open();
+        this.getApplication();
 
-      this.getApplication();
+      }
+
     });
   }
 
