@@ -151,7 +151,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: 'Action Controls',
         cell: (item: Application) => {
           if (item.rrr && item.paymentStatus === 'Processing') return '';
-          else if (item.rrr && item.paymentStatus === 'Payment confirmed')
+          else if (
+            item.rrr &&
+            item.paymentStatus === 'Payment confirmed' &&
+            item.status !== 'Processing' &&
+            item.status !== 'Completed'
+          )
             return 'uploadDocument_control';
           else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
             return 'confirmPayment_control';

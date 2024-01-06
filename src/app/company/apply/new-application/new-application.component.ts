@@ -163,7 +163,12 @@ export class NewApplicationComponent implements OnInit {
         const appId = res.data.appId;
         this.spinner.close();
         this.cd.markForCheck();
-
+        this.popUp.open(
+          `${this.selectedAppDepots.length} ${
+            this.selectedAppDepots.length > 1 ? 'Tanks' : 'Tank'
+          } added successfully.`,
+          'success'
+        );
         this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {

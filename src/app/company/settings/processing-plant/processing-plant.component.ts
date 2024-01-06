@@ -49,29 +49,29 @@ export class ProcessingPlantComponent implements OnInit {
     private companyService: CompanyService,
     private cd: ChangeDetectorRef
   ) {
-    this.plants2 = [
-      {
-        id: 1,
-        name: 'my plant',
-        state: 'Enugu',
-        plantType: 'Oil',
-        tanks: [
-          {
-            id: 2,
-            plantId: 1,
-            tankName: 'my tank',
-            product: 'gas',
-            capacity: 258,
-            position: 'up',
-          },
-        ],
-      },
-      { name: 'my plant2', state: 'Edo', plantType: 'gas', tanks: null },
-    ];
+    // this.plants2 = [
+    //   {
+    //     id: 1,
+    //     name: 'my plant',
+    //     state: 'Enugu',
+    //     plantType: 'Oil',
+    //     tanks: [
+    //       {
+    //         id: 2,
+    //         plantId: 1,
+    //         tankName: 'my tank',
+    //         product: 'gas',
+    //         capacity: 258,
+    //         position: 'up',
+    //       },
+    //     ],
+    //   },
+    //   { name: 'my plant2', state: 'Edo', plantType: 'gas', tanks: null },
+    // ];
   }
 
   ngOnInit(): void {
-    // this.getplants();
+    this.getplants();
   }
 
   getplants() {

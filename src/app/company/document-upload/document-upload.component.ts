@@ -237,12 +237,14 @@ export class DocumentUploadComponent implements OnInit {
     this.applicationService.submitApplication(payload).subscribe({
       next: (res) => {
         this.progressBar.close();
-        this.popUp.open('Document(s) upload was successfull.', 'success');
-        this.router.navigate(['/company/apply']);
+        // this.popUp.open('Document(s) upload was successfull.', 'success');
+        this.popUp.open('Application was submitted successfully', 'success');
+        this.router.navigate(['/company/dashboard']);
       },
       error: (res: unknown) => {
         this.progressBar.close();
-        this.popUp.open('Document(s) upload failed!', 'error');
+        // this.popUp.open('Document(s) upload failed!', 'error');
+        this.popUp.open('Application submission failed!', 'error');
       },
     });
   }

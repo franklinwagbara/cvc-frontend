@@ -64,7 +64,7 @@ export class CompanyService {
 
   public deletePlant(id: IPlant) {
     return this.http
-      .delete<any>(`${environment.apiUrl}/Company/delete-plant?id=${id}`)
+      .delete<any>(`${environment.apiUrl}/Plant/delete-plant?id=${id}`)
       .pipe(retry(this.num));
   }
 
