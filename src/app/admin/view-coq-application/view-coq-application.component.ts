@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Util } from '../../../../src/app/shared/lib/Util';
-import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 
 @Component({
   selector: 'app-view-coq-application',

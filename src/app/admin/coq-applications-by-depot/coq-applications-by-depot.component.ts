@@ -7,7 +7,7 @@ import {
 import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 
 @Component({
   selector: 'app-coq-applications-by-depot',
