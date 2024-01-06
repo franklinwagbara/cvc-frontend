@@ -30,6 +30,9 @@ export class NewApplicationComponent implements OnInit {
   public isMobile = false;
   public selectedFacility: IFacility[] = [];
   public vesselTypes: IVesselType[] = [];
+  public vesselInfo: IVessel | any;
+  public imoNumber: string;
+  public showLoader: boolean = false;
 
   public segmentState: 1 | 2 | 3;
 
@@ -84,13 +87,17 @@ export class NewApplicationComponent implements OnInit {
     });
 
     this.segmentState = 1;
-
+    // this.validateImo();
     this.getFacilityTypes();
     this.getApplicationTypes();
     this.getStates();
     this.getProducts();
     this.getVesselTypes();
     this.getDepots();
+  }
+
+  public get vesselFormControl() {
+    return this.vesselForm.controls;
   }
 
   public get activateFirstSegment() {
@@ -337,6 +344,31 @@ export class NewApplicationComponent implements OnInit {
         this.spinner.close();
       },
     });
+  }
+
+  public CheckVesselDetails() {
+    this.showLoader = true;
+    this.imoNumber = this.vesselForm.get('imoNumber').value;
+    this.appService.getVesselByImoNumber(this.imoNumber).subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.vesselInfo = res.data;
+          this.vesselForm.get('vesselName').setValue(this.vesselInfo.name);
+        }
+        this.showLoader = false;
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.vesselInfo = null;
+        this.vesselForm.get('vesselName').setValue('');
+        this.showLoader = false;
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  validateImo() {
+    if (this.vesselForm.get('imoNumber').value != '') this.CheckVesselDetails();
   }
 }
 

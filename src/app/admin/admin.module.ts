@@ -69,6 +69,7 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
+import { ProductsComponent } from './settings/products/products.component';
 
 
 @NgModule({
@@ -119,6 +120,7 @@ import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-app
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ViewCoqApplicationComponent,
+    ProductsComponent,
   ],
 
   imports: [

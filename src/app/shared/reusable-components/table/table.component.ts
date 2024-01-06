@@ -58,8 +58,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
-  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean =
-    false;
+  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
@@ -136,7 +135,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'action_controls',
         header: '',
         cell: (item: IApplication) => {
-          if (item) return 'initiate_coq_control'
+          if (item) return 'initiate_coq_control';
           else return '';
         },
       });
@@ -198,7 +197,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_coq_certs_control',
         header: '',
-        cell: (item) => 'view_coq_certs_control'
+        cell: (item) => 'view_coq_certs_control',
       });
     }
 
@@ -206,7 +205,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_debit_notes_control',
         header: '',
-        cell: (item) => 'view_debit_notes_control'
+        cell: (item) => 'view_debit_notes_control',
       });
     }
 
@@ -214,7 +213,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_coq_cert_control',
         header: '',
-        cell: (item) => 'view_coq_cert_control'
+        cell: (item) => 'view_coq_cert_control',
       });
     }
 
@@ -222,7 +221,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_debit_note_control',
         header: '',
-        cell: (item) => 'view_debit_note_control'
+        cell: (item) => 'view_debit_note_control',
       });
     }
 
