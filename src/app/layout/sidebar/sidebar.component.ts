@@ -10,7 +10,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
-import { Util } from 'src/app/shared/lib/Util';
+import { Util } from '../../../../src/app/shared/lib/Util';
 
 export interface SubRouteInfo {
   id: number;
@@ -120,28 +120,28 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL NOA APPLICATIONS',
-        url: '/admin/licences',
+        title: 'ALL CERTIFICATES',
+        url: '/admin/certificates',
       },
     ],
   },
-  {
-    id: 6,
-    title: 'SCHEDULES',
-    iconName: 'schedules',
-    iconId: 'schedules',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
+  // {
+  //   id: 6,
+  //   title: 'SCHEDULES',
+  //   iconName: 'schedules',
+  //   iconId: 'schedules',
+  //   iconColor: 'white',
+  //   active: false,
+  //   subMenuActive: false,
 
-    subRoutes: [
-      {
-        id: 1,
-        title: 'ALL SCHEDULES',
-        url: '/admin/schedules',
-      },
-    ],
-  },
+  //   subRoutes: [
+  //     {
+  //       id: 1,
+  //       title: 'ALL SCHEDULES',
+  //       url: '/admin/schedules',
+  //     },
+  //   ],
+  // },
   {
     id: 7,
     title: 'PAYMENTS',

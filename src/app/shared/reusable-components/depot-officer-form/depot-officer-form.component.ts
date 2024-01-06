@@ -52,17 +52,19 @@ export class DepotOfficerFormComponent {
   }
 
   createBranch() {
+    this.onClose();
     this.spinner.open();
 
     this.depotOfficer.createMapping(this.form.value).subscribe({
       next: (res) => {
         if (res.success) {
           this.popUp.open('Configuration was created successfully!', 'success');
-
           this.dialogRef.close();
         }
-
         this.spinner.close();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500)
       },
 
       error: (error: unknown) => {

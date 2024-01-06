@@ -8,6 +8,8 @@ import { environment } from '../../../environments/environment';
 })
 export class FileuploadWithProgressService {
 
+  public uploadResponses: any[];
+
   constructor(private httpClient: HttpClient) { }
 
   uploadFile(file: File, uploadUrl: string): Observable<number> {
@@ -22,8 +24,8 @@ export class FileuploadWithProgressService {
     );
   }
 
-  private trackUploadProgress(): ( source: Observable<any> ) => Observable<number> {
-    return (source: Observable<any>): Observable<number> => {
+  private trackUploadProgress(): ( source: Observable<any> ) => Observable<any> {
+    return (source: Observable<any>): Observable<any> => {
       return new Observable<number>(observer => {
         source.subscribe({
           next: event => {
@@ -32,13 +34,13 @@ export class FileuploadWithProgressService {
               observer.next(percentDone);
             } else if (event instanceof HttpResponse) {
               observer.complete();
+              this.uploadResponses.push(event.body);
             }
           },
           error: error => {
             observer.error(error);
           }}
-        );
-      });
+        )});
     };
   }
 }

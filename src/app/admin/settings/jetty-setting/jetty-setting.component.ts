@@ -47,7 +47,7 @@ export class JettySettingComponent implements OnInit {
   addData(): void {
     const formData: FormKeysProp = {name: {validator: [Validators.required] }}
     const dialogRef = this.dialog.open(FormDialogComponent, { 
-      data: { title: 'New Jetty', formData, formType: 'Create' }, disableClose: true,
+      data: { title: 'New Jetty', formData, formType: 'Create' },
     })
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
@@ -73,7 +73,7 @@ export class JettySettingComponent implements OnInit {
 
   editData(value: any): void {
     const formData: FormKeysProp = {id: {value: value.id, disabled: true }, name: {validator: [Validators.required], value: value.name }}
-    const dialogRef = this.dialog.open(FormDialogComponent, {data: { title: 'Edit Jetty', formData, formType: 'Edit'}, disableClose: true });
+    const dialogRef = this.dialog.open(FormDialogComponent, {data: { title: 'Edit Jetty', formData, formType: 'Edit'} });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.progressBar.open();

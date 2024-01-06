@@ -12,7 +12,7 @@ import { BranchSettingComponent } from '../settings/branch-setting/branch-settin
 import { AppProcessComponent } from '../settings/app-process/app-process.component';
 import { MyDeskComponent } from '../desk/my-desk/my-desk.component';
 import { ViewApplicationComponent } from '../application/view-application/view-application.component';
-import { LicenceComponent } from '../licence/licence.component';
+import { CertificatesComponent } from '../certificates/certificates.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
@@ -62,8 +62,8 @@ const routes: Routes = [
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
   { 
-    path: 'licences', 
-    component: LicenceComponent, 
+    path: 'certificates',
+    component: CertificatesComponent, 
     canActivate: [NoaAndApplicationsGuard] 
   },
   { path: 'schedules', component: ScheduleComponent },

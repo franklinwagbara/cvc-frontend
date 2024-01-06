@@ -8,23 +8,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { AppSource } from '../../../../src/app/shared/constants/appSource';
-import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
-import { AdminService } from '../../../../src/app/shared/services/admin.service';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
-import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { ApplicationService } from '../../../../src/app/shared/services/application.service';
-import { LicenceService } from '../../../../src/app/shared/services/licence.service';
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
-import { environment } from '../../../../src/environments/environment';
+import { IApplication } from '../../shared/interfaces/IApplication';
+import { ProgressBarService } from '../../shared/services/progress-bar.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
+import { LicenceService } from '../../shared/services/licence.service';
+import { PopupService } from '../../shared/services/popup.service';
+import { environment } from '../../../environments/environment';
 import { Category } from '../settings/modules-setting/modules-setting.component';
 
 @Component({
-  selector: 'app-licence',
-  templateUrl: './licence.component.html',
-  styleUrls: ['./licence.component.css'],
+  selector: 'app-certificates',
+  templateUrl: './certificates.component.html',
+  styleUrls: ['./certificates.component.css'],
 })
-export class LicenceComponent implements OnInit, AfterViewInit {
+export class CertificatesComponent implements OnInit, AfterViewInit {
   public applications: IApplication[];
   public categories: Category[];
 

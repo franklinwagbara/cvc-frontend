@@ -56,7 +56,6 @@ export class NominatedSurveyorSettingComponent implements OnInit {
       FormDialogComponent, 
       { 
         data: { title: 'Add Nominated Surveyor', formData, formType: 'Create' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px'
       }
@@ -93,7 +92,6 @@ export class NominatedSurveyorSettingComponent implements OnInit {
       FormDialogComponent, 
       { 
         data: { title: 'Edit Nominated Surveyor', formData, formType: 'Edit' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px',
       }

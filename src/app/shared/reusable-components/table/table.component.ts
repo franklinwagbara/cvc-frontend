@@ -51,7 +51,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
+  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
@@ -178,11 +178,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableViewLicenceControl) {
+    if (this.enableViewCertificateControl) {
       this.columns.push({
         columnDef: 'view_control',
         header: '',
-        cell: (item) => 'view_licence_control',
+        cell: (item) => 'view_certificate_control',
       });
     }
 
