@@ -429,4 +429,40 @@ export class AdminService {
       .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
       .pipe(retry(this.num));
   }
+
+  public getproductTypes() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Product/all-product-types`)
+      .pipe(retry(this.num));
+  }
+
+  public getproducts() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Product/all-products`)
+      .pipe(retry(this.num));
+  }
+
+  public addproducts(data: IAppFee) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Product/create-products`, data)
+      .pipe(retry(this.num));
+  }
+
+  public editproducts(data: any) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Product/edit-products`, data)
+      .pipe(retry(this.num));
+  }
+
+  public getproductsById(id: IAppFee) {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-product-byId?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public deleteproducts(id: IAppFee) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .pipe(retry(this.num));
+  }
 }

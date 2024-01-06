@@ -8,6 +8,7 @@ import { environment } from '../../../../src/environments/environment';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AuthenticationService, GenericService } from '../../shared/services';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from 'src/app/shared/services/application.service';
 
 @Component({
   templateUrl: 'paymentsum.component.html',
@@ -30,6 +31,7 @@ export class PaymentSumComponent implements OnInit {
     private route: ActivatedRoute,
     private progressbar: ProgressBarService,
     private applicationServer: ApplyService,
+    private appService: ApplicationService,
     private popUp: PopupService,
     private spinner: SpinnerService,
     private cd: ChangeDetectorRef
@@ -122,6 +124,10 @@ export class PaymentSumComponent implements OnInit {
   uploadDocument() {
     // window.location.href = environment.apiUrl + '/upload-document';
     this.router.navigate([`/company/upload-document/${this.application_id}`]);
+  }
+
+  back() {
+    // this.router.navigate([`/company/new`]);
   }
 }
 

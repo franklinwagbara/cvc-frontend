@@ -59,4 +59,10 @@ export class ApplicationService {
       params: { id: appId },
     });
   }
+
+  public getVesselByImoNumber(imoNumber: string) {
+    return this.http.get<any>(
+      `${environment.apiUrl}/Vessel/verify-IMO-numbers?imoNumber=${imoNumber}`
+    );
+  }
 }

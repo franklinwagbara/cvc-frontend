@@ -1,0 +1,67 @@
+<h1 mat-dialog-title>
+  {{
+    this.data.data.action === "EDIT"
+      ? "Edit Application Fee"
+      : "Add New Application Fee"
+  }}
+</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form">
+    <div class="mb-[10px]">
+      <div class="mb-[10px]">
+        <label>Plant Name</label>
+        <input type="text" formControlName="name" class="form-control" />
+        <mat-error
+          *ngIf="(f['name'].dirty || isSubmitted) && f['name']?.invalid"
+          class=""
+        >
+          Plant name is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label> State</label>
+        <select formControlName="state" class="form-control">
+          <option selected disabled>--Select from options --</option>
+          <option *ngFor="let state of states" [ngValue]="state.name">
+            {{ state.name }}
+          </option>
+        </select>
+        <mat-error
+          *ngIf="(f['state'].dirty || isSubmitted) && f['state']?.invalid"
+          class=""
+        >
+          State is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label>Plant Type</label>
+        <select formControlName="plantType" class="form-control">
+          <option selected disabled>--Select from options --</option>
+          <option *ngFor="let plantType of plantTypes" [ngValue]="plantType.id">
+            {{ plantType.name }}
+          </option>
+        </select>
+        <mat-error
+          *ngIf="
+            (f['plantType'].dirty || isSubmitted) && f['plantType']?.invalid
+          "
+          class=""
+        >
+          Plant type is required!
+        </mat-error>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+      <button
+        mat-raised-button
+        (click)="this.data.data.action === 'EDIT' ? EditPlant() : createPlant()"
+        [disabled]="form.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

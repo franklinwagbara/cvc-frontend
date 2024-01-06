@@ -15,6 +15,7 @@ import { LicenceService } from '../../shared/services/licence.service';
 import { PopupService } from '../../shared/services/popup.service';
 import { environment } from '../../../environments/environment';
 import { Category } from '../settings/modules-setting/modules-setting.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-certificates',
@@ -49,7 +50,8 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
     private router: Router,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
-    private popup: PopupService
+    private popup: PopupService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -79,8 +81,27 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
     // this.router.navigate([`/admin/view-application/${event.appId}`], {
     //   queryParams: { id: event.id, appSource: AppSource.Licence },
     // });
-    window.location.assign(
-      `${environment.apiUrl}/licenses/view_license?id=${event.id}`
+    window.open(
+      `${environment.apiUrl}/licenses/view_license?id=${event.id}`,
+      '_blank'
     );
+
+    // window.location.assign(
+    //   `${environment.apiUrl}/licenses/view_license?id=${event.id}`
+    // );
+  }
+
+  openPdfInNewTab(event: any, type: string) {
+    this.licenceService
+      .viewCertificate(event.id)
+      .subscribe((data: ArrayBuffer) => {
+        const blob = new Blob([data], { type: 'application/pdf' });
+        const url = this.sanitizer
+          .bypassSecurityTrustUrl(URL.createObjectURL(blob))
+          .toString();
+
+        // Open the URL in a new tab
+        window.open(url, '_blank');
+      });
   }
 }

@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IMessage } from '../../dashboard/dashboard.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DialogRef } from '@angular/cdk/dialog';
+import { CompanyService } from 'src/app/shared/services/company.service';
 
 @Component({
   selector: 'app-view-message',
@@ -25,7 +26,8 @@ export class ViewMessageComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private cd: ChangeDetectorRef,
     private sanitizer: DomSanitizer,
-    private dialogRef: DialogRef
+    private dialogRef: DialogRef,
+    private companyService: CompanyService
   ) {
     this.index = this.data.index;
     this.messages = this.data.messages;
@@ -40,8 +42,18 @@ export class ViewMessageComponent implements OnInit {
       this.content = this.sanitizer.bypassSecurityTrustHtml(
         this.message.content
       );
+      this.readMessage(this.message.id);
     }
     this.cd.markForCheck();
+  }
+
+  readMessage(id: number) {
+    this.companyService.getMessagesById(id).subscribe({
+      next: (res) => {},
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   closeDialog() {

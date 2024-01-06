@@ -1,4 +1,21 @@
 <div class="apply-container">
+  <div *ngIf="showLoader" class="progress-bar-backdrop relative">
+    <div class="flex absolute top-[30%] left-[20%] right-[20%]">
+      <div class="w-full">
+        <h4 class="w-full flex justify-center mx-auto text-green-300">
+          Searching vessel details
+        </h4>
+        <div class="flex justify-center mx-auto">
+          <mat-progress-bar
+            mode="buffer"
+            class="!h-[25px]"
+            color="accent"
+          ></mat-progress-bar>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="apply-wrapper">
     <h1>NEW CVC CERTIFICATION</h1>
     <div class="form-wrapper">
@@ -6,9 +23,29 @@
         <form [formGroup]="vesselForm" class="main-form">
           <div class="first-segment" *ngIf="activateFirstSegment">
             <div class="flex flex-col">
-              <span class="input-label"> Vessel Name </span>
+              <span class="input-label"> IMO Number </span>
+              <input
+                autofocus
+                type="text"
+                class="border border-t border-b rounded-r p-2"
+                placeholder="IMO Number"
+                formControlName="imoNumber"
+                (blur)="validateImo()"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="flex justify-between w-full input-label">
+                <span class=""> Vessel Name </span>
+                <span *ngIf="vesselInfo" class="text-green-600">
+                  Vessel found
+                </span>
+              </div>
               <input
                 type="text"
+                [readOnly]="vesselInfo"
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo
+                }"
                 class="border border-t border-b rounded-r p-2"
                 placeholder="Vessel Name"
                 formControlName="vesselName"
@@ -20,7 +57,7 @@
               <input
                 type="text"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Vessel Name"
+                placeholder="Mother Vessel Name"
                 formControlName="motherVessel"
               />
             </div>
@@ -57,16 +94,6 @@
                   {{ vt.name }}
                 </option>
               </select>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> IMO Number </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="IMO Number"
-                formControlName="imoNumber"
-              />
             </div>
 
             <button

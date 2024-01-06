@@ -21,4 +21,10 @@ export class LicenceService {
   public getLicence(id: number) {
     return this.http.get<any>(`${api}/view_license`, { params: { id } });
   }
+
+  public viewCertificate(id: number) {
+    return this.http.get<any>(`${api}/view_license?id=${id}`, {
+      responseType: 'arraybuffer' as 'json',
+    });
+  }
 }
