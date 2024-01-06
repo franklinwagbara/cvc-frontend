@@ -7,7 +7,7 @@ $yellow: #f9e076;
 span {
   color: $text-dark;
   transition: all 0.4s ease-in-out;
-  @apply flex p-3 rounded-t-lg cursor-pointer gap-1 items-center text-sm lg:text-lg;
+  @apply flex p-3 rounded-t-lg cursor-pointer gap-1 items-center text-sm lg:text-[17px];
 
   &:hover {
     background-color: $primary-dark;

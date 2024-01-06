@@ -29,22 +29,22 @@ export class CoqAppFormService {
   }
 
   public hasMeterCubeUnit(colKey: string) {
-    const cols = ['tov', 'corr', 'gov', 'gsv', 'observedLiqVol'];
+    const cols = ['tov', 'corr', 'gov', 'gsv', 'observedLiquidVolume'];
     return cols.includes(colKey);
   }
 
   public hasMeterUnit(colKey: string) {
-    const cols = ['tapeCorr', 'obsSounding'];
+    const cols = ['tapeCorrection', 'observedSounding'];
     return cols.includes(colKey);
   }
 
   public hasTempUnit(colKey: string) {
-    const cols = ['temp', 'vacTemp', 'liqTemp'];
+    const cols = ['temp', 'vacTemp', 'liquidTemperature'];
     return cols.includes(colKey);
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'corr', 'gov', 'gsv', 'temp', 'tankVol100', 'vcf', 'shrinkageFactor', 'vapPressure', 'molWt', 'obsSounding', 'tapeCorr', 'liqTemp', 'observedLiqVol'];
+    const colsWithUnit = ['tov', 'corr', 'gov', 'gsv', 'temp', 'tankVolume', 'vcf', 'shrinkageFactor', 'vapourPressure', 'molecularWeight', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
     return !colsWithUnit.includes(colKey);
   }
 

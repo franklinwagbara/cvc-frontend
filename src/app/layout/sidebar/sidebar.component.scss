@@ -6,15 +6,11 @@
 }
 
 .logo-title {
-  @apply flex items-center;
+  @apply flex justify-center items-center;
 }
 
-.logo-title h2 {
+.logo-title h3 {
   @apply pt-3 text-3xl text-slate-50;
-}
-
-.logo-title h4 {
-  @apply pt-3 text-2xl text-slate-50;
 }
 
 .logo-title img {

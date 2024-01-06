@@ -48,6 +48,14 @@ export class CoqService {
     return this.http.get<any>(`${API}/debit-note/${id}`);
   }
 
+  createGasProductCoq(payload: any): Observable<any> {
+    return this.http.post<any>(`${API}/coq/add-coq-gas-tank`, payload);
+  }
+
+  getCoqRequirement(appId: number, depotId: number): Observable<any> {
+    return this.http.get<any>(`${API}/coq_requirement/${appId}`, { params: { depotId }});
+  }
+
   processApplication(model: {
     applicationId: number;
     action: string;

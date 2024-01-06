@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
+import { IApplication } from '../../shared/interfaces/IApplication';
 
 @Pipe({
   name: 'applicationsFilteredByCategory',

@@ -73,7 +73,10 @@ export class MyApplicationComponent implements OnInit {
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
-          this.applications = res.data;
+          this.applications = res.data.sort((a, b) => {
+            return new Date(a.createdDate) > new Date(b.createdDate) ? -1 :
+              new Date(a.createdDate) < new Date(b.createdDate) ? 1 : 0;
+          });
           this.applications$.next(res.data);
 
           //todo: display success dialog

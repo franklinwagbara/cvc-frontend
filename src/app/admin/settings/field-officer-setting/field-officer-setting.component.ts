@@ -82,12 +82,7 @@ export class FieldOfficerSettingComponent implements OnInit {
         offices: this.offices,
       },
     };
-    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        
-      }
-    });
+    this.dialog.open(DepotOfficerFormComponent, { data });
   }
 
   deleteData(selected: any[]) {
@@ -115,17 +110,20 @@ export class FieldOfficerSettingComponent implements OnInit {
               `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
               'success'
             );
-  
+
             const responses = res
               .map((r) => r.data.data)
               .sort((a, b) => a.length - b.length);
   
             this.allUsers = responses[0];
           }
-  
           this.progressBar.close();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500)
         },
         error: (error: unknown) => {
+          console.log(error);
           this.progressBar.close();
           this.popUp.open('Something went wrong while deleting data!', 'error');
         },
