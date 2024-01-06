@@ -3,9 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { tokenNotExpired } from 'src/app/helpers/tokenUtils';
+import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
 import { UserRole } from '../constants/userRole';
 
@@ -59,7 +59,7 @@ export class AuthenticationService {
     // this.currentUserSubject.next(null);
     this._isLoggedIn = false;
 
-    window.location.assign(`${environment.apiUrl}/auth/log-out`);
+    window.location.assign(`${environment.apiUrl}/account/logout`);
   }
 
   public get isCompany() {

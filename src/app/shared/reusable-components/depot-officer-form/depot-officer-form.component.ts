@@ -1,4 +1,4 @@
-import { Category } from 'src/app/admin/settings/modules-setting/modules-setting.component';
+import { Category } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { AdminService } from '../../services/admin.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { PopupService } from '../../services/popup.service';
 import { IDepot } from '../../interfaces/IDepot';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { DepotOfficerService } from '../../services/depot-officer/depot-officer.service';
 
 @Component({
@@ -52,17 +52,19 @@ export class DepotOfficerFormComponent {
   }
 
   createBranch() {
+    this.onClose();
     this.spinner.open();
 
     this.depotOfficer.createMapping(this.form.value).subscribe({
       next: (res) => {
         if (res.success) {
           this.popUp.open('Configuration was created successfully!', 'success');
-
           this.dialogRef.close();
         }
-
         this.spinner.close();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500)
       },
 
       error: (error: unknown) => {

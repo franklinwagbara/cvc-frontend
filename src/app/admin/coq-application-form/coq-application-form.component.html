@@ -5,52 +5,44 @@
       <h1 class="px-2">Certificate of Quantity Application Form</h1>
       <div class="p-4 w-[90%]">
         <div class="grid grid-cols-1 md:grid-cols-4 w-full">
-          <h5 class="text-slate-400 col-span-1">{{ isLiquidProduct ? 'FORM THREE' : '' }}</h5>
           <h5 class="text-slate-600 col-span-3 text-right">
-            {{ isLiquidProduct ? 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' : isLiquidProduct === null ? '' : 'LPG WEIGHT CERTIFICATION'}}
+            {{ !isGasProduct ? 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' : 'LPG WEIGHT CERTIFICATION'}}
           </h5>
         </div>
 
         <ng-container *ngIf="noaApplication">
           <hr />
-          <div class="grid grid-cols-1 md:grid-cols-9 w-full gap-2">
-            <div class="col-span-3">
-              <p>
-                <span class="form-header-info">MARKETER/PDT OWNER</span>:
-                {{ noaApplication?.marketerName }}
-              </p>
-              <p *ngIf="isLiquidProduct">
-                <span class="form-header-info">MOTHER VESSEL</span>:
-                {{ noaApplication?.motherVessel }}
-              </p>
-            </div>
-            <div class="col-span-3">
-              <p *ngIf="isLiquidProduct">
-                <span class="form-header-info">PRODUCT</span>:
-                {{ noaApplication?.productName }}
-              </p>
-              <p>
-                <span class="form-header-info">JETTY</span>:
-                {{ noaApplication?.jetty }}
-              </p>
-            </div>
-            <div class="col-span-3">
-              <p>
-                <span class="form-header-info">VESSEL NAME</span>:
-                {{ noaApplication?.vesselName }}
-              </p>
-              <p>
-                <span class="form-header-info">RECEIVING TERMINAL</span>:
-                {{ noaApplication?.recievingTerminal }}
-              </p>
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-12 w-full gap-2">
+            <p *ngIf="noaApplication?.marketerName" class="md:col-span-6">
+              <span class="form-header-info">MARKETER/PDT OWNER</span>: {{ noaApplication?.marketerName }}
+            </p>
+            <p class="md:col-span-6" *ngIf="noaApplication?.motherVessel && !isGasProduct">
+              <span class="form-header-info">MOTHER VESSEL: </span>{{ noaApplication?.motherVessel }}  
+            </p>
+            <p class="md:col-span-6" *ngIf="noaApplication?.vessel?.productName && !isGasProduct">
+              <span class="form-header-info">PRODUCT</span>:
+              {{ noaApplication?.vessel?.productName }}
+            </p>
+            <p *ngIf="noaApplication?.vessel?.jetty" class="md:col-span-6">
+              <span class="form-header-info">JETTY</span>:
+              {{ noaApplication?.vessel?.jetty }}
+            </p>
+          
+            <p *ngIf="noaApplication?.vessel?.name" class="md:col-span-6">
+              <span class="form-header-info">VESSEL NAME</span>:
+              {{ noaApplication?.vessel?.name }}
+            </p>
+            <p class="md:col-span-6">
+              <span class="form-header-info">RECEIVING TERMINAL</span>:
+              {{ noaApplication?.vessel?.recievingTerminal || noaApplication?.receivingTerminal }} 
+            </p>
           </div>
         </ng-container>
       </div>
       <hr class="w-full" />
       <hr class="w-full" />
 
-      <mat-stepper *ngIf="isLiquidProduct !== null" class="pl-3 pr-2" orientation="vertical" linear #stepper>
+      <mat-stepper class="pl-3 pr-2" orientation="vertical" linear #stepper>
         <mat-step [stepControl]="depotSelection" label="Select Depot">
           <mat-form-field appearance="fill" style="min-width: fit-content">
             <mat-label>Select Depot</mat-label>
@@ -63,57 +55,72 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div>
-            <button 
+          <div class="text-right">
+            <button
               mat-raised-button 
-              matStepperNext 
+              matStepperNext
               (click)="depotSelection.markAllAsTouched()"
-              [disabled]="!depotSelection.valid"
+              [disabled]="!depotSelection.valid || fetchingRequirement"
             >Next</button>
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="isLiquidProduct ? tankLiqInfoForm : tankGasInfoForm" label="Tank(s) BEFORE & AFTER Data Entry">
+        <mat-step label="Tank(s) BEFORE & AFTER Data Entry">
           <mat-stepper #tankInfoStepper linear>
-            <mat-step [stepControl]="configuredTank" label="Enter tank name">
+            <mat-step [stepControl]="configuredTank" label="Select Tank">
               <mat-form-field>
                 <mat-label>Tank Name</mat-label>
                 <mat-select
                   name="depot"
                   [formControl]="configuredTank"
                 >
-                  <mat-option *ngFor="let depot of depots" [value]="depot.id">
-                    {{ depot.name }}
+                  <mat-option *ngFor="let tank of dummyTanks" [value]="tank?.id">
+                    {{ tank?.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
               <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
-                {{ !!configuredTank?.errors['duplicate'] ? 'Tank name already exists' : 'Tank name is required'}}
+                {{ !!configuredTank?.errors['duplicate'] && 'Tank name already exists'}}
               </mat-error>
-              <div>
+              <div class="text-right">
                 <button mat-raised-button matStepperNext color="primary" [disabled]="!configuredTank?.valid">Continue</button>
               </div>
             </mat-step>
-            <mat-step [stepControl]="tankBeforeFormTemplateCtx.formGroup" label="Enter BEFORE data">
-              <ng-container *ngTemplateOutlet="tankLiqForm; context: tankBeforeFormTemplateCtx"></ng-container>
-              <div class="mt-4">
+
+            <mat-step 
+              [stepControl]="!isGasProduct ? tankLiqBeforeFormTempCtx.formGroup : tankGasBeforeFormTempCtx.formGroup"
+              label="Enter BEFORE data"
+            >
+              <ng-container *ngIf="!isGasProduct">
+                <ng-container *ngTemplateOutlet="tankLiqForm; context: tankLiqBeforeFormTempCtx"></ng-container>
+              </ng-container>
+              <ng-container *ngIf="isGasProduct">
+                <ng-container *ngTemplateOutlet="tankGasForm; context: tankGasBeforeFormTempCtx"></ng-container>
+              </ng-container>
+              <div class="mt-4 text-right">
                 <button 
                   mat-raised-button 
                   matStepperNext 
                   color="primary"
-                  [disabled]="tankBeforeFormTemplateCtx.formGroup.invalid"
+                  [disabled]="!isGasProduct ? tankLiqBeforeFormTempCtx.formGroup.invalid : tankGasBeforeFormTempCtx.formGroup.invalid"
                 >Continue</button>
               </div>
             </mat-step>
-            <mat-step [stepControl]="tankAfterFormTemplateCtx.formGroup" label="Enter AFTER data">
-              <ng-container *ngTemplateOutlet="tankLiqForm; context: tankAfterFormTemplateCtx"></ng-container>
-              <div class="mt-4">
+
+            <mat-step [stepControl]="!isGasProduct ? tankLiqAfterFormTempCtx.formGroup : tankGasAfterFormTempCtx" label="Enter AFTER data">
+              <ng-container *ngIf="!isGasProduct">
+                <ng-container *ngTemplateOutlet="tankLiqForm; context: tankLiqAfterFormTempCtx"></ng-container>
+              </ng-container>
+              <ng-container *ngIf="isGasProduct">
+                <ng-container *ngTemplateOutlet="tankGasForm; context: tankGasAfterFormTempCtx"></ng-container>
+              </ng-container>
+              <div class="mt-4 text-right">
                 <button
                   mat-raised-button 
                   matStepperNext 
                   color="primary" 
                   (click)="saveToReview()" 
-                  [disabled]="tankAfterFormTemplateCtx.formGroup.invalid"
+                  [disabled]="!isGasProduct ? tankLiqAfterFormTempCtx.formGroup.invalid : tankGasAfterFormTempCtx.formGroup.invalid"
                 >Save</button>
               </div>
             </mat-step>
@@ -248,75 +255,180 @@
             </form>
           </ng-template>
 
-          <!-- Tank Form template for Gas Product duplicated for BEFORE and AFTER -->
+          <!-- Tank Form template for Gas Product reused for BEFORE and AFTER -->
           <ng-template #tankGasForm let-form="formGroup">
             <form [formGroup]="form">
               <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-liquidDensityVac">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="liquidDensityVac"
+                    formControlName="liquidDensityVac"
+                    id="coq-liquid-product-liquidDensityVac"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['liquidDensityVac'].touched && form?.controls['liquidDensityVac'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+    
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-observedSounding">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="observedSounding"
+                    formControlName="observedSounding"
+                    id="coq-liquid-product-observedSounding"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['observedSounding'].touched && form?.controls['observedSounding'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-tapeCorrection">Tape Correction (m) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="tapeCorrection"
+                    formControlName="tapeCorrection"
+                    id="coq-liquid-product-tapeCorrection"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['tapeCorrection'].touched && form?.controls['tapeCorrection'].invalid}"
                   />
                 </div>
-              </div>
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-liquidTemperature">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="dip"
-                    formControlName="dip"
-                    id="coq-liquid-product-dip"
+                    name="liquidTemperature"
+                    formControlName="liquidTemperature"
+                    id="coq-liquid-product-liquidTemperature"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['liquidTemperature'].touched && form?.controls['liquidTemperature'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-observedLiquidVolume">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="observedLiquidVolume"
+                    formControlName="observedLiquidVolume"
+                    id="coq-liquid-product-observedLiquidVolume"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['observedLiquidVolume'].touched && form?.controls['observedLiquidVolume'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-shrinkageFactor">Shrinkage Factor <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="shrinkageFactor"
+                    formControlName="shrinkageFactor"
+                    id="coq-liquid-product-shrinkageFactor"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['shrinkageFactor'].touched && form?.controls['shrinkageFactor'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-vcf">VCF (ASTM Table 54) <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="vcf"
+                    formControlName="vcf"
+                    id="coq-liquid-product-vcf"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['vcf'].touched && form?.controls['vcf'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-tankVolume">100% Tank Volume <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="tankVolume"
+                    formControlName="tankVolume"
+                    id="coq-liquid-product-tankVolume"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['tankVolume'].touched && form?.controls['tankVolume'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-vapourTemperature">Vapor Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="vapourTemperature"
+                    formControlName="vapourTemperature"
+                    id="coq-liquid-product-vapourTemperature"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['vapourTemperature'].touched && form?.controls['vapourTemperature'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-vapourPressure">Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="vapourPressure"
+                    formControlName="vapourPressure"
+                    id="coq-liquid-product-vapourPressure"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['vapourPressure'].touched && form?.controls['vapourPressure'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-molecularWeight">Molecular Weight <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="molecularWeight"
+                    formControlName="molecularWeight"
+                    id="coq-liquid-product-molecularWeight"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['molecularWeight'].touched && form?.controls['molecularWeight'].invalid}"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-vapourFactor">Vapor Factor <sup class="text-red-700">*</sup></label>
+                  <input
+                    type="number"
+                    name="vapourFactor"
+                    formControlName="vapourFactor"
+                    id="coq-liquid-product-vapourFactor"
+                    class="form-field form-control"
+                    [ngClass]="{'is-invalid': form?.controls['vapourFactor'].touched && form?.controls['vapourFactor'].invalid}"
                   />
                 </div>
               </div>
             </form>
           </ng-template>
 
-          <ng-template #tankGasForm let-form="formGroup">
-            <form [formGroup]="form">
-            
-            </form>
-          </ng-template>
     
           <div class="mt-4 overflow-x-auto">
             <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
             <hr />
-            <div *ngIf="coqFormService?.liquidProductReviewData.length else noReview">
-              <app-coq-form-review></app-coq-form-review>
+            <ng-container *ngIf="!isGasProduct">
+              <div *ngIf="coqFormService?.liquidProductReviewData.length else noReview">
+                <app-coq-form-review [isGasProduct]="isGasProduct"></app-coq-form-review>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="isGasProduct">
+              <div *ngIf="coqFormService?.gasProductReviewData.length else noReview">
+                <app-coq-form-review [isGasProduct]="isGasProduct"></app-coq-form-review>
+              </div>
+            </ng-container>
+
+            <div class="text-right">
+              <button 
+                class="mt-4"
+                mat-raised-button
+                color="primary"
+                matStepperNext 
+                [disabled]="!isGasProduct ? !coqFormService?.liquidProductReviewData.length : !coqFormService.gasProductReviewData.length"
+              >Proceed</button>
             </div>
             
             <ng-template #noReview>
@@ -325,33 +437,41 @@
           </div>
         </mat-step>
 
-        <mat-step [stepControl]="isLiquidProduct ? vesselLiqInfoForm : vesselGasInfoForm" label="Vessel Details Entry">
-          <ng-container *ngIf="isLiquidProduct">
+        <mat-step 
+          [stepControl]="!isGasProduct ? vesselLiqInfoForm : vesselGasInfoForm" 
+          [label]="!isGasProduct ? 'Vessel Details Entry' : 'Shore Tank Ullage Details Entry'"
+        >
+          <ng-container *ngIf="!isGasProduct">
             <ng-container *ngTemplateOutlet="vesselLiqInfoFormTmp"></ng-container>
           </ng-container>
-          <ng-container *ngIf="!isLiquidProduct">
+          <ng-container *ngIf="isGasProduct">
             <ng-container *ngTemplateOutlet="vesselGasInfoFormTmp"></ng-container>
           </ng-container>
-          <div>
-            <button mat-button matStepperNext (click)="vesselLiqInfoForm.markAllAsTouched()">Next</button>
+          <div class="text-right">
+            <button 
+              mat-raised-button 
+              matStepperNext 
+              (click)="vesselLiqInfoForm.markAllAsTouched()"
+              [disabled]="!isGasProduct ? vesselLiqInfoForm.invalid : vesselGasInfoForm.invalid"
+            >Next</button>
           </div>
         </mat-step>
 
         <ng-template #vesselLiqInfoFormTmp>
-          <form [formGroup]="vesselLiqInfoForm" class="form">
+          <form [formGroup]="vesselLiqInfoForm">
             <div
               class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-4"
             >
-              <h5 class="form-section col-span-9">Vessel Information</h5>
               <div class="md:col-span-9 flex flex-col lg:flex-row gap-4 pr-2">
                 <mat-form-field>
                   <mat-label>Date of Vessel Arrival</mat-label>
                   <div class="flex">
                     <input
                       matInput
-                      name="dateOfVesselArrival"
                       formControlName="dateOfVesselArrival"
                       [matDatepicker]="arrivalDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -359,14 +479,6 @@
                     ></mat-datepicker-toggle>
                     <mat-datepicker #arrivalDatePicker></mat-datepicker>
                   </div>
-                  <mat-error
-                    *ngIf="
-                      vesselLiqInfoForm.controls['dateOfVesselArrival'].hasError(
-                        'matDatepickerMax'
-                      )
-                    "
-                    >Date should be earlier</mat-error
-                  >
                 </mat-form-field>
     
                 <mat-form-field>
@@ -374,9 +486,10 @@
                   <div class="flex">
                     <input
                       matInput
-                      name="dateOfVesselUllage"
                       formControlName="dateOfVesselUllage"
                       [matDatepicker]="ullageDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -391,9 +504,10 @@
                   <div class="flex">
                     <input
                       matInput
-                      name="dateOfSTAfterDischarge"
                       formControlName="dateOfSTAfterDischarge"
                       [matDatepicker]="shoreTankDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -463,18 +577,19 @@
         <ng-template #vesselGasInfoFormTmp>
           <form [formGroup]="vesselGasInfoForm">
             <div
-              class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-4"
+              class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-12 mb-4"
             >
-              <h5 class="form-section col-span-9">Vessel Information</h5>
-              <div class="md:col-span-9 flex flex-col lg:flex-row gap-4 pr-2">
-                <mat-form-field>
-                  <mat-label>Arrival Date</mat-label>
+              <div class="md:col-span-12 flex flex-col lg:flex-row gap-4 pr-2">
+                <mat-form-field class="md:col-span-6">
+                  <mat-label>Date of Vessel Arrival</mat-label>
                   <div class="flex">
                     <input
                       matInput
-                      name="dateOfVesselArrival"
-                      formControlName="dateOfVesselArrival"
+                      name="vesselArrivalDate"
+                      formControlName="vesselArrivalDate"
                       [matDatepicker]="arrivalDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -482,147 +597,97 @@
                     ></mat-datepicker-toggle>
                     <mat-datepicker #arrivalDatePicker></mat-datepicker>
                   </div>
-                  <mat-error
-                    *ngIf="
-                      vesselLiqInfoForm.controls['arrivalDate'].hasError(
-                        'matDatepickerMax'
-                      )
-                    "
-                    >Date should be earlier</mat-error
-                  >
                 </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Shore Date</mat-label>
+                <mat-form-field class="md:col-span-6">
+                  <mat-label>Date of Commencement of Product Discharge</mat-label>
                   <div class="flex">
                     <input
                       matInput
-                      name="shoreDate"
-                      formControlName="shoreDate"
-                      [matDatepicker]="shoreDatePicker"
+                      name="prodDischargeCommenceDate"
+                      formControlName="prodDischargeCommenceDate"
+                      [matDatepicker]="prodDischargeCommenceDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
-                      [for]="shoreDatePicker"
+                      [for]="prodDischargeCommenceDatePicker"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #shoreDatePicker></mat-datepicker>
+                    <mat-datepicker #prodDischargeCommenceDatePicker></mat-datepicker>
                   </div>
-                  <mat-error
-                    *ngIf="
-                      vesselLiqInfoForm.controls['shoreDate'].hasError(
-                        'matDatepickerMax'
-                      )
-                    "
-                    >Date should be earlier</mat-error
-                  >
                 </mat-form-field>
+                <mat-form-field class="md:col-span-6">
+                  <mat-label>Date of Completion of Product Discharge</mat-label>
+                  <div class="flex">
+                    <input
+                      matInput
+                      name="prodDischargeCompletionDate"
+                      formControlName="prodDischargeCompletionDate"
+                      [matDatepicker]="prodDischargeCompletionDatePicker"
+                      [min]="dateValidation.min"
+                      [max]="dateValidation.max"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="prodDischargeCompletionDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #prodDischargeCompletionDatePicker></mat-datepicker>
+                  </div>
+                </mat-form-field>
+              </div>
+              <div class="md:col-span-6">
+                <label for="coq-gas-product-gov"
+                  >Qty Reflected on Bill of Lading (MT Air) <sup class="text-red-700">*</sup></label
+                >
+                <input
+                  type="number"
+                  name="qtyBillLadingMtAir"
+                  formControlName="qtyBillLadingMtAir"
+                  id="coq-gas-product-qtyBillLadingMtAir"
+                  class="form-field form-control"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['qtyBillLadingMtAir'].touched && vesselGasInfoForm.controls['qtyBillLadingMtAir'].invalid}"
+                />
+              </div>
 
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-gov"
-                    >GOV <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="gov"
-                    formControlName="gov"
-                    id="coq-gas-product-gov"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['gov'].touched && vesselGasInfoForm.controls['gov'].invalid}"
-                  />
-                </div>
+              <div class="md:col-span-6">
+                <label for="coq-gas-product-arrivalShipMtAir"
+                  >Arrival SHIP Figure (MT Air) <sup class="text-red-700">*</sup></label
+                >
+                <input
+                  type="number"
+                  name="arrivalShipMtAir"
+                  formControlName="arrivalShipMtAir"
+                  id="coq-gas-product-arrivalShipMtAir"
+                  class="form-field form-control"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['arrivalShipMtAir'].touched && vesselGasInfoForm.controls['arrivalShipMtAir'].invalid}"
+                />
+              </div>
 
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-gsv"
-                    >GSV <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="gsv"
-                    formControlName="gsv"
-                    id="coq-gas-product-gsv"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['gsv'].touched && vesselGasInfoForm.controls['gsv'].invalid}"
-                  />
-                </div>
-
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsVacQtyBefReceipt"
-                    >M/TONS VAC (QTY. BEFORE RECEIPT) <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsVacQtyBefReceipt"
-                    formControlName="mtonsVacQtyBefReceipt"
-                    id="coq-gas-product-mtonsVacQtyBefReceipt"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['mtonsVacQtyBefReceipt'].touched && vesselGasInfoForm.controls['mtonsVacQtyBefReceipt'].invalid}"
-                  />
-                </div>
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsVacQtyAftReceipt"
-                    >M/TONS VAC (QTY. AFTER RECEIPT) <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsVacQtyAftReceipt"
-                    formControlName="mtonsVacQtyAftReceipt"
-                    id="coq-gas-product-mtonsVacQtyAftReceipt"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['mtonsVacQtyAftReceipt'].touched && vesselGasInfoForm.controls['mtonsVacQtyAftReceipt'].invalid}"
-                  />
-                </div>
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsVacQtyReceived"
-                    >M/TONS VAC (QTY. RECEIVED)</label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsVacQtyReceived"
-                    formControlName="mtonsVacQtyReceived"
-                    id="coq-gas-product-mtonsVacQtyReceived"
-                    class="form-field form-control"
-                  />
-                </div>
-                
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsAirQtyBefReceipt"
-                    >M/TONS AIR (QTY. BEFORE RECEIPT) <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsAirQtyBefReceipt"
-                    formControlName="mtonsAirQtyBefReceipt"
-                    id="coq-gas-product-mtonsAirQtyBefReceipt"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['mtonsAirQtyBefReceipt'].touched && vesselGasInfoForm.controls['mtonsAirQtyBefReceipt'].invalid}"
-                  />
-                </div>
-
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsAirQtyAftReceipt"
-                    >M/TONS AIR (QTY. AFTER RECEIPT) <sup class="text-red-700">*</sup></label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsAirQtyAftReceipt"
-                    formControlName="mtonsAirQtyAftReceipt"
-                    id="coq-gas-product-mtonsAirQtyAftReceipt"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': vesselGasInfoForm.controls['mtonsAirQtyAftReceipt'].touched && vesselGasInfoForm.controls['mtonsAirQtyAftReceipt'].invalid}"
-                  />
-                </div>
-
-                <div class="md:col-span-3 form-group">
-                  <label for="coq-gas-product-mtonsAirQtyReceived"
-                    >M/TONS AIR (QTY. RECEIVED)</label
-                  >
-                  <input
-                    type="number"
-                    name="mtonsAirQtyReceived"
-                    formControlName="mtonsAirQtyReceived"
-                    id="coq-gas-product-mtonsAirQtyReceived"
-                    class="form-field form-control"
-                  />
-                </div>
+              <div class="md:col-span-6">
+                <label for="coq-gas-product-shipDischargedMtAir"
+                  >SHIP Figure (DISCHARGED) (MT Air) <sup class="text-red-700">*</sup></label
+                >
+                <input
+                  type="number"
+                  name="shipDischargedMtAir"
+                  formControlName="shipDischargedMtAir"
+                  id="coq-gas-product-shipDischargedMtAir"
+                  class="form-field form-control"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['shipDischargedMtAir'].touched && vesselGasInfoForm.controls['shipDischargedMtAir'].invalid}"
+                />
+              </div>
+              <div class="md:col-span-6">
+                <label for="coq-gas-product-nameOfConsignor"
+                  >Name of Consignor/Consignee <sup class="text-red-700">*</sup></label
+                >
+                <input
+                  type="text"
+                  name="nameOfConsignor"
+                  formControlName="nameOfConsignor"
+                  id="coq-gas-product-nameOfConsignor"
+                  class="form-field form-control"
+                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['nameOfConsignor'].touched && vesselGasInfoForm.controls['nameOfConsignor'].invalid}"
+                />
               </div>
             </div>
           </form>
@@ -761,10 +826,9 @@
                 hasUploadedAllRequiredDocs &&
                 !isSubmitted
               "
-              class="md:col-span-9 text-right mt-8 flex gap-2"
+              class="text-right mt-8"
             >
               <button
-
                 type="submit"
                 (click)="save()"
                 class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
@@ -772,7 +836,6 @@
                 Save
               </button>
               <button
-                *ngIf="coq"
                 type="submit"
                 (click)="submit()"
                 class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"

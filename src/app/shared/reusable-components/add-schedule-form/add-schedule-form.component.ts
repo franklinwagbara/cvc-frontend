@@ -7,8 +7,8 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
-import { convertTimeToMilliseconds } from 'src/app/helpers/convertTimeToMilliseconds';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
+import { convertTimeToMilliseconds } from '../../../../../src/app/helpers/convertTimeToMilliseconds';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { IApplication } from '../../interfaces/IApplication';

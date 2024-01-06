@@ -3,7 +3,7 @@
 }
 
 .form-header-info {
-  @apply text-slate-500 font-medium;
+  @apply text-slate-500 font-bold;
 }
 
 .form-wrapper {
@@ -44,6 +44,10 @@ label {
 
 ::ng-deep .mat-progress-bar {
   border-radius: 4px;
+}
+
+::ng-deep .mat-datepicker-toggle {
+  @apply mt-2;
 }
 
 .mat-step-header .mat-step-icon-state-done {

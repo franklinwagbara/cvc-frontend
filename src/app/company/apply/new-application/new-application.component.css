@@ -1,9 +1,9 @@
 .form-wrapper {
   @apply flex gap-5;
+}
 
-  & h3 {
-    font-size: large;
-  }
+.form-wrapper h3 {
+  font-size: large;
 }
 
 .progress-bar-container {
@@ -27,22 +27,17 @@
 
 .form {
   min-width: 400px;
-  @apply border border-gray-400
-      p-5 flex flex-col gap-10
-      justify-center text-center
-      rounded-t-lg
-      shadow-md
-      hover:bg-slate-100;
-
-  & > h3 {
-    @apply bg-slate-200 p-3;
-  }
-
-  & > button {
-    @apply bg-blue-200 p-2 border;
-  }
+  @apply border border-gray-400 p-5 flex flex-col gap-10 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
 }
 
+.form h3 {
+  @apply bg-slate-200 p-3;
+}
+
+.form button {
+  @apply bg-blue-200 p-2 border;
+}
+    
 .data-table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -85,19 +80,19 @@ button {
 
 .licences {
   @apply relative border border-gray-400 py-4 px-3 my-4;
+}
 
-  & > h5 {
-    background: rgb(75, 4, 91);
-    background: linear-gradient(
-      90deg,
-      rgba(75, 4, 91, 1) 0%,
-      rgba(212, 3, 193, 1) 100%
-    );
-    width: fit-content;
-    font-size: small;
-    color: white;
-    @apply relative -mt-7 px-3 py-1;
-  }
+.licenses h5 {
+  background: rgb(75, 4, 91);
+  background: linear-gradient(
+    90deg,
+    rgba(75, 4, 91, 1) 0%,
+    rgba(212, 3, 193, 1) 100%
+  );
+  width: fit-content;
+  font-size: small;
+  color: white;
+  @apply relative -mt-7 px-3 py-1;
 }
 
 .hide {

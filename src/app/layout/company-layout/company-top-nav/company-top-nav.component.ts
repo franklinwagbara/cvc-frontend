@@ -4,12 +4,12 @@ import { forkJoin, Subject } from 'rxjs';
 import {
   Category,
   Phase,
-} from 'src/app/admin/settings/modules-setting/modules-setting.component';
-import { IMenuItem, ISubmenu } from 'src/app/shared/interfaces/menuItem';
-import { LoginModel } from 'src/app/shared/models/login-model';
-import { AuthenticationService } from 'src/app/shared/services';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+} from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
+import { IMenuItem, ISubmenu } from '../../../../../src/app/shared/interfaces/menuItem';
+import { LoginModel } from '../../../../../src/app/shared/models/login-model';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-company-top-nav',

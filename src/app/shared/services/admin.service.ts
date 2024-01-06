@@ -3,11 +3,11 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
 import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
-import { IAppFee } from 'src/app/company/apply/new-application/new-application.component';
+import { IAppFee } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { IRole } from '../interfaces/IRole';
 
 @Injectable({ providedIn: 'root' })

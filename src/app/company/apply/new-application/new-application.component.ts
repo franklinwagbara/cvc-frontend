@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppException } from 'src/app/shared/exceptions/AppException';
-import { IVesselType } from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { AppException } from '../../../../../src/app/shared/exceptions/AppException';
+import { IVesselType } from '../../../../../src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
+import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-new-application',

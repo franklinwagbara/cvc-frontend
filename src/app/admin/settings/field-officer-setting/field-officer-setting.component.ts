@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IDepot } from 'src/app/shared/interfaces/IDepot';
-import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
-import { IRole } from 'src/app/shared/interfaces/IRole';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { IDepot } from '../../../../../src/app/shared/interfaces/IDepot';
+import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
+import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { Staff } from '../all-staff/all-staff.component';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-field-officer-setting',
@@ -82,12 +82,7 @@ export class FieldOfficerSettingComponent implements OnInit {
         offices: this.offices,
       },
     };
-    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        
-      }
-    });
+    this.dialog.open(DepotOfficerFormComponent, { data });
   }
 
   deleteData(selected: any[]) {
@@ -115,17 +110,20 @@ export class FieldOfficerSettingComponent implements OnInit {
               `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
               'success'
             );
-  
+
             const responses = res
               .map((r) => r.data.data)
               .sort((a, b) => a.length - b.length);
   
             this.allUsers = responses[0];
           }
-  
           this.progressBar.close();
+          setTimeout(() => {
+            window.location.reload();
+          }, 2500)
         },
         error: (error: unknown) => {
+          console.log(error);
           this.progressBar.close();
           this.popUp.open('Something went wrong while deleting data!', 'error');
         },

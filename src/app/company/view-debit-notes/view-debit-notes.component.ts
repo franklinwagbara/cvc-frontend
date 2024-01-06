@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CoqService } from 'src/app/shared/services/coq.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { CoqService } from '../../../../src/app/shared/services/coq.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-view-debit-notes',

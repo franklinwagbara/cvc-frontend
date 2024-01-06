@@ -12,25 +12,25 @@ import { BranchSettingComponent } from '../settings/branch-setting/branch-settin
 import { AppProcessComponent } from '../settings/app-process/app-process.component';
 import { MyDeskComponent } from '../desk/my-desk/my-desk.component';
 import { ViewApplicationComponent } from '../application/view-application/view-application.component';
-import { LicenceComponent } from '../licence/licence.component';
+import { CertificatesComponent } from '../certificates/certificates.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
-//import { ViewApplicationInFullComponent } from 'src/app/shared/view-application-in-full/view-application-in-full.component';
+//import { ViewApplicationInFullComponent } from '../../../../src/app/shared/view-application-in-full/view-application-in-full.component';
 import { AppDepotComponent } from '../settings/app-depot/app-depot.component';
 import { PaymentComponent } from '../payment/payment.component';
 import { ViewPaymentComponent } from '../payment/view-payment/view-payment.component';
 import { RolesComponent } from '../settings/roles/roles.component';
-import { ViewApplicationInFullComponent } from 'src/app/shared/reusable-components/view-application-in-full/view-application-in-full.component';
+import { ViewApplicationInFullComponent } from '../../../../src/app/shared/reusable-components/view-application-in-full/view-application-in-full.component';
 import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
 import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
 import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
-import { CoqGuard } from 'src/app/shared/guards/coq.guard';
+import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 import { NoaAndApplicationsGuard } from 'src/app/shared/guards/noa-and-applications.guard';
 import { ProductsComponent } from '../settings/products/products.component';
@@ -66,8 +66,8 @@ const routes: Routes = [
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
   {
-    path: 'licences',
-    component: LicenceComponent,
+    path: 'certificates',
+    component: CertificatesComponent,
     canActivate: [NoaAndApplicationsGuard],
   },
   { path: 'schedules', component: ScheduleComponent },

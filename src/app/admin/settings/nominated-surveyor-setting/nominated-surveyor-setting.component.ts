@@ -3,11 +3,11 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { INominatedSurveyor } from 'src/app/shared/interfaces/INominatedSurveyor';
-import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
-import { NominatedSurveyorService } from 'src/app/shared/services/nominated-surveyor.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { INominatedSurveyor } from '../../../../../src/app/shared/interfaces/INominatedSurveyor';
+import { FormDialogComponent, FormKeysProp } from '../../../../../src/app/shared/reusable-components/form-dialog/form-dialog.component';
+import { NominatedSurveyorService } from '../../../../../src/app/shared/services/nominated-surveyor.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-nominated-surveyor-setting',
@@ -56,7 +56,6 @@ export class NominatedSurveyorSettingComponent implements OnInit {
       FormDialogComponent, 
       { 
         data: { title: 'Add Nominated Surveyor', formData, formType: 'Create' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px'
       }
@@ -93,7 +92,6 @@ export class NominatedSurveyorSettingComponent implements OnInit {
       FormDialogComponent, 
       { 
         data: { title: 'Edit Nominated Surveyor', formData, formType: 'Edit' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px',
       }

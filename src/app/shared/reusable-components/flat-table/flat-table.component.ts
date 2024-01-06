@@ -13,12 +13,12 @@ import {
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
-import { ITableKeysMappedToHeaders } from 'src/app/shared/interfaces/ITableKeysMappedToHeaders';
+import { ITableKeysMappedToHeaders } from '../../../../../src/app/shared/interfaces/ITableKeysMappedToHeaders';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 
 interface IColumn {
   columnDef: string;

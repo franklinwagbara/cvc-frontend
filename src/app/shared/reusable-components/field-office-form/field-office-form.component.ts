@@ -1,4 +1,4 @@
-import { State } from 'src/app/admin/settings/field-zonal-office/field-zonal-office.component';
+import { State } from '../../../../../src/app/admin/settings/field-zonal-office/field-zonal-office.component';
 
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

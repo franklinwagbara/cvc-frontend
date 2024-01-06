@@ -12,12 +12,12 @@ import {
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
-import { ITableKeysMappedToHeaders } from 'src/app/shared/interfaces/ITableKeysMappedToHeaders';
+import { ITableKeysMappedToHeaders } from '../../../../../src/app/shared/interfaces/ITableKeysMappedToHeaders';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { IApplication } from '../../interfaces/IApplication';
 
 interface IColumn {
@@ -51,7 +51,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
+  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
@@ -182,11 +182,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableViewLicenceControl) {
+    if (this.enableViewCertificateControl) {
       this.columns.push({
         columnDef: 'view_control',
         header: '',
-        cell: (item) => 'view_licence_control',
+        cell: (item) => 'view_certificate_control',
       });
     }
 

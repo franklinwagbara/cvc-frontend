@@ -43,7 +43,7 @@ import { ApplicationReportComponent } from './admin/application-report/applicati
 import { PaymentReportComponent } from './admin/payment-report/payment-report.component';
 import { ApplicationReportBarChartComponent } from './admin/application-report/bar-chart/bar-chart.component';
 import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart/bar-chart.component';
-import { LicenceComponent } from './licence/licence.component';
+import { CertificatesComponent } from './certificates/certificates.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CoqApplicationFormComponent } from './coq-application-form/coq-application-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -69,7 +69,11 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
+<<<<<<< HEAD
 import { ProductsComponent } from './settings/products/products.component';
+=======
+import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
+>>>>>>> b37bfc0828807513572c7cdb516c087687231a61
 
 
 @NgModule({
@@ -103,7 +107,7 @@ import { ProductsComponent } from './settings/products/products.component';
     PaymentExtrasComponent,
     ApplicationReportBarChartComponent,
     PaymentReportBarChartComponent,
-    LicenceComponent,
+    CertificatesComponent,
     ScheduleComponent,
     AppFeeComponent,
     AppDepotComponent,
@@ -120,7 +124,11 @@ import { ProductsComponent } from './settings/products/products.component';
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ViewCoqApplicationComponent,
+<<<<<<< HEAD
     ProductsComponent,
+=======
+    ProcessingPlantCoqFormComponent,
+>>>>>>> b37bfc0828807513572c7cdb516c087687231a61
   ],
 
   imports: [

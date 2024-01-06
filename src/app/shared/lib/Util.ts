@@ -2,6 +2,8 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class Util {
 
+  public static adminRoles = ['Admin', 'SuperAdmin'];
+
   public static isPDF(filePath: string) {
     if (!filePath) return false;
 

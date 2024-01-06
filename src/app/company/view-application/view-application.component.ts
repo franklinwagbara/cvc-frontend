@@ -2,20 +2,20 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
-import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
-import { AuthenticationService } from 'src/app/shared/services';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { LicenceService } from 'src/app/shared/services/licence.service';
-import { ShowMoreComponent } from 'src/app/shared/reusable-components/show-more/show-more.component';
-import { Util } from 'src/app/shared/lib/Util';
+import { AppSource } from '../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
+import { AddScheduleFormComponent } from '../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
+import { ApproveFormComponent } from '../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
+import { SendBackFormComponent } from '../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
+import { AuthenticationService } from '../../../../src/app/shared/services';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { Application } from '../../../../src/app/company/my-applications/myapplication.component';
+import { LicenceService } from '../../../../src/app/shared/services/licence.service';
+import { ShowMoreComponent } from '../../../../src/app/shared/reusable-components/show-more/show-more.component';
+import { Util } from '../../../../src/app/shared/lib/Util';
 
 
 @Component({

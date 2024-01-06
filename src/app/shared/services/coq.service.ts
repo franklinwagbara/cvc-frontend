@@ -1,6 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { ICoQApplication } from '../interfaces/ICoQApplication';
 import { Observable, of } from 'rxjs';
 
@@ -46,6 +46,14 @@ export class CoqService {
 
   getDebitNoteById(id: number): Observable<any> {
     return this.http.get<any>(`${API}/debit-note/${id}`);
+  }
+
+  createGasProductCoq(payload: any): Observable<any> {
+    return this.http.post<any>(`${API}/coq/add-coq-gas-tank`, payload);
+  }
+
+  getCoqRequirement(appId: number, depotId: number): Observable<any> {
+    return this.http.get<any>(`${API}/coq_requirement/${appId}`, { params: { depotId }});
   }
 
   processApplication(model: {

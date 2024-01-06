@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
+import { Observable } from 'rxjs';
 
 const api = `${environment.apiUrl}/library`;
 
@@ -70,5 +71,9 @@ export class LibaryService {
 
   public getAppDepots() {
     return this.http.get<any>(`${api}/all-depot`);
+  }
+
+  public getAllDepotByNoaAppId(id: number): Observable<any> {
+    return this.http.get<any>(`${api}/all-depot-by-appid?appid=${id}`);
   }
 }

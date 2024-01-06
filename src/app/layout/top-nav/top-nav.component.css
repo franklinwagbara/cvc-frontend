@@ -16,7 +16,7 @@
 }
 
 .avatar {
-  @apply flex gap-0 items-center justify-around;
+  @apply flex gap-2 items-center justify-around;
 }
 
 .account-info {

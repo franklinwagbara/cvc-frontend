@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoqService } from '../../shared/services/coq.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 
 
 @Component({

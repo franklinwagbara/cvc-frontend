@@ -3,11 +3,11 @@ import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { IJetty } from 'src/app/shared/interfaces/ijetty';
+import { IJetty } from '../../../../../src/app/shared/interfaces/IJetty';
 import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
-import { JettyService } from 'src/app/shared/services/jetty.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { JettyService } from '../../../../../src/app/shared/services/jetty.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-jetty-setting',
@@ -47,7 +47,7 @@ export class JettySettingComponent implements OnInit {
   addData(): void {
     const formData: FormKeysProp = {name: {validator: [Validators.required] }}
     const dialogRef = this.dialog.open(FormDialogComponent, { 
-      data: { title: 'New Jetty', formData, formType: 'Create' }, disableClose: true,
+      data: { title: 'New Jetty', formData, formType: 'Create' },
     })
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
@@ -73,7 +73,7 @@ export class JettySettingComponent implements OnInit {
 
   editData(value: any): void {
     const formData: FormKeysProp = {id: {value: value.id, disabled: true }, name: {validator: [Validators.required], value: value.name }}
-    const dialogRef = this.dialog.open(FormDialogComponent, {data: { title: 'Edit Jetty', formData, formType: 'Edit'}, disableClose: true });
+    const dialogRef = this.dialog.open(FormDialogComponent, {data: { title: 'Edit Jetty', formData, formType: 'Edit'} });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.progressBar.open();
