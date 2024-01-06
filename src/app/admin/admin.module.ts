@@ -69,12 +69,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
-<<<<<<< HEAD
 import { ProductsComponent } from './settings/products/products.component';
-=======
 import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
->>>>>>> b37bfc0828807513572c7cdb516c087687231a61
-
 
 @NgModule({
   declarations: [
@@ -124,11 +120,8 @@ import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/pro
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ViewCoqApplicationComponent,
-<<<<<<< HEAD
     ProductsComponent,
-=======
     ProcessingPlantCoqFormComponent,
->>>>>>> b37bfc0828807513572c7cdb516c087687231a61
   ],
 
   imports: [
@@ -152,7 +145,7 @@ import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/pro
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    MatStepperModule
+    MatStepperModule,
   ],
   exports: [],
   providers: [
