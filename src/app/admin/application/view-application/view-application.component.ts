@@ -20,7 +20,7 @@ import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })

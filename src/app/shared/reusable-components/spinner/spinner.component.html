@@ -1,5 +1,6 @@
 <div *ngIf="spinner.isOpen" class="backdrop">
   <img src="../../../../assets/svgs/nmdpra-logo.svg" width="120px" height="120px" alt="NMDPRA">
+  <div class="text-yellow-500 font-bold tracking-wide">{{ spinner.message || 'Loading...' }}</div>
   <div class="cradle">
     <div class="cradle__dot text-green-800"></div>
     <div class="cradle__dot text-yellow-800"></div>

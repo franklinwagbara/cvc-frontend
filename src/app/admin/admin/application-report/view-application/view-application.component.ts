@@ -16,7 +16,7 @@ import { ShowMoreComponent } from '../../../../shared/reusable-components/show-m
 import { ApplicationService } from 'src/app/shared/services/application.service';
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })

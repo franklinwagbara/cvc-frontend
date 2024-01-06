@@ -32,8 +32,8 @@ import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
-import { NoaAndApplicationsGuard } from 'src/app/shared/guards/noa-and-applications.guard';
-import { ProductsComponent } from '../settings/products/products.component';
+import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
+import { ViewCoqApplicationComponent } from '../view-coq-application/view-coq-application.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -84,9 +84,14 @@ const routes: Routes = [
     canActivate: [CoqGuard],
   },
   {
-    path: 'certificate-of-quantity/all-applications-by-depot',
+    path: 'certificate-of-quantity/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
-    canActivate: [CoqGuard],
+    canActivate: [CoqGuard]
+  },
+  {
+    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
+    component: ViewCoqApplicationComponent,
+    canActivate: [CoqGuard]
   },
   {
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',

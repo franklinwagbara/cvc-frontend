@@ -220,9 +220,11 @@ export class DocumentUploadComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getUploadDocuments();
+      if (res) {
+        this.progressBar.open();
+  
+        this.getUploadDocuments();
+      }
     });
   }
 
@@ -260,20 +262,20 @@ export class DocumentConfig {
 }
 
 export class DocumentInfo {
-  Id: string;
-  docId: string;
-  docName: string;
-  docSource: string;
-  applicationId: number;
-  source: string;
-  fileId: string;
-  available: string;
-  docType: string;
-  company: string;
+  id?: string;
+  docId?: string;
+  docName?: string;
+  docSource?: string;
+  applicationId?: number;
+  source?: string;
+  fileId?: string;
+  available?: string;
+  docType?: string;
+  company?: string;
   success?: boolean;
   fileSizeInKb?: any;
   percentProgress?: any;
-  fileName: string;
+  fileName?: string;
 }
 
 export interface IUploadDocInfo {
