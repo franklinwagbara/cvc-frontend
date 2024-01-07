@@ -4,6 +4,7 @@ import { retry, map } from 'rxjs/operators';
 import { IMessage } from 'src/app/company/dashboard/dashboard.component';
 import { IPlant } from 'src/app/company/settings/processing-plant/processing-plant.component';
 import { environment } from '../../../../src/environments/environment';
+import { ITank } from '../interfaces/ITank';
 
 const API = `${environment.apiUrl}/company`;
 @Injectable({ providedIn: 'root' })
@@ -68,25 +69,30 @@ export class CompanyService {
       .pipe(retry(this.num));
   }
 
-  getcompanytanks() {
-    return this.http.get<any>(`${environment.apiUrl}/Plant/get-all-Tanks`);
+  getcompanytanks(plantId: Number) {
+    return this.http.get<any>(
+      `${environment.apiUrl}/Plant/get-all-Tanks?plantId=${plantId}`
+    );
   }
 
-  public addTank(data: IPlant) {
+  public addTank(data: ITank) {
     return this.http
-      .post<any>(`${environment.apiUrl}/Company/add-plantTank`, data)
+      .post<any>(
+        `${environment.apiUrl}/Plant/add-plantTank?id=${data.plantId}`,
+        data
+      )
       .pipe(retry(this.num));
   }
 
-  public editTank(id: number, data: IPlant) {
+  public editTank(data: any) {
     return this.http
-      .put<any>(`${environment.apiUrl}/Plant/edit-plantTank/${id}`, data)
+      .put<any>(`${environment.apiUrl}/Plant/edit-plantTank/${data.id}`, data)
       .pipe(retry(this.num));
   }
 
   public deleteTank(id: IPlant) {
     return this.http
-      .delete<any>(`${environment.apiUrl}/Company/delete-plantTank?id=${id}`)
+      .delete<any>(`${environment.apiUrl}/Plant/delete-plantTank?id=${id}`)
       .pipe(retry(this.num));
   }
 
@@ -108,6 +114,12 @@ export class CompanyService {
           return res;
         })
       );
+  }
+
+  public getproducts() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Product/all-products`)
+      .pipe(retry(this.num));
   }
 
   public getCompanyDashboard() {

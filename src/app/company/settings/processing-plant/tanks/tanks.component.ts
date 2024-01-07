@@ -2,10 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnInit,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { AdminService } from 'src/app/shared/services/admin.service';
@@ -16,6 +21,9 @@ import { LibaryService } from 'src/app/shared/services/libary.service';
 import { ProcessingPlantFormComponent } from 'src/app/shared/reusable-components/processing-plant-form/processing-plant-form.component';
 import { CompanyService } from 'src/app/shared/services/company.service';
 import { IPlant } from '../processing-plant.component';
+import { TankFormComponent } from 'src/app/shared/reusable-components/tank-form/tank-form.component';
+import { Console } from 'console';
+import { ITank } from 'src/app/shared/interfaces/ITank';
 
 @Component({
   selector: 'app-tanks',
@@ -26,19 +34,18 @@ import { IPlant } from '../processing-plant.component';
 export class TanksComponent implements OnInit {
   @Input('plants') plants: IPlant[];
   public tanks: ITank[];
-  public tanks2: ITank[];
-  //public tanks2: IPlant[];
+  public plantId: number;
+  public plantName: string;
+  //public tanks: IPlant[];
 
   public tableTitles = {
     branches: 'TANKS',
   };
 
   public branchKeysMappedToHeaders = {
-    // id: 0,
-
+    // id: 'id',
     tankName: 'Tank Name',
-    plantId: 'Plant Name',
-    product: 'Poduct',
+    product: 'Product',
     capacity: 'Capacity',
     position: 'Position',
   };
@@ -48,6 +55,9 @@ export class TanksComponent implements OnInit {
     public dialog: MatDialog,
     private progressBarService: ProgressBarService,
     private adminHttpService: AdminService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<TanksComponent>,
+    private progressBar: ProgressBarService,
     private spinner: SpinnerService,
     private processFlow: ApplicationProcessesService,
     private libraryService: LibaryService,
@@ -56,65 +66,39 @@ export class TanksComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.spinner.open();
-    this.companyService.getcompanytanks().subscribe({
-      next: (res) => {
-        this.tanks = [
-          {
-            // id: 0,
-            plantId: 1,
-            tankName: 'Tank Name',
-            product: 'Poduct',
-            capacity: 2,
-            position: 'Position',
-          },
-        ];
-        if (this.plants && this.plants.length > 0) {
-          const idToNameMap = this.plants.reduce(
-            (map: IPlant, item: IPlant) => {
-              map[item.id] = item.name;
-              return map;
-            },
-            {} as IPlant
-          );
+    //this.getTank();
+    console.log(this.data);
+    this.plantName = this.data.data.plant.name;
+    this.plantId = this.data.data.plant.id;
+    this.tanks = this.data.data.plant.tanks;
+  }
 
-          // Replace applicationTypeId with the corresponding name
-          if (idToNameMap) {
-            this.tanks2 = this.tanks.map((item) => {
-              return {
-                ...item,
-                plantId: idToNameMap[item.plantId],
-              };
-            });
-          }
-        }
-        console.log(this.tanks2);
-        this.spinner.close();
+  getTank() {
+    this.progressBar.open();
+    this.companyService.getcompanytanks(this.plantId).subscribe({
+      next: (res) => {
+        this.progressBar.close();
+        this.tanks = res.data;
+
         this.cd.markForCheck();
       },
-
-      error: (error: unknown) => {
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
-
-        this.spinner.close();
+      error: (err) => {
+        this.snackBar.open(err?.message, null, {
+          panelClass: ['error'],
+        });
+        this.progressBar.close();
         this.cd.markForCheck();
       },
     });
   }
 
-  onAddData(event: Event, type: string) {
+  onAddData(event: any, type: string) {
     const operationConfiguration = {
       tanks: {
         data: {
-          //plantTypes: this.plantTypes,
+          plantId: this.plantId,
         },
-        form: ProcessingPlantFormComponent,
+        form: TankFormComponent,
       },
     };
 
@@ -125,28 +109,23 @@ export class TanksComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.ngOnInit();
-      this.cd.markForCheck();
+      this.getTank();
     });
   }
 
   onDeleteData(event: any, type: string) {
+    console.log(event);
     const typeToModelMapper = {
       tanks: {
-        id: 'id',
-        name: 'Plant name',
-        company: 'Company Name',
-        email: 'Email',
-        state: 'Location',
-        type: 'Plant Type',
+        id: 'plantTankId',
       },
     };
     const listOfDataToDelete = [...event];
     const requests = (listOfDataToDelete as any[]).map((req) => {
       if (type === 'tanks') {
-        return this.companyService.deletePlant(req[typeToModelMapper[type].id]);
+        return this.companyService.deleteTank(req[typeToModelMapper[type].id]);
       } else {
-        return this.companyService.deletePlant(req[typeToModelMapper[type].id]);
+        return this.companyService.deleteTank(req[typeToModelMapper[type].id]);
       }
     });
     this.progressBarService.open();
@@ -164,7 +143,7 @@ export class TanksComponent implements OnInit {
               panelClass: ['success'],
             }
           );
-          this.ngOnInit();
+          this.getTank();
         }
         this.progressBarService.close();
         this.cd.markForCheck();
@@ -183,11 +162,10 @@ export class TanksComponent implements OnInit {
     const operationConfiguration = {
       tanks: {
         data: {
-          // plantTypes: this.plantTypes,
-          plantId: event.id,
+          tank: event,
           action: 'EDIT',
         },
-        form: ProcessingPlantFormComponent,
+        form: TankFormComponent,
       },
     };
 
@@ -198,17 +176,12 @@ export class TanksComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.ngOnInit();
+      this.getTank();
       this.cd.markForCheck();
     });
   }
-}
 
-export interface ITank {
-  id?: number;
-  plantId: number;
-  tankName: string;
-  product: string;
-  capacity: number;
-  position: string;
+  close() {
+    this.dialogRef.close();
+  }
 }

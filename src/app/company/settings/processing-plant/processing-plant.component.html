@@ -11,10 +11,12 @@
           [table_controls_horizontal]="true"
           [noDeleteButton]="false"
           [noCheckControls]="false"
+          [enableViewTank]="true"
           [noTitle]="true"
           (onAddData)="onAddData($event, 'pp')"
           (onDeleteData)="onDeleteData($event, 'pp')"
           (onEditData)="onEditData($event, 'pp')"
+          (onViewTank)="viewTank($event, 'pp')"
         ></generic-table>
       </div>
     </div>

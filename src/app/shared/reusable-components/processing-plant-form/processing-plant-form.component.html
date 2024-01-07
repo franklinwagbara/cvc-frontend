@@ -1,9 +1,5 @@
 <h1 mat-dialog-title>
-  {{
-    this.data.data.action === "EDIT"
-      ? "Edit Application Fee"
-      : "Add New Application Fee"
-  }}
+  {{ this.data.data.action === "EDIT" ? "Edit Plant" : "Add New Plant" }}
 </h1>
 <div mat-dialog-content class="min-w-[500px]">
   <form [formGroup]="form">

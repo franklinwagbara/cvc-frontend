@@ -75,6 +75,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     this.companyService.getStates().subscribe({
       next: (res) => {
         this.states = res.data;
+        this.cd.markForCheck();
       },
       error: (err) => {},
     });
