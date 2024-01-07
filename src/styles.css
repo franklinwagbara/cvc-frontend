@@ -95,3 +95,19 @@ button:disabled {
 .view-message-content .mat-dialog-container {
   padding: 0px !important; /* Set padding to 0 or adjust as needed */
 }
+
+.pannelClass {
+  padding: 0px !important;
+  margin: 0px !important;
+  /* width: 70% !important; */
+  height: 96% !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .pannelClass {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
+}

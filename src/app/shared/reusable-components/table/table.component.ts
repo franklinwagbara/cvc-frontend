@@ -40,6 +40,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() enableGenerateRRR = false;
   @Input() enableConfirmPayment = false;
   @Input() enableUploadDocument = false;
+  @Input() enableViewTank: boolean = false;
   @Input('title-color') titleColorProp?: string = 'slate';
   @Input() noTitle = false;
   @Input() noControls?: boolean = false;
@@ -51,7 +52,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
+  @Input('EnableViewCertificateControl')
+  enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
@@ -79,6 +81,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onConfirmPayment = new EventEmitter<any>();
   @Output() onUploadDocument = new EventEmitter<any>();
   @Output() onFileUpload = new EventEmitter<any>();
+  @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
 
@@ -130,6 +133,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+
     if (this.enableInitiateCoQControl) {
       this.columns.push({
         columnDef: 'action_controls',
@@ -248,6 +252,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   fileUpload(file, row) {
     this.onFileUpload.emit({ file, doc: row });
+  }
+
+  viewTank(row) {
+    this.onViewTank.emit(row);
   }
 
   generateRRR(row) {

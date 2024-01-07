@@ -9,6 +9,7 @@ import { ApplicationProcessesService } from 'src/app/shared/services/application
 import { LibaryService } from 'src/app/shared/services/libary.service';
 import { ProcessingPlantFormComponent } from 'src/app/shared/reusable-components/processing-plant-form/processing-plant-form.component';
 import { CompanyService } from 'src/app/shared/services/company.service';
+import { TanksComponent } from './tanks/tanks.component';
 
 @Component({
   selector: 'app-processing-plant',
@@ -201,6 +202,28 @@ export class ProcessingPlantComponent implements OnInit {
       data: {
         data: operationConfiguration[type].data,
       },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      this.ngOnInit();
+      this.cd.markForCheck();
+    });
+  }
+
+  viewTank(event: any, type: string) {
+    const operationConfiguration = {
+      pp: {
+        data: {
+          plant: event,
+        },
+        form: TanksComponent,
+      },
+    };
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+      data: {
+        data: operationConfiguration[type].data,
+      },
+      panelClass: 'pannelClass',
     });
 
     dialogRef.afterClosed().subscribe((res) => {

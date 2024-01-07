@@ -1,1 +1,66 @@
-<p>tank-form works!</p>
+<h1 mat-dialog-title>
+  {{ this.data.data.action === "EDIT" ? "Edit Tank" : "Add New Tank" }}
+</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form">
+    <div class="mb-[10px]">
+      <div class="mb-[10px]">
+        <label>Tank Name</label>
+        <input type="text" formControlName="tankName" class="form-control" />
+        <mat-error
+          *ngIf="(f['tankName'].dirty || isSubmitted) && f['tankName']?.invalid"
+          class=""
+        >
+          Tank name is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label> Product</label>
+        <select formControlName="product" class="form-control">
+          <option selected disabled>--Select from options --</option>
+          <option *ngFor="let product of products" [value]="product.name">
+            {{ product.name }}
+          </option>
+        </select>
+        <mat-error
+          *ngIf="(f['product'].dirty || isSubmitted) && f['product']?.invalid"
+          class=""
+        >
+          Product is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label>Capacity</label>
+        <input type="number" formControlName="capacity" class="form-control" />
+        <mat-error
+          *ngIf="(f['capacity'].dirty || isSubmitted) && f['capacity']?.invalid"
+          class=""
+        >
+          Capacity is required!
+        </mat-error>
+      </div>
+      <div class="mb-[10px]">
+        <label>Position</label>
+        <input type="text" formControlName="position" class="form-control" />
+        <mat-error
+          *ngIf="(f['position'].dirty || isSubmitted) && f['position']?.invalid"
+          class=""
+        >
+          Position is required!
+        </mat-error>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+      <button
+        mat-raised-button
+        (click)="this.data.data.action === 'EDIT' ? editTank() : createTank()"
+        [disabled]="form.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

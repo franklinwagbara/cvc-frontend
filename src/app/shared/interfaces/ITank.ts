@@ -4,4 +4,5 @@ export interface ITank {
   name?: string | null;
   capacity?: number;
   productId?: number;
+  plantId?: number;
 }

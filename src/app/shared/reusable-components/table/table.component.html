@@ -92,7 +92,8 @@
               column.cell(row) === "uploadDocument_control" ||
               column.cell(row) === "confirmPayment_control" ||
               column.cell(row) === "moveApplication_control" ||
-              column.header === "Source"
+              column.header === "Source" ||
+              column.header === "Tanks"
                 ? ""
                 : column.cell(row) !== "null"
                 ? column.cell(row)
@@ -105,6 +106,19 @@
             >
               {{ column.cell(row) }}
             </div>
+            <div *ngIf="enableViewTank && column.header === 'Tanks'">
+              <button
+                mat-stroked-button
+                class="!pr-6 !bg-gray-300"
+                (click)="viewTank(row)"
+              >
+                View
+                <span
+                  class="text-red-600 p-[2px] items-center flex border-1 border-red-600 rounded rounded-[50px] h-[15px] right-[3%] !top-[3%] text-[10px] absolute"
+                  >{{ row.tanks.length }}</span
+                >
+              </button>
+            </div>
             <div>
               <button
                 mat-stroked-button
@@ -114,6 +128,7 @@
               >
                 Edit
               </button>
+
               <button
                 mat-flat-button
                 color="accent"
