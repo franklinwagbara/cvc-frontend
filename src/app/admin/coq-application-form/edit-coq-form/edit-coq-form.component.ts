@@ -10,13 +10,15 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class EditCoqFormComponent implements OnInit {
   form: FormGroup;
-  @Input() isGasProduct = false;
+  isGasProduct = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditCoqFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder
-  ) { }
+  ) {
+    this.isGasProduct = this.data.isGasProduct;
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group(this.data.form);
@@ -34,4 +36,5 @@ export class EditCoqFormComponent implements OnInit {
 export interface DialogData {
   form: any;
   title: string;
+  isGasProduct: boolean;
 }

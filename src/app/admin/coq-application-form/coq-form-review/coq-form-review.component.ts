@@ -12,10 +12,10 @@ import { LocalDataKey } from '../coq-application-form.component';
   styleUrls: ['./coq-form-review.component.css']
 })
 export class CoqFormReviewComponent implements OnInit {
-  liqProductColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVOI', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC', 'actions'];
+  liqProductColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVolume', 'corr', 'gov', 'temp', 'density', 'vcf', 'gsv', 'mtVAC', 'actions'];
   gasProductColumns = [
-    'tank', 'status', 'liqDensityVac', 'obsSounding', 'tapeCorr', 'liqTemp', 'observedLiqVol',
-    'shrinkageFactor', 'vcf', 'tankVol100', 'vapTemp', 'vapPressure', 'molWt', 'vapFactor', 'actions'
+    'tank', 'status', 'liquidDensityVac', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume',
+    'shrinkageFactor', 'vcf', 'tankVolume', 'vapourTemperature', 'vapourPressure', 'molecularWeight', 'vapourFactor', 'actions'
   ]
   displayedColumns: string[];
   localDataKey = LocalDataKey.COQFORMREVIEWDATA;

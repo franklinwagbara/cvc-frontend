@@ -274,6 +274,7 @@ export class DocumentInfo {
   fileSizeInKb?: any;
   percentProgress?: any;
   fileName?: string;
+  docIndex?: number
 }
 
 export interface IUploadDocInfo {

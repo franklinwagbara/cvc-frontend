@@ -13,7 +13,7 @@ export class FileuploadWithProgressService {
 
   constructor(private httpClient: HttpClient) {}
 
-  uploadFile(file: File, uploadUrl: string): Observable<number> {
+  uploadFile(file: File, uploadUrl: string, docIndex: number): Observable<number> {
     const formData = new FormData();
     formData.append('file', file);
     const request = new HttpRequest('POST', uploadUrl, formData, {
@@ -21,11 +21,11 @@ export class FileuploadWithProgressService {
     });
 
     return this.httpClient.request(request).pipe(
-      this.trackUploadProgress()
+      this.trackUploadProgress(docIndex)
     );
   }
 
-  private trackUploadProgress(): ( source: Observable<any> ) => Observable<any> {
+  private trackUploadProgress(docIndex: number): ( source: Observable<any> ) => Observable<any> {
     return (source: Observable<any>): Observable<any> => {
       return new Observable<number>(observer => {
         source.subscribe({
@@ -36,18 +36,20 @@ export class FileuploadWithProgressService {
             } else if (event instanceof HttpResponse) {
               observer.complete();
               const res = event.body;
-              let responseExists = false;
-              this.uploadResponses = this.uploadResponses.map((el) => {
-                if (el?.fileId == res?.filedId && el?.docTypeId === res?.docTypeId) {
-                  responseExists = true;
-                  return res;
+              if (!Array.isArray(res) && Object.keys(res).length) {
+                let responseExists = false;
+                this.uploadResponses = this.uploadResponses.map((el) => {
+                  if (el?.docIndex === docIndex) {
+                    responseExists = true;
+                    return res;
+                  }
+                  return el;
+                });
+                if (!responseExists) {
+                  this.uploadResponses.push({ ...event.body, docIndex });
                 }
-                return el;
-              });
-              if (!responseExists) {
-                this.uploadResponses.push(event.body);
+                this.uploadResponses$.next(this.uploadResponses);
               }
-              this.uploadResponses$.next(this.uploadResponses);
             }
           },
           error: error => {
