@@ -25,9 +25,14 @@
             <div class="flex flex-col">
               <span class="input-label"> IMO Number </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['imoNumber'].touched &&
+                    vesselFormControl['imoNumber'].invalid
+                }"
                 autofocus
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="IMO Number"
                 formControlName="imoNumber"
                 (blur)="validateImo()"
@@ -44,9 +49,12 @@
                 type="text"
                 [readOnly]="vesselInfo"
                 [ngClass]="{
-                  'bg-gray-100 cursor-not-allowed ': vesselInfo
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselName'].touched &&
+                    vesselFormControl['vesselName'].invalid
                 }"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Vessel Name"
                 formControlName="vesselName"
               />
@@ -55,8 +63,13 @@
             <div class="flex flex-col">
               <span class="input-label"> Mother Vessel </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['motherVessel'].touched &&
+                    vesselFormControl['motherVessel'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Mother Vessel Name"
                 formControlName="motherVessel"
               />
@@ -65,8 +78,13 @@
             <div class="flex flex-col">
               <span class="input-label"> Loading Port </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['loadingPort'].touched &&
+                    vesselFormControl['loadingPort'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Loading Port"
                 formControlName="loadingPort"
               />
@@ -75,8 +93,13 @@
             <div class="flex flex-col">
               <span class="input-label"> Jetty </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['jetty'].touched &&
+                    vesselFormControl['jetty'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Discharge Port"
                 formControlName="jetty"
               />
@@ -85,8 +108,14 @@
             <div class="flex flex-col">
               <span class="input-label"> Vessel Type </span>
               <select
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselTypeId'].touched &&
+                    vesselFormControl['vesselTypeId'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 formControlName="vesselTypeId"
               >
                 <option disabled>--select--</option>

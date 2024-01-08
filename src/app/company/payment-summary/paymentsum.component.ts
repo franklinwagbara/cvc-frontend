@@ -57,6 +57,7 @@ export class PaymentSumComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.paymentSummary = res.data;
+          console.log(this.paymentSummary.rrr);
           this.rrr$.next(this.paymentSummary.rrr);
           this.applicationStatus$.next(this.paymentSummary.paymentStatus);
 
