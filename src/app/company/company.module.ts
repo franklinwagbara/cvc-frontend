@@ -43,6 +43,9 @@ import { ApplicationViewTableComponent } from './view-application/application-vi
 import { ViewMessageComponent } from './messages/view-message/view-message.component';
 import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
+import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
+import { TanksComponent } from './settings/processing-plant/tanks/tanks.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -66,6 +69,7 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,
+    MatProgressBarModule
   ],
   declarations: [
     DashboardComponent,
@@ -90,6 +94,8 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
     ViewMessageComponent,
     ViewCoqCertsComponent,
     ViewDebitNotesComponent,
+    ProcessingPlantComponent,
+    TanksComponent,
   ],
   providers: [],
 })

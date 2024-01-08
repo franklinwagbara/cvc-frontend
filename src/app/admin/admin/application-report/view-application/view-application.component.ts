@@ -13,6 +13,7 @@ import { ApplyService } from '../../../../../../src/app/shared/services/apply.se
 import { ProgressBarService } from '../../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../../src/app/shared/services/spinner.service';
 import { ShowMoreComponent } from '../../../../shared/reusable-components/show-more/show-more.component';
+import { ApplicationService } from '../../../../../../src/app/shared/services/application.service';
 
 @Component({
   selector: 'app-view-coq-application',
@@ -20,7 +21,7 @@ import { ShowMoreComponent } from '../../../../shared/reusable-components/show-m
   styleUrls: ['./view-application.component.scss'],
 })
 export class ViewApplicationComponent implements OnInit {
-  public application: IApplication;
+  public application: IApplication | any;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -28,7 +29,7 @@ export class ViewApplicationComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private auth: AuthenticationService,
-    private appService: ApplyService,
+    private appService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
     private spinner: SpinnerService,

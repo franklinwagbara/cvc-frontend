@@ -249,17 +249,22 @@ const ROUTES: RouteInfo[] = [
       {
         id: 10,
         title: 'JETTY CONFIGURATION',
-        url: '/admin/jetty-setting'
+        url: '/admin/jetty-setting',
       },
       {
         id: 10,
         title: 'SURVEYOR CONFIGURATION',
-        url: '/admin/nominated-surveyor-setting'
+        url: '/admin/nominated-surveyor-setting',
       },
       {
         id: 11,
         title: 'ROLE SETTINGS',
         url: '/admin/roles',
+      },
+      {
+        id: 11,
+        title: 'PRODUCT SETTINGS',
+        url: '/admin/products',
       },
     ],
   },
@@ -312,13 +317,21 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (!Util.adminRoles.includes(currentUser?.userRoles) && currentUser?.location !== 'HQ') {
-      this.menuItems = this.menuItems.filter((item) => item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS');
+    if (
+      !Util.adminRoles.includes(currentUser?.userRoles) &&
+      currentUser?.location !== 'HQ'
+    ) {
+      this.menuItems = this.menuItems.filter(
+        (item) =>
+          item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS'
+      );
     }
 
     // Show settings only SuperAdmin
     if (!Util.adminRoles.includes(currentUser?.userRoles)) {
-      this.menuItems = this.menuItems.filter((item) => item.title !== 'SETTINGS');
+      this.menuItems = this.menuItems.filter(
+        (item) => item.title !== 'SETTINGS'
+      );
     }
 
     this.isCollapsed$.subscribe((val: boolean) => {

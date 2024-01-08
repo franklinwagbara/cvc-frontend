@@ -68,10 +68,10 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
 import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
+import { ProductsComponent } from './settings/products/products.component';
 import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
-
 
 @NgModule({
   declarations: [
@@ -121,6 +121,7 @@ import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-app
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ViewCoqApplicationComponent,
+    ProductsComponent,
     ProcessingPlantCoqFormComponent,
   ],
 
@@ -146,7 +147,7 @@ import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-app
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
-    MatStepperModule
+    MatStepperModule,
   ],
   exports: [],
   providers: [

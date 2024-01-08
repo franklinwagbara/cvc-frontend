@@ -2,11 +2,13 @@ import { ITank } from './ITank';
 import { IDepot } from './IDepot';
 
 export interface IApplication {
+  id?: any;
   reference?: string;
   applicationTypeId?: number;
   vesselTypeId?: number;
   imoNumber?: string | null;
   vesselName?: string | null;
+  vessel?: any;
   loadingPort?: string | null;
   dischargePort?: string | null;
   marketerName?: string | null;

@@ -54,6 +54,7 @@ export class ApproveFormComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    console.log(this.data);
     const tempUser = this.auth.currentUser;
 
     this.auth.getAllStaff().subscribe({
@@ -88,7 +89,7 @@ export class ApproveFormComponent implements OnInit {
     this.progressBarService.open();
 
     const model = {
-      applicationId: this.application.applicationTypeId,
+      applicationId: this.application.id,
       action: ApplicationActionType.Approve,
       comment: this.form.controls['comment'].value,
       // currentUserId: this.currentUser.id,

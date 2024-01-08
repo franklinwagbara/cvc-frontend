@@ -1,0 +1,27 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-teal-500 text-teal-800">PROCESSING PLANTS</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.branches"
+          [title-color]="'teal'"
+          [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
+          [table_content]="plants2"
+          [table_controls_horizontal]="true"
+          [noDeleteButton]="false"
+          [noCheckControls]="false"
+          [enableViewTank]="true"
+          [noTitle]="true"
+          (onAddData)="onAddData($event, 'pp')"
+          (onDeleteData)="onDeleteData($event, 'pp')"
+          (onEditData)="onEditData($event, 'pp')"
+          (onViewTank)="viewTank($event, 'pp')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="plants">
+  <app-tanks [plants]="plants"></app-tanks>
+</div> -->

@@ -1,0 +1,29 @@
+<div class="">
+  <h2 class="my-page-title bg-teal-500 text-teal-400">
+    {{ plantName | uppercase }} TANKS
+  </h2>
+  <div class="flex justify-end">
+    <button mat-stroked-button class="text-red-600" (click)="close()">
+      Close
+    </button>
+  </div>
+  <div>
+    <div class="table-group">
+      <div class="!overflow-y-auto div-height">
+        <generic-table
+          [table_title]="tableTitles.branches"
+          [title-color]="'teal'"
+          [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
+          [table_content]="tanks"
+          [table_controls_horizontal]="true"
+          [noDeleteButton]="false"
+          [noCheckControls]="false"
+          [noTitle]="true"
+          (onAddData)="onAddData($event, 'tanks')"
+          (onDeleteData)="onDeleteData($event, 'tanks')"
+          (onEditData)="onEditData($event, 'tanks')"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

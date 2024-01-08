@@ -51,10 +51,16 @@ export class CompanyTopNavComponent implements OnInit {
       subMenu: null,
     },
     {
+      name: 'Processing Plants',
+      url: 'company/processing-plant',
+      subMenu: null,
+    },
+    {
       name: 'Messages',
       url: 'company/messages',
       subMenu: null,
     },
+
     {
       name: 'My Schedule',
       url: 'company/myschedule',

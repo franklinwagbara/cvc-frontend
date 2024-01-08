@@ -40,6 +40,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() enableGenerateRRR = false;
   @Input() enableConfirmPayment = false;
   @Input() enableUploadDocument = false;
+  @Input() enableViewTank: boolean = false;
   @Input('title-color') titleColorProp?: string = 'slate';
   @Input() noTitle = false;
   @Input() noControls?: boolean = false;
@@ -51,15 +52,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
+  @Input('EnableViewCertificateControl')
+  enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
     false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
-  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean =
-    false;
+  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
@@ -80,6 +81,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onConfirmPayment = new EventEmitter<any>();
   @Output() onUploadDocument = new EventEmitter<any>();
   @Output() onFileUpload = new EventEmitter<any>();
+  @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
 
@@ -131,12 +133,13 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
+
     if (this.enableInitiateCoQControl) {
       this.columns.push({
         columnDef: 'action_controls',
         header: '',
         cell: (item: IApplication) => {
-          if (item) return 'initiate_coq_control'
+          if (item) return 'initiate_coq_control';
           else return '';
         },
       });
@@ -152,7 +155,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: 'Action Controls',
         cell: (item: Application) => {
           if (item.rrr && item.paymentStatus === 'Processing') return '';
-          else if (item.rrr && item.paymentStatus === 'Payment confirmed')
+          else if (
+            item.rrr &&
+            item.paymentStatus === 'Payment confirmed' &&
+            item.status !== 'Processing' &&
+            item.status !== 'Completed'
+          )
             return 'uploadDocument_control';
           else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
             return 'confirmPayment_control';
@@ -198,7 +206,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_coq_certs_control',
         header: '',
-        cell: (item) => 'view_coq_certs_control'
+        cell: (item) => 'view_coq_certs_control',
       });
     }
 
@@ -206,7 +214,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_debit_notes_control',
         header: '',
-        cell: (item) => 'view_debit_notes_control'
+        cell: (item) => 'view_debit_notes_control',
       });
     }
 
@@ -214,7 +222,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_coq_cert_control',
         header: '',
-        cell: (item) => 'view_coq_cert_control'
+        cell: (item) => 'view_coq_cert_control',
       });
     }
 
@@ -222,7 +230,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'view_debit_note_control',
         header: '',
-        cell: (item) => 'view_debit_note_control'
+        cell: (item) => 'view_debit_note_control',
       });
     }
 
@@ -244,6 +252,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   fileUpload(file, row) {
     this.onFileUpload.emit({ file, doc: row });
+  }
+
+  viewTank(row) {
+    this.onViewTank.emit(row);
   }
 
   generateRRR(row) {

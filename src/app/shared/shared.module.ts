@@ -54,6 +54,9 @@ import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-
 import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DepotOfficerFormComponent } from './reusable-components/depot-officer-form/depot-officer-form.component';
+import { ProcessingPlantFormComponent } from './reusable-components/processing-plant-form/processing-plant-form.component';
+import { ProductFormComponent } from './reusable-components/product-form/product-form.component';
+import { TankFormComponent } from './reusable-components/tank-form/tank-form.component';
 
 
 @NgModule({
@@ -86,6 +89,9 @@ import { DepotOfficerFormComponent } from './reusable-components/depot-officer-f
     AppDepotFormComponent,
     RoleFormComponent,
     DepotOfficerFormComponent,
+    ProcessingPlantFormComponent,
+    ProductFormComponent,
+    TankFormComponent,
   ],
   imports: [
     CommonModule,

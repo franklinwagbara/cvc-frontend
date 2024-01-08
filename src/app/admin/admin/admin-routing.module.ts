@@ -34,15 +34,16 @@ import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
 import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
 import { ViewCoqApplicationComponent } from '../view-coq-application/view-coq-application.component';
+import { ProductsComponent } from '../settings/products/products.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
   { path: 'staff-dashboard', component: DashboardComponent },
   { path: 'staff-desk', component: StaffdeskComponent },
-  { 
-    path: 'all-applications', 
+  {
+    path: 'all-applications',
     component: ApplicationComponent,
-    canActivate: [NoaAndApplicationsGuard] 
+    canActivate: [NoaAndApplicationsGuard],
   },
   { path: 'all-staff', component: AllStaffComponent },
   { path: 'modules-setting', component: ModulesSettingComponent },
@@ -53,7 +54,10 @@ const routes: Routes = [
   { path: 'phasedocuments', component: PhasedocumentsComponent },
   { path: 'application-process', component: AppProcessComponent },
   { path: 'field-officer-setting', component: FieldOfficerSettingComponent },
-  { path: 'nominated-surveyor-setting', component: NominatedSurveyorSettingComponent },
+  {
+    path: 'nominated-surveyor-setting',
+    component: NominatedSurveyorSettingComponent,
+  },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
   {
@@ -62,10 +66,10 @@ const routes: Routes = [
   },
   { path: 'application-report', component: ApplicationReportComponent },
   { path: 'payment-report', component: PaymentReportComponent },
-  { 
+  {
     path: 'certificates',
-    component: CertificatesComponent, 
-    canActivate: [NoaAndApplicationsGuard] 
+    component: CertificatesComponent,
+    canActivate: [NoaAndApplicationsGuard],
   },
   { path: 'schedules', component: ScheduleComponent },
   { path: 'view-schedule/:id', component: ScheduleComponent },
@@ -74,25 +78,26 @@ const routes: Routes = [
   { path: 'payments', component: PaymentComponent },
   { path: 'payment/:id', component: ViewPaymentComponent },
   { path: 'roles', component: RolesComponent },
+  { path: 'products', component: ProductsComponent },
   {
     path: 'noa-applications-by-depot',
     component: NoaApplicationsByDepotComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'certificate-of-quantity/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'certificate-of-quantity/coq-applications-by-depot/:id',
     component: ViewCoqApplicationComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
 ];
 
