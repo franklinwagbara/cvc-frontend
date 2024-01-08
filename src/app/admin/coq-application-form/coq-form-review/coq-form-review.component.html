@@ -33,7 +33,7 @@
                   <button 
                     mat-button 
                     class="text-blue-500" 
-                    (click)="coqFormService.openEditDialog({ form: element, title: element?.tank + ' - ' + element.status.toUpperCase(), isGasProduct }, localDataKey)"
+                    (click)="coqFormService.openEditDialog({ form: element, title: element?.tank + ' - ' + element.status.toUpperCase(), isGasProduct }, localDataKey, isGasProduct)"
                   >Edit</button>
                 </div>
               </ng-container>

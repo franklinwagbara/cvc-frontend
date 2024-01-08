@@ -80,6 +80,7 @@ export class CoqApplicationFormComponent
 
   isGasProduct = true;
 
+  @ViewChild('coqstepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
 
   tankLiqBeforeFormTempCtx: any;
@@ -135,7 +136,7 @@ export class CoqApplicationFormComponent
       if (Array.isArray(res) && res.length) {
         console.log('Value Passed To documents subject ========', res);
         res.forEach((el) => {
-          const found = this.documents.find((doc) => el.docType === doc?.docType && el.docName === doc?.docName);
+          const found = this.documents.find((doc) => el.docIndex === doc?.docIndex);
           if (!found) {
             this.documents.push(el);
           } else {
@@ -166,16 +167,16 @@ export class CoqApplicationFormComponent
     forkJoin([
       this.applicationService.viewApplication(this.appId), 
       this.libService.getAllDepotByNoaAppId(this.appId), 
-      this.applicationService.getUploadDocuments(this.appId)
+      // this.applicationService.getUploadDocuments(this.appId)
     ])
       .subscribe({
         next: (res: any[]) => {
           this.noaApplication = res[0]?.data;
           this.depots = res[1]?.data;
-          this.documents$.next((res[2]?.data?.docs as any[]).map((el, i) => {
-            return { ...el, success: null, docIndex: i, percentProgress: 0 }
-          }));
-          console.log('Uploaded Documents ============> ', res[2]?.data.docs);
+          // this.documents$.next((res[2]?.data?.docs as any[]).map((el, i) => {
+          //   return { ...el, success: null, docIndex: i, percentProgress: 0 }
+          // }));
+          // console.log('Uploaded Documents ============> ', res[2]?.data.docs);
           this.spinner.close();
         },
         error: (error: unknown) => {
@@ -225,8 +226,8 @@ export class CoqApplicationFormComponent
         if (!this.requirement?.tanks?.length) {
           this.popUp.open('No tanks configured for this depot. You may not proceed to next step.', 'error');
         }
-        this.documents$.next(this.requirement.requiredDocuments.map((el, i) => {
-          return { ...el, success: null, docIndex: i, percentProgress: 0 }
+        this.documents$.next(this.requirement.requiredDocuments.map((el) => {
+          return { ...el, success: null, percentProgress: 0 }
         }))
         this.fetchingRequirement = false;
         this.spinner.close();
@@ -523,6 +524,7 @@ export class CoqApplicationFormComponent
           if (res?.success) {
             this.popUp.open('CoQ Application Created Successfully', 'success');
             localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+            this.coqStepper.selectedIndex = 0;
           } else {
             this.popUp.open('CoQ Application Creation Failed', 'error');
           }

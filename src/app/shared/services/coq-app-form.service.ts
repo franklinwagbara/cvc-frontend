@@ -109,7 +109,24 @@ export class CoqAppFormService {
       });
     } else {
       dialogRef.afterClosed().subscribe((result: IGasTankReading) => {
-
+        if (result) {
+          const { tank, status } = result;
+          const data = JSON.parse(localStorage.getItem(localDataKey));
+          if (Array.isArray(data) && data.length) {
+            for (let coqData of data) {
+              if (coqData[status].tank === tank && coqData[status].status === status) {
+                coqData[status] = result;
+                localStorage.setItem(localDataKey, JSON.stringify(data));
+                if (localDataKey === LocalDataKey.COQFORMREVIEWDATA) {
+                  this.gasProductReviewData = data.filter((val: CoQData) => {
+                    return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
+                  });
+                  this.gasProductReviewData$.next(data);
+                }
+              }
+            }
+          }
+        }
       })
     }
   }
