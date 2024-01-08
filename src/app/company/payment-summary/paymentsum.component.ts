@@ -57,19 +57,21 @@ export class PaymentSumComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.paymentSummary = res.data;
-          console.log(this.paymentSummary.rrr);
-          this.rrr$.next(this.paymentSummary.rrr);
-          this.applicationStatus$.next(this.paymentSummary.paymentStatus);
+          this.rrr$.next(this.paymentSummary?.rrr);
+          this.applicationStatus$.next(this.paymentSummary?.paymentStatus);
 
           this.isPaymentConfirmed$.next(
-            this.paymentSummary.rrr &&
-              this.paymentSummary.paymentStatus === 'PaymentCompleted'
+            this.paymentSummary?.rrr &&
+              this.paymentSummary?.paymentStatus === 'PaymentCompleted'
           );
 
           this.isPaymentNotComfirmed$.next(
-            this.paymentSummary.rrr &&
-              this.paymentSummary.paymentStatus !== 'PaymentCompleted'
+            this.paymentSummary?.rrr &&
+              this.paymentSummary?.paymentStatus !== 'PaymentCompleted'
           );
+          if (this.paymentSummary?.paymentStatus === 'PaymentCompleted') {
+            this.popUp.open('Payment completed successfully!', 'success');
+          }
         }
         this.progressbar.close();
         this.spinner.close();
