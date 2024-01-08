@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   IAppFee,
   IApplicationType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { AdminService } from '../../services/admin.service';
@@ -24,7 +24,7 @@ import { SpinnerService } from '../../services/spinner.service';
 import {
   IPlant,
   IPlantType,
-} from 'src/app/company/settings/processing-plant/processing-plant.component';
+} from '../../../../../src/app/company/settings/processing-plant/processing-plant.component';
 import { CompanyService } from '../../services/company.service';
 
 @Component({

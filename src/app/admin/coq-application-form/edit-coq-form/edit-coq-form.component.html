@@ -135,56 +135,56 @@
   <form [formGroup]="form">
     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1">
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-dip">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-liquidDensityVac">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="liqDensityVac"
-          formControlName="liqDensityVac"
-          id="coq-liquid-product-liqDensityVac"
+          name="liquidDensityVac"
+          formControlName="liquidDensityVac"
+          id="coq-liquid-product-liquidDensityVac"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-dip">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-observedSounding">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="obsSounding"
-          formControlName="obsSounding"
-          id="coq-liquid-product-obsSounding"
+          name="observedSounding"
+          formControlName="observedSounding"
+          id="coq-liquid-product-observedSounding"
           class="form-field"
         />
       </div>
     
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-tapeCorr">Tape Correction (m) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-tapeCorrection">Tape Correction (m) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="tapeCorr"
-          formControlName="tapeCorr"
-          id="coq-liquid-product-tapeCorr"
+          name="tapeCorrection"
+          formControlName="tapeCorrection"
+          id="coq-liquid-product-tapeCorrection"
           class="form-field"
         />
       </div>
     
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-liqTemp">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-liquidTemperature">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="liqTemp"
-          formControlName="liqTemp"
-          id="coq-liquid-product-liqTemp"
+          name="liquidTemperature"
+          formControlName="liquidTemperature"
+          id="coq-liquid-product-liquidTemperature"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-observedLiqVol">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-observedLiquidVolume">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="observedLiqVol"
-          formControlName="observedLiqVol"
-          id="coq-liquid-product-observedLiqVol"
+          name="observedLiquidVolume"
+          formControlName="observedLiquidVolume"
+          id="coq-liquid-product-observedLiquidVolume"
           class="form-field"
         />
       </div>
@@ -212,58 +212,69 @@
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-tankVol100">100% Tank Volume <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-tankVolume">100% Tank Volume <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="tankVol100"
-          formControlName="tankVol100"
-          id="coq-liquid-product-tankVol100"
+          name="tankVolume"
+          formControlName="tankVolume"
+          id="coq-liquid-product-tankVolume"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-vapTemp">Vapor Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-vapourTemperature">Vapor Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="vapTemp"
-          formControlName="vapTemp"
-          id="coq-liquid-product-vapTemp"
+          name="vapourTemperature"
+          formControlName="vapourTemperature"
+          id="coq-liquid-product-vapourTemperature"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-vapPressure">Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-vapourPressure">Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="vapPressure"
-          formControlName="vapPressure"
-          id="coq-liquid-product-vapPressure"
+          name="vapourPressure"
+          formControlName="vapourPressure"
+          id="coq-liquid-product-vapourPressure"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-molWt">Molecular Weight <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-molecularWeight">Molecular Weight <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="molWt"
-          formControlName="molWt"
-          id="coq-liquid-product-molWt"
+          name="molecularWeight"
+          formControlName="molecularWeight"
+          id="coq-liquid-product-molecularWeight"
           class="form-field"
         />
       </div>
 
       <div class="md:col-span-1">
-        <label for="coq-liquid-product-vapFactor">Vapor Factor <sup class="text-red-700">*</sup></label>
+        <label for="coq-liquid-product-vapourFactor">Vapour Factor <sup class="text-red-700">*</sup></label>
         <input
           type="number"
-          name="vapFactor"
-          formControlName="vapFactor"
-          id="coq-liquid-product-vapFactor"
+          name="vapourFactor"
+          formControlName="vapourFactor"
+          id="coq-liquid-product-vapourFactor"
           class="form-field"
         />
+      </div>
+
+      <div *ngIf="form.valid" class="md:col-span-1 text-right">
+        <button
+          mat-raised-button
+          type="submit"
+          (click)="edit()"
+          color="primary"
+        >
+          Update
+        </button>
       </div>
     </div>
   </form>

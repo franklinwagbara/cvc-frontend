@@ -80,6 +80,14 @@ label {
   @apply relative w-full overflow-x-auto;
 }
 
+::ng-deep .mat-stepper-vertical .mat-step-icon, .mat-stepper-horizontal .mat-step-icon {
+  @apply bg-yellow-400 text-white;
+}
+
+::ng-deep .mat-stepper-vertical .mat-step-icon-state-done, .mat-stepper-horizontal .mat-step-icon-state-done {
+  @apply bg-green-400 text-white;
+}
+
 table {
   width: 100%;
 }
@@ -87,6 +95,7 @@ table {
 td,
 th {
   width: fit-content;
+  padding: 4px;
 }
 
 .table-title {

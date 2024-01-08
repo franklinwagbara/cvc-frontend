@@ -13,17 +13,17 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationProcessesService } from 'src/app/shared/services/application-processes.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { ProcessingPlantFormComponent } from 'src/app/shared/reusable-components/processing-plant-form/processing-plant-form.component';
-import { CompanyService } from 'src/app/shared/services/company.service';
+import { AdminService } from '../../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../../src/app/shared/services/spinner.service';
+import { ApplicationProcessesService } from '../../../../../../src/app/shared/services/application-processes.service';
+import { LibaryService } from '../../../../../../src/app/shared/services/libary.service';
+import { ProcessingPlantFormComponent } from '../../../../../../src/app/shared/reusable-components/processing-plant-form/processing-plant-form.component';
+import { CompanyService } from '../../../../../../src/app/shared/services/company.service';
 import { IPlant } from '../processing-plant.component';
-import { TankFormComponent } from 'src/app/shared/reusable-components/tank-form/tank-form.component';
+import { TankFormComponent } from '../../../../../../src/app/shared/reusable-components/tank-form/tank-form.component';
 import { Console } from 'console';
-import { ITank } from 'src/app/shared/interfaces/ITank';
+import { ITank } from '../../../../../../src/app/shared/interfaces/ITank';
 
 @Component({
   selector: 'app-tanks',

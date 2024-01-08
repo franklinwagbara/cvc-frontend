@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry, map } from 'rxjs/operators';
-import { IMessage } from 'src/app/company/dashboard/dashboard.component';
-import { IPlant } from 'src/app/company/settings/processing-plant/processing-plant.component';
+import { IMessage } from '../../../../src/app/company/dashboard/dashboard.component';
+import { IPlant } from '../../../../src/app/company/settings/processing-plant/processing-plant.component';
 import { environment } from '../../../../src/environments/environment';
 import { ITank } from '../interfaces/ITank';
 
