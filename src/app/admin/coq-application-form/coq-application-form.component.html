@@ -42,7 +42,11 @@
       <hr class="w-full" />
       <hr class="w-full" />
 
-      <mat-stepper class="pl-3 pr-2" orientation="vertical" linear #stepper>
+      <mat-vertical-stepper class="pl-3 pr-2" linear #coqstepper>
+        <ng-template matStepperIcon="done">
+          <mat-icon>check</mat-icon>
+        </ng-template>
+
         <mat-step [stepControl]="depotSelection" label="Select Depot">
           <mat-form-field appearance="fill" style="min-width: fit-content">
             <mat-label>Select Depot</mat-label>
@@ -167,24 +171,25 @@
                 </div>
         
                 <div class="md:col-span-3">
-                  <label for="coq-liquidproduct-waterVoi">WATER VOI <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquidproduct-waterVolume">WATER VOI <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="waterVOI"
-                    formControlName="waterVOI"
-                    id="coq-liquidproduct-waterVoi"
+                    name="waterVolume"
+                    formControlName="waterVolume"
+                    id="coq-liquidproduct-waterVolume"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['waterVOI'].touched && form?.controls['waterVOI'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['waterVolume'].touched && form?.controls['waterVolume'].invalid}"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-corr">CORR(m<sup>3</sup>)</label>
+                  <label for="coq-liquid-product-floatRoofCorr">CORR(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
-                    name="corr"
-                    formControlName="corr"
-                    id="coq-liquid-product-corr"
+                    name="floatRoofCorr"
+                    formControlName="floatRoofCorr"
+                    id="coq-liquid-product-floatRoofCorr"
                     class="form-field"
+                    [ngClass]="{'is-invalid': form?.controls['floatRoofCorr'].touched && form?.controls['floatRoofCorr'].invalid}"
                   />
                 </div>
                 <div class="md:col-span-3">
@@ -231,17 +236,6 @@
                   />
                 </div>
         
-                <div class="md:col-span-3">
-                  <label for="coq-liquid-product-gsv">GSV <sup class="text-red-700">*</sup></label>
-                  <input
-                    type="number"
-                    name="gsv"
-                    formControlName="gsv"
-                    id="coq-liquid-product-gsv"
-                    class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['gsv'].touched && form?.controls['gsv'].invalid}"
-                  />
-                </div>
                 <div class="md:col-span-3">
                   <label for="coq-liquid-product-mtvac">MT(VAC) <sup class="text-red-700">*</sup></label>
                   <input
@@ -441,7 +435,7 @@
 
         <mat-step 
           [stepControl]="!isGasProduct ? vesselLiqInfoForm : vesselGasInfoForm" 
-          label="'Shore Tank Ullage Details Entry'"
+          label="Shore Tank Ullage Details Entry"
         >
           <ng-container *ngIf="!isGasProduct">
             <ng-container *ngTemplateOutlet="vesselLiqInfoFormTmp"></ng-container>
@@ -762,7 +756,7 @@
                   >
                     <ng-container *ngIf="column === 'document'">
                       <div class="flex justify-start align-middle">
-                        <span class="truncate" [title]="element.docName"> {{ element?.docName }}</span>&nbsp;
+                        <span class="truncate max-w-40" [title]="element.docName"> {{ element?.docName }}</span>&nbsp;
                       </div>
                     </ng-container>
   
@@ -779,9 +773,26 @@
                         class="d-none file-input"
                         type="file"
                         accept=".png,.jpg,.jpeg,.pdf"
-                        (change)="onFileSelected($event, i, element)"
+                        (change)="onFileSelected($event, i)"
                       />
                     </ng-container>
+
+                    <ng-container *ngIf="column === 'source'">
+                      <div>
+                        <a
+                          *ngIf="element?.docSource"
+                          [href]="element?.docSource"
+                          target="_blank"
+                          download
+                        ><img
+                          src="../../../assets/image/pdfIcon.png"
+                          width="30"
+                          height="30"
+                          alt="Facility Document"
+                        /></a>
+                      </div>
+                    </ng-container>
+
                     <ng-container *ngIf="column === 'progress'">
                       <div class="flex flex-col items-center justify-center">
                         <span
@@ -794,16 +805,6 @@
                               "Kb)"
                           }}</span
                         >
-                        <a
-                          *ngIf="element?.docSource && element.percentProgress === 100"
-                          [href]="element.docSource"
-                          target="_blank"
-                          download
-                        ><img
-                          src="../../../assets/image/pdfIcon.png"
-                          width="40"
-                          height="25"
-                        /></a>
                         <mat-progress-bar
                           mode="determinate"
                           [value]="
@@ -866,7 +867,7 @@
             </div>
           </ng-template>
         </mat-step>
-      </mat-stepper>
+      </mat-vertical-stepper>
     </div>
   </div>
 </div>

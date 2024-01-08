@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IMessage } from '../../dashboard/dashboard.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { DialogRef } from '@angular/cdk/dialog';
-import { CompanyService } from 'src/app/shared/services/company.service';
+import { CompanyService } from '../../../../../src/app/shared/services/company.service';
 
 @Component({
   selector: 'app-view-message',

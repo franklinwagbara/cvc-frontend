@@ -1,18 +1,3 @@
-h6 {
-  @apply shadow-md p-4;
-}
-
-.my-accordion {
-  @apply relative mb-3 shadow-md;
-}
-
-.accordion-open > .accordion-content-open {
-  @apply h-60 overflow-auto;
-}
-
-.accordion-open i {
-  @apply rotate-180;
-}
 
 .table td:not(last-child),
 .table th:not(last-child) {

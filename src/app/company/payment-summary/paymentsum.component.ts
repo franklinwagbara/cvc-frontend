@@ -8,7 +8,7 @@ import { environment } from '../../../../src/environments/environment';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AuthenticationService, GenericService } from '../../shared/services';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 
 @Component({
   templateUrl: 'paymentsum.component.html',

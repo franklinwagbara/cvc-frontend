@@ -13,7 +13,7 @@ import { ApplyService } from '../../../../../../src/app/shared/services/apply.se
 import { ProgressBarService } from '../../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../../src/app/shared/services/spinner.service';
 import { ShowMoreComponent } from '../../../../shared/reusable-components/show-more/show-more.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+import { ApplicationService } from '../../../../../../src/app/shared/services/application.service';
 
 @Component({
   selector: 'app-view-coq-application',
