@@ -2,14 +2,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationProcessesService } from 'src/app/shared/services/application-processes.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { ApplicationProcessesService } from '../../../../../src/app/shared/services/application-processes.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
-import { AppFeeFormComponent } from 'src/app/shared/reusable-components/app-fee-form/app-fee-form.component';
-import { ProductFormComponent } from 'src/app/shared/reusable-components/product-form/product-form.component';
+import { AppFeeFormComponent } from '../../../../../src/app/shared/reusable-components/app-fee-form/app-fee-form.component';
+import { ProductFormComponent } from '../../../../../src/app/shared/reusable-components/product-form/product-form.component';
 
 @Component({
   selector: 'app-products',

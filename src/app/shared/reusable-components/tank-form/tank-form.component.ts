@@ -20,7 +20,7 @@ import { SpinnerService } from '../../services/spinner.service';
 import {
   IPlant,
   IPlantType,
-} from 'src/app/company/settings/processing-plant/processing-plant.component';
+} from '../../../../../src/app/company/settings/processing-plant/processing-plant.component';
 import { CompanyService } from '../../services/company.service';
 import { ITank } from '../../interfaces/ITank';
 
