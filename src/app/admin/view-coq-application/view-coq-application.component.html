@@ -10,15 +10,15 @@
           <div>
             <h5>NOA Application Reference</h5>
             <hr />
-            <ng-container *ngIf="application?.noaAppId else noData">
-              <span>{{ application?.depot }}</span>
+            <ng-container *ngIf="application?.appId else noData">
+              <span>{{ application?.appId }}</span>
             </ng-container>
           </div>
           <div>
-            <h5>Depot</h5>
+            <h5>Depot Name</h5>
             <hr />
-            <ng-container *ngIf="application?.reference else noData">
-              <span>{{ application?.depot }}</span>
+            <ng-container *ngIf="application?.depotName else noData">
+              <span>{{ application?.depotName }}</span>
             </ng-container>
           </div>
         </div>
@@ -36,8 +36,8 @@
           <div>
             <h5>Date of Vessel Ullage</h5>
             <hr />
-            <ng-container *ngIf="application?.dateOfVesselArrival else noData">
-              <span>{{ application?.dateOfVesselArrival }}</span>
+            <ng-container *ngIf="application?.dateOfVesselUllage else noData">
+              <span>{{ application?.dateOfVesselUllage }}</span>
             </ng-container>
           </div>
           <div *ngIf="1">
@@ -64,22 +64,22 @@
           <div>
             <h5>Qty Reflected on Bill of Lading (MT Air)</h5>
             <hr />
-            <ng-container *ngIf="application?.gov else noData">
-              <span>{{ application?.gov }}</span>
+            <ng-container *ngIf="application?.mt_AIR else noData">
+              <span>{{ application?.mt_AIR }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Arrival SHIP Figure (MT Air)</h5>
             <hr />
-            <ng-container *ngIf="application?.gov else noData">
-              <span>{{ application?.gov }}</span>
+            <ng-container *ngIf="application?.arrivalShipFigure else noData">
+              <span>{{ application?.arrivalShipFigure }}</span>
             </ng-container>
           </div>
           <div>
             <h5>SHIP Figure (DISCHARGED) (MT Air)</h5>
             <hr />
-            <ng-container *ngIf="application?.gov else noData">
-              <span>{{ application?.gov }}</span>
+            <ng-container *ngIf="application?.dischargedShipFigure else noData">
+              <span>{{ application?.dischargedShipFigure }}</span>
             </ng-container>
           </div>
           <div>
@@ -92,7 +92,7 @@
         </div>
       </section>
       
-      <section *ngIf="application?.tanks.length" class="info-section">
+      <section *ngIf="application?.tanks?.length" class="info-section">
         <h3>Tanks Information</h3>
         <div *ngFor="let dSource of dataSources; let i = index">
           <mat-accordion>

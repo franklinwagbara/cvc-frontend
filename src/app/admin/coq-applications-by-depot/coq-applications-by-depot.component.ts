@@ -67,8 +67,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
         'certificate-of-quantity',
         'coq-applications-by-depot',
         event.id,
-      ],
-      { queryParams: { depotId: event.depotId, view: true, coqId: event.id } }
+      ]
     );
   }
 }
