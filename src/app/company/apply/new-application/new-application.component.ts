@@ -260,7 +260,7 @@ export class NewApplicationComponent implements OnInit {
         this.applicationTypes = res.data;
         this.applicationTypeId = this.applicationTypes.find(
           (x) => x.name.toLowerCase() == 'new'
-        ).id;
+        )?.id;
         this.spinner.close();
         this.cd.markForCheck();
       },

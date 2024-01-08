@@ -60,6 +60,7 @@ const routes: Routes = [
   },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
+  { path: 'view-coq-application/:id', component: ViewCoqApplicationComponent },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,

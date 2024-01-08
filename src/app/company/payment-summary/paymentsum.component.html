@@ -78,14 +78,14 @@
                     <td class="font-bold">{{ paymentSummary?.total }}</td>
                   </tr>
                   <tr
-                    *ngIf="paymentSummary.paymentStatus === 'PaymentCompleted'"
+                    *ngIf="paymentSummary?.paymentStatus === 'PaymentCompleted'"
                   >
                     <td class="col-title">Payment Status</td>
                     <td
                       class="font-bold"
                       [ngClass]="{
                         '!text-green-800':
-                          paymentSummary.paymentStatus === 'PaymentCompleted'
+                          paymentSummary?.paymentStatus === 'PaymentCompleted'
                       }"
                     >
                       {{ "Payment Completed" }}
