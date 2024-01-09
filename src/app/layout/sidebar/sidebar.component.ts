@@ -70,28 +70,6 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 3,
-    title: 'CoQ',
-    iconName: 'carbon',
-    iconId: 'carbon',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
-
-    subRoutes: [
-      {
-        id: 1,
-        title: 'NOA Applications',
-        url: '/admin/noa-applications-by-depot',
-      },
-      {
-        id: 2,
-        title: 'COQ Applications',
-        url: '/admin/certificate-of-quantity/coq-applications-by-depot',
-      },
-    ],
-  },
-  {
     id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
@@ -156,12 +134,7 @@ const ROUTES: RouteInfo[] = [
         id: 1,
         title: 'ALL PAYMENTS',
         url: '/admin/payments',
-      },
-      {
-        id: 2,
-        title: 'EXTRA PAYMENTS',
-        url: '#',
-      },
+      }
     ],
   },
   {
@@ -311,9 +284,30 @@ export class SidebarComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     const currentUser = decodeFullUserInfo();
-    // Show CoQ nav only to Staffs in Field Offices
-    if (!currentUser?.location || currentUser?.location !== 'FO') {
-      this.menuItems = this.menuItems.filter((item) => item.title !== 'CoQ');
+    // Show CoQ nav only to Staffs in Field Offices and Field Officers
+    if (currentUser.userRoles === 'Field_Officer' || currentUser?.location === 'FO') {
+      this.menuItems = this.menuItems.slice(0, 2).concat({
+        id: 3,
+        title: 'CoQ',
+        iconName: 'carbon',
+        iconId: 'carbon',
+        iconColor: 'white',
+        active: false,
+        subMenuActive: false,
+    
+        subRoutes: [
+          {
+            id: 1,
+            title: 'NOA Applications',
+            url: '/admin/noa-applications-by-depot',
+          },
+          {
+            id: 2,
+            title: 'COQ Applications',
+            url: '/admin/certificate-of-quantity/coq-applications-by-depot',
+          },
+        ],
+      }, this.menuItems.slice(2));
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs

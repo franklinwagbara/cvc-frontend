@@ -11,5 +11,4 @@ export interface ILiquidTankReading {
   temp: number;
   density: number;
   vcf: number;
-  mtVAC: number;
 }
