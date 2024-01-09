@@ -9,9 +9,9 @@ import { Staff } from '../all-staff/all-staff.component';
 import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
-import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-field-officer-setting',
@@ -37,7 +37,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     private dialog: MatDialog,
     private adminService: AdminService,
     private depotOfficerService: DepotOfficerService,
-    private libService: LibaryService,
+    private libraryService: LibaryService,
     private spinner: SpinnerService,
     private progressBar: ProgressBarService,
     private popUp: PopupService
@@ -51,7 +51,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     this.spinner.open();
     forkJoin([
       this.depotOfficerService.getAllMappings(),
-      this.libService.getAppDepots(),
+      this.libraryService.getAppDepots(),
       this.adminService.getAllStaff(),
       this.adminService.getElpsStaffList(),
       this.adminService.getRoles(),

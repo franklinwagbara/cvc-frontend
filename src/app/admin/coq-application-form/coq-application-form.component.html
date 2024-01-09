@@ -171,7 +171,7 @@
                 </div>
         
                 <div class="md:col-span-3">
-                  <label for="coq-liquidproduct-waterVolume">WATER VOI <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquidproduct-waterVolume">WATER VOLUME <sup class="text-red-700">*</sup></label>
                   <input
                     type="number"
                     name="waterVolume"
@@ -210,7 +210,7 @@
                     formControlName="temp"
                     id="coq-liquid-product-temp"
                     class="form-field"
-                    required
+                    [ngClass]="{'is-invalid': form?.controls['temp'].touched && form?.controls['temp'].invalid}"
                   />
                 </div>
         
@@ -232,19 +232,8 @@
                     name="vcf"
                     formControlName="vcf"
                     id="coq-liquid-product-vcf"
-                    class="form-field"
-                  />
-                </div>
-        
-                <div class="md:col-span-3">
-                  <label for="coq-liquid-product-mtvac">MT(VAC) <sup class="text-red-700">*</sup></label>
-                  <input
-                    type="number"
-                    name="mtVAC"
-                    formControlName="mtVAC"
-                    id="coq-liquid-product-mtvac"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['mtVAC'].touched && form?.controls['mtVAC'].invalid}"
+                    [ngClass]="{'is-invalid': form?.controls['vcf'].touched && form?.controls['vcf'].invalid}"
                   />
                 </div>
               </div>
@@ -513,46 +502,7 @@
                   </div>
                 </mat-form-field>
               </div>
-              <div class="md:col-span-3 form-group">
-                <label for="coq-liquid-product-gov"
-                  >GOV(litres) <sup class="text-red-700">*</sup></label
-                >
-                <input
-                  type="number"
-                  name="gov"
-                  formControlName="gov"
-                  id="coq-liquid-product-gov"
-                  class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselLiqInfoForm.controls['gov'].touched && vesselLiqInfoForm.controls['gov'].invalid}"
-                />
-              </div>
     
-              <div class="md:col-span-3">
-                <label for="coq-liquid-product-gsv"
-                  >GSV(Litres) <sup class="text-red-700">*</sup></label
-                >
-                <input
-                  type="number"
-                  name="gsv"
-                  formControlName="gsv"
-                  id="coq-liquid-product-gsv"
-                  class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselLiqInfoForm.controls['gsv'].touched && vesselLiqInfoForm.controls['gsv'].invalid}"
-                />
-              </div>
-              <div class="md:col-span-3">
-                <label for="coq-liquid-product-mtvac"
-                  >MT(VAC) <sup class="text-red-700">*</sup></label
-                >
-                <input
-                  type="number"
-                  name="mt_VAC"
-                  formControlName="mt_VAC"
-                  id="coq-liquid-product-mtvac"
-                  class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselLiqInfoForm.controls['mt_VAC'].touched && vesselLiqInfoForm.controls['mt_VAC'].invalid}"
-                />
-              </div>
               <div class="md:col-span-3">
                 <label for="coq-liquid-product-mtvac"
                   >Expot-Depot Price<sup class="text-red-700">*</sup></label
