@@ -41,7 +41,7 @@ export class FileuploadWithProgressService {
                 this.uploadResponses = this.uploadResponses.map((el) => {
                   if (el?.docIndex === docIndex) {
                     responseExists = true;
-                    return res;
+                    return { ...res, docIndex };
                   }
                   return el;
                 });

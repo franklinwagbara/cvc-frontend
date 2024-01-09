@@ -10,8 +10,6 @@ import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { Category } from '../settings/modules-setting/modules-setting.component';
-import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 import { PaymentService } from '../../../../src/app/shared/services/payment.service';
 
 @Component({
@@ -25,7 +23,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   //public categories: Category[];
 
   public tableTitles = {
-    payments: 'All Payments',
+    payments: 'Payments',
   };
 
   public paymentKeysMappedToHeaders = {

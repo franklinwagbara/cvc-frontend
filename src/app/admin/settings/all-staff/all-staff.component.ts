@@ -120,13 +120,15 @@ export class AllStaffComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.adminHttpService.getAllStaff().subscribe((res) => {
-        this.users = res.data;
-
-        this.progressBar.close();
-      });
+      if (res) {
+        this.progressBar.open();
+  
+        this.adminHttpService.getAllStaff().subscribe((res) => {
+          this.users = res.data;
+  
+          this.progressBar.close();
+        });
+      }
     });
   }
 
@@ -182,16 +184,22 @@ export class AllStaffComponent implements OnInit {
           if (type === 'users') this.users = responses[0];
           this.progressBar.open();
 
-          this.adminHttpService.getAllStaff().subscribe((res) => {
-            this.users = res.data;
-
-            this.progressBar.close();
+          this.adminHttpService.getAllStaff().subscribe({
+            next: (res: any) => {
+              this.users = res.data;
+              this.progressBar.close();
+            },
+            error: (error: unknown) => {
+              console.log(error);
+              this.progressBar.close();
+            }
           });
         }
 
         this.progressBar.close();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });

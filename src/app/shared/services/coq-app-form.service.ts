@@ -18,13 +18,13 @@ export class CoqAppFormService {
   public formDataEvent = new EventEmitter<'edited' | 'removed'>();
 
   constructor(public dialog: MatDialog) {
-    this.liquidProductReviewData$.subscribe((val: any[]) => {
-      this.liquidProductReviewData = val.filter((val: CoQData) => {
+    this.liquidProductReviewData$.subscribe((value: any[]) => {
+      this.liquidProductReviewData = value.filter((val: CoQData) => {
         return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
       });
     })
-    this.gasProductReviewData$.subscribe((val: any[]) => {
-      this.gasProductReviewData = val.filter((val: CoQData) => {
+    this.gasProductReviewData$.subscribe((value: any[]) => {
+      this.gasProductReviewData = value.filter((val: CoQData) => {
         return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
       });
     })
@@ -46,7 +46,7 @@ export class CoqAppFormService {
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'corr', 'gov', 'gsv', 'temp', 'tankVolume', 'vapourPressure', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
+    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temp', 'waterVolume', 'tankVolume', 'vapourPressure', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
     return !colsWithUnit.includes(colKey);
   }
 
@@ -76,25 +76,6 @@ export class CoqAppFormService {
             for (let coqData of data) {
               if (coqData[status].tank === tank && coqData[status].status === status) {
                 coqData[status] = result;
-                // Check if diff data exists and update
-                if (Object.keys(coqData['diff']).length) {
-                  let data: CoQData = coqData;
-                  data.diff = {
-                    status: 'DIFF',
-                    tank: data.before.tank,
-                    dip: parseFloat(data.after.dip) - parseFloat(data.before.dip),
-                    waterDIP: parseFloat(data.after.waterDIP) - parseFloat(data.before.waterDIP),
-                    tov: parseFloat(data.after.tov) - parseFloat(data.before.tov),
-                    waterVolume: parseFloat(data.after.waterVolume) - parseFloat(data.before.waterVolume),
-                    floatRoofCorr: parseFloat(data.after.floatRoofCorr) - parseFloat(data.before.floatRoofCorr),
-                    gov: parseFloat(data.after.gov) - parseFloat(data.before.gov),
-                    temp: parseFloat(data.after.temp) - parseFloat(data.before.temp),
-                    density: parseFloat(data.after.density) - parseFloat(data.before.density),
-                    vcf: parseFloat(data.after.vcf) - parseFloat(data.before.vcf),
-                    gsv: parseFloat(data.after.gsv) - parseFloat(data.before.gsv),
-                    mtVAC: parseFloat(data.after.mtVAC) - parseFloat(data.before.mtVAC),
-                  }
-                }
                 localStorage.setItem(localDataKey, JSON.stringify(data));
                 if (localDataKey === LocalDataKey.COQFORMREVIEWDATA) {
                   this.liquidProductReviewData = data.filter((val: CoQData) => {

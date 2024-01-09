@@ -20,30 +20,6 @@
         <p>{{ application?.currentDesk }}</p>
       </mat-expansion-panel>
 
-      <!-- <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> EXTRA PAYMENTS </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let extraPayment of application?.extraPayments | firstN : 4"
-        >
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ extraPayment.actionBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Remark</div>
-            <div class="item-content">{{ extraPayment.comment }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Date</div>
-            <div class="item-content">{{ extraPayment.date }}</div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('extraPayments')">Show more</p>
-      </mat-expansion-panel> -->
-
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
@@ -80,7 +56,7 @@
             </div>
           </div>
         </div>
-        <!-- <p class="show-more" (click)="showMore('applicationDocs')">Show more</p> -->
+       
       </mat-expansion-panel>
     </div>
     <div class="application-controls" *ngIf="isStaffDesk">

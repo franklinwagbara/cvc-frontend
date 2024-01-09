@@ -1,18 +1,17 @@
 <div class="setting-desk">
-  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL Payments</h2>
+  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL PAYMENTS</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
           [table_title]="tableTitles.payments"
-          [title-color]="'yellow'"
+          [title-color]="'green'"
           [table_keysMappedToHeaders]="paymentKeysMappedToHeaders"
           [table_content]="payments"
           [EnableViewControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
-          [noTitle]="true"
           (onViewData)="onViewData($event, 'payments')"
         >
         </generic-table>

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   ICOQ,
   ICoQApplication,
@@ -67,8 +67,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
         'certificate-of-quantity',
         'coq-applications-by-depot',
         event.id,
-      ],
-      { queryParams: { depotId: event.depotId, view: true, coqId: event.id } }
+      ]
     );
   }
 }
