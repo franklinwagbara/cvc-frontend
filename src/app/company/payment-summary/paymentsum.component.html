@@ -77,18 +77,21 @@
                     <td class="col-title">Total Amount</td>
                     <td class="font-bold">{{ paymentSummary?.total }}</td>
                   </tr>
-                  <tr
-                    *ngIf="paymentSummary.paymentStatus === 'PaymentCompleted'"
-                  >
+                  <tr *ngIf="paymentSummary?.paymentStatus">
                     <td class="col-title">Payment Status</td>
                     <td
                       class="font-bold"
-                      [ngClass]="{
-                        '!text-green-800':
-                          paymentSummary.paymentStatus === 'PaymentCompleted'
-                      }"
+                      [ngClass]="
+                        paymentSummary?.paymentStatus === 'PaymentCompleted'
+                          ? '!text-green-800'
+                          : '!text-red-800'
+                      "
                     >
-                      {{ "Payment Completed" }}
+                      {{
+                        paymentSummary?.paymentStatus === "PaymentCompleted"
+                          ? "Payment Completed"
+                          : "Payment pending"
+                      }}
                     </td>
                   </tr>
                   <tr>
@@ -110,7 +113,7 @@
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-actions class="btns">
-      <a mat-flat-button class="neutral" (click)="back()">Go Back</a>
+      <!-- <a mat-flat-button class="neutral" (click)="back()">Go Back</a> -->
       <a
         mat-flat-button
         *ngIf="isPaymentNotComfirmed$ | async"

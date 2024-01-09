@@ -1,14 +1,16 @@
 <div class="view-application">
-  <h2 mat-dialog-title class="text-center title">
+  <h2 mat-dialog-title class="text-center my-page-title">
     APPLICATION REFERENCE : {{ application?.reference }}
   </h2>
+
   <div mat-dialog-content class="content">
-    <div class="application-view">
-      <app-application-view-table
+    <div class="application-view min-w-[500px]">
+      <app-coq-application-view-table
         [application]="application"
         [appId]="appId"
         [appSource]="appSource"
-      ></app-application-view-table>
+        [tanks]="tanks"
+      ></app-coq-application-view-table>
     </div>
     <div class="application-controls">
       <mat-expansion-panel>
@@ -46,29 +48,25 @@
         <mat-expansion-panel-header>
           <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
         </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let applicationDoc of application?.documents | firstN : 4"
-        >
+        <div class="card-list">
           <div class="card-item">
             <div class="item-title">
-              <a [href]="applicationDoc.docSource" target="_blank">
+              <a [href]="documents?.docSource" target="_blank">
                 <img
-                  *ngIf="isPDF(applicationDoc.docSource)"
+                  *ngIf="isPDF(documents?.docSource)"
                   src="../../../../assets/image/pdfIcon.png"
                   alt="open file"
                 />
 
                 <img
-                  *ngIf="isIMG(applicationDoc.docSource)"
+                  *ngIf="isIMG(documents?.docSource)"
                   src="../../../../assets/image/imageIcon.png"
                   alt="open file"
                 />
 
                 <img
                   *ngIf="
-                    !isIMG(applicationDoc.docSource) &&
-                    !isPDF(applicationDoc.docSource)
+                    !isIMG(documents?.docSource) && !isPDF(documents?.docSource)
                   "
                   src="../../../../assets/image/otherFileType.png"
                   alt="open file"
@@ -76,24 +74,28 @@
               </a>
             </div>
             <div class="item-content">
-              <a [href]="applicationDoc.docSource" target="_blank">
-                {{ applicationDoc.docName }}
+              <a [href]="documents?.docSource" target="_blank">
+                {{ documents?.docName }}
               </a>
             </div>
           </div>
         </div>
-        <p class="show-more" (click)="showMore('applicationDocs')">Show more</p>
+        <!-- <p class="show-more" (click)="showMore('applicationDocs')">Show more</p> -->
       </mat-expansion-panel>
     </div>
     <div class="application-controls" *ngIf="isStaffDesk">
       <div class="actions">
-        <button mat-raised-button class="bg-green-500 text-white" (click)="action('approve')">
+        <button
+          mat-raised-button
+          class="bg-green-500 text-white"
+          (click)="action('approve')"
+        >
           Approve
         </button>
         <button mat-raised-button color="warn" (click)="action('sendBack')">
           Send Back
         </button>
-      
+
         <button
           mat-stroked-button
           color="primary"

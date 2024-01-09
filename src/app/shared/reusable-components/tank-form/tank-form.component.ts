@@ -61,6 +61,7 @@ export class TankFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.data);
     this.getProduct();
     if (this.data.data.action === 'EDIT') this.getTank();
   }
@@ -85,7 +86,7 @@ export class TankFormComponent implements OnInit {
     this.tankId = this.data.data.tank.plantTankId;
     this.form.get('tankName').setValue(this.tank.tankName);
     this.form.get('product').setValue(this.tank.product);
-    this.form.get('capacity').setValue(this.tank.position);
+    this.form.get('capacity').setValue(this.tank.capacity);
     this.form.get('position').setValue(this.tank.position);
     this.cd.markForCheck();
   }

@@ -24,6 +24,10 @@ export class CoqService {
     return this.http.post<any>(`${API}/createCoQ`, data);
   }
 
+  viewCoqApplication(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/coq_details/${id}`);
+  }
+
   viewCoQLicense(id): Observable<any> {
     return this.http.get<any>(`${API}/view_license`);
   }
@@ -57,7 +61,9 @@ export class CoqService {
   }
 
   getCoqRequirement(appId: number, depotId: number): Observable<any> {
-    return this.http.get<any>(`${API}/coq_requirement/${appId}`, { params: { depotId }});
+    return this.http.get<any>(`${API}/coq_requirement/${appId}`, {
+      params: { depotId },
+    });
   }
 
   processApplication(model: {

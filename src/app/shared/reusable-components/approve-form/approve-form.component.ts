@@ -54,12 +54,11 @@ export class ApproveFormComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log(this.data);
     const tempUser = this.auth.currentUser;
 
     this.auth.getAllStaff().subscribe({
       next: (res) => {
-        this.currentUser = res.data.data.find(
+        this.currentUser = res.data.data?.find(
           (u) => u.email === tempUser.userId
         );
 
@@ -87,7 +86,6 @@ export class ApproveFormComponent implements OnInit {
 
   private approveOther() {
     this.progressBarService.open();
-
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Approve,

@@ -1,0 +1,62 @@
+.title {
+  color: wheat;
+  @apply px-10 py-5 shadow-md bg-gradient-to-r from-[#71B280] to-[#134E5E];
+}
+
+.content {
+  @apply flex flex-col xl:flex-row w-full  mt-0 gap-4;
+}
+
+.application-view {
+  @apply flex-1 w-[100%] xl:w-[33%];
+}
+
+.application-controls {
+  @apply flex-1 flex flex-col gap-4;
+}
+
+.view-application {
+  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 flex flex-col min-w-fit;
+}
+
+.actions {
+  @apply flex flex-col gap-4 px-8;
+}
+
+.actions button {
+  @apply h-12;
+}
+
+.card-list {
+  @apply border-2 border-slate-200 px-3 py-4 rounded-md w-full my-3;
+
+  .card-item {
+    @apply bg-slate-500  min-h-[20px] pr-1 flex flex-row m-1 gap-2 w-full rounded-lg;
+  }
+
+  .item-title {
+    @apply text-sm px-3 py-2 flex justify-center items-center text-white w-32;
+
+    & img {
+      @apply w-8;
+    }
+  }
+
+  .item-content {
+    @apply px-3 py-2 text-sm bg-slate-100 w-full;
+  }
+}
+
+.show-more {
+  @apply bg-slate-400 text-xs text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
+}
+
+mat-expansion-panel {
+  min-width: 50%;
+}
+
+.my-page-title {
+  /* box-shadow: 1px 3px 4px 0px #9fa4c2; */
+  color: wheat !important;
+  @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#71B280] to-[#134E5E];
+}

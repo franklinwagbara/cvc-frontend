@@ -14,6 +14,7 @@ import { ApplicationService } from '../../../../../src/app/shared/services/appli
 import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
+import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
 
 @Component({
   selector: 'app-my-desk',
@@ -27,6 +28,8 @@ export class MyDeskComponent implements OnInit {
   public categories$ = new Subject<Category[]>();
 
   public appType$ = new BehaviorSubject<string>('NOA');
+
+  public coqApplications: ICOQ[];
 
   public users: Staff[];
   public userDetail: any;
@@ -114,7 +117,7 @@ export class MyDeskComponent implements OnInit {
 
   onViewData(event: any, type: string) {
     if (this.appType$.getValue() == 'COQ') {
-      this.router.navigate([`/admin/view-application/${event.id}`], {
+      this.router.navigate([`/admin/view-coq-application/${event.id}`], {
         queryParams: {
           id: event.appId,
           appSource: AppSource.MyDesk,
