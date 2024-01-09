@@ -43,6 +43,7 @@ export class PaymentSumComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show('Fetching payment details');
     this.route.params.subscribe((params) => {
       this.application_id = params['id'];
       this.getPaymentSummary();

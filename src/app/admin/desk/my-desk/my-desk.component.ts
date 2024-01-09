@@ -46,11 +46,11 @@ export class MyDeskComponent implements OnInit {
     reference: 'Reference Number',
     importName: 'Import Name',
     companyEmail: 'Company Email',
-    // appType: 'Application Type',
+    appType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     capacity: 'Capacity',
-    paymnetStatus: 'Payment Status',
+    paymentStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
   };
