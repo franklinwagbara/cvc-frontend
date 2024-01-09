@@ -35,6 +35,7 @@ import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyo
 import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
 import { ViewCoqApplicationComponent } from '../view-coq-application/view-coq-application.component';
 import { ProductsComponent } from '../settings/products/products.component';
+import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -60,7 +61,7 @@ const routes: Routes = [
   },
   { path: 'my-desk', component: MyDeskComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'view-coq-application/:id', component: ViewCoqApplicationComponent },
+  { path: 'view-coq-application/:id', component: CoqApplicationViewComponent },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,

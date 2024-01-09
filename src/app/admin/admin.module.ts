@@ -72,6 +72,9 @@ import { ProductsComponent } from './settings/products/products.component';
 import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-application.component';
+import { CoqApplicationViewComponent } from './application/coq-application-view/coq-application-view.component';
+import { CoqApplicationViewTableComponent } from './application/coq-application-view/coq-application-view-table/coq-application-view-table.component';
+import { ViewCoqTankComponent } from './application/coq-application-view/view-coq-tank/view-coq-tank.component';
 
 @NgModule({
   declarations: [
@@ -123,6 +126,9 @@ import { ViewCoqApplicationComponent } from './view-coq-application/view-coq-app
     ViewCoqApplicationComponent,
     ProductsComponent,
     ProcessingPlantCoqFormComponent,
+    CoqApplicationViewComponent,
+    CoqApplicationViewTableComponent,
+    ViewCoqTankComponent,
   ],
 
   imports: [

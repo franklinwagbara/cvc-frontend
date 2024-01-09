@@ -18,13 +18,15 @@ import { LicenceService } from '../../../../../src/app/shared/services/licence.s
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
+import { CoqService } from 'src/app/shared/services/coq.service';
+import { ITank } from 'src/app/shared/interfaces/ITank';
 
 @Component({
-  selector: 'app-view-coq-application',
-  templateUrl: './view-coq-application.component.html',
-  styleUrls: ['./view-coq-application.component.css'],
+  selector: 'app-coq-application-view',
+  templateUrl: './coq-application-view.component.html',
+  styleUrls: ['./coq-application-view.component.scss'],
 })
-export class ViewCoqApplicationComponent implements OnInit {
+export class CoqApplicationViewComponent implements OnInit {
   public application: Application;
   public appActions: any;
   public appId: number;
@@ -32,11 +34,14 @@ export class ViewCoqApplicationComponent implements OnInit {
   public licence: any;
   public currentUser: LoginModel;
   public coqId: number;
+  public documents: any;
+  public tanks: any;
 
   constructor(
     private snackBar: MatSnackBar,
     private auth: AuthenticationService,
     private appService: ApplyService,
+    private coqService: CoqService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
@@ -48,14 +53,20 @@ export class ViewCoqApplicationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.route.params.subscribe((param) => {
+      this.appId = parseInt(param['id']);
+      this.coqId = parseInt(param['id']);
+      this.getApplication();
+    });
+
     this.route.queryParams.subscribe((params) => {
       this.spinner.open();
-      this.appId = parseInt(params['id']);
+      // this.appId = parseInt(params['id']);
       this.appSource = params['appSource'];
-      this.coqId = parseInt(params['coqId']);
+      // this.coqId = parseInt(params['coqId']);
 
-      if (this.appSource != AppSource.Licence) this.getApplication();
-      else this.getLicence();
+      // if (this.appSource != AppSource.Licence) this.getApplication();
+      // else this.getLicence();
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
@@ -75,10 +86,12 @@ export class ViewCoqApplicationComponent implements OnInit {
   }
 
   getApplication() {
-    this.applicationService.viewApplication(this.appId).subscribe({
+    this.coqService.viewCoqApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
-          this.application = res.data;
+          this.application = res.data.coq;
+          this.tanks = res.data.tanks;
+          this.documents = res.data.docs;
         }
 
         this.progressBar.close();
