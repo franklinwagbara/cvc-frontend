@@ -37,7 +37,7 @@ export class SendBackFormComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router
   ) {
-    this.application = data.data.application;
+    this.application = data?.data?.application;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
@@ -45,10 +45,9 @@ export class SendBackFormComponent implements OnInit {
   }
   ngOnInit(): void {
     const tempUser = this.auth.currentUser;
-
     this.auth.getAllStaff().subscribe({
       next: (res) => {
-        this.currentUser = res.data.data.find(
+        this.currentUser = res.data.data?.find(
           (u) => u.email === tempUser.userId
         );
 

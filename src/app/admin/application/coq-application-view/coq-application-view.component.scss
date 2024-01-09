@@ -4,7 +4,7 @@
 }
 
 .content {
-  @apply flex flex-col xl:flex-row w-full mt-9 gap-4;
+  @apply flex flex-col xl:flex-row w-full  mt-0 gap-4;
 }
 
 .application-view {
@@ -20,7 +20,7 @@
 }
 
 .actions {
-  @apply flex flex-col mt-8 gap-4 px-8;
+  @apply flex flex-col gap-4 px-8;
 }
 
 .actions button {
@@ -53,4 +53,10 @@
 
 mat-expansion-panel {
   min-width: 50%;
+}
+
+.my-page-title {
+  /* box-shadow: 1px 3px 4px 0px #9fa4c2; */
+  color: wheat !important;
+  @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#71B280] to-[#134E5E];
 }
