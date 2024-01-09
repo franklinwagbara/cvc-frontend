@@ -43,7 +43,6 @@ export class PaymentSumComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show('Fetching payment details');
     this.route.params.subscribe((params) => {
       this.application_id = params['id'];
       this.getPaymentSummary();
@@ -53,6 +52,7 @@ export class PaymentSumComponent implements OnInit {
 
   getPaymentSummary() {
     this.spinner.show('Fetching payment details');
+    this.progressbar.open();
     this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
       next: (res) => {
         if (res.success) {
@@ -73,11 +73,13 @@ export class PaymentSumComponent implements OnInit {
             this.popUp.open('Payment completed successfully!', 'success');
           }
           this.spinner.close();
+          this.progressbar.close();
         }
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.spinner.close();
+        this.progressbar.close();
         this.cd.markForCheck();
       },
     });
@@ -85,6 +87,7 @@ export class PaymentSumComponent implements OnInit {
 
   generateRRR() {
     this.route.params.subscribe((params) => {
+      this.progressbar.open();
       this.spinner.show('Generating RRR');
       this.application_id = params['id'];
 
@@ -100,6 +103,7 @@ export class PaymentSumComponent implements OnInit {
 
             this.popUp.open('RRR was generated successfully!', 'success');
             this.spinner.close();
+            this.progressbar.close();
             this.cd.markForCheck();
           }
         },
@@ -107,6 +111,7 @@ export class PaymentSumComponent implements OnInit {
           //todo: display error dialog
           this.popUp.open('RRR generation failed!', 'error');
           this.spinner.close();
+          this.progressbar.close();
           this.cd.markForCheck();
         },
       });
