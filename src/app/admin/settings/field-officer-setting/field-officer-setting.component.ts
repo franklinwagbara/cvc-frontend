@@ -11,7 +11,7 @@ import { SpinnerService } from '../../../../../src/app/shared/services/spinner.s
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
 import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-field-officer-setting',
