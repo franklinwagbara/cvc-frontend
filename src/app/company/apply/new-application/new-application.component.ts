@@ -165,7 +165,7 @@ export class NewApplicationComponent implements OnInit {
         this.cd.markForCheck();
         this.popUp.open(
           `${this.selectedAppDepots.length} ${
-            this.selectedAppDepots.length > 1 ? 'Tanks' : 'Tank'
+            this.selectedAppDepots.length > 1 ? 'Depots' : 'Depot'
           } added successfully.`,
           'success'
         );
@@ -194,7 +194,7 @@ export class NewApplicationComponent implements OnInit {
     this.appDepotForm.reset();
 
     if (!isExist) this.selectedAppDepots.push(newDepot);
-    else this.popUp.open('This tank has been added before!', 'error');
+    else this.popUp.open('This depot has been added before!', 'error');
     this.cd.markForCheck();
   }
 
@@ -352,7 +352,8 @@ export class NewApplicationComponent implements OnInit {
   }
 
   public CheckVesselDetails() {
-    this.showLoader = true;
+    // this.showLoader = true;
+    this.spinner.show(' Searching vessel details');
     this.imoNumber = this.vesselForm.get('imoNumber').value;
     this.appService.getVesselByImoNumber(this.imoNumber).subscribe({
       next: (res) => {
@@ -360,13 +361,15 @@ export class NewApplicationComponent implements OnInit {
           this.vesselInfo = res.data;
           this.vesselForm.get('vesselName').setValue(this.vesselInfo.name);
         }
-        this.showLoader = false;
+        // this.showLoader = false;
+        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (e) => {
         this.vesselInfo = null;
         this.vesselForm.get('vesselName').setValue('');
-        this.showLoader = false;
+        // this.showLoader = false;
+        this.spinner.close();
         this.cd.markForCheck();
       },
     });
