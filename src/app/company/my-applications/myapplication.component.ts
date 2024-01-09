@@ -40,7 +40,7 @@ export class MyApplicationComponent implements OnInit {
     companyName: 'Company Name',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    capacity: 'Capacity',
+    // capacity: 'Capacity',
     createdDate: 'Date Initiated',
     status: 'Status',
   };
