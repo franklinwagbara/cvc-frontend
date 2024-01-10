@@ -68,7 +68,7 @@ export class AssignApplicationFormComponent
     private gen: GenericService
   ) {
     this.staffs = data.data.staffs.filter(
-      (s: StaffWithName) => s.role == UserRole.Head
+      (s: StaffWithName) => s.role == UserRole.HEAD
     );
 
     this.staffs = this.staffs.map((s: StaffWithName) => {

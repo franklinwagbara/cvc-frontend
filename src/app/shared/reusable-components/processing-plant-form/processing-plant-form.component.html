@@ -53,7 +53,7 @@
       <button mat-button mat-dialog-close (click)="onClose()">Close</button>
       <button
         mat-raised-button
-        (click)="this.data.data.action === 'EDIT' ? EditPlant() : createPlant()"
+        (click)="this.data.data.action === 'EDIT' ? editPlant() : createPlant()"
         [disabled]="form.invalid"
       >
         Save

@@ -16,9 +16,10 @@
         *ngIf="!isGasProduct ? coqFormService?.liquidProductReviewData.length : coqFormService?.gasProductReviewData.length" 
         class="table table-responsive table-striped"
         aria-describedby="coq-form-data-table-review-title"
+        matSort
       >
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <ng-container *ngIf="coqFormService.hasNoUnit(column)">{{ column | uppercase }}</ng-container>
             <ng-container *ngIf="coqFormService.hasMeterUnit(column)">{{ column | uppercase }}(m)</ng-container>
             <ng-container *ngIf="coqFormService.hasMeterCubeUnit(column)">{{ column | uppercase }}(m<sup>3</sup>)</ng-container>

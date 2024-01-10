@@ -5,7 +5,7 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -14,15 +14,8 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { ProgressBarService } from '../../services/progress-bar.service';
-import { PopupService } from '../../services/popup.service';
-
-import { SpinnerService } from '../../services/spinner.service';
-import {
-  IPlant,
-  IPlantType,
-} from '../../../../../src/app/company/settings/processing-plant/processing-plant.component';
 import { CompanyService } from '../../services/company.service';
-import { ITank } from '../../interfaces/ITank';
+
 
 @Component({
   selector: 'app-tank-form',
@@ -41,14 +34,12 @@ export class TankFormComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder,
     public dialog: MatDialog,
+    private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<TankFormComponent>,
     private cd: ChangeDetectorRef,
     private progressBar: ProgressBarService,
-    private popUp: PopupService,
     private companyService: CompanyService,
-    private spinner: SpinnerService
   ) {
     this.plantId = data.data.plantId;
     this.tankId = this.data.data.plantTankId;

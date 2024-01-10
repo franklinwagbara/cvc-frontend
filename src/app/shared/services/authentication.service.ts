@@ -64,13 +64,13 @@ export class AuthenticationService {
 
   public get isCompany() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles == UserRole.Company) return true;
+    if (user.userRoles == UserRole.COMPANY) return true;
     else return false;
   }
 
   public get isStaff() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles != UserRole.Company) return true;
+    if (user.userRoles != UserRole.COMPANY) return true;
     else return false;
   }
 
@@ -131,10 +131,10 @@ export class AuthenticationService {
       );
   }
 
-  getCompanyResource(companyCode: string) {
+  getCOMPANYResource(COMPANYCode: string) {
     return this.http
-      .get<any>(`${environment.apiUrl}/account/getCompanyResource`, {
-        params: { companyCode: companyCode },
+      .get<any>(`${environment.apiUrl}/account/getCOMPANYResource`, {
+        params: { COMPANYCode: COMPANYCode },
       })
       .pipe(retry(this.num));
   }

@@ -19,7 +19,6 @@ import { ApplicationReportComponent } from './application-report/application-rep
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
-//import { ViewApplicationInFullComponent } from '../../../../src/app/shared/view-application-in-full/view-application-in-full.component';
 import { AppDepotComponent } from '../settings/app-depot/app-depot.component';
 import { PaymentComponent } from '../payment/payment.component';
 import { ViewPaymentComponent } from '../payment/view-payment/view-payment.component';
@@ -35,6 +34,8 @@ import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyo
 import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
+import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
+
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -100,6 +101,14 @@ const routes: Routes = [
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
   },
+  {
+    path: 'certificate-of-quantity/new-application',
+    component: CoqApplicationFormComponent,
+    canActivate: [CoqGuard],
+    data: {
+      type: ApplicationTerm.PROCESSINGPLANT
+    }
+  }
 ];
 
 @NgModule({

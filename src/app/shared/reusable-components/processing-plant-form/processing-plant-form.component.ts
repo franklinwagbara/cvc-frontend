@@ -109,7 +109,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     this.companyService.addPlant(this.form.value).subscribe({
       next: (res) => {
         this.progressBar.close();
-        this.snackBar.open('Record was created successfully!', null, {
+        this.snackBar.open('Plant created successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -125,7 +125,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     });
   }
 
-  EditPlant() {
+  editPlant() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     this.progressBar.open();
@@ -134,7 +134,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     this.companyService.editPlant(this.data.data.plantId, formData).subscribe({
       next: (res) => {
         this.progressBar.close();
-        this.snackBar.open('Record was modified successfully!', null, {
+        this.snackBar.open('Plant edited successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -150,5 +150,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     });
   }
 
-  onClose() {}
+  onClose() {
+    this.dialogRef.close();
+  }
 }

@@ -19,7 +19,7 @@ export class ViewCoqTankComponent implements OnInit {
     branches: 'TANKS',
   };
 
-  public branchKeysMappedToHeaders = {
+  public tankKeysMappedToHeaders = {
     measurementType: 'MEASUREMENT TYPE',
     dip: 'DIP',
     waterDIP: 'WATER DIP',

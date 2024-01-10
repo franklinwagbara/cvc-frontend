@@ -75,6 +75,7 @@ import { CoqApplicationViewComponent } from './application/coq-application-view/
 import { CoqApplicationViewTableComponent } from './application/coq-application-view/coq-application-view-table/coq-application-view-table.component';
 import { ViewCoqTankComponent } from './application/coq-application-view/view-coq-tank/view-coq-tank.component';
 
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -126,7 +127,7 @@ import { ViewCoqTankComponent } from './application/coq-application-view/view-co
     ProcessingPlantCoqFormComponent,
     CoqApplicationViewComponent,
     CoqApplicationViewTableComponent,
-    ViewCoqTankComponent,
+    ViewCoqTankComponent
   ],
 
   imports: [

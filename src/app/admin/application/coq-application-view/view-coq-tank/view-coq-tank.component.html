@@ -1,5 +1,5 @@
 <div>
-  <h3 class="my-page-title bg-teal-500 text-teal-400">TANKS</h3>
+  <h3 class="page-title bg-teal-500 text-teal-400">TANKS</h3>
   <div class="flex justify-end my-1">
     <button mat-stroked-button class="text-red-600" (click)="dialogRef.close()">
       Close
@@ -15,7 +15,7 @@
         <generic-table
           [table_title]="tableTitles.branches"
           [title-color]="'teal'"
-          [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
+          [table_keysMappedToHeaders]="tankKeysMappedToHeaders"
           [table_content]="a?.tankMeasurement"
           [table_controls_horizontal]="true"
           [noDeleteButton]="true"
