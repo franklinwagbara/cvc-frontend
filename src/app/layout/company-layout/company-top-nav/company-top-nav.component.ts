@@ -11,6 +11,7 @@ import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
+
 @Component({
   selector: 'app-company-top-nav',
   templateUrl: './company-top-nav.component.html',
@@ -85,37 +86,27 @@ export class CompanyTopNavComponent implements OnInit {
     private applyService: ApplyService,
     private spinner: SpinnerService,
     private snackBar: MatSnackBar,
-    public auth: AuthenticationService
-  ) {}
+    public auth: AuthenticationService,
+  ) {
+  }
+
+  iconContexts = {
+    dashboard: { iconName: 'dashboard' },
+    applications: { iconName: 'apps' },
+    account: { iconName: 'user' },
+    certificates: { iconName: 'approval' },
+    schedules: { iconName: 'schedules' },
+    changepass: { iconName: 'password' },
+    profile: { iconName: 'group' },
+    procplant: { iconName: 'fueltank'},
+    messages: { iconName: 'message' },
+    apply: { iconName: 'right' },
+    myapps: { iconName: 'apps' }
+  }
 
   ngOnInit(): void {
-    // this.getCategoriesAndPermitTypes();
     this.currWindowWidth = window.innerWidth;
     this.currentUsername = this.auth.currentUser;
-
-    // this.categories$.subscribe((cats: Category[]) => {
-    //   this.permitTypes$.subscribe((permitTypes) => {
-    //     cats.forEach((cat) => {
-    //       this.applicationsMenuItems[0].subMenu.push({
-    //         name: cat.name,
-    //         url: '',
-    //         subMenu: ((): ISubmenu[] => {
-    //           const subMenu: ISubmenu[] = [];
-
-    //           permitTypes.forEach((p) => {
-    //             if (p.categoryName === cat.name)
-    //               subMenu.push({
-    //                 name: p.code,
-    //                 url: `company/apply/${cat.id}/${p.id}`,
-    //                 subMenu: null,
-    //               });
-    //           });
-    //           return subMenu;
-    //         })(),
-    //       });
-    //     });
-    //   });
-    // });
   }
 
   getCategoriesAndPermitTypes() {
