@@ -316,7 +316,7 @@ export class CoqApplicationFormComponent
       waterVolume: ['', [Validators.required]],
       floatRoofCorr: ['', [Validators.required]],
       gov: ['', [Validators.required]],
-      temp: ['', [Validators.required]],
+      temperature: ['', [Validators.required]],
       density: ['', [Validators.required]],
       vcf: ['', [Validators.required]],
     })

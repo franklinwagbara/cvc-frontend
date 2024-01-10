@@ -8,6 +8,11 @@ export interface IApplication {
   vesselTypeId?: number;
   imoNumber?: string | null;
   vesselName?: string | null;
+  companyName?: string | null;
+  companyEmail?: string | null;
+  rrr?: string | null;
+  capacity?: number;
+  status?: string;
   vessel?: any;
   loadingPort?: string | null;
   dischargePort?: string | null;

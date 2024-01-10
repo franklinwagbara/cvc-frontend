@@ -7,11 +7,11 @@ import { PopupService } from '../../shared/services/popup.service';
 
 
 @Component({
-  selector: 'app-all-noa-applications',
-  templateUrl: './all-noa-applications.component.html',
-  styleUrls: ['./all-noa-applications.component.css'],
+  selector: 'app-noa-applications',
+  templateUrl: './noa-applications.component.html',
+  styleUrls: ['./noa-applications.component.css'],
 })
-export class AllNoaApplicationsComponent implements OnInit {
+export class NoaApplicationsComponent implements OnInit {
   public applications: IApplication[];
   depotOfficerMappings: any[];
 
@@ -20,13 +20,19 @@ export class AllNoaApplicationsComponent implements OnInit {
   };
 
   public applicationKeysMappedToHeaders = {
-    // marketerName: 'Marketer Name',
+    reference: 'Reference',
+    companyName: 'Company Name',
+    companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
-    loadingPort: 'Loading Port',
+    vesselType: 'Vessel Type',
     imoNumber: 'IMO Number',
-    eta: 'Estimated Time of Arrival',
+    capacity: 'Capacity',
+    status: 'Status',
+    paymnetStatus: 'Payment Status',
+    rrr: 'RRR',
+    createdDate: 'Initiated Date',
   };
-
+  
   constructor(
     private applicationService: ApplicationService,
     private spinner: SpinnerService,

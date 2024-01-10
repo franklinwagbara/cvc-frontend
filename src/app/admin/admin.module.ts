@@ -51,11 +51,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AllNoaApplicationsComponent } from './all-noa-applications/all-noa-applications.component';
+import { NoaApplicationsComponent } from './noa-applications/noa-applications.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
+import { CoqApplicationsComponent } from './coq-applications/coq-applications.component';
 import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
 import { AppDepotComponent } from './settings/app-depot/app-depot.component';
@@ -118,8 +118,8 @@ import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearanc
     PaymentViewTableComponent,
     RolesComponent,
     CoqApplicationFormComponent,
-    AllNoaApplicationsComponent,
-    AllCoqApplicationsComponent,
+    NoaApplicationsComponent,
+    CoqApplicationsComponent,
     FieldOfficerSettingComponent,
     JettySettingComponent,
     NominatedSurveyorSettingComponent,

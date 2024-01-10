@@ -297,12 +297,12 @@ export class SidebarComponent implements OnInit, OnChanges {
         {
           id: 1,
           title: 'NoA Applications',
-          url: '/admin/all-noa-applications',
+          url: '/admin/noa-applications',
         },
         {
           id: 2,
           title: 'CoQ Applications',
-          url: '/admin/all-coq-applications',
+          url: '/admin/coq-applications',
         },
       ]
 

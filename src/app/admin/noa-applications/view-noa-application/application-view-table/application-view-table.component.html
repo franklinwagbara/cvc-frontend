@@ -1,0 +1,54 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Reference Number</th>
+      <td>{{ application?.reference }}</td>
+    </tr>
+    <tr>
+      <th>Company Name</th>
+      <td>{{ application?.companyName }}</td>
+    </tr>
+    <tr>
+      <th>Company Email</th>
+      <td>{{ application?.companyEmail }}</td>
+    </tr>
+    <tr>
+      <th>Vessel Name</th>
+      <td>{{ application?.vesselName }}</td>
+    </tr>
+    <tr>
+      <th>Marketer Name</th>
+      <td>{{ application?.marketerName }}</td>
+    </tr>
+    <tr>
+      <th>Vessel IMO Number</th>
+      <td>{{ application?.vessel.imoNumber }}</td>
+    </tr>
+    <tr>
+      <th>Loading Port</th>
+      <td>{{ application?.loadingPort }}</td>
+    </tr>
+    <tr>
+      <th>Discharge Port</th>
+      <td>{{ application?.dischargePort }}</td>
+    </tr>
+    
+    <tr>
+      <th>Mother Vessel</th>
+      <td>{{ application?.motherVessel }}</td>
+    </tr>
+    <tr>
+      <th>Payment Status</th>
+      <td>{{ application?.jetty }}</td>
+    </tr>
+    
+    <tr>
+      <th>View Full Application Details</th>
+      <td>
+        <button mat-raised-button class="btn" (click)="viewApplicationInFull()">
+          View All
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

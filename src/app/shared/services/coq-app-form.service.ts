@@ -46,7 +46,7 @@ export class CoqAppFormService {
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temp', 'waterVolume', 'tankVolume', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
+    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temperature', 'waterVolume', 'tankVolume', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
     return !colsWithUnit.includes(colKey);
   }
 
