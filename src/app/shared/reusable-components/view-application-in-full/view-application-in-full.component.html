@@ -1,30 +1,40 @@
 <div class="container">
+  <a
+    class="flex mt-2 justify-start back-btn-color items-center"
+    mat-raised-button
+    (click)="back()"
+  >
+    <i class="material-icons">keyboard_double_arrow_left</i>
+    <span>Back</span></a
+  >
   <div class="application-details">
     <h1>FULL APPLICATION DETAILS</h1>
 
     <div class="info-sections-wrapper">
-      <h2 *ngIf="application.reference">APPLICATION REFERENCE : {{ application.reference }}</h2>
+      <h2 *ngIf="application.reference">
+        APPLICATION REFERENCE : {{ application.reference }}
+      </h2>
       <section class="info-section">
         <h3>Reference Information</h3>
         <div class="info-wrapper">
           <div>
             <h5>Reference Number</h5>
             <hr />
-            <ng-container *ngIf="application?.reference else noData">
+            <ng-container *ngIf="application?.reference; else noData">
               <span>{{ application?.reference }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Application Type</h5>
             <hr />
-            <ng-container *ngIf="application?.appType else noData">
+            <ng-container *ngIf="application?.appType; else noData">
               <span>{{ application?.appType }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Application Status</h5>
             <hr />
-            <ng-container *ngIf="application?.status else noData">
+            <ng-container *ngIf="application?.status; else noData">
               <span>{{ application?.status }}</span>
             </ng-container>
           </div>
@@ -36,21 +46,21 @@
           <div>
             <h5>Company Name</h5>
             <hr />
-            <ng-container *ngIf="application?.companyName else noData">
+            <ng-container *ngIf="application?.companyName; else noData">
               <span>{{ application?.companyName }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Company Email</h5>
             <hr />
-            <ng-container *ngIf="application?.email else noData">
+            <ng-container *ngIf="application?.email; else noData">
               <span>{{ application?.email }}</span>
             </ng-container>
           </div>
-          <div>
+          <div *ngIf="application?.companyAddress">
             <h5>Company Address</h5>
             <hr />
-            <ng-container *ngIf="application?.companyAddress else noData">
+            <ng-container *ngIf="application?.companyAddress; else noData">
               <span>{{ application?.companyAddress }}</span>
             </ng-container>
           </div>
@@ -62,35 +72,37 @@
           <div>
             <h5>Vessel Name</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.name else noData">
+            <ng-container *ngIf="application?.vessel.name; else noData">
               <span>{{ application?.vessel.name }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Vessel Type</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.vesselType else noData">
+            <ng-container *ngIf="application?.vessel.vesselType; else noData">
               <span>{{ application?.vessel.vesselType }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Loading Port</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.name else noData">
+            <ng-container *ngIf="application?.vessel.name; else noData">
               <span>{{ application?.vessel.loadingPort }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Discharge Port</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.dischargePort else noData">
+            <ng-container
+              *ngIf="application?.vessel.dischargePort; else noData"
+            >
               <span>{{ application?.vessel.dischargePort }}</span>
             </ng-container>
           </div>
           <div>
             <h5>IMO Number</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.imoNumber else noData">
+            <ng-container *ngIf="application?.vessel.imoNumber; else noData">
               <span>{{ application?.vessel.imoNumber }}</span>
             </ng-container>
           </div>
@@ -102,21 +114,21 @@
           <div>
             <h5>Payment Status</h5>
             <hr />
-            <ng-container *ngIf="application?.paymnetStatus else noData">
+            <ng-container *ngIf="application?.paymnetStatus; else noData">
               <span>{{ application?.paymnetStatus }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Payment Description</h5>
             <hr />
-            <ng-container *ngIf="application?.paymentDescription else noData">
+            <ng-container *ngIf="application?.paymentDescription; else noData">
               <span>{{ application?.paymentDescription }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Payment Date</h5>
             <hr />
-            <ng-container *ngIf="application?.paymnetDate else noData">
+            <ng-container *ngIf="application?.paymnetDate; else noData">
               <span>{{ application?.paymnetDate | formatTimeAmPm }}</span>
             </ng-container>
           </div>
@@ -126,27 +138,27 @@
         <h3>Tanks Information</h3>
         <div *ngFor="let tank of application.vessel.tanks; let i = index">
           <div class="tank-info-wrapper">
-            <h4>Tank {{i + 1}}</h4>
+            <h4>Tank {{ i + 1 }}</h4>
             <hr />
             <div class="info-wrapper">
               <div>
                 <h5>Name</h5>
-                <hr>
-                <ng-container *ngIf="tank.name else noData">
+                <hr />
+                <ng-container *ngIf="tank.name; else noData">
                   <span>{{ tank.name }}</span>
                 </ng-container>
               </div>
               <div>
                 <h5>Capacity</h5>
-                <hr>
-                <ng-container *ngIf="tank.capacity else noData">
+                <hr />
+                <ng-container *ngIf="tank.capacity; else noData">
                   <span>{{ tank.capacity }}</span>
                 </ng-container>
               </div>
               <div>
                 <h5>Product</h5>
-                <hr>
-                <ng-container *ngIf="tank.product else noData">
+                <hr />
+                <ng-container *ngIf="tank.product; else noData">
                   <span>{{ tank.product }}</span>
                 </ng-container>
               </div>
@@ -287,5 +299,4 @@
       </mat-expansion-panel>
     </div>
   </div>
-
 </div>
