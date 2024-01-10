@@ -35,7 +35,7 @@ export class ViewCoqCertsComponent implements OnInit {
       error: (error: any) => {
         console.log(error);
         this.spinner.close();
-        this.popUp.open('Something went wrong. Failed to fetch CoQ certificates', 'error');
+        this.popUp.open('Something went wrong while retrieving data', 'error');
       }
     })
   }
