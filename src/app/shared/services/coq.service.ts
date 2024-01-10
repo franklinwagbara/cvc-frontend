@@ -61,9 +61,10 @@ export class CoqService {
   }
 
   getCoqRequirement(appId: number, depotId: number): Observable<any> {
-    return this.http.get<any>(`${API}/coq_requirement/${appId}`, {
-      params: { depotId },
-    });
+    if (!appId) {
+      return this.http.get<any>(`${API}/coq_requirement/${depotId}`);
+    }
+    return this.http.get<any>(`${API}/coq_requirement/${depotId}`, { params: {appId}});
   }
 
   processApplication(model: {

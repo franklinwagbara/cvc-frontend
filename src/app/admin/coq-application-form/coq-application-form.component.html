@@ -56,12 +56,16 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <mat-error *ngIf="noPlantFetched !== null && noPlantFetched">
+            {{ 'No ' + (isProcessingPlant ? 'processing plant ' : 'depot ') + 'available for this application' }}
+          </mat-error>
           <div class="text-right">
             <button
               mat-raised-button 
               matStepperNext
               (click)="isProcessingPlant ? plantSelection.markAllAsTouched() : depotSelection.markAllAsTouched()"
-              [disabled]="isProcessingPlant ? !plantSelection.valid : !depotSelection.valid"
+              [disabled]="(isProcessingPlant ? !plantSelection.valid : !depotSelection.valid) || fetchingRequirement ||
+              (isProcessingPlant ? !plantTanks.length : !requirement?.tanks.length)"
             >Next</button>
           </div>
         </mat-step>
@@ -95,15 +99,18 @@
                   <mat-label>Tank Name</mat-label>
                   <mat-select formControlName="id">
                     <mat-option 
-                      *ngFor="let tank of (isProcessingPlant ? plantTanks : requirement?.tanks)" 
+                      *ngFor="let tank of ((isProcessingPlant ? plantTanks : requirement?.tanks) || [])" 
                       [value]="isProcessingPlant ? tank?.plantTankId : tank?.id"
                     >
                       {{ isProcessingPlant ? tank?.tankName : tank?.name }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <mat-error *ngIf="!configuredTank?.valid" class="mb-2 mt-0">
-                  {{ !!configuredTank?.controls['id'].hasError('duplicate') ? 'Tank readings already exist' : ''}}
+                <mat-error *ngIf="(noTankConfigured !== null && noTankConfigured) || !configuredTank?.valid" class="mb-2 mt-0">
+                  {{ 
+                    noTankConfigured !== null && noTankConfigured ? 'No tanks configured for the selected ' + (isProcessingPlant ?  'plant' : 'depot') + ' and you may not proceed' : 
+                    !!configuredTank?.controls['id'].hasError('duplicate') ? 'Tank readings already exist' : '' 
+                  }}
                 </mat-error>
               </form>
               <div class="text-right">
@@ -732,7 +739,7 @@
                       <button
                         mat-button
                         class="upload-btn"
-                        (click)="uploadDoc(i)"
+                        (click)="triggerFileInput(i)"
                       >
                         {{ element?.docSource ? 'Replace' : 'Upload' }}
                       </button>

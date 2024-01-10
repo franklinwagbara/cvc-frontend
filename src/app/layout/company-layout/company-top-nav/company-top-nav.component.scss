@@ -50,7 +50,7 @@ $logo-height: 60px;
   @apply text-[#2D8A75] text-[32px];
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 840px) {
   .nav-list {
     display: none;
   }
@@ -59,7 +59,7 @@ $logo-height: 60px;
   }
 }
 
-@media screen and (min-width: 921px) {
+@media screen and (min-width: 841px) {
   #company-navmenu-trigger {
     display: none;
   }

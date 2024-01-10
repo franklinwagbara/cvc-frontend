@@ -3,22 +3,22 @@ import { Router } from '@angular/router';
 import {
   ICOQ,
   ICoQApplication,
-} from '../../../../src/app/shared/interfaces/ICoQApplication';
-import { CoqService } from '../../../../src/app/shared/services/coq.service';
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
-import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
+} from '../../shared/interfaces/ICoQApplication';
+import { CoqService } from '../../shared/services/coq.service';
+import { PopupService } from '../../shared/services/popup.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
+import { CoqAppFormService } from '../../shared/services/coq-app-form.service';
 
 @Component({
-  selector: 'app-coq-applications-by-depot',
-  templateUrl: './coq-applications-by-depot.component.html',
-  styleUrls: ['./coq-applications-by-depot.component.css'],
+  selector: 'app-all-coq-applications',
+  templateUrl: './all-coq-applications.component.html',
+  styleUrls: ['./all-coq-applications.component.css'],
 })
-export class CoqApplicationsByDepotComponent implements OnInit {
+export class AllCoqApplicationsComponent implements OnInit {
   public coqs: ICoQApplication[];
 
   public coqKeysMappedToHeaders = {
-    importName: 'Importer',
+    importName: 'Importer Name',
     vesselName: 'Vessel Name',
     depotName: 'Receiving Terminal',
     dateOfVesselUllage: 'Date of Vessel Ullage',

@@ -19,11 +19,14 @@
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
           [EnableViewControl]="true"
+          [EnableInitiateCoQControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
           [noTitle]="true"
           (onViewData)="onViewData($event, 'applications')"
+          (onInitiateCoQ)="initiateCoq($event)"
+          
         >
         </generic-table>
       </div>

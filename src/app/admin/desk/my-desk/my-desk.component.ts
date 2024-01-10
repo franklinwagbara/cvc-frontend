@@ -100,6 +100,7 @@ export class MyDeskComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -135,6 +136,17 @@ export class MyDeskComponent implements OnInit {
     return this.appType$.getValue() == 'NOA'
       ? this.applicationKeysMappedToHeaders
       : this.coqKeysMappedToHeaders;
+  }
+
+  initiateCoq(event: any) {
+    this.router.navigate([
+      'admin', 
+      'my-desk', 
+      'noa-applications',
+      event.id, 
+      'certificate-of-quantity', 
+      'new-application'
+    ]);
   }
 
   onAssignApplication() {

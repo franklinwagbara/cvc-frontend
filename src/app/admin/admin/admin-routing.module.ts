@@ -25,8 +25,8 @@ import { ViewPaymentComponent } from '../payment/view-payment/view-payment.compo
 import { RolesComponent } from '../settings/roles/roles.component';
 import { ViewApplicationInFullComponent } from '../../../../src/app/shared/reusable-components/view-application-in-full/view-application-in-full.component';
 import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
-import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
-import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
+import { AllNoaApplicationsComponent } from '../all-noa-applications/all-noa-applications.component';
+import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-applications.component';
 import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
@@ -82,14 +82,12 @@ const routes: Routes = [
   { path: 'roles', component: RolesComponent },
   { path: 'products', component: ProductsComponent },
   {
-    path: 'noa-applications-by-depot',
-    component: NoaApplicationsByDepotComponent,
-    canActivate: [CoqGuard],
+    path: 'all-noa-applications',
+    component: AllNoaApplicationsComponent,
   },
   {
-    path: 'certificate-of-quantity/coq-applications-by-depot',
-    component: CoqApplicationsByDepotComponent,
-    canActivate: [CoqGuard],
+    path: 'all-coq-applications',
+    component: AllCoqApplicationsComponent,
   },
   {
     path: 'certificate-of-quantity/coq-applications-by-depot/:id',
