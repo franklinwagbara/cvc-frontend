@@ -4,7 +4,7 @@
 }
 
 .content {
-  @apply flex flex-col xl:flex-row w-full mt-9 gap-4;
+  @apply flex flex-col xl:flex-row w-full mt-4 gap-4;
 }
 
 .application-view {
@@ -16,11 +16,19 @@
 }
 
 .view-application {
-  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 flex flex-col min-w-fit;
+  @apply flex flex-col;
+}
+
+.view-application-container {
+  @apply m-2 shadow-md bg-slate-100 p-5;
+}
+
+.back-btn-color {
+  background-color: rgb(229 240 246 / var(--tw-bg-opacity)) !important;
 }
 
 .actions {
-  @apply flex flex-col mt-8 gap-4 px-8;
+  @apply flex flex-col  gap-4 px-8;
 }
 
 .actions button {
