@@ -46,7 +46,7 @@ export class CompanyService {
 
   public addPlant(data: IPlant) {
     return this.http
-      .post<any>(`${environment.apiUrl}/Plant/add-plant`, data)
+      .post<any>(`${environment.apiUrl}/Plant/add-processing-plant`, data)
       .pipe(retry(this.num));
   }
 
