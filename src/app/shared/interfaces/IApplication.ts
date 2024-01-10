@@ -1,5 +1,5 @@
 import { ITank } from './ITank';
-import { IDepot } from './IDepot';
+import { IPlant } from './IPlant';
 
 export interface IApplication {
   id?: any;
@@ -16,7 +16,7 @@ export interface IApplication {
   jetty?: string | null;
   deportStateId?: number;
   tankList?: Array<ITank> | null;
-  depotList?: Array<IDepot> | null;
+  depotList?: Array<IPlant> | null;
   eta?: string;
 
   applicationType?: string;

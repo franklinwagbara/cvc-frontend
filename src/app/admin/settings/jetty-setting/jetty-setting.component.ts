@@ -81,7 +81,7 @@ export class JettySettingComponent implements OnInit {
           next: (val: any) => {
             this.progressBar.close();
             if (!val.success) {
-              this.snackBar.open('Failed to edit Jetty. Please try again.', null, { panelClass: ['error']});
+              this.snackBar.open('Failed to edit Jetty.', null, { panelClass: ['error']});
               return;
             }
             this.snackBar.open('Jetty edited successfully', null, { panelClass: ['success']});

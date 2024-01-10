@@ -15,7 +15,7 @@ import { Application } from '../../../../../src/app/company/my-applications/myap
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { LOCATION } from '../../../../../src/app/shared/constants/location';
+import { Location } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
 
 
@@ -75,7 +75,7 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   public get isFO() {
-    return this.currentUser.location == LOCATION.FO;
+    return this.currentUser.location == Location.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {

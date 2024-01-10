@@ -69,7 +69,7 @@ export class NominatedSurveyorSettingComponent implements OnInit {
             this.progressBar.close();
             this.snackBar.open(`Added Nominated Surveyor successfully`, null, { panelClass: ['success']});
             setTimeout(() => {
-              window.location.reload();
+              this.ngOnInit();
             }, 2500);
           },
           error: (error: any) => {

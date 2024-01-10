@@ -1,7 +1,9 @@
+import { ITank } from "./ITank";
+
 export interface ICoqRequirement {
   productName: string;
   productType: string;
-  tanks: [{id: number; name: string;}];
+  tanks: [ITank];
   requiredDocuments: [
     {
       id: number;

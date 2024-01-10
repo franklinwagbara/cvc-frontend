@@ -31,7 +31,7 @@ export class CoqAppFormService {
   }
 
   public hasMeterCubeUnit(colKey: string) {
-    const cols = ['tov', 'floatRoofCorr', 'gov', 'waterVolume', 'observedLiquidVolume'];
+    const cols = ['tov', 'floatRoofCorr', 'gov', 'waterVolume', 'tankVolume', 'observedLiquidVolume'];
     return cols.includes(colKey);
   }
 
@@ -46,7 +46,7 @@ export class CoqAppFormService {
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temp', 'waterVolume', 'tankVolume', 'vapourPressure', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
+    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temp', 'waterVolume', 'tankVolume', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
     return !colsWithUnit.includes(colKey);
   }
 

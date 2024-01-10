@@ -11,6 +11,8 @@ import { BehaviorSubject, filter } from 'rxjs';
 import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
+import { Location } from 'src/app/shared/constants/location';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 export interface SubRouteInfo {
   id: number;
@@ -103,23 +105,28 @@ const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  // {
-  //   id: 6,
-  //   title: 'SCHEDULES',
-  //   iconName: 'schedules',
-  //   iconId: 'schedules',
-  //   iconColor: 'white',
-  //   active: false,
-  //   subMenuActive: false,
+  {
+    id: 6,
+    title: 'ALL ISSUANCES',
+    iconName: 'approval',
+    iconId: 'approval',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
 
-  //   subRoutes: [
-  //     {
-  //       id: 1,
-  //       title: 'ALL SCHEDULES',
-  //       url: '/admin/schedules',
-  //     },
-  //   ],
-  // },
+    subRoutes: [
+      {
+        id: 1,
+        title: 'CoQ CERTIFICATES',
+        url: '/admin/all-issuances/coq-certificates',
+      },
+      {
+        id: 2,
+        title: 'NoA CLEARANCES',
+        url: '/admin/all-issuances/noa-clearance'
+      }
+    ],
+  },
   {
     id: 7,
     title: 'PAYMENTS',
@@ -285,7 +292,28 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (currentUser.userRoles === 'Field_Officer' || currentUser?.location === 'FO') {
+    if (currentUser.userRoles === UserRole.FIELDOFFICER || currentUser?.location === Location.FO) {
+      let coqSubRoutes = [
+        {
+          id: 1,
+          title: 'NoA Applications',
+          url: '/admin/noa-applications-by-depot',
+        },
+        {
+          id: 2,
+          title: 'CoQ Applications',
+          url: '/admin/certificate-of-quantity/coq-applications-by-depot',
+        },
+      ]
+
+      if (currentUser.userRoles === UserRole.FIELDOFFICER) {
+        coqSubRoutes.push({
+          id: 3,
+          title: 'Processing Plant',
+          url: '/admin/certificate-of-quantity/new-application'
+        });
+      }
+
       this.menuItems = this.menuItems.slice(0, 2).concat({
         id: 3,
         title: 'CoQ',
@@ -294,19 +322,7 @@ export class SidebarComponent implements OnInit, OnChanges {
         iconColor: 'white',
         active: false,
         subMenuActive: false,
-    
-        subRoutes: [
-          {
-            id: 1,
-            title: 'NOA Applications',
-            url: '/admin/noa-applications-by-depot',
-          },
-          {
-            id: 2,
-            title: 'COQ Applications',
-            url: '/admin/certificate-of-quantity/coq-applications-by-depot',
-          },
-        ],
+        subRoutes: coqSubRoutes
       }, this.menuItems.slice(2));
     }
 
