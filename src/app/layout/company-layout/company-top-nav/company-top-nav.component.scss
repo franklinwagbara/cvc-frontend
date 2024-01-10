@@ -34,6 +34,18 @@ $logo-height: 60px;
   @apply flex font-semibold gap-3 text-sm -mb-[14px] flex-nowrap;
 }
 
+::ng-deep .mat-menu-content {
+  @apply w-[270px] overflow-hidden flex flex-col items-center justify-center text-[20px] font-medium pb-4;
+}
+
+::ng-deep .mat-menu-item {
+  @apply text-[20px] font-medium;
+}
+
+.menu-item-content {
+  @apply flex items-center justify-start gap-3;
+}
+
 .menu {
   @apply text-[#2D8A75] text-[32px];
 }
@@ -53,14 +65,10 @@ $logo-height: 60px;
   }
 }
 
-::ng-deep .mat-menu {
-  @apply font-medium min-w-[170px] p-4;
-}
-
 .user,
 .logout {
   transition: all 0.3s ease-in-out;
-  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer;
+  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer text-red-400 hover:bg-red-400;
 }
 
 .logout:hover {
@@ -68,5 +76,5 @@ $logo-height: 60px;
 }
 
 .user-group {
-  @apply flex gap-2 -mb-[14px];
+  @apply flex gap-2;
 }

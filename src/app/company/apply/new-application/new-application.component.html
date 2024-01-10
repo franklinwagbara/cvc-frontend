@@ -149,7 +149,7 @@
                 class="border border-t border-b rounded-r p-2"
                 formControlName="depotId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Depot --</option>
                 <option *ngFor="let d of depots" [ngValue]="d.id">
                   {{ d.name }}
                 </option>
