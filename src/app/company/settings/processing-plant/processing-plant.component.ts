@@ -21,8 +21,8 @@ export class ProcessingPlantComponent implements OnInit {
   public plants2: IPlant[];
   //public plants2: IPlant[];
   public plantTypes: IPlantType[] = [
-    { id: 1, name: 'Depot' },
-    { id: 2, name: 'Processing' },
+    { id: 1, name: 'Processing' },
+    { id: 2, name: 'Depot' },
   ];
 
   public tableTitles = {
@@ -31,10 +31,12 @@ export class ProcessingPlantComponent implements OnInit {
 
   public branchKeysMappedToHeaders = {
     //id: 'Id',
-    name: 'Plant name',
+    name: 'Plant Name',
     // company: 'Company Name',
     // email: 'Email',
-    state: 'Location',
+    state: 'State',
+    lga: 'LGA',
+    city: 'City',
     plantType: 'Plant Type',
     tanks: 'Tanks',
   };
@@ -121,11 +123,6 @@ export class ProcessingPlantComponent implements OnInit {
     const typeToModelMapper = {
       pp: {
         id: 'id',
-        name: 'Plant name',
-        company: 'Company Name',
-        email: 'Email',
-        state: 'Location',
-        type: 'Plant Type',
       },
     };
     const listOfDataToDelete = [...event];
@@ -151,7 +148,7 @@ export class ProcessingPlantComponent implements OnInit {
               panelClass: ['success'],
             }
           );
-          this.ngOnInit();
+          this.getplants();
         }
         this.progressBarService.close();
         this.cd.markForCheck();
@@ -185,7 +182,7 @@ export class ProcessingPlantComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.ngOnInit();
+      this.getplants();
       this.cd.markForCheck();
     });
   }
@@ -207,7 +204,7 @@ export class ProcessingPlantComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.ngOnInit();
+      this.getplants();
       this.cd.markForCheck();
     });
   }
@@ -226,4 +223,7 @@ export interface IPlant {
   state: string;
   plantType: string;
   tanks?: any;
+  stateId?: number;
+  lgaid?: number;
+  city?: string;
 }

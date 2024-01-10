@@ -181,7 +181,7 @@ export class AddScheduleFormComponent implements OnInit {
     this.scheduleService.addSchedule(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 
@@ -236,7 +236,7 @@ export class AddScheduleFormComponent implements OnInit {
     this.scheduleService.addSchedule(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 
@@ -291,7 +291,7 @@ export class AddScheduleFormComponent implements OnInit {
     this.scheduleService.addSchedule(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 

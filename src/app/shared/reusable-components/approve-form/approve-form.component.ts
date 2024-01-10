@@ -31,6 +31,7 @@ export class ApproveFormComponent implements OnInit {
   public currentUser: Staff;
   public isFO: boolean;
   public coqId: number;
+  public isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
@@ -86,6 +87,7 @@ export class ApproveFormComponent implements OnInit {
 
   private approveOther() {
     this.progressBarService.open();
+    this.isLoading = true;
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Approve,
@@ -97,11 +99,12 @@ export class ApproveFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successfully!', 'success');
+          this.popup.open('Operation was successful!', 'success');
           this.dialogRef.close();
         }
 
         this.progressBarService.close();
+        this.isLoading = false;
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
       },
@@ -113,13 +116,15 @@ export class ApproveFormComponent implements OnInit {
         );
 
         this.progressBarService.close();
+        this.isLoading = false;
+        this.cd.markForCheck();
       },
     });
   }
 
   private approveFO() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
       applicationId: this.coqId,
       action: ApplicationActionType.Approve,
@@ -129,10 +134,10 @@ export class ApproveFormComponent implements OnInit {
     this.coqService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successfully!', 'success');
+          this.popup.open('Operation was successful!', 'success');
           this.dialogRef.close();
         }
-
+        this.isLoading = false;
         this.progressBarService.close();
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
@@ -143,8 +148,9 @@ export class ApproveFormComponent implements OnInit {
           'Operation failed! Could not user information!',
           'error'
         );
-
+        this.isLoading = false;
         this.progressBarService.close();
+        this.cd.markForCheck();
       },
     });
   }

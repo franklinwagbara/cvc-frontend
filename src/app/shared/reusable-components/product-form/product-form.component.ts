@@ -33,6 +33,7 @@ export class ProductFormComponent implements OnInit {
   public productTypes: IApplicationType[];
   public product: any;
   public isSubmitted = false;
+  public isLoading = false
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -87,10 +88,12 @@ export class ProductFormComponent implements OnInit {
   createProduct() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    // this.progressBar.open();
+    this.isLoading = true
     this.adminService.addproducts(this.form.value).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
         this.snackBar.open('Product was created successfully!', null, {
           panelClass: ['success'],
         });
@@ -100,7 +103,8 @@ export class ProductFormComponent implements OnInit {
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
       },
     });
   }
@@ -108,20 +112,22 @@ export class ProductFormComponent implements OnInit {
   EditProduct() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
-
+    // this.progressBar.open();
+    this.isLoading = true
     let formData = this.form.value;
     formData.id = this.data.data.product.id;
     this.adminService.editproducts(formData).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
         this.snackBar.open('Product was modified successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
       },
       error: (err) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
@@ -129,5 +135,5 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  onClose() {}
+  
 }
