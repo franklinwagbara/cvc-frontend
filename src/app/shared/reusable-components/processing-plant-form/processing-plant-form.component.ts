@@ -137,9 +137,8 @@ export class ProcessingPlantFormComponent implements OnInit {
     this.isLoading = true;
     this.companyService.addPlant(this.form.value).subscribe({
       next: (res) => {
-        // this.progressBar.close();
-        this.isLoading = false;
-        this.snackBar.open('Record was created successfully!', null, {
+        this.progressBar.close();
+        this.snackBar.open('Plant created successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -156,7 +155,7 @@ export class ProcessingPlantFormComponent implements OnInit {
     });
   }
 
-  EditPlant() {
+  editPlant() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     // this.progressBar.open();
@@ -165,9 +164,8 @@ export class ProcessingPlantFormComponent implements OnInit {
     formData.id = this.data.data.plantId;
     this.companyService.editPlant(this.data.data.plantId, formData).subscribe({
       next: (res) => {
-        // this.progressBar.close();
-        this.isLoading = false;
-        this.snackBar.open('Record was modified successfully!', null, {
+        this.progressBar.close();
+        this.snackBar.open('Plant edited successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -182,5 +180,9 @@ export class ProcessingPlantFormComponent implements OnInit {
         this.cd.markForCheck();
       },
     });
+  }
+
+  onClose() {
+    this.dialogRef.close();
   }
 }

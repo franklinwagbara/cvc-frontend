@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IDepot } from '../../../../../src/app/shared/interfaces/IDepot';
+import { IPlant } from '../../../shared/interfaces/IPlant';
 import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
 import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
 import { AdminService } from '../../../../../src/app/shared/services/admin.service';
@@ -20,7 +20,7 @@ import { LibaryService } from '../../../../../src/app/shared/services/libary.ser
 })
 export class FieldOfficerSettingComponent implements OnInit {
   depotOfficers: IDepotOfficer[];
-  depots: IDepot[];
+  depots: IPlant[];
   allUsers: Staff[];
   elpsUsers: any[];
   roles: IRole[];

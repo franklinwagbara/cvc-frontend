@@ -24,4 +24,11 @@ export class PlantService {
     return this.http.get<any>(`${API}/get-all-plantsbycompany`);
   }
 
+  getAllTanksByPlantId(plantId: number): Observable<any> {
+    return this.http.get<any>(`${API}/get-all-tanks`, { params: { plantId }});
+  }
+
+  getAllProcessingPlants(): Observable<any> {
+    return this.http.get<any>(`${API}/all-processing-plant`)
+  }
 }

@@ -61,12 +61,14 @@
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>Close</button>
 
-      <div class="
-      ">
+      <div
+        class="
+      "
+      >
         <button
           mat-raised-button
           (click)="
-            this.data.data.action === 'EDIT' ? EditPlant() : createPlant()
+            this.data.data.action === 'EDIT' ? editPlant() : createPlant()
           "
           [disabled]="form.invalid"
           *ngIf="!isLoading"

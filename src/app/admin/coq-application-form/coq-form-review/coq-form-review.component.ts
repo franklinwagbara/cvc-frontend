@@ -21,7 +21,7 @@ export class CoqFormReviewComponent implements OnInit {
   localDataKey = LocalDataKey.COQFORMREVIEWDATA;
   dataSources: MatTableDataSource<any[]>[] = [];
   formData: any[] = [];
-  @Input() isGasProduct: boolean;
+  @Input() isGasProduct: boolean | null;
 
   objNotEmpty = Util.objNotEmpty;
 
@@ -32,13 +32,15 @@ export class CoqFormReviewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.coqFormService.liquidProductReviewData$.subscribe((val) => {
-      this.setFormData(val);
-    })
-
-    this.coqFormService.gasProductReviewData$.subscribe((val) => {
-      this.setFormData(val);
-    })  
+    if (this.isGasProduct !== null && this.isGasProduct) {
+      this.coqFormService.gasProductReviewData$.subscribe((val) => {
+        this.setFormData(val);
+      })  
+    } else if (this.isGasProduct !== null && !this.isGasProduct) {
+      this.coqFormService.liquidProductReviewData$.subscribe((val) => {
+        this.setFormData(val);
+      })
+    }
 
     this.displayedColumns = this.isGasProduct ? this.gasProductColumns : this.liqProductColumns;
   }
@@ -46,6 +48,8 @@ export class CoqFormReviewComponent implements OnInit {
   private setFormData(val: any): void {
     this.dataSources = [];
     this.formData = this.coqFormService.flattenCoQDataArr(val);
+    this.formData = this.formData.filter((el) => Object.values(el).every((val) => !!val))
+    console.log('Coq App Form Service =============> ', this.formData);
     for (let i = 0; i < this.formData.length; i += 2) {
       const tableData = [this.formData[i], this.formData[i+1]];
       this.dataSources.push(new MatTableDataSource<any[]>(tableData));
