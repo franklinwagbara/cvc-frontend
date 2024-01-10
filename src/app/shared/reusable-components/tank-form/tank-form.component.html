@@ -54,13 +54,24 @@
     </div>
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close (click)="onClose()">Close</button>
-      <button
-        mat-raised-button
-        (click)="this.data.data.action === 'EDIT' ? editTank() : createTank()"
-        [disabled]="form.invalid"
-      >
-        Save
-      </button>
+      <div class="">
+        <button
+          mat-raised-button
+          (click)="this.data.data.action === 'EDIT' ? editTank() : createTank()"
+          [disabled]="form.invalid"
+          *ngIf="!isLoading"
+        >
+          Save
+        </button>
+        <a
+          *ngIf="isLoading"
+          class="!flex !justify-center !items-center"
+          mat-mini-fab
+          color="disabled"
+        >
+          <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+        </a>
+      </div>
     </div>
   </form>
 </div>

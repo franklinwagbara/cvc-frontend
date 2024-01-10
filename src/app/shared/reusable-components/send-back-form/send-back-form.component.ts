@@ -24,6 +24,7 @@ export class SendBackFormComponent implements OnInit {
   public form: FormGroup;
   public application: IApplication;
   public currentUser: Staff;
+  public isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<SendBackFormComponent>,
@@ -74,7 +75,7 @@ export class SendBackFormComponent implements OnInit {
 
   sendBack() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Reject,
@@ -86,13 +87,14 @@ export class SendBackFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 
           this.dialogRef.close();
+        
         }
-
+        this.isLoading = false;
         this.progressBarService.close();
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
@@ -106,8 +108,9 @@ export class SendBackFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
-
+        this.isLoading = false;
         this.progressBarService.close();
+        this.cd.markForCheck();
       },
     });
   }

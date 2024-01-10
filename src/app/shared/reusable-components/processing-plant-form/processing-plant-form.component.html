@@ -17,14 +17,14 @@
 
       <div class="mb-[10px]">
         <label> State</label>
-        <select formControlName="state" class="form-control">
+        <select formControlName="stateId" class="form-control">
           <option selected disabled>--Select from options --</option>
-          <option *ngFor="let state of states" [ngValue]="state.name">
+          <option *ngFor="let state of states" [ngValue]="state.id">
             {{ state.name }}
           </option>
         </select>
         <mat-error
-          *ngIf="(f['state'].dirty || isSubmitted) && f['state']?.invalid"
+          *ngIf="(f['stateId'].dirty || isSubmitted) && f['stateId']?.invalid"
           class=""
         >
           State is required!
@@ -32,32 +32,56 @@
       </div>
 
       <div class="mb-[10px]">
-        <label>Plant Type</label>
-        <select formControlName="plantType" class="form-control">
+        <label>LGA</label>
+        <select formControlName="lgaid" class="form-control">
           <option selected disabled>--Select from options --</option>
-          <option *ngFor="let plantType of plantTypes" [ngValue]="plantType.id">
-            {{ plantType.name }}
+          <option *ngFor="let lga of lga" [ngValue]="lga.id">
+            {{ lga.name }}
           </option>
         </select>
         <mat-error
-          *ngIf="
-            (f['plantType'].dirty || isSubmitted) && f['plantType']?.invalid
-          "
+          *ngIf="(f['lgaid'].dirty || isSubmitted) && f['lgaid']?.invalid"
           class=""
         >
-          Plant type is required!
+          LGA is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label>City Name</label>
+        <input type="text" formControlName="city" class="form-control" />
+        <mat-error
+          *ngIf="(f['city'].dirty || isSubmitted) && f['city']?.invalid"
+          class=""
+        >
+          City is required!
         </mat-error>
       </div>
     </div>
     <div mat-dialog-actions>
-      <button mat-button mat-dialog-close (click)="onClose()">Close</button>
-      <button
-        mat-raised-button
-        (click)="this.data.data.action === 'EDIT' ? EditPlant() : createPlant()"
-        [disabled]="form.invalid"
-      >
-        Save
-      </button>
+      <button mat-button mat-dialog-close>Close</button>
+
+      <div class="
+      ">
+        <button
+          mat-raised-button
+          (click)="
+            this.data.data.action === 'EDIT' ? EditPlant() : createPlant()
+          "
+          [disabled]="form.invalid"
+          *ngIf="!isLoading"
+        >
+          Save
+        </button>
+        <a
+          *ngIf="isLoading"
+          class="!flex !justify-center !items-center"
+          mat-mini-fab
+          color="disabled"
+        >
+          <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+        </a>
+      </div>
     </div>
   </form>
 </div>

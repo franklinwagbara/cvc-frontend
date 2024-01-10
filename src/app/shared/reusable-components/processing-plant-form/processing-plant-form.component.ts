@@ -26,6 +26,7 @@ import {
   IPlantType,
 } from '../../../../../src/app/company/settings/processing-plant/processing-plant.component';
 import { CompanyService } from '../../services/company.service';
+import { LibaryService } from '../../services/libary.service';
 
 @Component({
   selector: 'app-processing-plant-form',
@@ -39,6 +40,8 @@ export class ProcessingPlantFormComponent implements OnInit {
   public plantTypes: IPlantType[];
   public isSubmitted = false;
   public states: any;
+  public lga: any;
+  public isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,19 +53,22 @@ export class ProcessingPlantFormComponent implements OnInit {
     private progressBar: ProgressBarService,
     private popUp: PopupService,
     private companyService: CompanyService,
+    private libraryService: LibaryService,
     private spinner: SpinnerService
   ) {
     this.plantTypes = data.data.plantTypes;
 
     this.form = formBuilder.group({
       name: ['', [Validators.required]],
-      state: ['', [Validators.required]],
-      plantType: ['', [Validators.required]],
+      stateId: ['', [Validators.required]],
+      lgaid: ['', [Validators.required]],
+      city: ['', [Validators.required]],
     });
   }
 
   ngOnInit(): void {
     this.getState();
+    this.getLga() 
     console.log('this', this.data);
     if (this.data.data.action === 'EDIT') this.getPlant();
   }
@@ -74,7 +80,28 @@ export class ProcessingPlantFormComponent implements OnInit {
   getState() {
     this.companyService.getStates().subscribe({
       next: (res) => {
+        this.states;
         this.states = res.data;
+        this.cd.markForCheck();
+      },
+      error: (err) => {},
+    });
+  }
+
+  // getLga(stateId: any) {
+  //   this.libraryService.getLGAByStateId(stateId).subscribe({
+  //     next: (res) => {
+  //       this.lga = res.data;
+  //       this.cd.markForCheck();
+  //     },
+  //     error: (err) => {},
+  //   });
+  // }
+
+  getLga() {
+    this.libraryService.getLGA().subscribe({
+      next: (res) => {
+        this.lga = res.data;
         this.cd.markForCheck();
       },
       error: (err) => {},
@@ -88,8 +115,9 @@ export class ProcessingPlantFormComponent implements OnInit {
         this.progressBar.close();
         this.plant = res.data;
         this.form.get('name').setValue(this.plant.name);
-        this.form.get('state').setValue(this.plant.state);
-        this.form.get('plantType').setValue(this.plant.plantType);
+        this.form.get('stateId').setValue(this.plant.stateId);
+        this.form.get('lgaid').setValue(this.plant.lgaid);
+        this.form.get('city').setValue(this.plant.city);
         this.cd.markForCheck();
       },
       error: (err) => {
@@ -105,10 +133,12 @@ export class ProcessingPlantFormComponent implements OnInit {
   createPlant() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    // this.progressBar.open();
+    this.isLoading = true;
     this.companyService.addPlant(this.form.value).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open('Record was created successfully!', null, {
           panelClass: ['success'],
         });
@@ -119,7 +149,8 @@ export class ProcessingPlantFormComponent implements OnInit {
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.cd.markForCheck();
       },
     });
@@ -128,12 +159,14 @@ export class ProcessingPlantFormComponent implements OnInit {
   EditPlant() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    // this.progressBar.open();
+    this.isLoading = true;
     let formData = this.form.value;
     formData.id = this.data.data.plantId;
     this.companyService.editPlant(this.data.data.plantId, formData).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open('Record was modified successfully!', null, {
           panelClass: ['success'],
         });
@@ -141,7 +174,8 @@ export class ProcessingPlantFormComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (err) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
@@ -149,6 +183,4 @@ export class ProcessingPlantFormComponent implements OnInit {
       },
     });
   }
-
-  onClose() {}
 }

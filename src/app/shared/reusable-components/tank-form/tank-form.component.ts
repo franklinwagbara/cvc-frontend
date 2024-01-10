@@ -37,6 +37,7 @@ export class TankFormComponent implements OnInit {
   public tankId: number;
   public isSubmitted = false;
   public products: any;
+  public isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -94,12 +95,14 @@ export class TankFormComponent implements OnInit {
   createTank() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    // this.progressBar.open();
+    this.isLoading = true;
     const formData = this.form.value;
     formData.plantId = this.plantId;
     this.companyService.addTank(formData).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open('Record was created successfully!', null, {
           panelClass: ['success'],
         });
@@ -110,7 +113,8 @@ export class TankFormComponent implements OnInit {
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false;
         this.cd.markForCheck();
       },
     });
@@ -119,13 +123,15 @@ export class TankFormComponent implements OnInit {
   editTank() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
-    this.progressBar.open();
+    // this.progressBar.open();
+    this.isLoading = true
     let formData = this.form.value;
     formData.plantId = this.plantId;
     formData.id = this.tankId;
     this.companyService.editTank(formData).subscribe({
       next: (res) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
         this.snackBar.open('Record was modified successfully!', null, {
           panelClass: ['success'],
         });
@@ -133,7 +139,8 @@ export class TankFormComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (err) => {
-        this.progressBar.close();
+        // this.progressBar.close();
+        this.isLoading = false
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
