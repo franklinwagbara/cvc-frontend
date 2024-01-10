@@ -76,6 +76,7 @@ import { CoqApplicationViewTableComponent } from './application/coq-application-
 import { ViewCoqTankComponent } from './application/coq-application-view/view-coq-tank/view-coq-tank.component';
 import { AllCoqCertificatesComponent } from './all-coq-certificates/all-coq-certificates.component';
 import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearances.component';
+import { ViewNoaApplicationComponent } from './noa-applications/view-noa-application/view-noa-application.component';
 
 
 @NgModule({
@@ -130,6 +131,7 @@ import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearanc
     CoqApplicationViewComponent,
     CoqApplicationViewTableComponent,
     ViewCoqTankComponent,
+    ViewNoaApplicationComponent,
     AllCoqCertificatesComponent,
     AllNoaClearancesComponent
   ],

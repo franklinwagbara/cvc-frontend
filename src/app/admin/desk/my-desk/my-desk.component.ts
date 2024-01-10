@@ -15,6 +15,8 @@ import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
 import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 @Component({
   selector: 'app-my-desk',
@@ -115,6 +117,11 @@ export class MyDeskComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {}
+
+  get isFieldOfficer(): boolean {
+    const currentUser = decodeFullUserInfo();
+    return currentUser.userRoles === UserRole.FIELDOFFICER;
+  }
 
   onViewData(event: any, type: string) {
     if (this.appType$.getValue() == 'COQ') {

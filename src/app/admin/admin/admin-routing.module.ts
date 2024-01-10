@@ -95,9 +95,8 @@ const routes: Routes = [
     component: CoqApplicationsComponent,
   },
   {
-    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
+    path: 'certificate-of-quantity/coq-applications/:id',
     component: CoqApplicationViewComponent,
-    canActivate: [CoqGuard],
   },
   {
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
