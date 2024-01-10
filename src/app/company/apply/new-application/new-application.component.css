@@ -30,6 +30,11 @@
   @apply border border-gray-400 p-5 flex flex-col gap-10 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
 }
 
+.depot-form {
+  min-width: 400px;
+  @apply border border-gray-400 flex flex-col p-5 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
+}
+
 .form h3 {
   @apply bg-slate-200 p-3;
 }
@@ -37,7 +42,7 @@
 .form button {
   @apply bg-blue-200 p-2 border;
 }
-    
+
 .data-table {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;

@@ -43,16 +43,16 @@ export class PaymentSumComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.progressbar.open();
     this.route.params.subscribe((params) => {
       this.application_id = params['id'];
       this.getPaymentSummary();
+      this.cd.markForCheck();
     });
   }
 
   getPaymentSummary() {
+    this.spinner.show('Fetching payment details');
     this.progressbar.open();
-    this.spinner.open();
     this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
       next: (res) => {
         if (res.success) {
@@ -72,14 +72,14 @@ export class PaymentSumComponent implements OnInit {
           if (this.paymentSummary?.paymentStatus === 'PaymentCompleted') {
             this.popUp.open('Payment completed successfully!', 'success');
           }
+          this.spinner.close();
+          this.progressbar.close();
         }
-        this.progressbar.close();
-        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.progressbar.close();
         this.spinner.close();
+        this.progressbar.close();
         this.cd.markForCheck();
       },
     });
@@ -88,7 +88,7 @@ export class PaymentSumComponent implements OnInit {
   generateRRR() {
     this.route.params.subscribe((params) => {
       this.progressbar.open();
-      this.spinner.open();
+      this.spinner.show('Generating RRR');
       this.application_id = params['id'];
 
       this.applicationServer.createPayment_RRR(this.application_id).subscribe({
@@ -102,16 +102,16 @@ export class PaymentSumComponent implements OnInit {
             );
 
             this.popUp.open('RRR was generated successfully!', 'success');
-            this.progressbar.close();
             this.spinner.close();
+            this.progressbar.close();
             this.cd.markForCheck();
           }
         },
         error: (error: unknown) => {
           //todo: display error dialog
           this.popUp.open('RRR generation failed!', 'error');
-          this.progressbar.close();
           this.spinner.close();
+          this.progressbar.close();
           this.cd.markForCheck();
         },
       });

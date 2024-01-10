@@ -1,5 +1,5 @@
 <div class="apply-container">
-  <div *ngIf="showLoader" class="progress-bar-backdrop relative">
+  <!-- <div *ngIf="showLoader" class="progress-bar-backdrop relative">
     <div class="flex absolute top-[30%] left-[20%] right-[20%]">
       <div class="w-full">
         <h4 class="w-full flex justify-center mx-auto text-green-300">
@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="apply-wrapper">
     <h1>NEW CVC CERTIFICATION</h1>
@@ -22,6 +22,7 @@
       <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
         <form [formGroup]="vesselForm" class="main-form">
           <div class="first-segment" *ngIf="activateFirstSegment">
+            <h5 class="w-full">Vessel Information</h5>
             <div class="flex flex-col">
               <span class="input-label"> IMO Number </span>
               <input
@@ -139,7 +140,8 @@
 
       <div class="second-segment" *ngIf="activateSecondSegment">
         <div class="appDepotForm">
-          <form class="appDepotForm" [formGroup]="appDepotForm">
+          <form class="appDepotForm depot-form" [formGroup]="appDepotForm">
+            <h5 class="w-full">Depot Configuration</h5>
             <div class="flex flex-col">
               <span class="input-label"> Depot Name </span>
               <select
@@ -186,7 +188,7 @@
               [disabled]="appDepotForm.invalid ? true : null"
               (click)="addAppDepot()"
             >
-              Add Tank
+              Add Depot
             </button>
 
             <div *ngIf="selectedAppDepots?.length > 0">

@@ -123,7 +123,7 @@
       >
       <a
         mat-flat-button
-        *ngIf="!(rrr$ | async)"
+        *ngIf="!(rrr$ | async) && paymentSummary"
         (click)="generateRRR()"
         class="grrr-color"
         >Generate RRR</a
