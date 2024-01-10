@@ -7,7 +7,7 @@
 }
 
 .application-details h1 {
-  @apply text-[#3e4e50] my-8;
+  @apply text-[#3e4e50] mb-4;
 }
 
 hr {
@@ -47,7 +47,8 @@ hr {
   @apply font-medium tracking-wide;
 }
 
-.info-wrapper div > span, .empty {
+.info-wrapper div > span,
+.empty {
   word-wrap: break-word;
   @apply block text-center text-lg lg:text-xl bg-[#fff] rounded-sm p-4 font-medium;
 }
@@ -90,4 +91,8 @@ hr {
 
 .mat-expansion-panel {
   min-width: 50%;
+}
+
+.back-btn-color {
+  background-color: rgb(229 240 246 / var(--tw-bg-opacity)) !important;
 }

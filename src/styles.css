@@ -96,11 +96,13 @@ button:disabled {
   padding: 0px !important; /* Set padding to 0 or adjust as needed */
 }
 
+
 .pannelClass {
   padding: 0px !important;
   margin: 0px !important;
   /* width: 70% !important; */
   height: 96% !important;
+  /* z-index: 20 !important; */
 }
 
 @media only screen and (max-width: 768px) {
