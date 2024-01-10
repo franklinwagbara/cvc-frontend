@@ -53,7 +53,7 @@ export class ViewApplicationComponent implements OnInit {
       this.appId = parseInt(params['id']);
       this.appSource = params['appSource'];
 
-      if (this.appSource != AppSource.Licence) this.getApplication();
+      if (this.appSource !== AppSource.Licence) this.getApplication();
       else this.getLicence();
     });
 

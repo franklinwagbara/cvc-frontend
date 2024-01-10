@@ -75,7 +75,7 @@ const ROUTES: RouteInfo[] = [
     id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
-    iconId: 'dashboard_outline',
+    iconId: 'apps',
     iconColor: 'white',
     active: false,
     subMenuActive: false,
