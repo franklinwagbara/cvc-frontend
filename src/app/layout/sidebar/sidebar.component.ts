@@ -75,7 +75,7 @@ const ROUTES: RouteInfo[] = [
     id: 4,
     title: 'APPLICATIONS',
     iconName: 'apps',
-    iconId: 'dashboard_outline',
+    iconId: 'apps',
     iconColor: 'white',
     active: false,
     subMenuActive: false,
@@ -107,7 +107,7 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 6,
-    title: 'ALL ISSUANCES',
+    title: 'ALL APPROVALS',
     iconName: 'approval',
     iconId: 'approval',
     iconColor: 'white',
@@ -297,12 +297,12 @@ export class SidebarComponent implements OnInit, OnChanges {
         {
           id: 1,
           title: 'NoA Applications',
-          url: '/admin/noa-applications-by-depot',
+          url: '/admin/noa-applications',
         },
         {
           id: 2,
           title: 'CoQ Applications',
-          url: '/admin/certificate-of-quantity/coq-applications-by-depot',
+          url: '/admin/coq-applications',
         },
       ]
 
