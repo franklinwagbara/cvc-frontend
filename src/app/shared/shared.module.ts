@@ -57,6 +57,7 @@ import { DepotOfficerFormComponent } from './reusable-components/depot-officer-f
 import { ProcessingPlantFormComponent } from './reusable-components/processing-plant-form/processing-plant-form.component';
 import { ProductFormComponent } from './reusable-components/product-form/product-form.component';
 import { TankFormComponent } from './reusable-components/tank-form/tank-form.component';
+import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import { TankFormComponent } from './reusable-components/tank-form/tank-form.com
     ProcessingPlantFormComponent,
     ProductFormComponent,
     TankFormComponent,
+    AbbreviateNumberPipe,
   ],
   imports: [
     CommonModule,
@@ -132,6 +134,7 @@ import { TankFormComponent } from './reusable-components/tank-form/tank-form.com
     DropdownComponent,
     FirstNPipe,
     FormatTimeAmPmPipe,
+    AbbreviateNumberPipe,
   ],
 })
 export class SharedModule {}

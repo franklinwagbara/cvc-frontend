@@ -77,6 +77,8 @@ import { ViewCoqTankComponent } from './application/coq-application-view/view-co
 import { AllCoqCertificatesComponent } from './all-coq-certificates/all-coq-certificates.component';
 import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearances.component';
 import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
+import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -133,7 +135,8 @@ import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-no
     ViewCoqTankComponent,
     ViewNoaApplicationComponent,
     AllCoqCertificatesComponent,
-    AllNoaClearancesComponent
+    AllNoaClearancesComponent,
+    CoqApplicationPreviewComponent
   ],
 
   imports: [
@@ -159,6 +162,7 @@ import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-no
     MatNativeDateModule,
     MatProgressBarModule,
     MatStepperModule,
+    MatProgressSpinnerModule,
   ],
   exports: [],
   providers: [
