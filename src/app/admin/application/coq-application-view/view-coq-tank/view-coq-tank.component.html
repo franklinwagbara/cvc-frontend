@@ -9,7 +9,9 @@
   <div *ngFor="let a of tanks; let i = index" class="!text-green-500">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>{{ i + 1 }}. View {{ a?.tankName }} </mat-panel-title>
+        <mat-panel-title
+          >{{ i + 1 }}. View {{ a[0]?.tankName }}
+        </mat-panel-title>
       </mat-expansion-panel-header>
       <div>
         <generic-table
