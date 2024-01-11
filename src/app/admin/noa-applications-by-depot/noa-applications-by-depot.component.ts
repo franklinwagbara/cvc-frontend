@@ -7,7 +7,6 @@ import { PopupService } from '../../shared/services/popup.service';
 import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
 import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
-
 @Component({
   selector: 'app-noa-applications-by-depot',
   templateUrl: './noa-applications-by-depot.component.html',
@@ -33,14 +32,14 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     rrr: 'RRR',
     createdDate: 'Initiated Date',
   };
-  
+
   constructor(
     private applicationService: ApplicationService,
     private spinner: SpinnerService,
     private router: Router,
     private depotOfficerService: DepotOfficerService,
     private cdr: ChangeDetectorRef,
-    private popUp: PopupService,
+    private popUp: PopupService
   ) {}
 
   ngOnInit(): void {
@@ -54,9 +53,11 @@ export class NoaApplicationsByDepotComponent implements OnInit {
       next: (res: any) => {
         this.depotOfficerMappings = res?.data;
         const currUser = decodeFullUserInfo();
-        const officerMapping = this.depotOfficerMappings.find((val) => val.userId === currUser.userUUID);
-        
-        this.applicationService.viewApplicationByDepot(officerMapping?.depotID || 1).subscribe({
+        const officerMapping = this.depotOfficerMappings.find(
+          (val) => val.userId === currUser.userUUID
+        );
+
+        this.applicationService.viewApplicationByDepot().subscribe({
           next: (res) => {
             this.applications = res.data;
             this.spinner.close();
@@ -64,7 +65,10 @@ export class NoaApplicationsByDepotComponent implements OnInit {
           },
           error: (error: unknown) => {
             console.log(error);
-            this.popUp.open('Something went wrong while retrieving data.', 'error');
+            this.popUp.open(
+              'Something went wrong while retrieving data.',
+              'error'
+            );
             this.spinner.close();
             this.cdr.markForCheck();
           },
@@ -75,8 +79,8 @@ export class NoaApplicationsByDepotComponent implements OnInit {
         this.popUp.open('Something went wrong while retrieving data.', 'error');
         this.spinner.close();
         this.cdr.markForCheck();
-      }
-    })
+      },
+    });
   }
 
   viewApplication(event: any): void {
@@ -90,11 +94,11 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
   initiateCoQ(event: any) {
     this.router.navigate([
-      'admin', 
+      'admin',
       'noa-applications-by-depot',
-      event.id, 
-      'certificate-of-quantity', 
-      'new-application'
+      event.id,
+      'certificate-of-quantity',
+      'new-application',
     ]);
   }
 }

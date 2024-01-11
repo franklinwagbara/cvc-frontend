@@ -707,7 +707,8 @@ export class CoqApplicationFormComponent
     } else {
       payload = {
         ...reference,
-        productId: this.productSelection.value,
+
+        productId: this.isProcessingPlant ? this.productSelection.value : null,
         dateOfVesselArrival:
           this.vesselLiqInfoForm.controls[
             'dateOfVesselArrival'
