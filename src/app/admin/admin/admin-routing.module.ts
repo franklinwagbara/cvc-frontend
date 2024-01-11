@@ -83,7 +83,7 @@ const routes: Routes = [
   { path: 'roles', component: RolesComponent },
   { path: 'products', component: ProductsComponent },
   {
-    path: 'noa-applications',
+    path: 'noa-applications-by-depot',
     component: NoaApplicationsByDepotComponent,
   },
   {
@@ -97,7 +97,7 @@ const routes: Routes = [
     canActivate: [CoqGuard]
   },
   {
-    path: 'certificate-of-quantity/coq-applications/:id',
+    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
   },
   {

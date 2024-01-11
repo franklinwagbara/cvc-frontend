@@ -64,11 +64,6 @@ const ROUTES: RouteInfo[] = [
         title: 'MY DESK',
         url: '/admin/my-desk',
       },
-      // {
-      //   id: 2,
-      //   title: 'STAFF DESK',
-      //   url: '/admin/staff-desk',
-      // },
     ],
   },
   {
@@ -316,7 +311,7 @@ export class SidebarComponent implements OnInit, OnChanges {
 
       this.menuItems = this.menuItems.slice(0, 2).concat({
         id: 3,
-        title: 'CoQ',
+        title: 'CoQ & Plant',
         iconName: 'carbon',
         iconId: 'carbon',
         iconColor: 'white',
