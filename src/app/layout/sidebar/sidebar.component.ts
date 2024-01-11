@@ -64,11 +64,6 @@ const ROUTES: RouteInfo[] = [
         title: 'MY DESK',
         url: '/admin/my-desk',
       },
-      // {
-      //   id: 2,
-      //   title: 'STAFF DESK',
-      //   url: '/admin/staff-desk',
-      // },
     ],
   },
   {
@@ -118,12 +113,12 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'CoQ CERTIFICATES',
-        url: '/admin/all-issuances/coq-certificates',
+        url: '/admin/all-approvals/coq-certificates',
       },
       {
         id: 2,
         title: 'NoA CLEARANCES',
-        url: '/admin/all-issuances/noa-clearance'
+        url: '/admin/all-approvals/noa-clearance'
       }
     ],
   },
@@ -297,12 +292,12 @@ export class SidebarComponent implements OnInit, OnChanges {
         {
           id: 1,
           title: 'NoA Applications',
-          url: '/admin/noa-applications',
+          url: '/admin/noa-applications-by-depot',
         },
         {
           id: 2,
           title: 'CoQ Applications',
-          url: '/admin/coq-applications',
+          url: '/admin/coq-applications-by-depot',
         },
       ]
 
@@ -316,7 +311,7 @@ export class SidebarComponent implements OnInit, OnChanges {
 
       this.menuItems = this.menuItems.slice(0, 2).concat({
         id: 3,
-        title: 'CoQ',
+        title: 'CoQ & Plant',
         iconName: 'carbon',
         iconId: 'carbon',
         iconColor: 'white',
