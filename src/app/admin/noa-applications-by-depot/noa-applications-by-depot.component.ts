@@ -4,14 +4,16 @@ import { ApplicationService } from '../../shared/services/application.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { PopupService } from '../../shared/services/popup.service';
+import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
 
 @Component({
-  selector: 'app-noa-applications',
-  templateUrl: './noa-applications.component.html',
-  styleUrls: ['./noa-applications.component.css'],
+  selector: 'app-noa-applications-by-depot',
+  templateUrl: './noa-applications-by-depot.component.html',
+  styleUrls: ['./noa-applications-by-depot.component.css'],
 })
-export class NoaApplicationsComponent implements OnInit {
+export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
   depotOfficerMappings: any[];
 
@@ -25,7 +27,6 @@ export class NoaApplicationsComponent implements OnInit {
     companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    imoNumber: 'IMO Number',
     capacity: 'Capacity',
     status: 'Status',
     paymnetStatus: 'Payment Status',
@@ -37,6 +38,7 @@ export class NoaApplicationsComponent implements OnInit {
     private applicationService: ApplicationService,
     private spinner: SpinnerService,
     private router: Router,
+    private depotOfficerService: DepotOfficerService,
     private cdr: ChangeDetectorRef,
     private popUp: PopupService,
   ) {}
@@ -48,20 +50,33 @@ export class NoaApplicationsComponent implements OnInit {
   public fetchAllData() {
     this.spinner.show('Fetching all applications...');
 
-    this.applicationService.getAllApplications().subscribe({
-      next: (res) => {
-        this.applications = res.data;
-        this.spinner.close();
-        this.cdr.markForCheck();
+    this.depotOfficerService.getAllMappings().subscribe({
+      next: (res: any) => {
+        this.depotOfficerMappings = res?.data;
+        const currUser = decodeFullUserInfo();
+        const officerMapping = this.depotOfficerMappings.find((val) => val.userId === currUser.userUUID);
+        
+        this.applicationService.viewApplicationByDepot(officerMapping?.depotID || 1).subscribe({
+          next: (res) => {
+            this.applications = res.data;
+            this.spinner.close();
+            this.cdr.markForCheck();
+          },
+          error: (error: unknown) => {
+            console.log(error);
+            this.popUp.open('Something went wrong while retrieving data.', 'error');
+            this.spinner.close();
+            this.cdr.markForCheck();
+          },
+        });
       },
-      error: (error: unknown) => {
+      error: (error: any) => {
         console.log(error);
         this.popUp.open('Something went wrong while retrieving data.', 'error');
         this.spinner.close();
         this.cdr.markForCheck();
-      },
-    });
-
+      }
+    })
   }
 
   viewApplication(event: any): void {
@@ -71,6 +86,16 @@ export class NoaApplicationsComponent implements OnInit {
   public get isFieldOfficer(): boolean {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser && currentUser?.userRoles.includes('Field_Officer');
+  }
+
+  initiateCoQ(event: any) {
+    this.router.navigate([
+      'admin', 
+      'noa-applications-by-depot',
+      event.id, 
+      'certificate-of-quantity', 
+      'new-application'
+    ]);
   }
 }
 

@@ -51,11 +51,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NoaApplicationsComponent } from './noa-applications/noa-applications.component';
+import { NoaApplicationsByDepotComponent } from './noa-applications-by-depot/noa-applications-by-depot.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { CoqApplicationsComponent } from './coq-applications/coq-applications.component';
+import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
 import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
 import { AppDepotComponent } from './settings/app-depot/app-depot.component';
@@ -76,7 +76,7 @@ import { CoqApplicationViewTableComponent } from './application/coq-application-
 import { ViewCoqTankComponent } from './application/coq-application-view/view-coq-tank/view-coq-tank.component';
 import { AllCoqCertificatesComponent } from './all-coq-certificates/all-coq-certificates.component';
 import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearances.component';
-import { ViewNoaApplicationComponent } from './noa-applications/view-noa-application/view-noa-application.component';
+import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
 
 
 @NgModule({
@@ -119,8 +119,8 @@ import { ViewNoaApplicationComponent } from './noa-applications/view-noa-applica
     PaymentViewTableComponent,
     RolesComponent,
     CoqApplicationFormComponent,
-    NoaApplicationsComponent,
-    CoqApplicationsComponent,
+    NoaApplicationsByDepotComponent,
+    CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
     JettySettingComponent,
     NominatedSurveyorSettingComponent,

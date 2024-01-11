@@ -1,5 +1,5 @@
 <div class="setting-desk">
-  <h2 class="page-title bg-yellow-500 text-yellow-800 bg-gradient-to-r from-[#3a6073] to-[#3a7bd5]">ALL APPLICATIONS BY DEPOT</h2>
+  <h2 class="page-title bg-yellow-500 text-yellow-800 bg-gradient-to-r from-[#3a6073] to-[#3a7bd5]">NoA APPLICATIONS BY DEPOT</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
@@ -12,7 +12,9 @@
           [noCheckControls]="true"
           [noEditControl]="true"
           [EnableViewControl]="true"
+          [EnableInitiateCoQControl]="isFieldOfficer"
           (onViewData)="viewApplication($event)"
+          (onInitiateCoQ)="initiateCoQ($event)"
         >
         </generic-table>
       </div>
