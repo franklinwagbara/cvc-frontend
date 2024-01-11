@@ -8,7 +8,6 @@ import { LibaryService } from '../../../../../src/app/shared/services/libary.ser
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
-
 @Component({
   selector: 'app-new-application',
   templateUrl: './new-application.component.html',
@@ -50,7 +49,7 @@ export class NewApplicationComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private spinner: SpinnerService,
+    private spinner: SpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -158,7 +157,7 @@ export class NewApplicationComponent implements OnInit {
       marketerName: this.vesselForm.value.marketerName,
     };
 
-    this.spinner.open();
+    this.spinner.show('Saving vessel details');
     this.appService.apply(payload).subscribe({
       next: (res) => {
         const appId = res.data.appId;

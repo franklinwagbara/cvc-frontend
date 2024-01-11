@@ -35,8 +35,8 @@ export class ProcessingPlantComponent implements OnInit {
     // company: 'Company Name',
     // email: 'Email',
     state: 'State',
-    lga: 'LGA',
-    city: 'City',
+    // lga: 'LGA',
+    // city: 'City',
     plantType: 'Plant Type',
     tanks: 'Tanks',
   };

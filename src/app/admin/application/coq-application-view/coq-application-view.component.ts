@@ -33,7 +33,7 @@ export class CoqApplicationViewComponent implements OnInit {
   public currentUser: LoginModel;
   public coqId: number;
   public documents: any;
-  public tanks: any;
+  public tanksList: any;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -88,7 +88,7 @@ export class CoqApplicationViewComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.application = res.data.coq;
-          this.tanks = res.data.tanks;
+          this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
         }
 

@@ -9,7 +9,10 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ViewCoqTankComponent implements OnInit {
   public tanks: any;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,  public dialogRef: DialogRef<ViewCoqTankComponent>) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: DialogRef<ViewCoqTankComponent>
+  ) {}
 
   ngOnInit(): void {
     this.tanks = this.data.data;
@@ -21,6 +24,7 @@ export class ViewCoqTankComponent implements OnInit {
 
   public tankKeysMappedToHeaders = {
     measurementType: 'MEASUREMENT TYPE',
+    tankName: 'Tank Name',
     dip: 'DIP',
     waterDIP: 'WATER DIP',
     tov: 'TOV',

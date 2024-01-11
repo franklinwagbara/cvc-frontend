@@ -68,9 +68,12 @@ export class ProcessingPlantFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getState();
-    this.getLga() 
+    this.getLga();
     console.log('this', this.data);
-    if (this.data.data.action === 'EDIT') this.getPlant();
+    if (this.data.data.action === 'EDIT') {
+      this.form.get('lgaid').clearValidators;
+      this.getPlant();
+    }
   }
 
   get f() {
