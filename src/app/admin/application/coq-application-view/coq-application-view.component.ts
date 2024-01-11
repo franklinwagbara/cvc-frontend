@@ -18,14 +18,13 @@ import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { Location } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
 
-
 @Component({
   selector: 'app-coq-application-view',
   templateUrl: './coq-application-view.component.html',
   styleUrls: ['./coq-application-view.component.scss'],
 })
 export class CoqApplicationViewComponent implements OnInit {
-  public application: Application;
+  public application: Application | any;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -72,6 +71,14 @@ export class CoqApplicationViewComponent implements OnInit {
 
   public get isSupervisor() {
     return (this.currentUser as any).userRoles === 'Supervisor';
+  }
+
+  public get isCOQProcessor() {
+    return (
+      (this.currentUser as any).userRoles === 'FAD' ||
+      (this.currentUser as any).userRoles === 'Controller' ||
+      this.currentUser.location == Location.FO
+    );
   }
 
   public get isFO() {
@@ -144,11 +151,13 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
+    this.application.reference = this.application.Reference;
     const operationConfiguration = {
       approve: {
         data: {
           application: this.application,
           isFO: this.isFO,
+          isCOQProcessor: this.isCOQProcessor,
           coqId: this.coqId,
         },
         form: ApproveFormComponent,
@@ -157,6 +166,7 @@ export class CoqApplicationViewComponent implements OnInit {
         data: {
           application: this.application,
           isFO: this.isFO,
+          isCOQProcessor: this.isCOQProcessor,
           coqId: this.coqId,
         },
         form: SendBackFormComponent,

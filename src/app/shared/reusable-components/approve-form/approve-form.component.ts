@@ -30,6 +30,7 @@ export class ApproveFormComponent implements OnInit {
   public application: IApplication;
   public currentUser: Staff;
   public isFO: boolean;
+  public isCOQProcessor: boolean;
   public coqId: number;
   public isLoading = false;
 
@@ -49,14 +50,15 @@ export class ApproveFormComponent implements OnInit {
     this.application = data.data.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
+    this.isCOQProcessor = data.data.isCOQProcessor;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
     });
   }
   ngOnInit(): void {
+    console.log(this.data.data);
     const tempUser = this.auth.currentUser;
-
     this.auth.getAllStaff().subscribe({
       next: (res) => {
         this.currentUser = res.data.data?.find(
@@ -81,7 +83,9 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
-    if (this.isFO) this.approveFO();
+    // if (this.isFO) this.approveFO();
+    // else this.approveOther();
+    if (this.isCOQProcessor) this.approveFO();
     else this.approveOther();
   }
 
