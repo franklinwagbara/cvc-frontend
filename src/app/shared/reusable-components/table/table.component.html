@@ -143,6 +143,7 @@
                 color="accent"
                 class="view-button"
                 *ngIf="column.cell(row) === 'initiate_coq_control'"
+                [disabled]="row?.status !== 'Completed'"
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ
