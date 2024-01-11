@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-coq-application-preview',
@@ -6,11 +7,15 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./coq-application-preview.component.css']
 })
 export class CoqApplicationPreviewComponent implements OnInit {
+  @Input() liquidProductData: any;
+  @Input() gasProductData: any;
+  dataSource: MatTableDataSource<any[]>;
+
 
   constructor() {}
 
   ngOnInit(): void {
-    
+    this.dataSource = new MatTableDataSource<any[]>([]);
   }
 
 

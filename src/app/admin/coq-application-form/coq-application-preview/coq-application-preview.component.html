@@ -1,1 +1,15 @@
-<p>coq-application-preview works!</p>
+<div>
+  <table></table>
+
+  <div id="coq-application-preview-table">CoQ Application Preview</div>
+  <table mat-table [dataSource]="dataSource" aria-describedby="coq-application-preview-table">
+    <ng-container >
+
+    </ng-container>
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef></td>
+
+    <tr mat-header-row *matHeaderRowDef></tr>
+    <tr mat-row *matRowDef></tr>
+  </table>
+</div>
