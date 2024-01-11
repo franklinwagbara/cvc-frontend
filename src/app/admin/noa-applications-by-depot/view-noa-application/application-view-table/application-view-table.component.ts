@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IApplication } from '../../../../shared/interfaces/IApplication';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../shared/services/application.service';
+import { SpinnerService } from '../../../../shared/services/spinner.service';
 
 
 @Component({

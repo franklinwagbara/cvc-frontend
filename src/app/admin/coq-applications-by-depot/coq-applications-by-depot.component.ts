@@ -10,11 +10,11 @@ import { SpinnerService } from '../../shared/services/spinner.service';
 import { CoqAppFormService } from '../../shared/services/coq-app-form.service';
 
 @Component({
-  selector: 'app-coq-applications',
-  templateUrl: './coq-applications.component.html',
-  styleUrls: ['./coq-applications.component.css'],
+  selector: 'app-coq-applications-by-depot',
+  templateUrl: './coq-applications-by-depot.component.html',
+  styleUrls: ['./coq-applications-by-depot.component.css'],
 })
-export class CoqApplicationsComponent implements OnInit {
+export class CoqApplicationsByDepotComponent implements OnInit {
   public coqs: ICoQApplication[];
 
   public coqKeysMappedToHeaders = {

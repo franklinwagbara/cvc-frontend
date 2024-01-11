@@ -7,11 +7,11 @@ import { PopupService } from '../../shared/services/popup.service';
 
 
 @Component({
-  selector: 'app-noa-applications',
-  templateUrl: './noa-applications.component.html',
-  styleUrls: ['./noa-applications.component.css'],
+  selector: 'app-noa-applications-by-depot',
+  templateUrl: './noa-applications-by-depot.component.html',
+  styleUrls: ['./noa-applications-by-depot.component.css'],
 })
-export class NoaApplicationsComponent implements OnInit {
+export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
   depotOfficerMappings: any[];
 
