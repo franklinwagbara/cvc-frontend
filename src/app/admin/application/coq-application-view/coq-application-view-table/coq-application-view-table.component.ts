@@ -11,7 +11,7 @@ import { ViewCoqTankComponent } from '../view-coq-tank/view-coq-tank.component';
 })
 export class CoqApplicationViewTableComponent implements OnInit {
   @Input() application: any;
-  @Input() tanks: any;
+  @Input() tankList: any;
   @Input() appId: number;
   @Input() appSource: string;
 
@@ -42,7 +42,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
 
   viewTanks() {
     const operationConfiguration = {
-      tanks: this.tanks,
+      tanks: this.tankList,
 
       form: ViewCoqTankComponent,
     };

@@ -2,7 +2,7 @@
   <tbody>
     <tr>
       <th>Reference Number</th>
-      <td>{{ application?.reference }}</td>
+      <td>{{ application?.Reference }}</td>
     </tr>
     <!-- <tr>
       <th>Company Name</th>
@@ -13,33 +13,41 @@
       <td>{{ application?.email }}</td>
     </tr> -->
     <tr>
+      <th>Plant Name</th>
+      <td>{{ application?.Plant }}</td>
+    </tr>
+    <tr>
+      <th>Product Type</th>
+      <td>{{ application?.ProductType }}</td>
+    </tr>
+    <tr>
       <th>Quauntity Reflected On Bill</th>
-      <td>{{ application?.quauntityReflectedOnBill }}</td>
+      <td>{{ application?.QuauntityReflectedOnBill }}</td>
     </tr>
     <tr>
       <th>Arrival Ship Figure</th>
-      <td>{{ application?.arrivalShipFigure }}</td>
+      <td>{{ application?.ArrivalShipFigure }}</td>
     </tr>
     <tr>
       <th>Discharge Ship Figure</th>
-      <td>{{ application?.dischargeShipFigure }}</td>
+      <td>{{ application?.DischargeShipFigure }}</td>
     </tr>
     <tr>
       <th>Depot Price</th>
-      <td>{{ application?.depotPrice }}</td>
+      <td>{{ application?.DepotPrice }}</td>
     </tr>
 
     <tr>
       <th>Date Of Vessel Arrival</th>
-      <td>{{ application?.dateOfVesselArrival | date }}</td>
+      <td>{{ application?.DateOfVesselArrival | date }}</td>
     </tr>
     <tr>
       <th>Date Of ST After Discharge</th>
-      <td>{{ application?.dateOfSTAfterDischarge | date }}</td>
+      <td>{{ application?.DateOfSTAfterDischarge | date }}</td>
     </tr>
     <tr>
       <th>Date Of Vessel Ullage</th>
-      <td>{{ application?.dateOfVesselUllage | date }}</td>
+      <td>{{ application?.DateOfVesselUllage | date }}</td>
     </tr>
 
     <tr>
@@ -49,27 +57,27 @@
 
     <tr>
       <th>Application Status</th>
-      <td>{{ application?.status }}</td>
+      <td>{{ application?.Status }}</td>
     </tr>
     <tr>
       <th>Name of Consignee</th>
-      <td>{{ application?.nameConsignee }}</td>
+      <td>{{ application?.NameConsignee }}</td>
     </tr>
 
     <tr>
       <th>Initiated On</th>
-      <td>{{ application?.dateCreated | date }}</td>
+      <td>{{ application?.DateCreated | date }}</td>
     </tr>
     <tr>
       <th>Submitted On</th>
-      <td>{{ application?.submittedDate | date }}</td>
+      <td>{{ application?.SubmittedDate | date }}</td>
     </tr>
     <tr>
       <th>Tanks</th>
       <td>
         <button
           mat-raised-button
-          [disabled]="tanks?.length < 1"
+          [disabled]="tankList?.length < 1"
           class="btn"
           (click)="viewTanks()"
         >

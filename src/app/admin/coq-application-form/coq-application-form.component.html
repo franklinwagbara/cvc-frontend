@@ -3,11 +3,16 @@
     <!-- Liquid Gas Form-->
     <div class="form-wrapper">
       <h1>Certificate of Quantity Application Form</h1>
-      <h3>{{ isProcessingPlant ? 'PROCESSING PLANT' : 'NoA' }}</h3>
+      <h3>{{ isProcessingPlant ? "PROCESSING PLANT" : "NoA" }}</h3>
       <div class="p-4 w-[90%]">
         <div *ngIf="isGasProduct !== null" class="grid grid-cols-1 w-full">
           <h5 class="w-full text-slate-600 col-span-3 text-left">
-            {{ !isGasProduct ?  ((isProcessingPlant ? 'TRUCK' : 'SHORE-TANK') + ' ULLAGE AFTER VESSEL DISCHARGE') : 'LPG WEIGHT CERTIFICATION'}}
+            {{
+              !isGasProduct
+                ? (isProcessingPlant ? "TRUCK" : "SHORE-TANK") +
+                  " ULLAGE AFTER VESSEL DISCHARGE"
+                : "LPG WEIGHT CERTIFICATION"
+            }}
           </h5>
         </div>
 
@@ -15,26 +20,43 @@
           <hr />
           <div class="grid grid-cols-1 md:grid-cols-12 w-full gap-2">
             <p *ngIf="noaApplication?.marketerName" class="md:col-span-6">
-              <span class="form-header-info">MARKETER/PDT OWNER</span>: {{ noaApplication?.marketerName }}
+              <span class="form-header-info">MARKETER/PDT OWNER</span>:
+              {{ noaApplication?.marketerName }}
             </p>
-            <p class="md:col-span-6" *ngIf="noaApplication?.motherVessel && !isGasProduct">
-              <span class="form-header-info">MOTHER VESSEL: </span>{{ noaApplication?.motherVessel }}  
+            <p
+              class="md:col-span-6"
+              *ngIf="noaApplication?.motherVessel && !isGasProduct"
+            >
+              <span class="form-header-info">MOTHER VESSEL: </span
+              >{{ noaApplication?.motherVessel }}
             </p>
-            <p class="md:col-span-6" *ngIf="noaApplication?.vessel?.productName && !isGasProduct">
+            <p
+              class="md:col-span-6"
+              *ngIf="noaApplication?.vessel?.productName && !isGasProduct"
+            >
               <span class="form-header-info">PRODUCT</span>:
               {{ noaApplication?.vessel?.productName }}
             </p>
-            <p *ngIf="!isProcessingPlant && noaApplication?.vessel?.jetty" class="md:col-span-6">
+            <p
+              *ngIf="!isProcessingPlant && noaApplication?.vessel?.jetty"
+              class="md:col-span-6"
+            >
               <span class="form-header-info">JETTY</span>:
               {{ noaApplication?.vessel?.jetty }}
             </p>
-            <p *ngIf="!isProcessingPlant && noaApplication?.vessel?.name" class="md:col-span-6">
+            <p
+              *ngIf="!isProcessingPlant && noaApplication?.vessel?.name"
+              class="md:col-span-6"
+            >
               <span class="form-header-info">VESSEL NAME</span>:
               {{ noaApplication?.vessel?.name }}
             </p>
             <p class="md:col-span-6">
               <span class="form-header-info">RECEIVING TERMINAL</span>:
-              {{ noaApplication?.vessel?.recievingTerminal || noaApplication?.receivingTerminal }} 
+              {{
+                noaApplication?.vessel?.recievingTerminal ||
+                  noaApplication?.receivingTerminal
+              }}
             </p>
           </div>
         </ng-container>
@@ -47,26 +69,59 @@
           <mat-icon>check</mat-icon>
         </ng-template>
 
-        <mat-step [stepControl]="isProcessingPlant ? plantSelection : depotSelection" [label]="isProcessingPlant ? 'Select Processing Plant' : 'Select Depot'">
+        <mat-step
+          [stepControl]="isProcessingPlant ? plantSelection : depotSelection"
+          [label]="
+            isProcessingPlant ? 'Select Processing Plant' : 'Select Depot'
+          "
+        >
           <mat-form-field appearance="fill" style="min-width: fit-content">
-            <mat-label>{{isProcessingPlant ? 'Processing Plant' : 'Depot'}}</mat-label>
-            <mat-select [formControl]="isProcessingPlant ? plantSelection : depotSelection">
-              <mat-option *ngFor="let plant of (isProcessingPlant ? processingPlants : depots)" [value]="plant?.id">
+            <mat-label>{{
+              isProcessingPlant ? "Processing Plant" : "Depot"
+            }}</mat-label>
+            <mat-select
+              [formControl]="
+                isProcessingPlant ? plantSelection : depotSelection
+              "
+            >
+              <mat-option
+                *ngFor="
+                  let plant of isProcessingPlant ? processingPlants : depots
+                "
+                [value]="plant?.id"
+              >
                 {{ plant?.name }}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <mat-error *ngIf="noPlantFetched !== null && noPlantFetched">
-            {{ 'No ' + (isProcessingPlant ? 'processing plant ' : 'depot ') + 'available for this application' }}
+            {{
+              "No " +
+                (isProcessingPlant ? "processing plant " : "depot ") +
+                "available for this application"
+            }}
           </mat-error>
           <div class="text-right">
             <button
-              mat-raised-button 
+              mat-raised-button
               matStepperNext
-              (click)="isProcessingPlant ? plantSelection.markAllAsTouched() : depotSelection.markAllAsTouched()"
-              [disabled]="(isProcessingPlant ? !plantSelection.valid : !depotSelection.valid) || fetchingRequirement ||
-              (isProcessingPlant ? !plantTanks.length : !requirement?.tanks.length)"
-            >Next</button>
+              (click)="
+                isProcessingPlant
+                  ? plantSelection.markAllAsTouched()
+                  : depotSelection.markAllAsTouched()
+              "
+              [disabled]="
+                (isProcessingPlant
+                  ? !plantSelection.valid
+                  : !depotSelection.valid) ||
+                fetchingRequirement ||
+                (isProcessingPlant
+                  ? !plantTanks.length
+                  : !requirement?.tanks.length)
+              "
+            >
+              Next
+            </button>
           </div>
         </mat-step>
 
@@ -74,19 +129,25 @@
           <mat-step [stepControl]="productSelection" label="Select Product">
             <mat-form-field appearance="fill" style="min-width: fit-content">
               <mat-label>Product</mat-label>
+
               <mat-select [formControl]="productSelection">
-                <mat-option *ngFor="let product of products" [value]="product?.id">
+                <mat-option
+                  *ngFor="let product of products"
+                  [value]="product?.id"
+                >
                   {{ product?.name }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <div class="text-right">
               <button
-                mat-raised-button 
+                mat-raised-button
                 matStepperNext
                 (click)="productSelection.markAllAsTouched()"
                 [disabled]="!productSelection.valid"
-              >Next</button>
+              >
+                Next
+              </button>
             </div>
           </mat-step>
         </ng-container>
@@ -98,167 +159,290 @@
                 <mat-form-field>
                   <mat-label>Tank Name</mat-label>
                   <mat-select formControlName="id">
-                    <mat-option 
-                      *ngFor="let tank of ((isProcessingPlant ? plantTanks : requirement?.tanks) || [])" 
+                    <mat-option
+                      *ngFor="
+                        let tank of (isProcessingPlant
+                          ? plantTanks
+                          : requirement?.tanks) || []
+                      "
                       [value]="isProcessingPlant ? tank?.plantTankId : tank?.id"
                     >
                       {{ isProcessingPlant ? tank?.tankName : tank?.name }}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
-                <mat-error *ngIf="(noTankConfigured !== null && noTankConfigured) || !configuredTank?.valid" class="mb-2 mt-0">
-                  {{ 
-                    noTankConfigured !== null && noTankConfigured ? 'No tanks configured for the selected ' + (isProcessingPlant ?  'plant' : 'depot') + ' and you may not proceed' : 
-                    !!configuredTank?.controls['id'].hasError('duplicate') ? 'Tank readings already exist' : '' 
+                <mat-error
+                  *ngIf="
+                    (noTankConfigured !== null && noTankConfigured) ||
+                    !configuredTank?.valid
+                  "
+                  class="mb-2 mt-0"
+                >
+                  {{
+                    noTankConfigured !== null && noTankConfigured
+                      ? "No tanks configured for the selected " +
+                        (isProcessingPlant ? "plant" : "depot") +
+                        " and you may not proceed"
+                      : !!configuredTank?.controls["id"].hasError("duplicate")
+                      ? "Tank readings already exist"
+                      : ""
                   }}
                 </mat-error>
               </form>
               <div class="text-right">
-                <button mat-raised-button matStepperNext color="primary" [disabled]="!configuredTank?.valid">Continue</button>
+                <button
+                  mat-raised-button
+                  matStepperNext
+                  color="primary"
+                  [disabled]="!configuredTank?.valid"
+                >
+                  Continue
+                </button>
               </div>
             </mat-step>
 
-            <mat-step 
-              [stepControl]="!isGasProduct ? tankLiqBeforeFormTempCtx.formGroup : tankGasBeforeFormTempCtx.formGroup"
+            <mat-step
+              [stepControl]="
+                !isGasProduct
+                  ? tankLiqBeforeFormTempCtx.formGroup
+                  : tankGasBeforeFormTempCtx.formGroup
+              "
               label="Enter BEFORE data"
             >
               <ng-container *ngIf="!isGasProduct">
-                <ng-container *ngTemplateOutlet="tankLiqForm; context: tankLiqBeforeFormTempCtx"></ng-container>
+                <ng-container
+                  *ngTemplateOutlet="
+                    tankLiqForm;
+                    context: tankLiqBeforeFormTempCtx
+                  "
+                ></ng-container>
               </ng-container>
               <ng-container *ngIf="isGasProduct">
-                <ng-container *ngTemplateOutlet="tankGasForm; context: tankGasBeforeFormTempCtx"></ng-container>
-              </ng-container>
-              <div class="mt-4 text-right">
-                <button 
-                  mat-raised-button 
-                  matStepperNext 
-                  color="primary"
-                  [disabled]="!isGasProduct ? tankLiqBeforeFormTempCtx.formGroup.invalid : tankGasBeforeFormTempCtx.formGroup.invalid"
-                >Continue</button>
-              </div>
-            </mat-step>
-
-            <mat-step [stepControl]="!isGasProduct ? tankLiqAfterFormTempCtx.formGroup : tankGasAfterFormTempCtx" label="Enter AFTER data">
-              <ng-container *ngIf="!isGasProduct">
-                <ng-container *ngTemplateOutlet="tankLiqForm; context: tankLiqAfterFormTempCtx"></ng-container>
-              </ng-container>
-              <ng-container *ngIf="isGasProduct">
-                <ng-container *ngTemplateOutlet="tankGasForm; context: tankGasAfterFormTempCtx"></ng-container>
+                <ng-container
+                  *ngTemplateOutlet="
+                    tankGasForm;
+                    context: tankGasBeforeFormTempCtx
+                  "
+                ></ng-container>
               </ng-container>
               <div class="mt-4 text-right">
                 <button
-                  mat-raised-button 
-                  matStepperNext 
-                  color="primary" 
-                  (click)="saveToReview()" 
-                  [disabled]="!isGasProduct ? tankLiqAfterFormTempCtx.formGroup.invalid : tankGasAfterFormTempCtx.formGroup.invalid"
-                >Save</button>
+                  mat-raised-button
+                  matStepperNext
+                  color="primary"
+                  [disabled]="
+                    !isGasProduct
+                      ? tankLiqBeforeFormTempCtx.formGroup.invalid
+                      : tankGasBeforeFormTempCtx.formGroup.invalid
+                  "
+                >
+                  Continue
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step
+              [stepControl]="
+                !isGasProduct
+                  ? tankLiqAfterFormTempCtx.formGroup
+                  : tankGasAfterFormTempCtx
+              "
+              label="Enter AFTER data"
+            >
+              <ng-container *ngIf="!isGasProduct">
+                <ng-container
+                  *ngTemplateOutlet="
+                    tankLiqForm;
+                    context: tankLiqAfterFormTempCtx
+                  "
+                ></ng-container>
+              </ng-container>
+              <ng-container *ngIf="isGasProduct">
+                <ng-container
+                  *ngTemplateOutlet="
+                    tankGasForm;
+                    context: tankGasAfterFormTempCtx
+                  "
+                ></ng-container>
+              </ng-container>
+              <div class="mt-4 text-right">
+                <button
+                  mat-raised-button
+                  matStepperNext
+                  color="primary"
+                  (click)="saveToReview()"
+                  [disabled]="
+                    !isGasProduct
+                      ? tankLiqAfterFormTempCtx.formGroup.invalid
+                      : tankGasAfterFormTempCtx.formGroup.invalid
+                  "
+                >
+                  Save
+                </button>
               </div>
             </mat-step>
           </mat-stepper>
-          
+
           <!-- Tank Form for Liquid Product to be reused for before and after -->
           <ng-template #tankLiqForm let-form="formGroup">
             <form [formGroup]="form">
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              <div
+                class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9"
+              >
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-dip">DIP(m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-dip"
+                    >DIP(m) <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="dip"
                     formControlName="dip"
                     id="coq-liquid-product-dip"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['dip'].touched && form?.controls['dip'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['dip'].touched &&
+                        form?.controls['dip'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-waterdip">WATER DIP <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-waterdip"
+                    >WATER DIP <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="waterDIP"
                     formControlName="waterDIP"
                     id="coq-liquid-product-waterdip"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['waterDIP'].touched && form?.controls['waterDIP'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['waterDIP'].touched &&
+                        form?.controls['waterDIP'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-tov">TOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-tov"
+                    >TOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="tov"
                     formControlName="tov"
                     id="coq-liquid-product-tov"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['tov'].touched && form?.controls['tov'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['tov'].touched &&
+                        form?.controls['tov'].invalid
+                    }"
                   />
                 </div>
-        
+
                 <div class="md:col-span-3">
-                  <label for="coq-liquidproduct-waterVolume">WATER VOLUME <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquidproduct-waterVolume"
+                    >WATER VOLUME <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="waterVolume"
                     formControlName="waterVolume"
                     id="coq-liquidproduct-waterVolume"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['waterVolume'].touched && form?.controls['waterVolume'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['waterVolume'].touched &&
+                        form?.controls['waterVolume'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-floatRoofCorr">CORR(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-floatRoofCorr"
+                    >CORR(m<sup>3</sup>)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="floatRoofCorr"
                     formControlName="floatRoofCorr"
                     id="coq-liquid-product-floatRoofCorr"
                     class="form-field"
-                    [ngClass]="{'is-invalid': form?.controls['floatRoofCorr'].touched && form?.controls['floatRoofCorr'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['floatRoofCorr'].touched &&
+                        form?.controls['floatRoofCorr'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-gov">GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-gov"
+                    >GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     formControlName="gov"
                     id="coq-liquid-product-gov"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['gov'].touched && form?.controls['gov'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['gov'].touched &&
+                        form?.controls['gov'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-temperature">TEMP(<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-temperature"
+                    >TEMP(<sup>0</sup>C)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="temperature"
                     formControlName="temperature"
                     id="coq-liquid-product-temperature"
                     class="form-field"
-                    [ngClass]="{'is-invalid': form?.controls['temperature'].touched && form?.controls['temperature'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['temperature'].touched &&
+                        form?.controls['temperature'].invalid
+                    }"
                   />
                 </div>
-        
+
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-density">DENSITY <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-density"
+                    >DENSITY <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="density"
                     formControlName="density"
                     id="coq-liquid-product-density"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['density'].touched && form?.controls['density'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['density'].touched &&
+                        form?.controls['density'].invalid
+                    }"
                   />
                 </div>
                 <div class="md:col-span-3">
-                  <label for="coq-liquid-product-vcf">VCF <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-vcf"
+                    >VCF <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="vcf"
                     formControlName="vcf"
                     id="coq-liquid-product-vcf"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['vcf'].touched && form?.controls['vcf'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['vcf'].touched &&
+                        form?.controls['vcf'].invalid
+                    }"
                   />
                 </div>
               </div>
@@ -268,202 +452,318 @@
           <!-- Tank Form template for Gas Product reused for BEFORE and AFTER -->
           <ng-template #tankGasForm let-form="formGroup">
             <form [formGroup]="form">
-              <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+              <div
+                class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9"
+              >
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-liquidDensityVac">Liquid Density at 15<sup>0</sup>C(Kg/l), Vac <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-liquidDensityVac"
+                    >Liquid Density at 15<sup>0</sup>C(Kg/l), Vac
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="liquidDensityVac"
                     formControlName="liquidDensityVac"
                     id="coq-liquid-product-liquidDensityVac"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['liquidDensityVac'].touched && form?.controls['liquidDensityVac'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['liquidDensityVac'].touched &&
+                        form?.controls['liquidDensityVac'].invalid
+                    }"
                   />
                 </div>
-    
+
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-observedSounding">Observed Sounding (m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-observedSounding"
+                    >Observed Sounding (m)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="observedSounding"
                     formControlName="observedSounding"
                     id="coq-liquid-product-observedSounding"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['observedSounding'].touched && form?.controls['observedSounding'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['observedSounding'].touched &&
+                        form?.controls['observedSounding'].invalid
+                    }"
                   />
                 </div>
-              
+
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-tapeCorrection">Tape Correction (m) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-tapeCorrection"
+                    >Tape Correction (m)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="tapeCorrection"
                     formControlName="tapeCorrection"
                     id="coq-liquid-product-tapeCorrection"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['tapeCorrection'].touched && form?.controls['tapeCorrection'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['tapeCorrection'].touched &&
+                        form?.controls['tapeCorrection'].invalid
+                    }"
                   />
                 </div>
-              
+
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-liquidTemperature">Liquid Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-liquidTemperature"
+                    >Liquid Temperature (<sup>0</sup>C)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="liquidTemperature"
                     formControlName="liquidTemperature"
                     id="coq-liquid-product-liquidTemperature"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['liquidTemperature'].touched && form?.controls['liquidTemperature'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['liquidTemperature'].touched &&
+                        form?.controls['liquidTemperature'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-observedLiquidVolume">Observed Liquid Volume (m<sup>3</sup>) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-observedLiquidVolume"
+                    >Observed Liquid Volume (m<sup>3</sup>)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="observedLiquidVolume"
                     formControlName="observedLiquidVolume"
                     id="coq-liquid-product-observedLiquidVolume"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['observedLiquidVolume'].touched && form?.controls['observedLiquidVolume'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['observedLiquidVolume'].touched &&
+                        form?.controls['observedLiquidVolume'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-shrinkageFactor">Shrinkage Factor <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-shrinkageFactor"
+                    >Shrinkage Factor <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="shrinkageFactor"
                     formControlName="shrinkageFactor"
                     id="coq-liquid-product-shrinkageFactor"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['shrinkageFactor'].touched && form?.controls['shrinkageFactor'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['shrinkageFactor'].touched &&
+                        form?.controls['shrinkageFactor'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-vcf">VCF (ASTM Table 54) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-vcf"
+                    >VCF (ASTM Table 54)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="vcf"
                     formControlName="vcf"
                     id="coq-liquid-product-vcf"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['vcf'].touched && form?.controls['vcf'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['vcf'].touched &&
+                        form?.controls['vcf'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-tankVolume">100% Tank Volume <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-tankVolume"
+                    >100% Tank Volume <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="tankVolume"
                     formControlName="tankVolume"
                     id="coq-liquid-product-tankVolume"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['tankVolume'].touched && form?.controls['tankVolume'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['tankVolume'].touched &&
+                        form?.controls['tankVolume'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-vapourTemperature">Vapor Temperature (<sup>0</sup>C) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-vapourTemperature"
+                    >Vapor Temperature (<sup>0</sup>C)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="vapourTemperature"
                     formControlName="vapourTemperature"
                     id="coq-liquid-product-vapourTemperature"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['vapourTemperature'].touched && form?.controls['vapourTemperature'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['vapourTemperature'].touched &&
+                        form?.controls['vapourTemperature'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-vapourPressure">Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-vapourPressure"
+                    >Vapour Pressure (Bar)
+                    <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="vapourPressure"
                     formControlName="vapourPressure"
                     id="coq-liquid-product-vapourPressure"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['vapourPressure'].touched && form?.controls['vapourPressure'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['vapourPressure'].touched &&
+                        form?.controls['vapourPressure'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-molecularWeight">Molecular Weight <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-molecularWeight"
+                    >Molecular Weight <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="molecularWeight"
                     formControlName="molecularWeight"
                     id="coq-liquid-product-molecularWeight"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['molecularWeight'].touched && form?.controls['molecularWeight'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['molecularWeight'].touched &&
+                        form?.controls['molecularWeight'].invalid
+                    }"
                   />
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-vapourFactor">Vapor Factor <sup class="text-red-700">*</sup></label>
+                  <label for="coq-liquid-product-vapourFactor"
+                    >Vapor Factor <sup class="text-red-700">*</sup></label
+                  >
                   <input
                     type="number"
                     name="vapourFactor"
                     formControlName="vapourFactor"
                     id="coq-liquid-product-vapourFactor"
                     class="form-field form-control"
-                    [ngClass]="{'is-invalid': form?.controls['vapourFactor'].touched && form?.controls['vapourFactor'].invalid}"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['vapourFactor'].touched &&
+                        form?.controls['vapourFactor'].invalid
+                    }"
                   />
                 </div>
               </div>
             </form>
           </ng-template>
 
-    
           <div class="mt-4 overflow-x-auto">
             <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
             <hr />
             <ng-container *ngIf="!isGasProduct">
-              <div *ngIf="coqFormService?.liquidProductReviewData.length else noReview">
-                <app-coq-form-review [isGasProduct]="isGasProduct"></app-coq-form-review>
+              <div
+                *ngIf="
+                  coqFormService?.liquidProductReviewData.length;
+                  else noReview
+                "
+              >
+                <app-coq-form-review
+                  [isGasProduct]="isGasProduct"
+                ></app-coq-form-review>
               </div>
             </ng-container>
             <ng-container *ngIf="isGasProduct">
-              <div *ngIf="coqFormService?.gasProductReviewData.length else noReview">
-                <app-coq-form-review [isGasProduct]="isGasProduct"></app-coq-form-review>
+              <div
+                *ngIf="
+                  coqFormService?.gasProductReviewData.length;
+                  else noReview
+                "
+              >
+                <app-coq-form-review
+                  [isGasProduct]="isGasProduct"
+                ></app-coq-form-review>
               </div>
             </ng-container>
 
             <div class="text-right">
-              <button 
+              <button
                 class="mt-4"
                 mat-raised-button
                 color="primary"
-                matStepperNext 
-                [disabled]="!isGasProduct ? !coqFormService?.liquidProductReviewData.length : !coqFormService.gasProductReviewData.length"
-              >Proceed</button>
+                matStepperNext
+                [disabled]="
+                  !isGasProduct
+                    ? !coqFormService?.liquidProductReviewData.length
+                    : !coqFormService.gasProductReviewData.length
+                "
+              >
+                Proceed
+              </button>
             </div>
-            
+
             <ng-template #noReview>
-              <p class="text-slate-600 text-center">No Certificate of Quantity Data pending submission</p>
+              <p class="text-slate-600 text-center">
+                No Certificate of Quantity Data pending submission
+              </p>
             </ng-template>
           </div>
         </mat-step>
 
-        <mat-step 
-          [stepControl]="!isGasProduct ? vesselLiqInfoForm : vesselGasInfoForm" 
-          [label]="(isProcessingPlant ? 'Truck' : 'Shore Tank') + ' Ullage Details Entry'"
+        <mat-step
+          [stepControl]="!isGasProduct ? vesselLiqInfoForm : vesselGasInfoForm"
+          [label]="
+            (isProcessingPlant ? 'Truck' : 'Shore Tank') +
+            ' Ullage Details Entry'
+          "
         >
           <ng-container *ngIf="!isGasProduct">
-            <ng-container *ngTemplateOutlet="vesselLiqInfoFormTmp"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="vesselLiqInfoFormTmp"
+            ></ng-container>
           </ng-container>
           <ng-container *ngIf="isGasProduct">
-            <ng-container *ngTemplateOutlet="vesselGasInfoFormTmp"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="vesselGasInfoFormTmp"
+            ></ng-container>
           </ng-container>
           <div class="text-right">
-            <button 
-              mat-raised-button 
-              matStepperNext 
+            <button
+              mat-raised-button
+              matStepperNext
               (click)="vesselLiqInfoForm.markAllAsTouched()"
-              [disabled]="!isGasProduct ? vesselLiqInfoForm.invalid : vesselGasInfoForm.invalid"
-            >Next</button>
+              [disabled]="
+                !isGasProduct
+                  ? vesselLiqInfoForm.invalid
+                  : vesselGasInfoForm.invalid
+              "
+            >
+              Next
+            </button>
           </div>
         </mat-step>
 
@@ -474,7 +774,13 @@
             >
               <div class="md:col-span-9 flex flex-col lg:flex-row gap-4 pr-2">
                 <mat-form-field>
-                  <mat-label>Date of {{isProcessingPlant ? 'Truck' : 'Vessel'}} Arrival</mat-label>
+                  <mat-label
+                    >Date of
+                    {{
+                      isProcessingPlant ? "Truck" : "Vessel"
+                    }}
+                    Arrival</mat-label
+                  >
                   <div class="flex">
                     <input
                       matInput
@@ -490,9 +796,15 @@
                     <mat-datepicker #arrivalDatePicker></mat-datepicker>
                   </div>
                 </mat-form-field>
-    
+
                 <mat-form-field>
-                  <mat-label>Date of {{isProcessingPlant ? 'Truck' : 'Vessel'}} Ullage</mat-label>
+                  <mat-label
+                    >Date of
+                    {{
+                      isProcessingPlant ? "Truck" : "Vessel"
+                    }}
+                    Ullage</mat-label
+                  >
                   <div class="flex">
                     <input
                       matInput
@@ -508,9 +820,12 @@
                     <mat-datepicker #ullageDatePicker></mat-datepicker>
                   </div>
                 </mat-form-field>
-    
+
                 <mat-form-field>
-                  <mat-label>Date of {{isProcessingPlant ? 'Truck' : 'Vessel'}} After Discharge</mat-label>
+                  <mat-label
+                    >Date of {{ isProcessingPlant ? "Truck" : "Vessel" }} After
+                    Discharge</mat-label
+                  >
                   <div class="flex">
                     <input
                       matInput
@@ -527,10 +842,13 @@
                   </div>
                 </mat-form-field>
               </div>
-    
+
               <div class="md:col-span-3">
                 <label for="coq-liquid-product-mtvac"
-                  >{{isProcessingPlant ? 'Plant' : 'Expot-Depot'}} Price<sup class="text-red-700">*</sup></label
+                  >{{ isProcessingPlant ? "Plant" : "Expot-Depot" }} Price<sup
+                    class="text-red-700"
+                    >*</sup
+                  ></label
                 >
                 <input
                   type="number"
@@ -538,7 +856,11 @@
                   formControlName="depotPrice"
                   id="coq-liquid-product-ex-depot-price"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselLiqInfoForm.controls['depotPrice'].touched && vesselLiqInfoForm.controls['depotPrice'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselLiqInfoForm.controls['depotPrice'].touched &&
+                      vesselLiqInfoForm.controls['depotPrice'].invalid
+                  }"
                 />
               </div>
             </div>
@@ -552,7 +874,13 @@
             >
               <div class="md:col-span-12 flex flex-col lg:flex-row gap-4 pr-2">
                 <mat-form-field class="md:col-span-6">
-                  <mat-label>Date of {{isProcessingPlant ? 'Truck' : 'Vessel'}} Arrival</mat-label>
+                  <mat-label
+                    >Date of
+                    {{
+                      isProcessingPlant ? "Truck" : "Vessel"
+                    }}
+                    Arrival</mat-label
+                  >
                   <div class="flex">
                     <input
                       matInput
@@ -570,7 +898,9 @@
                   </div>
                 </mat-form-field>
                 <mat-form-field class="md:col-span-6">
-                  <mat-label>Date of Commencement of Product Discharge</mat-label>
+                  <mat-label
+                    >Date of Commencement of Product Discharge</mat-label
+                  >
                   <div class="flex">
                     <input
                       matInput
@@ -584,7 +914,9 @@
                       matIconSuffix
                       [for]="prodDischargeCommenceDatePicker"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #prodDischargeCommenceDatePicker></mat-datepicker>
+                    <mat-datepicker
+                      #prodDischargeCommenceDatePicker
+                    ></mat-datepicker>
                   </div>
                 </mat-form-field>
                 <mat-form-field class="md:col-span-6">
@@ -602,13 +934,16 @@
                       matIconSuffix
                       [for]="prodDischargeCompletionDatePicker"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #prodDischargeCompletionDatePicker></mat-datepicker>
+                    <mat-datepicker
+                      #prodDischargeCompletionDatePicker
+                    ></mat-datepicker>
                   </div>
                 </mat-form-field>
               </div>
               <div class="md:col-span-6">
                 <label for="coq-gas-product-gov"
-                  >Qty Reflected on Bill of Lading (MT Air) <sup class="text-red-700">*</sup></label
+                  >Qty Reflected on Bill of Lading (MT Air)
+                  <sup class="text-red-700">*</sup></label
                 >
                 <input
                   type="number"
@@ -616,13 +951,19 @@
                   formControlName="qtyBillLadingMtAir"
                   id="coq-gas-product-qtyBillLadingMtAir"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['qtyBillLadingMtAir'].touched && vesselGasInfoForm.controls['qtyBillLadingMtAir'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselGasInfoForm.controls['qtyBillLadingMtAir']
+                        .touched &&
+                      vesselGasInfoForm.controls['qtyBillLadingMtAir'].invalid
+                  }"
                 />
               </div>
 
               <div class="md:col-span-6">
                 <label for="coq-gas-product-arrivalShipMtAir"
-                  >Arrival SHIP Figure (MT Air) <sup class="text-red-700">*</sup></label
+                  >Arrival SHIP Figure (MT Air)
+                  <sup class="text-red-700">*</sup></label
                 >
                 <input
                   type="number"
@@ -630,13 +971,18 @@
                   formControlName="arrivalShipMtAir"
                   id="coq-gas-product-arrivalShipMtAir"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['arrivalShipMtAir'].touched && vesselGasInfoForm.controls['arrivalShipMtAir'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselGasInfoForm.controls['arrivalShipMtAir'].touched &&
+                      vesselGasInfoForm.controls['arrivalShipMtAir'].invalid
+                  }"
                 />
               </div>
 
               <div class="md:col-span-6">
                 <label for="coq-gas-product-shipDischargedMtAir"
-                  >SHIP Figure (DISCHARGED) (MT Air) <sup class="text-red-700">*</sup></label
+                  >SHIP Figure (DISCHARGED) (MT Air)
+                  <sup class="text-red-700">*</sup></label
                 >
                 <input
                   type="number"
@@ -644,7 +990,12 @@
                   formControlName="shipDischargedMtAir"
                   id="coq-gas-product-shipDischargedMtAir"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['shipDischargedMtAir'].touched && vesselGasInfoForm.controls['shipDischargedMtAir'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselGasInfoForm.controls['shipDischargedMtAir']
+                        .touched &&
+                      vesselGasInfoForm.controls['shipDischargedMtAir'].invalid
+                  }"
                 />
               </div>
               <div class="md:col-span-6">
@@ -657,12 +1008,17 @@
                   formControlName="depotPrice"
                   id="coq-gas-product-depotPrice"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['depotPrice'].touched && vesselGasInfoForm.controls['depotPrice'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselGasInfoForm.controls['depotPrice'].touched &&
+                      vesselGasInfoForm.controls['depotPrice'].invalid
+                  }"
                 />
               </div>
               <div class="md:col-span-6">
                 <label for="coq-gas-product-nameConsignee"
-                  >Name of Consignor/Consignee <sup class="text-red-700">*</sup></label
+                  >Name of Consignor/Consignee
+                  <sup class="text-red-700">*</sup></label
                 >
                 <input
                   type="text"
@@ -670,7 +1026,11 @@
                   formControlName="nameConsignee"
                   id="coq-gas-product-nameConsignee"
                   class="form-field form-control"
-                  [ngClass]="{'is-invalid': vesselGasInfoForm.controls['nameConsignee'].touched && vesselGasInfoForm.controls['nameConsignee'].invalid}"
+                  [ngClass]="{
+                    'is-invalid':
+                      vesselGasInfoForm.controls['nameConsignee'].touched &&
+                      vesselGasInfoForm.controls['nameConsignee'].invalid
+                  }"
                 />
               </div>
             </div>
@@ -684,8 +1044,8 @@
               <ul class="guidelines-list">
                 <li>
                   All documents listed below are required and must be uploaded.
-                  Subsequently, other documents may be needed and will be added to
-                  this list.
+                  Subsequently, other documents may be needed and will be added
+                  to this list.
                 </li>
                 <li>
                   The Maximum file size allowed is <strong>20MB</strong> per
@@ -699,11 +1059,11 @@
                 </li>
               </ul>
             </div>
-  
+
             <div id="coq_doc_upload_table_description" class="hidden">
               Document Upload Table
             </div>
-  
+
             <div class="table-container mat-elevation-z8">
               <div class="table-title">REQUIRED DOCUMENTS</div>
               <h4 *ngIf="spinner.isOpen" class="text-center">Loading....</h4>
@@ -731,19 +1091,24 @@
                   >
                     <ng-container *ngIf="column === 'document'">
                       <div class="flex justify-start align-middle">
-                        <span class="truncate max-w-40" [title]="element.docName"> {{ element?.docName }}</span>&nbsp;
+                        <span
+                          class="truncate max-w-40"
+                          [title]="element.docName"
+                        >
+                          {{ element?.docName }}</span
+                        >&nbsp;
                       </div>
                     </ng-container>
-  
+
                     <ng-container *ngIf="column === 'action'">
                       <button
                         mat-button
                         class="upload-btn"
                         (click)="triggerFileInput(i)"
                       >
-                        {{ element?.docSource ? 'Replace' : 'Upload' }}
+                        {{ element?.docSource ? "Replace" : "Upload" }}
                       </button>
-                      
+
                       <input
                         class="d-none file-input"
                         type="file"
@@ -759,11 +1124,11 @@
                           [href]="element?.docSource"
                           target="_blank"
                           download
-                        ><img
-                          src="../../../assets/image/pdfIcon.png"
-                          width="30"
-                          height="30"
-                          alt="Facility Document"
+                          ><img
+                            src="../../../assets/image/pdfIcon.png"
+                            width="30"
+                            height="30"
+                            alt="Facility Document"
                         /></a>
                       </div>
                     </ng-container>
@@ -771,7 +1136,9 @@
                     <ng-container *ngIf="column === 'progress'">
                       <div class="flex flex-col items-center justify-center">
                         <span
-                          *ngIf="documents?.length > 0 && documents[i]?.fileName"
+                          *ngIf="
+                            documents?.length > 0 && documents[i]?.fileName
+                          "
                           class="font-bold text-slate-500"
                           >{{
                             documents[i]?.fileName +
@@ -791,9 +1158,9 @@
                             'in-progress':
                               documents?.length > 0 &&
                               documents[i]?.success === null,
-                            'success':
+                            success:
                               documents?.length > 0 && documents[i]?.success,
-                            'failed':
+                            failed:
                               documents?.length > 0 && !documents[i]?.success
                           }"
                         >
@@ -802,16 +1169,19 @@
                     </ng-container>
                   </td>
                 </ng-container>
-  
+
                 <tr
                   mat-header-row
                   *matHeaderRowDef="displayedColumns"
                   class="rounded-md shadow-lg"
                 ></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
               </table>
             </div>
-  
+
             <div
               *ngIf="hasUploadedAllRequiredDocs && !isSubmitted"
               class="text-right mt-8"
@@ -827,7 +1197,7 @@
               </button>
             </div>
           </div>
-  
+
           <ng-template #noRequiredDocsWarn>
             <div
               class="bg-yellow-100 w-[90%] border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
