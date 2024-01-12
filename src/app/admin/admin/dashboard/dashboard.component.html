@@ -1,7 +1,7 @@
 <div class="card-area">
   <div class="card">
     <div class="card-data">
-      <span>{{ dashboardInfo?.deskCount }}</span>
+      <span>{{ dashboardInfo.deskCount > 0 ? (dashboardInfo?.deskCount | abbreviatevalue) : '0' }}</span>
       <svg
         class="fill-blue-800"
         xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@
 
   <div class="card card-green">
     <div class="card-data">
-      <span>{{ dashboardInfo?.tApproved }}</span>
+      <span>{{ dashboardInfo?.tApproved | abbreviatevalue }}</span>
       <svg
         class="fill-green-800"
         xmlns="http://www.w3.org/2000/svg"
@@ -41,7 +41,7 @@
   </div>
   <div class="card card-blue">
     <div class="card-data">
-      <span>{{ dashboardInfo?.tProcessing }}</span>
+      <span>{{ dashboardInfo?.tProcessing | abbreviatevalue }}</span>
       <svg
         class="fill-purple-800"
         xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@
   </div>
   <div class="card card-red">
     <div class="card-data">
-      <span>{{ dashboardInfo?.tRejected }}</span>
+      <span>{{ dashboardInfo?.tRejected | abbreviatevalue }}</span>
       <svg
         class="fill-red-800"
         xmlns="http://www.w3.org/2000/svg"

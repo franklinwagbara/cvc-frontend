@@ -1,10 +1,18 @@
-<div class="row-container">
-  <div class="chart-container lg:w-[60%] h-[600px]">
+<div class="charts-container">
+  <div class="chart-container ">
     <div class="chart-title"><span>Applications</span></div>
-    <div id="chartdiv" class="w-[100%] h-[100%]"></div>
+    <div id="chartdiv" class="w-[100%] h-[100%]">
+      <div *ngIf="!chartLoaded" class="w-full flex items-center justify-center h-full">
+        <mat-spinner class="mat-spinner"></mat-spinner>
+      </div>
+    </div>
   </div>
-  <div class="chart-container lg:w-[40%] h-[600px]">
+  <div class="chart-container">
     <div class="chart-title"><span>Payments</span></div>
-    <div id="chartdiv2" class="w-[100%] h-[100%]"></div>
+    <div id="chartdiv2" class="w-[100%] h-[100%]">
+      <div *ngIf="!chartLoaded" class="w-full flex items-center justify-center h-full">
+        <mat-spinner class="mat-spinner"></mat-spinner>
+      </div>
+    </div>
   </div>
 </div>
