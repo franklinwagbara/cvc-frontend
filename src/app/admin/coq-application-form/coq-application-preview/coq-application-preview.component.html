@@ -1,1 +1,70 @@
-<p>coq-application-preview works!</p>
+<div>
+  <table></table>
+
+  <div id="coq-application-preview-table">CoQ Application Preview</div>
+  <table 
+    *ngIf="!isGasProduct"
+    aria-describedby="coq-application-preview-table"
+  >
+    <tr>
+      <th>Status</th>
+      <th>DIP (m)</th>
+      <th>Water DIP (m)</th>
+      <th>TOV</th>
+      <th>Water Volume</th>
+      <th>Float Roof Corr</th>
+      <th>GOV</th>
+      <th>Temperature</th>
+      <th>Density</th>
+      <th>VCF</th>
+    </tr>
+
+    <ng-container *ngFor="let reading of liquidProductData">
+      <tr>
+        <td>Tank 1</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </ng-container>
+    
+  </table>
+
+  <table *ngIf="isGasProduct">
+    <tr>
+      <th>Status</th>
+      <th>Liquid Density Vac</th>
+      <th>Observed Sounding</th>
+      <th>Tape Correction</th>
+      <th>Liquid Temperature</th>
+      <th>Observed Liquid Volume</th>
+      <th>Shrinkage Factor</th>
+      <th>VCF</th>
+      <th>Tank Volume</th>
+      <th>Vapour Temperature</th>
+      <th>Vapour Pressure</th>
+      <th>Molecular Weight</th>
+      <th>Vapour Factor</th>
+    </tr>
+  </table>
+</div>

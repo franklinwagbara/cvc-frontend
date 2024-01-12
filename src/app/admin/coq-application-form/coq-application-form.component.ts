@@ -44,6 +44,8 @@ import { IPlant } from 'src/app/shared/interfaces/IPlant';
 import { ITank } from 'src/app/shared/interfaces/ITank';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
+import { MatDialog } from '@angular/material/dialog';
+import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -135,6 +137,7 @@ export class CoqApplicationFormComponent
     private cd: ChangeDetectorRef,
     public coqFormService: CoqAppFormService,
     private popUp: PopupService,
+    private dialog: MatDialog,
     private applicationService: ApplicationService
   ) {
     this.route.params.subscribe((params: Params) => {
@@ -627,6 +630,10 @@ export class CoqApplicationFormComponent
     inputEl.click();
   }
 
+  preview() {
+    this.dialog.open(CoqApplicationPreviewComponent, {});
+  }
+
   submit() {
     const payload = this.constructPayload();
     this.isSubmitting = true;
@@ -707,7 +714,6 @@ export class CoqApplicationFormComponent
     } else {
       payload = {
         ...reference,
-
         productId: this.isProcessingPlant ? this.productSelection.value : null,
         dateOfVesselArrival:
           this.vesselLiqInfoForm.controls[

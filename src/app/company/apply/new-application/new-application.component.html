@@ -1,20 +1,4 @@
 <div class="apply-container">
-  <!-- <div *ngIf="showLoader" class="progress-bar-backdrop relative">
-    <div class="flex absolute top-[30%] left-[20%] right-[20%]">
-      <div class="w-full">
-        <h4 class="w-full flex justify-center mx-auto text-green-300">
-          Searching vessel details
-        </h4>
-        <div class="flex justify-center mx-auto">
-          <mat-progress-bar
-            mode="buffer"
-            class="!h-[25px]"
-            color="accent"
-          ></mat-progress-bar>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
   <div class="apply-wrapper">
     <h1>NEW CVC CERTIFICATION</h1>
@@ -119,7 +103,7 @@
                 class="rounded-r p-2"
                 formControlName="vesselTypeId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Vessel Type --</option>
                 <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
                   {{ vt.name }}
                 </option>
