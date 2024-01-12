@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AppSource } from '../../../../src/app/shared/constants/appSource';
 import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
 import { AddScheduleFormComponent } from '../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
@@ -44,7 +45,8 @@ export class ViewApplicationComponent implements OnInit {
     public route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private licenceService: LicenceService
+    private licenceService: LicenceService,
+    public location: Location
   ) {}
 
   ngOnInit(): void {
@@ -210,4 +212,6 @@ export class ViewApplicationComponent implements OnInit {
       this.getApplication();
     });
   }
+
+
 }

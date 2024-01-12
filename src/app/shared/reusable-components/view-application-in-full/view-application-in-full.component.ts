@@ -59,18 +59,18 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   getApplication() {
-    this.progressBar.open();
+    this.spinner.show('Loading application details');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
           this.application = res.data;
         }
-        this.progressBar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
         console.log(error);
-        this.progressBar.close();
+        this.spinner.close();
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,

@@ -1,6 +1,6 @@
 <div class="view-application-container">
   <a
-    [routerLink]="['/admin/my-desk']"
+    (click)="location.back()"
     class="flex my-1 justify-start back-btn-color items-center"
     mat-raised-button
   >
@@ -26,7 +26,7 @@
           <mat-expansion-panel-header>
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>{{ application?.currentDesk }}</p>
+          <p>{{ application?.CurrentDesk }}</p>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
