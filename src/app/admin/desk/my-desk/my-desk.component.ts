@@ -46,9 +46,9 @@ export class MyDeskComponent implements OnInit {
 
   public applicationKeysMappedToHeaders = {
     reference: 'Reference Number',
-    importName: 'Import Name',
+    // importName: 'Import Name',
     companyEmail: 'Company Email',
-    appType: 'Application Type',
+    applicationType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     capacity: 'Capacity',

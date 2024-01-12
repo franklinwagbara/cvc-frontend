@@ -19,6 +19,8 @@ import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
 import { PopupService } from '../../services/popup.service';
 import { CoqService } from '../../services/coq.service';
+import { LoginModel } from '../../models/login-model';
+import { UserRole } from '../../constants/userRole';
 
 @Component({
   selector: 'app-approve-form',
@@ -57,7 +59,6 @@ export class ApproveFormComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    console.log(this.data.data);
     const tempUser = this.auth.currentUser;
     this.auth.getAllStaff().subscribe({
       next: (res) => {
@@ -82,6 +83,16 @@ export class ApproveFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  public get isApprover() {
+    const currentUser = this.auth.currentUser as LoginModel;
+    return (currentUser as any).userRoles === UserRole.APPROVER;
+  }
+
+  public get isFAD() {
+    const currentUser = this.auth.currentUser as LoginModel;
+    return (currentUser as any).userRoles === UserRole.FAD;
+  }
+
   public approve() {
     // if (this.isFO) this.approveFO();
     // else this.approveOther();
@@ -103,10 +114,14 @@ export class ApproveFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successful!', 'success');
+          this.popup.open(
+            this.isApprover || this.isFAD
+              ? 'Application approved successfully!'
+              : 'Operation was successful!',
+            'success'
+          );
           this.dialogRef.close();
         }
-
         this.progressBarService.close();
         this.isLoading = false;
         this.router.navigate(['/admin/my-desk']);
