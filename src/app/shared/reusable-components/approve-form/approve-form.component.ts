@@ -71,7 +71,7 @@ export class ApproveFormComponent implements OnInit {
 
       error: (error: unknown) => {
         this.popup.open(
-          'Operation failed! Could not user information!',
+          'Operation failed! Could not get user information!',
           'error'
         );
         this.progressBarService.close();
@@ -115,7 +115,7 @@ export class ApproveFormComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.popup.open(
-            this.isApprover || this.isFAD
+            this.isApprover
               ? 'Application approved successfully!'
               : 'Operation was successful!',
             'success'
@@ -128,11 +128,8 @@ export class ApproveFormComponent implements OnInit {
         this.cd.markForCheck();
       },
 
-      error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not user information!',
-          'error'
-        );
+      error: (error: any) => {
+        this.popup.open('Operation failed! Unable to complete', 'error');
 
         this.progressBarService.close();
         this.isLoading = false;
@@ -153,7 +150,12 @@ export class ApproveFormComponent implements OnInit {
     this.coqService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successful!', 'success');
+          this.popup.open(
+            this.isFAD
+              ? 'Application approved successfully!'
+              : 'Operation was successful!',
+            'success'
+          );
           this.dialogRef.close();
         }
         this.isLoading = false;
@@ -163,10 +165,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not user information!',
-          'error'
-        );
+        this.popup.open('Operation failed! Unable to complete', 'error');
         this.isLoading = false;
         this.progressBarService.close();
         this.cd.markForCheck();

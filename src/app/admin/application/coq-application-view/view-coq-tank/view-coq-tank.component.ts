@@ -9,22 +9,24 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ViewCoqTankComponent implements OnInit {
   public tanks: any;
+  public productType: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: DialogRef<ViewCoqTankComponent>
   ) {}
 
   ngOnInit(): void {
-    this.tanks = this.data.data;
+    this.tanks = this.data.tanks;
+    this.productType = this.data.productType;
   }
 
   public tableTitles = {
     branches: 'TANKS',
   };
 
-  public tankKeysMappedToHeaders = {
+  public liquidTankKeysMappedToHeaders = {
     measurementType: 'MEASUREMENT TYPE',
-    tankName: 'Tank Name',
+    tankName: 'TANK NAME',
     dip: 'DIP',
     waterDIP: 'WATER DIP',
     tov: 'TOV',
@@ -34,30 +36,23 @@ export class ViewCoqTankComponent implements OnInit {
     tempearture: 'TEMPERATURE',
     density: 'DENSITY',
     vcf: 'VCF',
-    gsv: 'GSV',
-    mtvac: 'MT(VAC)',
+  };
+
+  gasTankKeysMappedToHeaders = {
+    measurementType: 'MEASUREMENT TYPE',
+    tankName: 'TANK NAME',
     liquidDensityVac: 'LIQUID DENSITY VAC',
     observedSounding: 'OBSERVED SOUNDING',
     tapeCorrection: 'TAPE CORRECTION',
+    liquidTemperature: 'LIQUID TEMPERATURE',
     observedLiquidVolume: 'OBSERVED LIQUID VOLUME',
     shrinkageFactorLiquid: 'SHRINKAGE FACTOR (LIQUID)',
+    vcf: 'VCF',
     tankVolume: 'TANK VOLUME',
-    //shrinkageFactorVapour: 'SHRINKAGE FACTOR (VAPOUR)',
+    shrinkageFactorVapour: 'SHRINKAGE FACTOR (VAPOUR)',
     vapourTemperature: 'VAPOUR TEMPERATURE',
     vapourPressure: 'VAPOUR PRESSURE',
     molecularWeight: 'MOLECULAR WEIGHT',
     vapourFactor: 'VAPOUR FACTOR',
-    liquidDensityAir: 'LIQUID DENSITY AIR',
-    correctedLiquidLevel: 'CORRECTED LIQUID LEVEL',
-    correctedLiquidVolumeM3: 'CORRECTED LIQUID VOLUME (M3)',
-    grossStandardVolumeGas: 'GROSS STANDARD VOLUME (GAS)',
-    liquidWeightVAC: 'LIQUID WEIGHT (VAC)',
-    liquidWeightAir: 'LIQUID WEIGHT (AIR)',
-    vapourVolume: 'VAPOUR VOLUME',
-    correctedVapourVolume: 'CORRECTED VAPOUR VOLUME',
-    vapourWeightVAC: 'VAPOUR WEIGHT (VAC)',
-    vapourWeightAir: 'VAPOUR WEIGHT (AIR)',
-    totalGasWeightVAC: 'TOTAL GAS WEIGHT (VAC)',
-    totalGasWeightAir: 'TOTAL GAS WEIGHT (AIR)',
   };
 }

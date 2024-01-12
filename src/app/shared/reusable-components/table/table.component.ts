@@ -64,7 +64,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
-  keysMappedToHeaders: ITableKeysMappedToHeaders = {};
+  keysMappedToHeaders: ITableKeysMappedToHeaders|any = {};
   @Input() table_controls_horizontal = false;
   @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];

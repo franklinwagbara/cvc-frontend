@@ -38,9 +38,31 @@
     </div>
   </form>
 </div>
-<div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
-  <button mat-raised-button (click)="sendBack()" [disabled]="form.invalid">
-    Send Back
-  </button>
+
+<div class="flex">
+  <div class="items-center flex w-full">
+    <button mat-button mat-dialog-close>Close</button>
+    <div class="flex">
+      <button
+        mat-raised-button
+        class="bg-green-500"
+        (click)="sendBack()"
+        [disabled]="form.invalid"
+        *ngIf="!isLoading"
+      >
+        Send Back
+      </button>
+      <a
+        *ngIf="isLoading"
+        class="!flex !justify-center !items-center"
+        mat-mini-fab
+        color="disabled"
+      >
+        <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+      </a>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button class="bg-slate-500 text-white">Preview</button>
+  </div>
 </div>
