@@ -9,15 +9,17 @@
   <div *ngFor="let a of tanks; let i = index" class="!text-green-500">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title
-          >{{ i + 1 }}. View {{ a[0]?.tankName }}
-        </mat-panel-title>
+        <mat-panel-title>{{ i + 1 }}. {{ a[0]?.tankName }} </mat-panel-title>
       </mat-expansion-panel-header>
       <div>
         <generic-table
           [table_title]="tableTitles.branches"
           [title-color]="'teal'"
-          [table_keysMappedToHeaders]="tankKeysMappedToHeaders"
+          [table_keysMappedToHeaders]="
+            productType === 'Gas'
+              ? gasTankKeysMappedToHeaders
+              : liquidTankKeysMappedToHeaders
+          "
           [table_content]="a"
           [table_controls_horizontal]="true"
           [noDeleteButton]="true"
