@@ -1184,16 +1184,22 @@
 
             <div
               *ngIf="hasUploadedAllRequiredDocs && !isSubmitted"
-              class="text-right mt-8"
+              class="flex justify-between mt-8"
             >
-              <button *ngIf="!isSubmitted" mat-button (click)="preview()">
+              <button 
+                *ngIf="!isSubmitted" 
+                mat-button 
+                (click)="preview()"
+                class="action bg-yellow-500 hover:bg-yellow-600"
+              >
+                Preview
               </button>
               <button
                 *ngIf="!isSubmitted"
                 type="submit"
                 (click)="submit()"
                 mat-button
-                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                class="action bg-green-500 hover:bg-green-600"
                 [disabled]="isSubmitting"
               >
                 Submit

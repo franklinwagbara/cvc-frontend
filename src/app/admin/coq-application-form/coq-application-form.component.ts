@@ -631,14 +631,19 @@ export class CoqApplicationFormComponent
   }
 
   preview() {
-    this.dialog.open(CoqApplicationPreviewComponent, {});
+    this.dialog.open(CoqApplicationPreviewComponent, {
+      data: {
+        tankData: this.isGasProduct ? this.coqFormService.gasProductReviewData : this.coqFormService.liquidProductReviewData,
+        isGasProduct: this.isGasProduct
+      }
+    });
   }
 
   submit() {
     const payload = this.constructPayload();
     this.isSubmitting = true;
     this.spinner.show('Submitting CoQ Application...');
-    //payload.productId = this.productSelection.valu
+    
     (this.isGasProduct
       ? this.coqService.createGasProductCoq(payload)
       : this.coqService.createLiqProductCoq(payload)
@@ -648,7 +653,9 @@ export class CoqApplicationFormComponent
         this.isSubmitted = true;
         this.spinner.close();
         if (res?.success) {
-          this.popUp.open('CoQ Application Created Successfully', 'success');
+          this.snackBar.open('CoQ Application Created Successfully. Redirecting...', 
+            null, { panelClass: ['success'], duration: 2500 }
+          );
           localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
           if (this.isGasProduct) {
             this.vesselGasInfoForm.reset();
@@ -661,6 +668,9 @@ export class CoqApplicationFormComponent
           this.popUp.open('CoQ Application Creation Failed', 'error');
         }
         this.cd.markForCheck();
+        setTimeout(() => {
+          this.router.navigate(['admin', 'coq-applications-by-depot']);
+        }, 2400)
       },
       error: (error: unknown) => {
         this.isSubmitting = false;
