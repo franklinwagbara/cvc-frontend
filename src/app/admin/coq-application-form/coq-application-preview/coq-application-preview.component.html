@@ -1,56 +1,78 @@
 <div>
   <table></table>
 
-  <div id="coq-application-preview-table">CoQ Application Preview</div>
-  <table 
-    *ngIf="!isGasProduct"
-    aria-describedby="coq-application-preview-table"
-  >
-    <tr>
-      <th>Status</th>
-      <th>DIP (m)</th>
-      <th>Water DIP (m)</th>
-      <th>TOV</th>
-      <th>Water Volume</th>
-      <th>Float Roof Corr</th>
-      <th>GOV</th>
-      <th>Temperature</th>
-      <th>Density</th>
-      <th>VCF</th>
-    </tr>
+  
 
-    <ng-container *ngFor="let reading of liquidProductData">
+  <div id="coq-application-preview-table" class="hidden">CoQ Application Preview</div>
+  <table 
+    *ngIf="!data.isGasProduct"
+    aria-describedby="coq-application-preview-table"
+    class="table"
+  >
+    <thead>
       <tr>
-        <td>Tank 1</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <th>Tank</th>
+        <th>Status</th>
+        <th>DIP (m)</th>
+        <th>Water DIP (m)</th>
+        <th>TOV</th>
+        <th>Water Volume (m<sup>3</sup>)</th>
+        <th>Float Roof Corr</th>
+        <th>GOV</th>
+        <th>Temperature</th>
+        <th>Density</th>
+        <th>VCF</th>
       </tr>
-      <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-    </ng-container>
+    </thead>
+
+    <tbody>
+
+      <ng-container *ngFor="let reading of data?.tankData">
+        <tr>
+          <td rowspan="3">{{ reading?.before?.tank }}</td>
+          <td>{{ reading?.before?.status | uppercase }}</td>
+          <td>{{ reading?.before?.dip }}</td>
+          <td>{{ reading?.before?.waterDIP }}</td>
+          <td>{{ reading?.before?.tov }}</td>
+          <td>{{ reading?.before?.waterVolume }}</td>
+          <td>{{ reading?.before?.floatRoofCorr }}</td>
+          <td>{{ reading?.before?.gov }}</td>
+          <td>{{ reading?.before?.temperature }}</td>
+          <td>{{ reading?.before?.density }}</td>
+          <td>{{ reading?.before?.vcf }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>{{ reading?.after?.status | uppercase }}</td>
+          <td>{{ reading?.after?.dip }}</td>
+          <td>{{ reading?.after?.waterDIP }}</td>
+          <td>{{ reading?.after?.tov }}</td>
+          <td>{{ reading?.after?.waterVolume }}</td>
+          <td>{{ reading?.after?.floatRoofCorr }}</td>
+          <td>{{ reading?.after?.gov }}</td>
+          <td>{{ reading?.after?.temperature }}</td>
+          <td>{{ reading?.after?.density }}</td>
+          <td>{{ reading?.after?.vcf }}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>DIFF</td>
+          <td>{{ reading?.diff?.dip }}</td>
+          <td>{{ reading?.diff?.waterDIP }}</td>
+          <td>{{ reading?.diff?.tov }}</td>
+          <td>{{ reading?.diff?.waterVolume }}</td>
+          <td>{{ reading?.diff?.floatRoofCorr }}</td>
+          <td>{{ reading?.diff?.gov }}</td>
+          <td>{{ reading?.diff?.temperature }}</td>
+          <td>{{ reading?.diff?.density }}</td>
+          <td>{{ reading?.diff?.vcf }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
     
   </table>
 
-  <table *ngIf="isGasProduct">
+  <!-- <table *ngIf="isGasProduct">
     <tr>
       <th>Status</th>
       <th>Liquid Density Vac</th>
@@ -66,5 +88,5 @@
       <th>Molecular Weight</th>
       <th>Vapour Factor</th>
     </tr>
-  </table>
+  </table> -->
 </div>

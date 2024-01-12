@@ -46,8 +46,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
 
     this.coqService.getAllCOQs().subscribe({
       next: (res) => {
-        this.coqs = res.data;
-
+        this.coqs = (res?.data || []).reverse();
         this.spinner.close();
         this.cdr.markForCheck();
       },

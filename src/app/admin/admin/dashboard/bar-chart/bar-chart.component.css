@@ -9,6 +9,10 @@
   @apply p-3 pb-24 flex-1 h-[600px];
 }
 
+.chart-title {
+  @apply mb-4;
+}
+
 :host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {   
   stroke: #FBD430;
 }

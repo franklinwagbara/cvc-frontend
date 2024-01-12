@@ -4,7 +4,7 @@
 }
 
 .nav-item-control {
-  @apply flex gap-5;
+  @apply flex gap-4;
 }
 
 .nav-item-active {
@@ -65,6 +65,10 @@ a {
   & + .nav-sub-menu {
     @apply max-h-[0px] invisible opacity-0 transition-all ease-in-out delay-150 duration-700;
   }
+}
+
+svg {
+  z-index: 9999;
 }
 
 .hide {
