@@ -126,6 +126,7 @@ export interface IDashboard {
   tValidLicense: number;
   totalApps: number;
   totalLicenses: number;
+  debitNote?: number;
 }
 
 export interface IMessage {

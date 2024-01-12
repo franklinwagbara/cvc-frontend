@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -9,14 +10,26 @@ import { MatTableDataSource } from '@angular/material/table';
 export class CoqApplicationPreviewComponent implements OnInit {
   @Input() liquidProductData: any;
   @Input() gasProductData: any;
+  @Input() isGasProduct: boolean;
   dataSource: MatTableDataSource<any[]>;
+  displayedColumns: any[];
 
 
-  constructor() {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<CoqApplicationPreviewComponent>
+  ) {}
 
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<any[]>([]);
   }
 
+  trackByFn(index: number) {
+    return index;
+  }
+
+  onClose() {
+    
+  }
 
 }

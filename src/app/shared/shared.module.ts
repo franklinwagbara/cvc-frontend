@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -135,6 +135,7 @@ import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
     FirstNPipe,
     FormatTimeAmPmPipe,
     AbbreviateNumberPipe,
+    CurrencyPipe
   ],
 })
 export class SharedModule {}
