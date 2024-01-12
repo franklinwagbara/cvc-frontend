@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
@@ -18,7 +19,7 @@ import { Application } from '../../../../../src/app/company/my-applications/myap
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { Location } from '../../../../../src/app/shared/constants/location';
+import { LOCATION } from '../../../../../src/app/shared/constants/location';
 
 @Component({
   selector: 'app-view-coq-application',
@@ -45,18 +46,31 @@ export class ViewApplicationComponent implements OnInit {
     public route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private licenceService: LicenceService
+    private licenceService: LicenceService,
+    public location: Location
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.spinner.open();
-      this.appId = parseInt(params['id']);
-      this.appSource = params['appSource'];
-      this.coqId = parseInt(params['coqId']);
+      if (Object.keys(params).length !== 0) {
+        console.log(params);
+        this.spinner.open();
+        this.appId = parseInt(params['id']);
+        this.appSource = params['appSource'];
+        this.coqId = parseInt(params['coqId']);
 
-      if (this.appSource != AppSource.Licence) this.getApplication();
-      else this.getLicence();
+        if (this.appSource != AppSource.Licence) this.getApplication();
+        else this.getLicence();
+      }
+    });
+
+    this.route.params.subscribe((params) => {
+      if (Object.keys(params).length !== 0) {
+        this.appId = parseInt(params['id']);
+
+        if (this.appSource != AppSource.Licence) this.getApplication();
+        else this.getLicence();
+      }
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
@@ -67,7 +81,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   public get isFO() {
-    return this.currentUser.location == Location.FO;
+    return this.currentUser.location == LOCATION.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -76,6 +90,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getApplication() {
+    this.spinner.show('Fetching application');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
@@ -103,6 +118,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getLicence() {
+    this.spinner.show('Loading license details');
     this.licenceService.getLicence(this.appId).subscribe({
       next: (res) => {
         if (res.success) {

@@ -11,8 +11,8 @@
     <h1>FULL APPLICATION DETAILS</h1>
 
     <div class="info-sections-wrapper">
-      <h2 *ngIf="application.reference">
-        APPLICATION REFERENCE : {{ application.reference }}
+      <h2 *ngIf="application?.reference">
+        APPLICATION REFERENCE : {{ application?.reference }}
       </h2>
       <section class="info-section">
         <h3>Reference Information</h3>
@@ -72,38 +72,38 @@
           <div>
             <h5>Vessel Name</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.name; else noData">
-              <span>{{ application?.vessel.name }}</span>
+            <ng-container *ngIf="application?.vessel?.name; else noData">
+              <span>{{ application?.vessel?.name }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Vessel Type</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.vesselType; else noData">
+            <ng-container *ngIf="application?.vessel?.vesselType; else noData">
               <span>{{ application?.vessel.vesselType }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Loading Port</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.name; else noData">
-              <span>{{ application?.vessel.loadingPort }}</span>
+            <ng-container *ngIf="application?.vessel?.loadingPort; else noData">
+              <span>{{ application?.vessel?.loadingPort }}</span>
             </ng-container>
           </div>
           <div>
             <h5>Discharge Port</h5>
             <hr />
             <ng-container
-              *ngIf="application?.vessel.dischargePort; else noData"
+              *ngIf="application?.vessel?.dischargePort; else noData"
             >
-              <span>{{ application?.vessel.dischargePort }}</span>
+              <span>{{ application?.vessel?.dischargePort }}</span>
             </ng-container>
           </div>
           <div>
             <h5>IMO Number</h5>
             <hr />
-            <ng-container *ngIf="application?.vessel.imoNumber; else noData">
-              <span>{{ application?.vessel.imoNumber }}</span>
+            <ng-container *ngIf="application?.vessel?.imoNumber; else noData">
+              <span>{{ application?.vessel?.imoNumber }}</span>
             </ng-container>
           </div>
         </div>
@@ -134,9 +134,9 @@
           </div>
         </div>
       </section>
-      <section *ngIf="application.vessel.tanks.length" class="info-section">
+      <section *ngIf="application?.vessel?.tanks.length" class="info-section">
         <h3>Tanks Information</h3>
-        <div *ngFor="let tank of application.vessel.tanks; let i = index">
+        <div *ngFor="let tank of application?.vessel?.tanks; let i = index">
           <div class="tank-info-wrapper">
             <h4>Tank {{ i + 1 }}</h4>
             <hr />
@@ -144,22 +144,22 @@
               <div>
                 <h5>Name</h5>
                 <hr />
-                <ng-container *ngIf="tank.name; else noData">
-                  <span>{{ tank.name }}</span>
+                <ng-container *ngIf="tank?.name; else noData">
+                  <span>{{ tank?.name }}</span>
                 </ng-container>
               </div>
               <div>
                 <h5>Capacity</h5>
                 <hr />
-                <ng-container *ngIf="tank.capacity; else noData">
-                  <span>{{ tank.capacity }}</span>
+                <ng-container *ngIf="tank?.capacity; else noData">
+                  <span>{{ tank?.capacity }}</span>
                 </ng-container>
               </div>
               <div>
                 <h5>Product</h5>
                 <hr />
-                <ng-container *ngIf="tank.product; else noData">
-                  <span>{{ tank.product }}</span>
+                <ng-container *ngIf="tank?.product; else noData">
+                  <span>{{ tank?.product }}</span>
                 </ng-container>
               </div>
             </div>
@@ -265,23 +265,23 @@
         >
           <div class="card-item">
             <div class="item-title">
-              <a [href]="applicationDoc.docSource" target="_blank">
+              <a [href]="applicationDoc?.docSource" target="_blank">
                 <img
-                  *ngIf="isPDF(applicationDoc.docSource)"
+                  *ngIf="isPDF(applicationDoc?.docSource)"
                   src="../../../../assets/image/pdfIcon.png"
                   alt="open file"
                 />
 
                 <img
-                  *ngIf="isIMG(applicationDoc.docSource)"
+                  *ngIf="isIMG(applicationDoc?.docSource)"
                   src="../../../../assets/image/imageIcon.png"
                   alt="open file"
                 />
 
                 <img
                   *ngIf="
-                    !isIMG(applicationDoc.docSource) &&
-                    !isPDF(applicationDoc.docSource)
+                    !isIMG(applicationDoc?.docSource) &&
+                    !isPDF(applicationDoc?.docSource)
                   "
                   src="../../../../assets/image/otherFileType.png"
                   alt="open file"
@@ -289,8 +289,8 @@
               </a>
             </div>
             <div class="item-content">
-              <a [href]="applicationDoc.docSource" target="_blank">
-                {{ applicationDoc.docName }}
+              <a [href]="applicationDoc?.docSource" target="_blank">
+                {{ applicationDoc?.docName }}
               </a>
             </div>
           </div>

@@ -16,9 +16,25 @@
       <th>Plant Name</th>
       <td>{{ application?.Plant }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.ProductType">
       <th>Product Type</th>
       <td>{{ application?.ProductType }}</td>
+    </tr>
+    <tr *ngIf="application?.VesselName">
+      <th>Vessel Name</th>
+      <td>{{ application?.VesselName }}</td>
+    </tr>
+    <tr *ngIf="application?.MotherVessel">
+      <th>Mother Vessel</th>
+      <td>{{ application?.MotherVessel }}</td>
+    </tr>
+    <tr *ngIf="application?.LoadingPort">
+      <th>Loading Port</th>
+      <td>{{ application?.LoadingPort }}</td>
+    </tr>
+    <tr *ngIf="application?.Jetty">
+      <th>Jetty</th>
+      <td>{{ application?.Jetty }}</td>
     </tr>
     <tr>
       <th>Quauntity Reflected On Bill</th>
@@ -59,11 +75,14 @@
       <th>Application Status</th>
       <td>{{ application?.Status }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.NameConsignee">
       <th>Name of Consignee</th>
       <td>{{ application?.NameConsignee }}</td>
     </tr>
-
+    <tr *ngIf="application?.NominatedSurveyor">
+      <th>Nominated Surveyor</th>
+      <td>{{ application?.NominatedSurveyor }}</td>
+    </tr>
     <tr>
       <th>Initiated On</th>
       <td>{{ application?.DateCreated | date }}</td>

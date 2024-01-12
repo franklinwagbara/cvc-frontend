@@ -11,7 +11,7 @@ import { BehaviorSubject, filter } from 'rxjs';
 import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
-import { Location } from 'src/app/shared/constants/location';
+import { LOCATION } from 'src/app/shared/constants/location';
 import { UserRole } from 'src/app/shared/constants/userRole';
 
 export interface SubRouteInfo {
@@ -287,7 +287,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnInit() {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (currentUser.userRoles === UserRole.FIELDOFFICER || currentUser?.location === Location.FO) {
+    if (currentUser.userRoles === UserRole.FIELDOFFICER || currentUser?.location === LOCATION.FO) {
       let coqSubRoutes = [
         {
           id: 1,

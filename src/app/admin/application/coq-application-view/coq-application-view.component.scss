@@ -23,7 +23,6 @@
   @apply m-2 shadow-md bg-slate-100 p-5;
 }
 
-
 .actions {
   @apply flex flex-col gap-4 px-8;
 }
@@ -64,4 +63,8 @@ mat-expansion-panel {
   /* box-shadow: 1px 3px 4px 0px #9fa4c2; */
   color: wheat !important;
   @apply text-center py-6 mb-6 rounded-full bg-gradient-to-r from-[#71B280] to-[#134E5E];
+}
+
+.back-btn-color {
+  background-color: rgb(229 240 246 / var(--tw-bg-opacity)) !important;
 }

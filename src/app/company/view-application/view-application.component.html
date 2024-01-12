@@ -1,6 +1,14 @@
-<div class="view-application">
-  <h2 mat-dialog-title class="text-center page-title">
-    APPLICATION REFERENCE : {{ application?.reference }}
+<div class="view-application-container">
+  <a
+    (click)="location.back()"
+    class="flex my-1 justify-start back-btn-color items-center"
+    mat-raised-button
+  >
+    <i class="material-icons">keyboard_double_arrow_left</i>
+    <span>Back</span></a
+  >
+  <h2 mat-dialog-title class="text-center view-app-page-title">
+    APPLICATION REFERENCE: {{ application?.reference }}
   </h2>
   <div mat-dialog-content class="content">
     <div class="application-view">
@@ -11,7 +19,6 @@
       ></app-application-view-table>
     </div>
     <div class="application-controls">
-      
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>

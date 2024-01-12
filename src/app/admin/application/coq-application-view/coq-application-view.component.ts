@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
@@ -15,7 +16,7 @@ import { Application } from '../../../../../src/app/company/my-applications/myap
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { Location } from '../../../../../src/app/shared/constants/location';
+import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
 
 @Component({
@@ -46,7 +47,8 @@ export class CoqApplicationViewComponent implements OnInit {
     public route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private licenceService: LicenceService
+    private licenceService: LicenceService,
+    public location: Location
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class CoqApplicationViewComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      this.spinner.open();
+      this.spinner.show('Loading application');
       // this.appId = parseInt(params['id']);
       this.appSource = params['appSource'];
       // this.coqId = parseInt(params['coqId']);
@@ -77,12 +79,12 @@ export class CoqApplicationViewComponent implements OnInit {
     return (
       (this.currentUser as any).userRoles === 'FAD' ||
       (this.currentUser as any).userRoles === 'Controller' ||
-      this.currentUser.location == Location.FO
+      this.currentUser.location == LOCATION.FO
     );
   }
 
   public get isFO() {
-    return this.currentUser.location == Location.FO;
+    return this.currentUser.location == LOCATION.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {
