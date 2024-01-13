@@ -140,6 +140,13 @@
       </thead>
       <tbody>
         <tr>
+          <th scope="row">Tank Level(m)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.correctedLiquidLevel}}</td>
+            <td>{{reading?.calc?.after?.correctedLiquidLevel}}</td>
+          </ng-container>
+        </tr>
+        <tr>
           <th scope="row">MOL. WT</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.molecularWeight}}</td>
@@ -369,7 +376,7 @@
       </tbody>
     </table>
     <div>ALL CALCULATIONS ARE BASED ON ASTM/IP 201/64</div>
-
+    <br />
     <div id="lpg-weight-certification-qty-summary" class="text-center">SUMMARY OF QUANTITIES</div>
     <table
       class="table table-borderd"

@@ -52,7 +52,18 @@ export class CoqApplicationPreviewComponent implements OnInit {
         return item;
       })
     } else {
-
+      this.tankData = this.tankData.map((item) => {
+        const correctedLiqVolB4 = item?.before?.observedLiquidVolume + item?.before?.shrinkageFactor;
+        item.calc.before = {
+          correctedLiquidLevel: item?.before?.observedSounding + item?.before?.tapeCorrection,
+          correctedLiquidVolume: correctedLiqVolB4,
+          grossStandardVolume: correctedLiqVolB4 * item?.before?.vcf,
+        }
+        item.calc.after = {
+  
+        }
+        return item;
+      })
     }
   }
 
