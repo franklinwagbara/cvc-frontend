@@ -65,11 +65,13 @@ export class CoqApplicationPreviewComponent implements OnInit {
   }
 
   print() {
-   const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-
-    window.print();
-  
-    // document.body.innerHTML = originalContents;
+    const printContents = document.getElementById('coq-data-preview-content');
+    const windowPrt = window.open('', '', 'left=0,top=0,width=1000,height=1000,toolbar=0,scrollbars=0,status=0');
+    windowPrt.document.write(printContents.innerHTML);
+    windowPrt.document.close();
+    windowPrt.focus()
+    windowPrt.print();
+    windowPrt.close();
   }
 
   onClose() {

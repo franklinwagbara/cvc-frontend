@@ -1,7 +1,7 @@
-<mat-dialog-content id="coq-preview-content" class="media-print overflow-y-auto" #coqPreview>
-  <h3 class="flex justify-center text-slate-400 mt-4">
+<div mat-dialog-content id="coq-data-preview-content" class="media-print overflow-y-auto" #coqPreview>
+  <h4 class="flex justify-center text-slate-400 mt-4">
     NIGERIAN MIDSTREAM AND DOWNSTREAM PETROLEUM REGULATORY AUTHORITY
-  </h3>
+  </h4>
   <h5 class="mt-2">{{ data.isGasProduct ? 'LPG WEIGHT CERTIFICATION' : 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' }}</h5>
 
   <table class="vessel-info">
@@ -51,7 +51,7 @@
 
   <hr class="w-full">
 
-  <div id="coq-application-preview-table" class="hidden">CoQ Application Preview</div>
+  <div id="coq-application-preview-table" style="display: hidden;">CoQ Application Preview</div>
   <div class="liquid">
     <table 
       *ngIf="!data.isGasProduct"
@@ -436,8 +436,9 @@
   <div class="text-right">
     <button 
       mat-button 
-      class="bg-slate-400 hover:bg-slate-500 text-white" 
+      class="print-btn"
+      style="display: hidden;"
       (click)="print()"
     >Print</button>
   </div>
-</mat-dialog-content>
+</div>

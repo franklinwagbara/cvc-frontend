@@ -52,6 +52,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
+  @Input('EnableDischargeClearanceControls') enableDischargeClearanceControls?: boolean = false;
   @Input('EnableViewCertificateControl')
   enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
@@ -233,6 +234,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         cell: (item) => 'view_debit_note_control',
       });
     }
+
 
     this.columns.unshift({
       columnDef: 'select',
