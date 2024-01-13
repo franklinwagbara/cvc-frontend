@@ -65,7 +65,7 @@ export class CoqApplicationPreviewComponent implements OnInit {
   }
 
   print() {
-   const WindowPrt = window.open('', '', 'top=0;')
+   const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
 
     window.print();
   
