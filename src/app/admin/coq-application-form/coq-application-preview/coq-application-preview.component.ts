@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, debounce } from 'rxjs';
 import { CoQData } from '../coq-application-form.component';
 
 @Component({
@@ -18,16 +18,42 @@ export class CoqApplicationPreviewComponent implements OnInit {
     'shrinkageFactor', 'vcf', 'tankVolume', 'vapourTemperature', 'vapourPressure', 'molecularWeight', 'vapourFactor'
   ]
   displayedColumns: any[];
-  tankData: any[] = [];
+  tankData: CoQData[] = [];
   tankData$ = new BehaviorSubject<any[]>([]);
+  vesselDischargeData: any;
+  previewSource: 'coq-form-view' | 'submitted-coq-view';
+
+  @ViewChild('coqPreview') coqPreview: ElementRef
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PreviewData,
-    private dialogRef: MatDialogRef<CoqApplicationPreviewComponent>
+    private dialogRef: MatDialogRef<CoqApplicationPreviewComponent>,
+    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
     this.displayedColumns = this.data?.isGasProduct ? this.gasColumns : this.liquidColumns;
+    this.tankData = this.data?.tankData;
+    this.previewSource = this.data?.previewSource;
+    this.vesselDischargeData = this.data?.vesselDischargeData;
+    if (!this.data.isGasProduct) {
+      this.tankData = this.tankData.map((item) => {
+        item.calc = {
+          dip: parseFloat(item?.after?.dip) - parseFloat(item?.before?.dip),
+          waterDIP: parseFloat(item?.after?.waterDIP) - parseFloat(item?.before?.waterDIP),
+          tov: parseFloat(item?.after?.tov) - parseFloat(item?.before?.tov),
+          waterVolume: parseFloat(item?.after?.waterVolume) - parseFloat(item?.before?.waterVolume),
+          floatRoofCorr: parseFloat(item?.after?.floatRoofCorr) - parseFloat(item?.before?.floatRoofCorr),
+          gov: parseFloat(item?.after?.gov) - parseFloat(item?.before?.gov),
+          temperature: parseFloat(item?.after?.temperature) - parseFloat(item?.before?.temperature),
+          density: parseFloat(item?.after?.density) - parseFloat(item?.before?.density),
+          vcf: parseFloat(item?.after?.vcf) - parseFloat(item?.before?.vcf)
+        }
+        return item;
+      })
+    } else {
+
+    }
   }
 
   setDataSource(): void {
@@ -36,6 +62,14 @@ export class CoqApplicationPreviewComponent implements OnInit {
 
   trackByFn(index: number) {
     return index;
+  }
+
+  print() {
+   const WindowPrt = window.open('', '', 'top=0;')
+
+    window.print();
+  
+    // document.body.innerHTML = originalContents;
   }
 
   onClose() {
@@ -47,4 +81,8 @@ export class CoqApplicationPreviewComponent implements OnInit {
 interface PreviewData {
   tankData: CoQData[];
   isGasProduct: boolean;
+  productName?: string;
+  vesselDischargeData: any;
+  previewSource: 'coq-form-view' | 'submitted-coq-view';
+  officer?: { name: string; role: string; remarks: string; }
 }

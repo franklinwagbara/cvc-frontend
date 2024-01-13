@@ -28,7 +28,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     vesselType: 'Vessel Type',
     capacity: 'Capacity',
     status: 'Status',
-    paymnetStatus: 'Payment Status',
     rrr: 'RRR',
     createdDate: 'Initiated Date',
   };

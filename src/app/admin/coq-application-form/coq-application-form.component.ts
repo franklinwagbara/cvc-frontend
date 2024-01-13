@@ -1,5 +1,4 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -99,7 +98,7 @@ export class CoqApplicationFormComponent
   isSubmitted = false;
   isSubmitting = false;
 
-  isGasProduct: boolean | null = false;
+  isGasProduct: boolean | null = null;
 
   isProcessingPlant = false;
 
@@ -312,8 +311,7 @@ export class CoqApplicationFormComponent
             ? !this.plantTanks.length
             : !this.requirement.tanks.length;
           if (!this.isProcessingPlant) {
-            this.isGasProduct =
-              this.requirement?.productType.toLowerCase() !== 'gas';
+            this.isGasProduct = this.requirement?.productType.toLowerCase() === 'gas';
           }
           if (this.noTankConfigured) {
             this.popUp.open(
@@ -634,8 +632,10 @@ export class CoqApplicationFormComponent
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
         tankData: this.isGasProduct ? this.coqFormService.gasProductReviewData : this.coqFormService.liquidProductReviewData,
-        isGasProduct: this.isGasProduct
-      }
+        isGasProduct: this.isGasProduct,
+        vesselDischargeData: {}
+      },
+      scrollStrategy: null
     });
   }
 
@@ -937,7 +937,7 @@ export class CoqApplicationFormComponent
 export interface CoQData {
   before: any;
   after: any;
-  diff?: any;
+  calc?: any;
 }
 
 export enum LocalDataKey {

@@ -1,92 +1,443 @@
-<div>
-  <table></table>
+<mat-dialog-content id="coq-preview-content" class="media-print overflow-y-auto" #coqPreview>
+  <h3 class="flex justify-center text-slate-400 mt-4">
+    NIGERIAN MIDSTREAM AND DOWNSTREAM PETROLEUM REGULATORY AUTHORITY
+  </h3>
+  <h5 class="mt-2">{{ data.isGasProduct ? 'LPG WEIGHT CERTIFICATION' : 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' }}</h5>
 
-  
-
-  <div id="coq-application-preview-table" class="hidden">CoQ Application Preview</div>
-  <table 
-    *ngIf="!data.isGasProduct"
-    aria-describedby="coq-application-preview-table"
-    class="table"
-  >
-    <thead>
-      <tr>
-        <th>Tank</th>
-        <th>Status</th>
-        <th>DIP (m)</th>
-        <th>Water DIP (m)</th>
-        <th>TOV</th>
-        <th>Water Volume (m<sup>3</sup>)</th>
-        <th>Float Roof Corr</th>
-        <th>GOV</th>
-        <th>Temperature</th>
-        <th>Density</th>
-        <th>VCF</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <ng-container *ngFor="let reading of data?.tankData">
-        <tr>
-          <td rowspan="3">{{ reading?.before?.tank }}</td>
-          <td>{{ reading?.before?.status | uppercase }}</td>
-          <td>{{ reading?.before?.dip }}</td>
-          <td>{{ reading?.before?.waterDIP }}</td>
-          <td>{{ reading?.before?.tov }}</td>
-          <td>{{ reading?.before?.waterVolume }}</td>
-          <td>{{ reading?.before?.floatRoofCorr }}</td>
-          <td>{{ reading?.before?.gov }}</td>
-          <td>{{ reading?.before?.temperature }}</td>
-          <td>{{ reading?.before?.density }}</td>
-          <td>{{ reading?.before?.vcf }}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>{{ reading?.after?.status | uppercase }}</td>
-          <td>{{ reading?.after?.dip }}</td>
-          <td>{{ reading?.after?.waterDIP }}</td>
-          <td>{{ reading?.after?.tov }}</td>
-          <td>{{ reading?.after?.waterVolume }}</td>
-          <td>{{ reading?.after?.floatRoofCorr }}</td>
-          <td>{{ reading?.after?.gov }}</td>
-          <td>{{ reading?.after?.temperature }}</td>
-          <td>{{ reading?.after?.density }}</td>
-          <td>{{ reading?.after?.vcf }}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>DIFF</td>
-          <td>{{ reading?.diff?.dip }}</td>
-          <td>{{ reading?.diff?.waterDIP }}</td>
-          <td>{{ reading?.diff?.tov }}</td>
-          <td>{{ reading?.diff?.waterVolume }}</td>
-          <td>{{ reading?.diff?.floatRoofCorr }}</td>
-          <td>{{ reading?.diff?.gov }}</td>
-          <td>{{ reading?.diff?.temperature }}</td>
-          <td>{{ reading?.diff?.density }}</td>
-          <td>{{ reading?.diff?.vcf }}</td>
-        </tr>
-      </ng-container>
-    </tbody>
-    
+  <table class="vessel-info">
+    <tr class="flex">
+      <div class="flex flex-1">
+        <th>{{ data.isGasProduct ? 'MARKETERS NAME' : 'MARKETER/PDT OWNER' }}: </th>
+        <td>Ringardas Nigeria Limited</td>
+      </div>
+      <div class="flex flex-1">
+        <th>PRODUCT: </th>
+        <td>Fuel Oils</td>
+      </div>
+      <div clas="flex flex-1">
+        <th>VESSEL NAME: </th>
+        <td>Vessel Fury</td>
+      </div>
+    </tr>
+    <tr class="flex">
+      <div class="flex flex-1">
+        <th>MOTHER VESSEL: </th>
+        <td>Vessel Titanic</td>
+      </div>
+      <div class="flex flex-1">
+        <th>JETTY: </th>
+        <td>Jetty Flash</td>
+      </div>
+      <div class="flex flex-1">
+        <th>{{ data.isGasProduct ? 'TERMINAL' : 'RECEIVING TERMINAL' }}: </th>
+        <td>Ringardas Depot PLC</td>
+      </div>
+    </tr>
+    <tr class="flex">
+      <div class="flex flex-1">
+        <th>{{ data.isGasProduct ? 'ARRIVAL DATE' : 'DATE OF VESSEL ARRIVAL' }}: </th>
+        <td></td>
+      </div>
+      <div class="flex flex-1">
+        <th>{{ data.isGasProduct ? 'VESSEL ULLAGE' : 'DATE OF VESSEL ULLAGE' }}: </th>
+        <td></td>
+      </div>
+      <div class="flex flex-1">
+        <th>{{ data.isGasProduct ? 'SHORE DATE' :  'DATE OF SHORE-TANK AFTER DISCHARGE' }}: </th>
+        <td></td>
+      </div>
+    </tr>
   </table>
 
-  <!-- <table *ngIf="isGasProduct">
-    <tr>
-      <th>Status</th>
-      <th>Liquid Density Vac</th>
-      <th>Observed Sounding</th>
-      <th>Tape Correction</th>
-      <th>Liquid Temperature</th>
-      <th>Observed Liquid Volume</th>
-      <th>Shrinkage Factor</th>
-      <th>VCF</th>
-      <th>Tank Volume</th>
-      <th>Vapour Temperature</th>
-      <th>Vapour Pressure</th>
-      <th>Molecular Weight</th>
-      <th>Vapour Factor</th>
-    </tr>
-  </table> -->
-</div>
+  <hr class="w-full">
+
+  <div id="coq-application-preview-table" class="hidden">CoQ Application Preview</div>
+  <div class="liquid">
+    <table 
+      *ngIf="!data.isGasProduct"
+      aria-describedby="coq-application-preview-table"
+      class="table table-bordered"
+    >
+      <thead>
+        <tr>
+          <th>Tank</th>
+          <th>Status</th>
+          <th>DIP (m)</th>
+          <th>Water DIP (m)</th>
+          <th>TOV</th>
+          <th>Water Volume (m<sup>3</sup>)</th>
+          <th>Float Roof Corr (m)</th>
+          <th>GOV</th>
+          <th>Temp (<sup>0</sup>C)</th>
+          <th>Density</th>
+          <th>VCF</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+          <tr>
+            <td rowspan="3">{{ reading?.before?.tank }}</td>
+            <td>{{ reading?.before?.status | uppercase }}</td>
+            <td>{{ reading?.before?.dip }}</td>
+            <td>{{ reading?.before?.waterDIP }}</td>
+            <td>{{ reading?.before?.tov }}</td>
+            <td>{{ reading?.before?.waterVolume }}</td>
+            <td>{{ reading?.before?.floatRoofCorr }}</td>
+            <td>{{ reading?.before?.gov }}</td>
+            <td>{{ reading?.before?.temperature }}</td>
+            <td>{{ reading?.before?.density }}</td>
+            <td>{{ reading?.before?.vcf }}</td>
+          </tr>
+          <tr>
+            <td>{{ reading?.after?.status | uppercase }}</td>
+            <td>{{ reading?.after?.dip }}</td>
+            <td>{{ reading?.after?.waterDIP }}</td>
+            <td>{{ reading?.after?.tov }}</td>
+            <td>{{ reading?.after?.waterVolume }}</td>
+            <td>{{ reading?.after?.floatRoofCorr }}</td>
+            <td>{{ reading?.after?.gov }}</td>
+            <td>{{ reading?.after?.temperature }}</td>
+            <td>{{ reading?.after?.density }}</td>
+            <td>{{ reading?.after?.vcf }}</td>
+          </tr>
+          <tr>
+            <td>DIFF</td>
+            <td>{{ reading?.calc?.dip }}</td>
+            <td>{{ reading?.calc?.waterDIP }}</td>
+            <td>{{ reading?.calc?.tov }}</td>
+            <td>{{ reading?.calc?.waterVolume }}</td>
+            <td>{{ reading?.calc?.floatRoofCorr }}</td>
+            <td>{{ reading?.calc?.gov }}</td>
+            <td>{{ reading?.calc?.temperature }}</td>
+            <td>{{ reading?.calc?.density }}</td>
+            <td>{{ reading?.calc?.vcf }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="data.isGasProduct" class="gas">
+    <table 
+      class="table table-bordered"
+      aria-describedby="coq-application-preview-table"
+    >
+      <thead> 
+        <tr>
+          <th>Tank No.</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <th scope="col" colspan="2">{{ reading?.before?.tank | uppercase }} ({{this.data.productName | uppercase}})</th>
+          </ng-container>
+        </tr>
+        <tr>
+          <th></th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <th scope="col">BEFORE</th>
+            <th scope="col">AFTER</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">MOL. WT</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.molecularWeight}}</td>
+            <td>{{reading?.after?.molecularWeight}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Total Observed Volume</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.totalObservedVolume}}</td>
+            <td>{{reading?.after?.totalObservedVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Liquid Vol.(Ltrs)GOV</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.observedLiquidVolume}}</td>
+            <td>{{reading?.after?.observedLiquidVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Tank Temp(<sup>0</sup>C)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.temperature}}</td>
+            <td>{{reading?.after?.temperature}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">VCF (ASTM Table 54B)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.vcf}}</td>
+            <td>{{reading?.after?.vcf}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Liquid Standard Vol.@15<sup>0</sup>C</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.liquidStandardVolume}}</td>
+            <td>{{reading?.after?.liquidStandardVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Cargo Density @ 15<sup>0</sup>C (Vac)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.cargoDensityVac}}</td>
+            <td>{{reading?.after?.cargoDensityVac}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Cargo Density @ 15<sup>0</sup>C (Air)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.cargoDensityAir}}</td>
+            <td>{{reading?.after?.cargoDensityAir}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">SHRINKAGE FACTOR/CCF</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.shrinkageFactor}}</td>
+            <td>{{reading?.after?.shrinkageFactor}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">SHRINKAGE CORRECTED VOL</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.shrinkageCorrectedVolume}}</td>
+            <td>{{reading?.after?.shrinkageCorrectedVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Metric Tons (Air)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.metricTonsAir}}</td>
+            <td>{{reading?.after?.metricTonsAir}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Metric Tons (Vac)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.metricTonsVac}}</td>
+            <td>{{reading?.after?.metricTonsVac}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Total Metric Tons (Air)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td colspan="2">{{reading?.calc?.totalMetricTonsAir}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Total Metric Tons (Vac)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td colspan="2">{{reading?.calc?.totalMetricTonsVac}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">VAPOUR PHASE</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td></td>
+            <td></td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Tank Cargo Temp(<sup>0</sup>C)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.temperature}}</td>
+            <td>{{reading?.after?.temperature}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Tank Cargo Press(Bars)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.tankCargoPressure}}</td>
+            <td>{{reading?.calc?.after?.tankCargoPressure}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Tank Capacity @ 100%(M<sup>3</sup>)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.tankCapacity}}</td>
+            <td>{{reading?.calc?.after?.tankCapacity}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Liquid Vol.(M<sup>3</sup>)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.liquidVolume}}</td>
+            <td>{{reading?.calc?.liquidVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Vapour Vol.(M<sup>3</sup>)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.vapourVolume}}</td>
+            <td>{{reading?.calc?.after?.vapourVolume}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">273/(273+<sup>0</sup>C)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.temperatureCalc}}</td>
+            <td>{{reading?.calc?.after?.temperatureCalc}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">((Press+1.013)/1.013)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.pressureCalc}}</td>
+            <td>{{reading?.calc?.after?.pressureCalc}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Mol. Wt/(22.4*1000)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.molecularWeightCalc}}</td>
+            <td>{{reading?.calc?.after?.molecularWeightCalc}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Gas Factor or Vap. Factor</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.vapourFactor}}</td>
+            <td>{{reading?.calc?.after?.vapourFactor}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">SHRINKAGE FACTOR</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.before?.shrinkageFactor}}</td>
+            <td>{{reading?.after?.shrinkageFactor}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Corrected Vapor Vol(M<sup>3</sup>)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.correctedVapourVolume}}</td>
+            <td>{{reading?.calc?.after?.correctedVapourVolume}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">Vap. M/tons. Kilo/Air</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.vapourMetricTonsAir}}</td>
+            <td>{{reading?.calc?.after?.vapourMetricTonsAir}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">Vap. M/tons. Kilo/Vac</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.vapourMetricTonsVac}}</td>
+            <td>{{reading?.calc?.after?.vapourMetricTonsVac}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">Liq+Vap Vac</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.liquidVapourVacSum}}</td>
+            <td>{{reading?.calc?.after?.liquidVapourVacSum}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <th scope="row">Received Qty.(Liq+Vap) Vac.</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.receivedQtyVac}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">Corrected Density (Table 56)</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.correctedDensity}}</td>
+            <td>{{reading?.calc?.after?.correctedDensity}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">M/Tons. Kilo/Air.</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.before?.metricTonsKiloAir}}</td>
+            <td>{{reading?.calc?.after?.metricTonsKiloAir}}</td>
+          </ng-container>
+        </tr>    
+        <tr>
+          <th scope="row">Received Qty.(Liq+Vap) Air.</th>
+          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
+            <td>{{reading?.calc?.receivedQtyAir}}</td>
+          </ng-container>
+        </tr> 
+      </tbody>
+    </table>
+    <div>ALL CALCULATIONS ARE BASED ON ASTM/IP 201/64</div>
+
+    <div id="lpg-weight-certification-qty-summary" class="text-center">SUMMARY OF QUANTITIES</div>
+    <table
+      class="table table-borderd"
+      aria-describedby="lpg-weight-certification-qty-summary"
+    >
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">QTY. BEFORE RECEIPT</th>
+          <th scope="col">QTY. AFTER RECEIPT</th>
+          <th scope="col">QTY. RECEIVED</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">M/TON VAC</th>
+          <td>{{vesselDischargeData?.qtyBeforeReceipt}}</td>
+        </tr>
+        <tr>
+          <th scope="row">M/TON AIR</th>
+          <td>{{vesselDischargeData?.qtyAfterReceipt}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex justify-center">
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th scope="row">GOV</th>
+            <td>{{vesselDischargeData?.govSummary}}</td>
+          </tr>
+          <tr>
+            <th scope="row">GSV</th>
+            <td>{{vesselDischargeData?.gsvSummary}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <table
+    *ngIf="previewSource === 'submitted-coq-view'"
+  >
+    <thead>
+      <th scope="col" colspan="3">PROCESSING OFFICER'S REMARKS</th>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Name</th>
+        <td>{{ data.officer?.name }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Role</th>
+        <td>{{ data.officer?.role }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Remarks</th>
+        <td>{{ data.officer?.remarks }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="text-right">
+    <button 
+      mat-button 
+      class="bg-slate-400 hover:bg-slate-500 text-white" 
+      (click)="print()"
+    >Print</button>
+  </div>
+</mat-dialog-content>

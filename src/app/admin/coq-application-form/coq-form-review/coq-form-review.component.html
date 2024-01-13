@@ -30,7 +30,7 @@
               <ng-container *ngIf="column !== 'actions' && column !== 'status'">{{ element[column] }}</ng-container>
               <ng-container *ngIf="column !== 'actions' && column === 'status'">{{ element[column] | uppercase }}</ng-container>
               <ng-container *ngIf="column === 'actions'">
-                <div *ngIf="element.status.toLowerCase() !== 'diff'" class="flex justify-center items-center">
+                <div *ngIf="element.status.toLowerCase() !== 'calc'" class="flex justify-center items-center">
                   <button 
                     mat-button 
                     class="text-blue-500" 

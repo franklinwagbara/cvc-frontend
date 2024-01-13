@@ -1,0 +1,33 @@
+
+@media print {
+  body {
+    visibility: hidden;
+  }
+
+  .media-print {
+    width: 100vw !important;
+    height: 100vh !important;
+    visibility: visible;
+  }
+
+  .media-print .vessel-info {
+    font-size: 14px;
+    zoom: 75%;
+  }
+
+  .media-print .liquid {
+    zoom: 65%;
+  }
+
+  .media-print .gas {
+    zoom: 50%;
+  }
+
+  .media-print button {
+    display: none !important;
+  }
+
+  .vessel-info {
+    @apply flex justify-between;
+  }
+}
