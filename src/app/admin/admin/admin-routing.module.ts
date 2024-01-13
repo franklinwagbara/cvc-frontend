@@ -36,7 +36,7 @@ import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
 import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
-
+import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -89,12 +89,12 @@ const routes: Routes = [
   {
     path: 'noa-applications-by-depot/:id',
     component: ViewNoaApplicationComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'certificate-of-quantity/coq-applications-by-depot/:id',
@@ -110,9 +110,10 @@ const routes: Routes = [
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
     data: {
-      type: ApplicationTerm.PROCESSINGPLANT
-    }
-  }
+      type: ApplicationTerm.PROCESSINGPLANT,
+    },
+  },
+  { path: 'claranceForm', component: DischargeClearanceFormComponent },
 ];
 
 @NgModule({

@@ -1,1 +1,136 @@
-<p>discharge-clearance-form works!</p>
+<h1 mat-dialog-title>Vessel Discharge Clearance form</h1>
+<div mat-dialog-content class="">
+  <form [formGroup]="form">
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Vessel Name</label>
+      <input
+        name="vesselName"
+        formControlName="vesselName"
+        class="form-control"
+      />
+      <div
+        *ngIf="form.get('vesselName')?.dirty && form.get('vesselName')?.invalid"
+        class="alert alert-danger"
+      >
+        Vessel name is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Loading Port</label>
+      <input
+        name="loadingPort"
+        formControlName="loadingPort"
+        class="form-control"
+      />
+      <div
+        *ngIf="
+          form.get('loadingPort')?.dirty && form.get('loadingPort')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Loading port is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Product Type</label>
+      <select formControlName="product" class="form-control">
+        <option *ngFor="let product of products" [ngValue]="product.id">
+          {{ product.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="form.get('product')?.dirty && form.get('product')?.invalid"
+        class="alert alert-danger"
+      >
+        Product type is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Density</label>
+      <input formControlName="density" class="form-control" />
+      <div
+        *ngIf="form.get('density')?.dirty && form.get('density')?.invalid"
+        class="alert alert-danger"
+      >
+        Density is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>RON</label>
+      <input formControlName="ron" class="form-control" />
+      <div
+        *ngIf="form.get('ron')?.dirty && form.get('ron')?.invalid"
+        class="alert alert-danger"
+      >
+        RON required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Flash Point</label>
+      <input formControlName="flashPoint" class="form-control" />
+      <div
+        *ngIf="form.get('flashPoint')?.dirty && form.get('flashPoint')?.invalid"
+        class="alert alert-danger"
+      >
+        Flash point is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Colour</label>
+      <input formControlName="colour" class="form-control" />
+      <div
+        *ngIf="form.get('colour')?.dirty && form.get('colour')?.invalid"
+        class="alert alert-danger"
+      >
+        Color is required!
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Odour</label>
+      <input formControlName="odour" class="form-control" />
+      <div
+        *ngIf="form.get('odour')?.dirty && form.get('odour')?.invalid"
+        class="alert alert-danger"
+      >
+        Odour is required!
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Oxygenate</label>
+      <input formControlName="oxygenate" class="form-control" />
+      <div
+        *ngIf="form.get('oxygenate')?.dirty && form.get('oxygenate')?.invalid"
+        class="alert alert-danger"
+      >
+        Oxygenate is required!
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Others</label>
+      <input formControlName="Others" class="form-control" />
+      <div
+        *ngIf="form.get('Others')?.dirty && form.get('Others')?.invalid"
+        class="alert alert-danger"
+      >
+        Others is required!
+      </div>
+    </div>
+  </form>
+</div>
+<div class="flex pb-2">
+  <button mat-button mat-dialog-close>Close</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submit()"
+    [disabled]="form.invalid"
+  >
+    Submit
+  </button>
+</div>
