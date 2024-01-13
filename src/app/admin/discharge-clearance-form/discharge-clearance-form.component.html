@@ -1,13 +1,9 @@
-<h1 mat-dialog-title>Vessel Discharge Clearance form</h1>
+<h1 class="text-center" mat-dialog-title>Vessel Discharge Clearance form</h1>
 <div mat-dialog-content class="">
-  <form [formGroup]="form">
+  <form [formGroup]="form" class="p-2">
     <div class="form-group" style="margin-bottom: 10px">
       <label>Vessel Name</label>
-      <input
-        name="vesselName"
-        formControlName="vesselName"
-        class="form-control"
-      />
+      <input formControlName="vesselName" class="form-control" />
       <div
         *ngIf="form.get('vesselName')?.dirty && form.get('vesselName')?.invalid"
         class="alert alert-danger"
@@ -18,11 +14,7 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Loading Port</label>
-      <input
-        name="loadingPort"
-        formControlName="loadingPort"
-        class="form-control"
-      />
+      <input formControlName="loadingPort" class="form-control" />
       <div
         *ngIf="
           form.get('loadingPort')?.dirty && form.get('loadingPort')?.invalid
@@ -50,7 +42,12 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Density</label>
-      <input formControlName="density" class="form-control" />
+      <input
+        formControlName="density"
+        type="number"
+        min="0"
+        class="form-control"
+      />
       <div
         *ngIf="form.get('density')?.dirty && form.get('density')?.invalid"
         class="alert alert-danger"
@@ -91,6 +88,21 @@
         Color is required!
       </div>
     </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Final Boiling Point</label>
+      <input formControlName="finalBoilingPoint" class="form-control" />
+      <div
+        *ngIf="
+          form.get('finalBoilingPoint')?.dirty &&
+          form.get('finalBoilingPoint')?.invalid
+        "
+        class="alert alert-danger"
+      >
+        Final Boiling Point!
+      </div>
+    </div>
+
     <div class="form-group" style="margin-bottom: 10px">
       <label>Odour</label>
       <input formControlName="odour" class="form-control" />
@@ -113,9 +125,21 @@
     </div>
     <div class="form-group" style="margin-bottom: 10px">
       <label>Others</label>
-      <input formControlName="Others" class="form-control" />
+      <input formControlName="others" class="form-control" />
       <div
-        *ngIf="form.get('Others')?.dirty && form.get('Others')?.invalid"
+        *ngIf="form.get('others')?.dirty && form.get('others')?.invalid"
+        class="alert alert-danger"
+      >
+        Others is required!
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 10px">
+      <label>Comment</label>
+      <textarea rows="4" formControlName="comment" class="form-control">
+      </textarea>
+      <div
+        *ngIf="form.get('comment')?.dirty && form.get('comment')?.invalid"
         class="alert alert-danger"
       >
         Others is required!

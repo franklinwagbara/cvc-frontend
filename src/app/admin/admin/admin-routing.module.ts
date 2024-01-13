@@ -113,7 +113,6 @@ const routes: Routes = [
       type: ApplicationTerm.PROCESSINGPLANT,
     },
   },
-  { path: 'claranceForm', component: DischargeClearanceFormComponent },
 ];
 
 @NgModule({

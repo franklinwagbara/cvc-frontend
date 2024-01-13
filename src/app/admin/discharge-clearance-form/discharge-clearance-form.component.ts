@@ -47,11 +47,11 @@ export class DischargeClearanceFormComponent implements OnInit {
       ron: ['', Validators.required],
       finalBoilingPoint: ['', Validators.required],
       flashPoint: ['', Validators.required],
-      Colour: ['', Validators.required],
-      Odour: ['', Validators.required],
-      Oxygenate: ['', Validators.required],
-      Others: ['', Validators.required],
-      Comment: ['', Validators.required],
+      colour: ['', Validators.required],
+      odour: ['', Validators.required],
+      oxygenate: ['', Validators.required],
+      others: ['', Validators.required],
+      comment: ['', Validators.required],
     });
   }
 
