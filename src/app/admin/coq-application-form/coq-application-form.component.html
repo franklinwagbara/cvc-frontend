@@ -483,6 +483,25 @@
                 </div>
 
                 <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-liquidDensityAir"
+                    >Liquid Density at 15<sup>0</sup>C(Kg/l), Air
+                    <sup class="text-red-700">*</sup></label
+                  >
+                  <input
+                    type="number"
+                    name="liquidDensityAir"
+                    formControlName="liquidDensityAir"
+                    id="coq-liquid-product-liquidDensityAir"
+                    class="form-field form-control"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['liquidDensityAir'].touched &&
+                        form?.controls['liquidDensityAir'].invalid
+                    }"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
                   <label for="coq-liquid-product-observedSounding"
                     >Observed Sounding (m)
                     <sup class="text-red-700">*</sup></label

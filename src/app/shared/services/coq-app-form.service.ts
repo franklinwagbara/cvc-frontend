@@ -40,13 +40,21 @@ export class CoqAppFormService {
     return cols.includes(colKey);
   }
 
+  public hasKgPerL(colKey: string) {
+    const cols = ['liquidDensityVac', 'liquidDensityAir'];
+    return cols.includes(colKey);
+  }
+
   public hasTempUnit(colKey: string) {
     const cols = ['temp', 'vacTemp', 'liquidTemperature'];
     return cols.includes(colKey);
   }
 
   public hasNoUnit(colKey: string) {
-    const colsWithUnit = ['tov', 'floatRoofCorr', 'gov', 'temperature', 'waterVolume', 'tankVolume', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume'];
+    const colsWithUnit = [
+      'tov', 'floatRoofCorr', 'gov', 'temperature', 'waterVolume', 'tankVolume', 'observedSounding', 
+      'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume', 'liquidDensityVac', 'liquidDensityAir'
+    ];
     return !colsWithUnit.includes(colKey);
   }
 

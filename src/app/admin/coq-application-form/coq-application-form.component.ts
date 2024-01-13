@@ -369,6 +369,7 @@ export class CoqApplicationFormComponent
       tank: ['', [Validators.required]],
       status: [status || '', [Validators.required]],
       liquidDensityVac: ['', [Validators.required]],
+      liquidDensityAir: ['', [Validators.required]],
       observedSounding: ['', [Validators.required]],
       tapeCorrection: ['', [Validators.required]],
       liquidTemperature: ['', [Validators.required]],
