@@ -5,17 +5,11 @@ import {
   Inject,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { SpinnerComponent } from 'src/app/shared/reusable-components/spinner/spinner.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { PopupService } from '../../services/popup.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-discharge-clearance-form',
@@ -25,18 +19,16 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 })
 export class DischargeClearanceFormComponent implements OnInit {
   public form: FormGroup;
-  public products: any;
-
   public roles: any;
+  submitting = false;
 
   constructor(
-    // @Inject(MAT_DIALOG_DATA) public data: any,
-    // public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
-    private snackBar: MatSnackBar,
+    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[] },
+    public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
+    private popUp: PopupService,
     private adminService: AdminService,
     private formBuilder: FormBuilder,
     private spinner: SpinnerService,
-    public dialog: MatDialog,
     private cd: ChangeDetectorRef
   ) {
     this.form = this.formBuilder.group({
@@ -55,43 +47,29 @@ export class DischargeClearanceFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.getProduct();
-  }
-
-  getProduct() {
-    this.adminService.getproducts().subscribe({
-      next: (res) => {
-        this.products = res.data;
-        this.cd.markForCheck();
-      },
-      error: (err) => {},
-    });
-  }
+  ngOnInit(): void {}
 
   submit() {
+    this.submitting = true;
     const formData = this.form.value;
-    this.spinner.show('Submitting form')
     this.adminService.submitDischargeClearance(formData).subscribe({
       next: (res) => {
-        if (res.success) {
-          this.snackBar.open('Form submitted successfully!', null, {
-            panelClass: ['success'],
-          });
-          this.spinner.close();
-          // this.dialogRef.close();
-          this.cd.markForCheck();
+        this.submitting = false;
+        if (res?.success) {
+          this.popUp.open('Form submitted successfully!', 'success');
+          this.dialogRef.close({ submitted: true });
+        } else {
+          this.popUp.open('Discharge clearance submission failed', 'error');
         }
+        this.spinner.close();
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
-          'An error occurred while submitting the form.' + error,
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
+        this.submitting = false;
+        console.log(error);
+        this.popUp.open('An error occurred while submitting the form.', 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }

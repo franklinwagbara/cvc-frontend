@@ -1,8 +1,3 @@
-.title {
-  color: wheat;
-  @apply px-10 py-5 shadow-md bg-gradient-to-r from-[#71B280] to-[#134E5E];
-}
-
 .content {
   @apply flex flex-col xl:flex-row w-full  mt-0 gap-4;
 }

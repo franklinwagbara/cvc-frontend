@@ -105,6 +105,8 @@ export class CoqApplicationFormComponent
   noPlantFetched: boolean | null = null;
   noTankConfigured: boolean | null = null;
 
+  location: any;
+
   @ViewChild('coqstepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
 
@@ -137,11 +139,13 @@ export class CoqApplicationFormComponent
     public coqFormService: CoqAppFormService,
     private popUp: PopupService,
     private dialog: MatDialog,
-    private applicationService: ApplicationService
+    private applicationService: ApplicationService,
+    public loc: Location
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
     });
+    this.location = this.loc;
 
     this.route.data.subscribe((val) => {
       if (val['type'] === ApplicationTerm.PROCESSINGPLANT) {
@@ -635,7 +639,7 @@ export class CoqApplicationFormComponent
         isGasProduct: this.isGasProduct,
         vesselDischargeData: {}
       },
-      scrollStrategy: null
+      scrollStrategy: null,
     });
   }
 

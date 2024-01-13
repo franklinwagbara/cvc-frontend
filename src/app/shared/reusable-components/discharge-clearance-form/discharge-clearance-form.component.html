@@ -28,8 +28,9 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Product Type</label>
       <select formControlName="product" class="form-control">
-        <option *ngFor="let product of products" [ngValue]="product.id">
-          {{ product.name }}
+        <option value="" [selected]="true">-- Select Product Type --</option>
+        <option *ngFor="let pType of data.productTypes" [ngValue]="pType">
+          {{ pType }}
         </option>
       </select>
       <div
@@ -80,7 +81,7 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Colour</label>
-      <input formControlName="colour" class="form-control" />
+      <input type="text" formControlName="colour" class="form-control" />
       <div
         *ngIf="form.get('colour')?.dirty && form.get('colour')?.invalid"
         class="alert alert-danger"
@@ -91,7 +92,7 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Final Boiling Point</label>
-      <input formControlName="finalBoilingPoint" class="form-control" />
+      <input type="number" formControlName="finalBoilingPoint" class="form-control" />
       <div
         *ngIf="
           form.get('finalBoilingPoint')?.dirty &&
@@ -105,7 +106,7 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>Odour</label>
-      <input formControlName="odour" class="form-control" />
+      <input type="text" formControlName="odour" class="form-control" />
       <div
         *ngIf="form.get('odour')?.dirty && form.get('odour')?.invalid"
         class="alert alert-danger"
@@ -148,8 +149,17 @@
   </form>
 </div>
 <div class="flex pb-2">
-  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-dialog-close [disabled]="submitting">Close</button>
   <button
+    *ngIf="submitting"
+    class="!flex !justify-center !items-center"
+    mat-mini-fab
+    color="disabled"
+  >
+    <mat-spinner diameter="35" strokeWidth="7"></mat-spinner>
+  </button>
+  <button
+    *ngIf="!submitting"
     mat-raised-button
     color="primary"
     (click)="submit()"

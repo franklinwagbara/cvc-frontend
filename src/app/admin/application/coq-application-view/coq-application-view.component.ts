@@ -194,6 +194,7 @@ export class CoqApplicationViewComponent implements OnInit {
       data: {
         data: operationConfiguration[type].data,
       },
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((res) => {

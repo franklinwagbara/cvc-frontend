@@ -58,6 +58,7 @@ import { ProcessingPlantFormComponent } from './reusable-components/processing-p
 import { ProductFormComponent } from './reusable-components/product-form/product-form.component';
 import { TankFormComponent } from './reusable-components/tank-form/tank-form.component';
 import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
+import { DischargeClearanceFormComponent } from './reusable-components/discharge-clearance-form/discharge-clearance-form.component';
 
 
 @NgModule({
@@ -78,6 +79,7 @@ import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
     ApproveFormComponent,
     SendBackFormComponent,
     AddScheduleFormComponent,
+    DischargeClearanceFormComponent,
     FlatTableComponent,
     SpinnerComponent,
     AssignApplicationFormComponent,

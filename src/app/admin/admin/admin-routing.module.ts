@@ -36,7 +36,7 @@ import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
 import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
-import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
+
 
 const routes: Routes = [
   { path: '', component: AdminComponent },

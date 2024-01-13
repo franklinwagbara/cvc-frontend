@@ -1,13 +1,12 @@
 <div class="view-application-container">
-  <a
+  <button
     (click)="location.back()"
-    class="flex my-1 justify-start back-btn-color items-center"
-    mat-raised-button
+    class="my-4"
+    mat-button
   >
-    <i class="material-icons">keyboard_double_arrow_left</i>
-    <span>Back</span></a
-  >
-  <h2 mat-dialog-title class="text-center view-app-page-title">
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
+  </button>
+  <h2 mat-dialog-title class="page-title text-center">
     APPLICATION REFERENCE: {{ application?.reference }}
   </h2>
   <div mat-dialog-content class="content">

@@ -79,7 +79,6 @@ import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearanc
 import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
 import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { DischargeClearanceFormComponent } from './discharge-clearance-form/discharge-clearance-form.component';
 
 
 @NgModule({
@@ -138,7 +137,6 @@ import { DischargeClearanceFormComponent } from './discharge-clearance-form/disc
     AllCoqCertificatesComponent,
     AllNoaClearancesComponent,
     CoqApplicationPreviewComponent,
-    DischargeClearanceFormComponent
   ],
 
   imports: [
