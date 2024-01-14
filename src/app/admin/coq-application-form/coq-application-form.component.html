@@ -1,4 +1,12 @@
 <div>
+  <button
+    (click)="goBack()"
+    class="m-4 mb-2"
+    mat-button
+  >
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Go Back
+  </button>
+
   <div class="form-details-container">
     <!-- Liquid Gas Form-->
     <div class="form-wrapper">
@@ -360,7 +368,7 @@
                 </div>
                 <div class="md:col-span-3">
                   <label for="coq-liquid-product-floatRoofCorr"
-                    >CORR(m<sup>3</sup>)
+                    >FLOAT ROOF CORR(m<sup>3</sup>)
                     <sup class="text-red-700">*</sup></label
                   >
                   <input
@@ -470,6 +478,25 @@
                       'is-invalid':
                         form?.controls['liquidDensityVac'].touched &&
                         form?.controls['liquidDensityVac'].invalid
+                    }"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-liquidDensityAir"
+                    >Liquid Density at 15<sup>0</sup>C(Kg/l), Air
+                    <sup class="text-red-700">*</sup></label
+                  >
+                  <input
+                    type="number"
+                    name="liquidDensityAir"
+                    formControlName="liquidDensityAir"
+                    id="coq-liquid-product-liquidDensityAir"
+                    class="form-field form-control"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['liquidDensityAir'].touched &&
+                        form?.controls['liquidDensityAir'].invalid
                     }"
                   />
                 </div>
@@ -1184,16 +1211,22 @@
 
             <div
               *ngIf="hasUploadedAllRequiredDocs && !isSubmitted"
-              class="text-right mt-8"
+              class="flex justify-between mt-8"
             >
-              <button *ngIf="!isSubmitted" mat-button (click)="preview()">
+              <button 
+                *ngIf="!isSubmitted" 
+                mat-button 
+                (click)="preview()"
+                class="action bg-yellow-500 hover:bg-yellow-600"
+              >
+                Preview
               </button>
               <button
                 *ngIf="!isSubmitted"
                 type="submit"
                 (click)="submit()"
                 mat-button
-                class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+                class="action bg-green-500 hover:bg-green-600"
                 [disabled]="isSubmitting"
               >
                 Submit

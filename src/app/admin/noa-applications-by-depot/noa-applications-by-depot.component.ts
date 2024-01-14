@@ -4,8 +4,7 @@ import { ApplicationService } from '../../shared/services/application.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { PopupService } from '../../shared/services/popup.service';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+
 
 @Component({
   selector: 'app-noa-applications-by-depot',
@@ -14,7 +13,7 @@ import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 })
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
-  depotOfficerMappings: any[];
+  products: any[];
 
   public tableTitles = {
     applications: 'NOA Applications',
@@ -28,7 +27,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     vesselType: 'Vessel Type',
     capacity: 'Capacity',
     status: 'Status',
-    paymnetStatus: 'Payment Status',
     rrr: 'RRR',
     createdDate: 'Initiated Date',
   };
@@ -37,7 +35,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     private applicationService: ApplicationService,
     private spinner: SpinnerService,
     private router: Router,
-    private depotOfficerService: DepotOfficerService,
     private cdr: ChangeDetectorRef,
     private popUp: PopupService
   ) {}
@@ -49,38 +46,17 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   public fetchAllData() {
     this.spinner.show('Fetching all applications...');
 
-    this.depotOfficerService.getAllMappings().subscribe({
+    this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
-        this.depotOfficerMappings = res?.data;
-        const currUser = decodeFullUserInfo();
-        const officerMapping = this.depotOfficerMappings.find(
-          (val) => val.userId === currUser.userUUID
-        );
-
-        this.applicationService.viewApplicationByDepot().subscribe({
-          next: (res) => {
-            this.applications = res.data;
-            this.spinner.close();
-            this.cdr.markForCheck();
-          },
-          error: (error: unknown) => {
-            console.log(error);
-            this.popUp.open(
-              'Something went wrong while retrieving data.',
-              'error'
-            );
-            this.spinner.close();
-            this.cdr.markForCheck();
-          },
-        });
-      },
-      error: (error: any) => {
-        console.log(error);
-        this.popUp.open('Something went wrong while retrieving data.', 'error');
+        this.applications = res?.data;
         this.spinner.close();
-        this.cdr.markForCheck();
       },
-    });
+      error: (error: unknown) => {
+        console.log(error);
+        this.popUp.open('Something went wrong while retrieving data', 'error');
+        this.spinner.close();
+      }
+    })
   }
 
   viewApplication(event: any): void {

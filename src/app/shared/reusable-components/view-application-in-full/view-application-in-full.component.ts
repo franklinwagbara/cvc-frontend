@@ -39,7 +39,7 @@ export class ViewApplicationInFullComponent implements OnInit {
     private progressBar: ProgressBarService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private location: Location
+    public location: Location
   ) {
     this.route.queryParams.subscribe((value: Params) => {
       this.appId = parseInt(value['id']);
@@ -169,20 +169,10 @@ export class ViewApplicationInFullComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
-  }
-
-  back() {
-    this.location.back();
   }
 }

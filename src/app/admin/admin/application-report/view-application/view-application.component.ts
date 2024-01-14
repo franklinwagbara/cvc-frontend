@@ -152,21 +152,10 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication().subscribe((res) => {
-        this.application = res.data.data;
-
-        this.progressBar.close();
-        this.cd.markForCheck();
-      });
     });
   }
 

@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Application } from '../../../../../../src/app/company/my-applications/myapplication.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewCoqTankComponent } from '../view-coq-tank/view-coq-tank.component';
 
@@ -25,9 +24,6 @@ export class CoqApplicationViewTableComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // if (this.application) {
-    //   console.log(this.application);
-    // }
     this.route.queryParams.subscribe((param) => {
       this.depotId = +param['depotId'];
       this.coqId = +param['coqId'];

@@ -89,12 +89,12 @@ const routes: Routes = [
   {
     path: 'noa-applications-by-depot/:id',
     component: ViewNoaApplicationComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
-    canActivate: [CoqGuard]
+    canActivate: [CoqGuard],
   },
   {
     path: 'certificate-of-quantity/coq-applications-by-depot/:id',
@@ -104,15 +104,18 @@ const routes: Routes = [
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
+    data: {
+    
+    }
   },
   {
     path: 'certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
     data: {
-      type: ApplicationTerm.PROCESSINGPLANT
-    }
-  }
+      type: ApplicationTerm.PROCESSINGPLANT,
+    },
+  },
 ];
 
 @NgModule({

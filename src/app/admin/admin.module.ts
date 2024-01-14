@@ -136,7 +136,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ViewNoaApplicationComponent,
     AllCoqCertificatesComponent,
     AllNoaClearancesComponent,
-    CoqApplicationPreviewComponent
+    CoqApplicationPreviewComponent,
   ],
 
   imports: [

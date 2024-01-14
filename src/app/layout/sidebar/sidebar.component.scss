@@ -2,7 +2,7 @@
 .side-nav {
   width: 300px;
   border-color: transparent !important;
-  @apply fixed top-0 left-0 z-50 bg-slate-100 pt-9 h-full pr-4 overflow-y-auto;
+  @apply fixed top-0 left-0 z-50 bg-slate-100 pt-9 h-full pr-0 overflow-y-auto;
 }
 
 .logo-title {
@@ -18,7 +18,7 @@
 }
 
 .nav-items {
-  @apply ml-8 mt-20 overflow-hidden;
+  @apply ml-4 mt-20 overflow-hidden;
 }
 
 .nav-items:hover + .dashboard {

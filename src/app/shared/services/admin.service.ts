@@ -63,6 +63,13 @@ export class AdminService {
     return this.http.post<any>(`${environment.apiUrl}/Staff/add-user`, model);
   }
 
+  submitDischargeClearance(model: any) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/Staff/discharge-crearance`,
+      model
+    );
+  }
+
   updateStaff(model) {
     return this.http.put<any>(
       `${environment.apiUrl}/account/edit-staff`,

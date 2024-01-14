@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppSource } from '../../../../src/app/shared/constants/appSource';
-import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
 import { AddScheduleFormComponent } from '../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from '../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from '../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';

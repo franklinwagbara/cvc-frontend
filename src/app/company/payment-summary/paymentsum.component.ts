@@ -72,9 +72,9 @@ export class PaymentSumComponent implements OnInit {
           if (this.paymentSummary?.paymentStatus === 'PaymentCompleted') {
             this.popUp.open('Payment completed successfully!', 'success');
           }
-          this.spinner.close();
-          this.progressbar.close();
         }
+        this.spinner.close();
+        this.progressbar.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {

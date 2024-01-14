@@ -13,6 +13,7 @@
           [noEditControl]="true"
           [EnableViewControl]="true"
           [EnableInitiateCoQControl]="isFieldOfficer"
+          [EnableDischargeClearanceControls]="isFieldOfficer"
           (onViewData)="viewApplication($event)"
           (onInitiateCoQ)="initiateCoQ($event)"
         >

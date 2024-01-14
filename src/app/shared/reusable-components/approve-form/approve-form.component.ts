@@ -1,19 +1,13 @@
-import { Category } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
-
 import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
-import { AdminService } from '../../services/admin.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
@@ -21,6 +15,7 @@ import { PopupService } from '../../services/popup.service';
 import { CoqService } from '../../services/coq.service';
 import { LoginModel } from '../../models/login-model';
 import { UserRole } from '../../constants/userRole';
+
 
 @Component({
   selector: 'app-approve-form',
@@ -39,7 +34,6 @@ export class ApproveFormComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private appService: ApplyService,
     private progressBarService: ProgressBarService,
@@ -70,10 +64,8 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not get user information!',
-          'error'
-        );
+        console.log(error);
+        this.popup.open('Failed to fetch user information!', 'error');
         this.progressBarService.close();
       },
     });
@@ -129,7 +121,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: any) => {
-        this.popup.open('Operation failed! Unable to complete', 'error');
+        this.popup.open('Failed to process application', 'error');
 
         this.progressBarService.close();
         this.isLoading = false;
@@ -165,7 +157,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
-        this.popup.open('Operation failed! Unable to complete', 'error');
+        this.popup.open('Failed to process application', 'error');
         this.isLoading = false;
         this.progressBarService.close();
         this.cd.markForCheck();

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -26,26 +26,33 @@ export class JettySettingComponent implements OnInit {
     private jettyService: JettyService,
     private spinner: SpinnerService,
     private snackBar: MatSnackBar,
+    private cd: ChangeDetectorRef,
     private progressBar: ProgressBarService
   ) {}
 
   ngOnInit(): void {
     this.spinner.open();
+    this.getAllJetty();
+  }
+
+  getAllJetty(): void {
     this.jettyService.getAllJetty().subscribe({
-      next: (val: IJetty[]) => {
-        this.jettyData = val;
+      next: (res: any) => {
+        this.jettyData = res?.data;
         this.spinner.close();
+        this.progressBar.close();
       },
       error: (error: unknown) => {
         console.log(error);
         this.snackBar.open('Something went wrong while fetching jetty', null, { panelClass: ['error']});
         this.spinner.close();
+        this.progressBar.close();
       }
     })
   }
 
-  addData(): void {
-    const formData: FormKeysProp = {name: {validator: [Validators.required] }}
+  addData(data?: any): void {
+    const formData: FormKeysProp = {name: {validator: [Validators.required], value: data?.name || ''}}
     const dialogRef = this.dialog.open(FormDialogComponent, { 
       data: { title: 'New Jetty', formData, formType: 'Create' },
     })
@@ -59,12 +66,15 @@ export class JettySettingComponent implements OnInit {
               this.snackBar.open('Failed to create Jetty. Please try again.', null, { panelClass: ['error']});
               return;
             }
+            this.progressBar.open();
+            this.getAllJetty();
             this.snackBar.open('Jetty created successfully', null, { panelClass: ['success']});
           },
           error: (error: unknown) => {
             console.log(error);
             this.snackBar.open('Something went wrong while creating jetty', null, { panelClass: ['error']});
             this.progressBar.close();
+            this.addData(result);
           }
         })
       }
@@ -84,12 +94,15 @@ export class JettySettingComponent implements OnInit {
               this.snackBar.open('Failed to edit Jetty.', null, { panelClass: ['error']});
               return;
             }
+            this.progressBar.open();
+            this.getAllJetty();
             this.snackBar.open('Jetty edited successfully', null, { panelClass: ['success']});
           },
           error: (error: unknown) => {
             console.log(error);
             this.snackBar.open('Something went wrong while editing jetty', null, { panelClass: ['error']});
             this.progressBar.close();
+            this.editData(result);
           }
         })
       }
@@ -105,6 +118,8 @@ export class JettySettingComponent implements OnInit {
               this.snackBar.open(`Failed to delete jetty with id: ${selected[i].id}`, null, { panelClass: ['error']});
               return;
             }
+            this.progressBar.open();
+            this.getAllJetty();
             this.snackBar.open(`Jetty with id: ${selected[i].id} deleted successfully`);
           })
         },
