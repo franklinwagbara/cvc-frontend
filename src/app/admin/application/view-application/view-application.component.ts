@@ -67,9 +67,14 @@ export class ViewApplicationComponent implements OnInit {
     this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
         this.appId = parseInt(params['id']);
+        if (isNaN(this.appId)) {
+          this.location.back();
+        }
 
         if (this.appSource != AppSource.Licence) this.getApplication();
         else this.getLicence();
+      } else {
+        this.location.back();
       }
     });
 

@@ -68,10 +68,10 @@ export class CoqApplicationPreviewComponent implements OnInit {
         const correctedVapVolAft = vapourVolAft * item?.after.shrinkageFactor;
         const vapourWtVacB4 = correctedVapVolB4 * item.before.vapourFactor;
         const vapourWtVacAft = correctedVapVolAft * item.after.vapourFactor;
-        const liqDensityAirB4 = item.before?.liquidDensityVac * 0.0011;
-        const liqDensityAirAft = item.after?.liquidDensityVac * 0.0011;
-        const vapourWtAirB4 = (liqDensityAirB4 / item.before.liquidDensityVac) * vapourWtVacB4;
-        const vapourWtAirAft = (liqDensityAirAft / item.after.liquidDensityVac) * vapourWtVacAft;
+        const liqDensityAirB4 = parseFloat((item.before?.liquidDensityVac * 0.0011).toFixed(4));
+        const liqDensityAirAft = parseFloat((item.after?.liquidDensityVac * 0.0011).toFixed(4));
+        const vapourWtAirB4 = ((liqDensityAirB4 / item.before.liquidDensityVac) * vapourWtVacB4).toFixed(4);
+        const vapourWtAirAft = ((liqDensityAirAft / item.after.liquidDensityVac) * vapourWtVacAft).toFixed(4);
         const totalWtVacB4 = item.before.liquidDensityVac + vapourWtVacB4;
         const totalWtVacAft = item.after.liquidDensityVac + vapourWtVacAft;
         const totalWtAirB4 = item.before.liquidDensityAir + vapourWtAirB4;
@@ -90,9 +90,9 @@ export class CoqApplicationPreviewComponent implements OnInit {
           vapourWeightAir: vapourWtAirB4,
           totalWeightVac: totalWtVacB4,
           totalWeightAir: totalWtAirB4,
-          molecularWeightCalc: item.before?.molecularWeight / (22.4 * 1000),
-          temperatureCalc: 273 / (273 + item.before?.vapourTemperature),
-          pressureCalc: (item.before?.vapourPressure + 1.013) / 1.013,
+          molecularWeightCalc: (item.before?.molecularWeight / (22.4 * 1000)).toFixed(4),
+          temperatureCalc: (273 / (273 + item.before?.vapourTemperature)).toFixed(4),
+          pressureCalc: ((item.before?.vapourPressure + 1.013) / 1.013).toFixed(4),
         }
         item.calc.after = {
           correctedLiquidLevel: item.before.observedSounding + item.before.tapeCorrection,
@@ -106,9 +106,9 @@ export class CoqApplicationPreviewComponent implements OnInit {
           vapourWeightAir: vapourWtAirAft,
           totalWeightVac: totalWtVacAft,
           totalWeightAir: totalWtAirAft,
-          molecularWeightCalc: item.after?.molecularWeight / (22.4 * 1000),
-          temperatureCalc: 273 / (273 + item.after?.vapourTemperature),
-          pressureCalc: (item.after?.vapourPressure + 1.013) / 1.013,
+          molecularWeightCalc: (item.after?.molecularWeight / (22.4 * 1000)).toFixed(4),
+          temperatureCalc: (273 / (273 + item.after?.vapourTemperature)).toFixed(4),
+          pressureCalc: ((item.after?.vapourPressure + 1.013) / 1.013).toFixed(4),
         }
         item.calc.totalMetricTonsVac = item.calc?.after?.liquidWeightVac - item.calc?.before?.liquidWeightVac;
         item.calc.totalMetricTonsAir = item.calc?.after?.liquidWeightAir - item.calc?.before?.liquidWeightAir;

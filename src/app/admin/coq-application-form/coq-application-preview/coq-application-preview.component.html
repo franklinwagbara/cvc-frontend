@@ -206,29 +206,29 @@
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">SHRINKAGE FACTOR/CCF</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading?.before?.shrinkageFactor}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading?.after?.shrinkageFactor}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.before?.shrinkageFactor}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.after?.shrinkageFactor}}</td>
           </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">SHRINKAGE CORRECTED VOL</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading?.before?.correctedLiquidVolume}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading?.after?.correctedLiquidVolume}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc.before?.correctedLiquidVolume}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc.after?.correctedLiquidVolume}}</td>
           </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Metric Tons (Air)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading?.calc?.before?.liquidWeightAir}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading?.calc?.after?.liquidWeightAir}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc?.before?.liquidWeightAir}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc?.after?.liquidWeightAir}}</td>
           </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Metric Tons (Vac)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading?.calc?.before?.liquidWeightVac}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading?.calc?.after?.liquidWeightVac}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc.before?.liquidWeightVac}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.calc.after?.liquidWeightVac}}</td>
           </ng-container>
         </tr>
         <tr>
