@@ -139,7 +139,16 @@
                 (click)="viewData(row)"
               >
                 View Application
-              </button>
+              </button> 
+
+              <button
+                mat-flat-button
+                color="accent"
+                style="background-color: #3c8d5a;"
+                *ngIf="column.cell(row) === 'discharge_onspec_control' && !allowDischarge"
+                [disabled]="row?.status?.toLowerCase() !== 'completed'"
+                (click)="onAllowDischarge()"
+              >Allow Discharge</button>
 
               <button
                 mat-flat-button
@@ -155,20 +164,11 @@
               <button
                 mat-flat-button
                 color="accent"
-                style="background-color: #3c8d5a;"
-                *ngIf="column.cell(row) === 'discharge_onspec_control' && !allowDischarge"
-                [disabled]="row?.status?.toLowerCase() !== 'completed'"
-                (click)="onAllowDischarge()"
-              >Allow Discharge</button>
-
-              <button
-                mat-flat-button
-                color="accent"
                 style="background-color: #a73030;"
                 *ngIf="column.cell(row) === 'discharge_offspec_control'"
                 [disabled]="row?.status?.toLowerCase() !== 'completed'"
-                (click)="doNotDischarge()"
-              >Don't Discharge</button>
+                (click)="stopDischarge()"
+              >Not Ok</button>
 
               <button
                 mat-flat-button

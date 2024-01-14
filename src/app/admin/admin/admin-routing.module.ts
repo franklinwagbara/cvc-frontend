@@ -104,6 +104,9 @@ const routes: Routes = [
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
+    data: {
+    
+    }
   },
   {
     path: 'certificate-of-quantity/new-application',

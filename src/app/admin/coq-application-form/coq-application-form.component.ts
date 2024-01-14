@@ -24,7 +24,7 @@ import { FileuploadWithProgressService } from '../../shared/services/fileupload-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, Params, Router } from '@angular/router';
 import { ICOQ } from '../../../../src/app/shared/interfaces/ICoQApplication';
 import { environment } from '../../../../src/environments/environment';
 import {
@@ -45,6 +45,7 @@ import { ProductService } from 'src/app/shared/services/product.service';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -60,7 +61,7 @@ import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-ap
 export class CoqApplicationFormComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  private allSubscriptions = new Subscription();
+  private allSubscriptions = new Subscription()
 
   depotSelection = new FormControl('', Validators.required);
   plantSelection = new FormControl('', Validators.required);
@@ -105,8 +106,6 @@ export class CoqApplicationFormComponent
   noPlantFetched: boolean | null = null;
   noTankConfigured: boolean | null = null;
 
-  location: any;
-
   @ViewChild('coqstepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
 
@@ -120,7 +119,7 @@ export class CoqApplicationFormComponent
     max: new Date(),
   };
 
-  documents$: BehaviorSubject<any[]> = new BehaviorSubject([]);
+  documents$ = new BehaviorSubject<any[]>([]);
 
   constructor(
     private fb: FormBuilder,
@@ -140,12 +139,11 @@ export class CoqApplicationFormComponent
     private popUp: PopupService,
     private dialog: MatDialog,
     private applicationService: ApplicationService,
-    public loc: Location
+    private location: Location
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
     });
-    this.location = this.loc;
 
     this.route.data.subscribe((val) => {
       if (val['type'] === ApplicationTerm.PROCESSINGPLANT) {
@@ -200,6 +198,10 @@ export class CoqApplicationFormComponent
 
     this.restoreReviewData();
     this.fetchAllData();
+  }
+
+  goBack(): void {
+    this.location.back();
   }
 
   public fetchAllData(): void {
@@ -634,11 +636,30 @@ export class CoqApplicationFormComponent
   }
 
   preview() {
+    const vesselDates = {
+      dateOfArrival: this.isGasProduct 
+        ? new Date(this.vesselGasInfoForm.controls['vesselArrivalDate'].value).toLocaleDateString()
+        : new Date(this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value).toLocaleDateString(),
+      dateOfUllage: this.isGasProduct
+        ? new Date(this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value).toLocaleDateString()
+        : new Date(this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value).toLocaleDateString(),
+      dateOfShoreTank: this.isGasProduct 
+        ? new Date(this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value).toLocaleDateString()
+        : new Date(this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value).toLocaleDateString()
+    }
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
         tankData: this.isGasProduct ? this.coqFormService.gasProductReviewData : this.coqFormService.liquidProductReviewData,
         isGasProduct: this.isGasProduct,
-        vesselDischargeData: {}
+        vesselDischargeData: this.isGasProduct ? {
+          ...vesselDates,
+          quauntityReflectedOnBill:
+            this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
+          arrivalShipFigure:
+            this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
+          dischargeShipFigure:
+            this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
+        } : vesselDates,
       },
       scrollStrategy: null,
     });

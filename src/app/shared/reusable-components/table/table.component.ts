@@ -96,7 +96,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
-  allowDischarge = false;
+  allowDischarge = true;
 
   public titleColor = 'slate';
 
@@ -363,7 +363,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     })
   }
 
-  doNotDischarge(): void {
+  stopDischarge(): void {
     this.allowDischarge = false;
     // Send notification to regional state coordinator
   }

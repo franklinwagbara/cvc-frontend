@@ -2,10 +2,11 @@
   <h4 class="flex justify-center text-slate-400 mt-4">
     NIGERIAN MIDSTREAM AND DOWNSTREAM PETROLEUM REGULATORY AUTHORITY
   </h4>
-  <h5 class="mt-2">{{ data.isGasProduct ? 'LPG WEIGHT CERTIFICATION' : 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' }}</h5>
-
+  <h5 class="mt-2" style="text-align: center;">{{ data.isGasProduct ? 'LPG WEIGHT CERTIFICATION' : 'SHORE-TANK ULLAGE AFTER VESSEL DISCHARGE' }}</h5>
+  <br />
+  <hr />
   <table class="vessel-info">
-    <tr class="flex">
+    <tr>
       <div class="flex flex-1">
         <th>{{ data.isGasProduct ? 'MARKETERS NAME' : 'MARKETER/PDT OWNER' }}: </th>
         <td>Ringardas Nigeria Limited</td>
@@ -19,7 +20,7 @@
         <td>Vessel Fury</td>
       </div>
     </tr>
-    <tr class="flex">
+    <tr>
       <div class="flex flex-1">
         <th>MOTHER VESSEL: </th>
         <td>Vessel Titanic</td>
@@ -33,18 +34,18 @@
         <td>Ringardas Depot PLC</td>
       </div>
     </tr>
-    <tr class="flex">
+    <tr>
       <div class="flex flex-1">
-        <th>{{ data.isGasProduct ? 'ARRIVAL DATE' : 'DATE OF VESSEL ARRIVAL' }}: </th>
-        <td></td>
+        <th>{{ isGasProduct ? 'ARRIVAL DATE' : 'DATE OF VESSEL ARRIVAL' }}: </th>
+        <td>{{ vesselDischargeData?.dateOfArrival }}</td>
       </div>
       <div class="flex flex-1">
         <th>{{ data.isGasProduct ? 'VESSEL ULLAGE' : 'DATE OF VESSEL ULLAGE' }}: </th>
-        <td></td>
+        <td>{{ vesselDischargeData?.dateOfUllage }}</td>
       </div>
       <div class="flex flex-1">
         <th>{{ data.isGasProduct ? 'SHORE DATE' :  'DATE OF SHORE-TANK AFTER DISCHARGE' }}: </th>
-        <td></td>
+        <td>{{ vesselDischargeData?.dateOfShoreTank }}</td>
       </div>
     </tr>
   </table>
@@ -125,7 +126,7 @@
     >
       <thead> 
         <tr>
-          <th>Tank No.</th>
+          <th style="text-align: left;">Tank No.</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <th scope="col" colspan="2">{{ reading?.before?.tank | uppercase }} ({{this.data.productName | uppercase}})</th>
           </ng-container>
@@ -133,8 +134,8 @@
         <tr>
           <th></th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <th scope="col">BEFORE</th>
-            <th scope="col">AFTER</th>
+            <th style="text-align: left; font-size: 14px" scope="col">BEFORE</th>
+            <th style="text-align: left; font-size: 14px" scope="col">AFTER</th>
           </ng-container>
         </tr>
       </thead>
@@ -147,230 +148,230 @@
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">MOL. WT</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">MOL. WT</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.molecularWeight}}</td>
             <td>{{reading?.after?.molecularWeight}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Total Observed Volume</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Total Observed Volume</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.totalObservedVolume}}</td>
             <td>{{reading?.after?.totalObservedVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Liquid Vol.(Ltrs)GOV</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Liquid Vol.(Ltrs)GOV</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.observedLiquidVolume}}</td>
             <td>{{reading?.after?.observedLiquidVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Tank Temp(<sup>0</sup>C)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Tank Temp(<sup>0</sup>C)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.temperature}}</td>
             <td>{{reading?.after?.temperature}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">VCF (ASTM Table 54B)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">VCF (ASTM Table 54B)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.vcf}}</td>
             <td>{{reading?.after?.vcf}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Liquid Standard Vol.@15<sup>0</sup>C</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Liquid Standard Vol.@15<sup>0</sup>C</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.liquidStandardVolume}}</td>
             <td>{{reading?.after?.liquidStandardVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Cargo Density @ 15<sup>0</sup>C (Vac)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Cargo Density @ 15<sup>0</sup>C (Vac)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.before?.cargoDensityVac}}</td>
-            <td>{{reading?.after?.cargoDensityVac}}</td>
+            <td>{{reading?.calc?.before?.liquidDensityVac}}</td>
+            <td>{{reading?.calc?.after?.liquidDensityVac}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Cargo Density @ 15<sup>0</sup>C (Air)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Cargo Density @ 15<sup>0</sup>C (Air)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.before?.cargoDensityAir}}</td>
-            <td>{{reading?.after?.cargoDensityAir}}</td>
+            <td>{{reading?.calc?.before?.liquidDensityAir}}</td>
+            <td>{{reading?.calc?.after?.liquidDensityAir}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">SHRINKAGE FACTOR/CCF</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">SHRINKAGE FACTOR/CCF</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.shrinkageFactor}}</td>
             <td>{{reading?.after?.shrinkageFactor}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">SHRINKAGE CORRECTED VOL</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">SHRINKAGE CORRECTED VOL</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.before?.shrinkageCorrectedVolume}}</td>
-            <td>{{reading?.after?.shrinkageCorrectedVolume}}</td>
+            <td>{{reading?.before?.correctedLiquidVolume}}</td>
+            <td>{{reading?.after?.correctedLiquidVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Metric Tons (Air)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Metric Tons (Air)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.before?.metricTonsAir}}</td>
-            <td>{{reading?.after?.metricTonsAir}}</td>
+            <td>{{reading?.calc?.before?.liquidWeightAir}}</td>
+            <td>{{reading?.calc?.after?.liquidWeightAir}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Metric Tons (Vac)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Metric Tons (Vac)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.before?.metricTonsVac}}</td>
-            <td>{{reading?.after?.metricTonsVac}}</td>
+            <td>{{reading?.calc?.before?.liquidWeightVac}}</td>
+            <td>{{reading?.calc?.after?.liquidWeightVac}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Total Metric Tons (Air)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Total Metric Tons (Air)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td colspan="2">{{reading?.calc?.totalMetricTonsAir}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Total Metric Tons (Vac)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Total Metric Tons (Vac)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td colspan="2">{{reading?.calc?.totalMetricTonsVac}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">VAPOUR PHASE</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">VAPOUR PHASE</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td></td>
             <td></td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Tank Cargo Temp(<sup>0</sup>C)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Tank Cargo Temp(<sup>0</sup>C)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.temperature}}</td>
             <td>{{reading?.after?.temperature}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Tank Cargo Press(Bars)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Tank Cargo Press(Bars)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.tankCargoPressure}}</td>
             <td>{{reading?.calc?.after?.tankCargoPressure}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Tank Capacity @ 100%(M<sup>3</sup>)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Tank Capacity @ 100%(M<sup>3</sup>)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.tankCapacity}}</td>
             <td>{{reading?.calc?.after?.tankCapacity}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Liquid Vol.(M<sup>3</sup>)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Liquid Vol.(M<sup>3</sup>)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.liquidVolume}}</td>
             <td>{{reading?.calc?.liquidVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Vapour Vol.(M<sup>3</sup>)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Vapour Vol.(M<sup>3</sup>)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.vapourVolume}}</td>
             <td>{{reading?.calc?.after?.vapourVolume}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">273/(273+<sup>0</sup>C)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">273/(273+<sup>0</sup>C)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.temperatureCalc}}</td>
             <td>{{reading?.calc?.after?.temperatureCalc}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">((Press+1.013)/1.013)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">((Press+1.013)/1.013)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.pressureCalc}}</td>
             <td>{{reading?.calc?.after?.pressureCalc}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Mol. Wt/(22.4*1000)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Mol. Wt/(22.4*1000)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.molecularWeightCalc}}</td>
             <td>{{reading?.calc?.after?.molecularWeightCalc}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Gas Factor or Vap. Factor</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Gas Factor or Vap. Factor</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.vapourFactor}}</td>
             <td>{{reading?.calc?.after?.vapourFactor}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">SHRINKAGE FACTOR</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">SHRINKAGE FACTOR</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.before?.shrinkageFactor}}</td>
             <td>{{reading?.after?.shrinkageFactor}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Corrected Vapor Vol(M<sup>3</sup>)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Corrected Vapor Vol(M<sup>3</sup>)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.correctedVapourVolume}}</td>
             <td>{{reading?.calc?.after?.correctedVapourVolume}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">Vap. M/tons. Kilo/Air</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Vap. M/tons. Kilo/Air</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.before?.vapourMetricTonsAir}}</td>
-            <td>{{reading?.calc?.after?.vapourMetricTonsAir}}</td>
+            <td>{{reading?.calc?.before?.vapourWeightAir}}</td>
+            <td>{{reading?.calc?.after?.vapourWeightAir}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">Vap. M/tons. Kilo/Vac</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Vap. M/tons. Kilo/Vac</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.before?.vapourMetricTonsVac}}</td>
-            <td>{{reading?.calc?.after?.vapourMetricTonsVac}}</td>
+            <td>{{reading?.calc?.before?.vapourWeightVac}}</td>
+            <td>{{reading?.calc?.after?.vapourWeightVac}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">Liq+Vap Vac</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Liq+Vap Vac</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.before?.liquidVapourVacSum}}</td>
-            <td>{{reading?.calc?.after?.liquidVapourVacSum}}</td>
+            <td>{{reading?.calc?.before?.liquidWeightVac + reading?.calc?.before?.vapourWeightVac}}</td>
+            <td>{{reading?.calc?.after?.liquidWeightVac + reading?.calc?.after?.vapourWeightVac}}</td>
           </ng-container>
         </tr>
         <tr>
-          <th scope="row">Received Qty.(Liq+Vap) Vac.</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Received Qty.(Liq+Vap) Vac.</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.receivedQtyVac}}</td>
+            <td colspan="2">{{reading?.calc?.receivedQtyVac}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">Corrected Density (Table 56)</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Corrected Density (Table 56)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
             <td>{{reading?.calc?.before?.correctedDensity}}</td>
             <td>{{reading?.calc?.after?.correctedDensity}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">M/Tons. Kilo/Air.</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">M/Tons. Kilo/Air.</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.before?.metricTonsKiloAir}}</td>
-            <td>{{reading?.calc?.after?.metricTonsKiloAir}}</td>
+            <td>{{reading?.calc?.before?.liquidWeightAir + reading?.calc?.before?.vapourWeightAir}}</td>
+            <td>{{reading?.calc?.after?.liquidWeightAir + reading?.calc?.after?.vapourWeightAir}}</td>
           </ng-container>
         </tr>    
         <tr>
-          <th scope="row">Received Qty.(Liq+Vap) Air.</th>
+          <th style="text-align: left; font-size: 14px;" scope="row">Received Qty.(Liq+Vap) Air.</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td>{{reading?.calc?.receivedQtyAir}}</td>
+            <td colspan="2">{{reading?.calc?.receivedQtyAir}}</td>
           </ng-container>
         </tr> 
       </tbody>
@@ -440,7 +441,7 @@
     </tbody>
   </table>
 
-  <div class="text-right">
+  <div id="coq-preview-print-wrapper" class="text-right">
     <button 
       mat-button 
       class="print-btn"
