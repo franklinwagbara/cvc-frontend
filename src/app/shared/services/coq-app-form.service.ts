@@ -41,7 +41,7 @@ export class CoqAppFormService {
   }
 
   public hasKgPerL(colKey: string) {
-    const cols = ['liquidDensityVac', 'liquidDensityAir'];
+    const cols = ['liquidDensityVac'];
     return cols.includes(colKey);
   }
 

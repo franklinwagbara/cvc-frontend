@@ -49,6 +49,8 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
         this.applications = res?.data;
+        this.applications = this.applications
+          .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
         this.spinner.close();
       },
       error: (error: unknown) => {

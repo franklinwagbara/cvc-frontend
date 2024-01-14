@@ -147,16 +147,6 @@ export class CoqApplicationFormComponent
 
     this.route.data.subscribe((val) => {
       if (val['type'] === ApplicationTerm.PROCESSINGPLANT) {
-        const updatedParams = {
-          type: ApplicationTerm.PROCESSINGPLANT.toLowerCase()
-            .split(/\s+/)
-            .join('-'),
-        };
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: updatedParams,
-          queryParamsHandling: 'merge',
-        });
         this.isProcessingPlant = true;
       }
     });
@@ -371,7 +361,6 @@ export class CoqApplicationFormComponent
       tank: ['', [Validators.required]],
       status: [status || '', [Validators.required]],
       liquidDensityVac: ['', [Validators.required]],
-      liquidDensityAir: ['', [Validators.required]],
       observedSounding: ['', [Validators.required]],
       tapeCorrection: ['', [Validators.required]],
       liquidTemperature: ['', [Validators.required]],

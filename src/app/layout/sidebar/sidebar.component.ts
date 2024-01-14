@@ -101,7 +101,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'NoA CLEARANCES',
-        url: '/admin/all-approvals/noa-clearance'
+        url: '/admin/all-approvals/noa-clearances'
       }
     ],
   },
@@ -255,7 +255,9 @@ export class SidebarComponent implements OnInit, OnChanges {
         let foundActiveNav = false;
         for (let item of this.menuItems) {
           for (let subItem of item.subRoutes) {
-            if (this.router.url === subItem.url) {
+            if (this.router.url.split('/')[1].toLowerCase().startsWith(subItem.url.split('/')[1].replace(/[-]/g, ' ').toLowerCase()) || 
+              this.router.url.split('/')[0].replace(/[-]/g, ' ') === item.title.toLowerCase()
+            ) {
               item.active = true;
               item.subMenuActive = true;
               foundActiveNav = true;
@@ -275,12 +277,12 @@ export class SidebarComponent implements OnInit, OnChanges {
         {
           id: 1,
           title: 'NoA Applications',
-          url: '/admin/noa-applications-by-depot',
+          url: '/admin/coq-and-plant/noa-applications-by-depot',
         },
         {
           id: 2,
           title: 'CoQ Applications',
-          url: '/admin/coq-applications-by-depot',
+          url: '/admin/coq-and-plant/coq-applications-by-depot',
         },
       ]
 
@@ -288,7 +290,7 @@ export class SidebarComponent implements OnInit, OnChanges {
         coqSubRoutes.push({
           id: 3,
           title: 'Processing Plant',
-          url: '/admin/certificate-of-quantity/new-application'
+          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application'
         });
       }
 

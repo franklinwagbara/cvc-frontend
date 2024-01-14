@@ -100,8 +100,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public titleColor = 'slate';
 
-  public divFlexDirection = 'column';
-
   public headers: string[];
   public keys: string[];
   public columns: IColumn[];

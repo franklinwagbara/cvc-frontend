@@ -36,6 +36,9 @@ import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
 import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
+import { AllCoqCertificatesComponent } from '../all-coq-certificates/all-coq-certificates.component';
+import { AllNoaClearancesComponent } from '../all-noa-clearances/all-noa-clearances.component';
+import { AdminGuard } from 'src/app/shared/guards/admin.guard';
 
 
 const routes: Routes = [
@@ -87,29 +90,36 @@ const routes: Routes = [
     component: NoaApplicationsByDepotComponent,
   },
   {
-    path: 'noa-applications-by-depot/:id',
+    path: 'coq-and-plant/noa-applications-by-depot/:id',
     component: ViewNoaApplicationComponent,
     canActivate: [CoqGuard],
   },
   {
-    path: 'coq-applications-by-depot',
+    path: 'coq-and-plant/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
     canActivate: [CoqGuard],
   },
   {
-    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
+    path: 'coq-and-plant/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
   },
   {
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
-    data: {
-    
-    }
   },
   {
-    path: 'certificate-of-quantity/new-application',
+    path: 'all-approvals/coq-certificates',
+    component: AllCoqCertificatesComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'all-approvals/noa-clearances',
+    component: AllNoaClearancesComponent,
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'coq-and-plant/processing-plant/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
     data: {

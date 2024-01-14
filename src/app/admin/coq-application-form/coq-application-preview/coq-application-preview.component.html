@@ -243,25 +243,21 @@
             <td colspan="2" style="text-align: center; font-size: 12px;">{{reading?.calc?.totalMetricTonsVac}}</td>
           </ng-container>
         </tr>
-        <tr>
+        <tr style="border: none;">
           <th style="text-align: left; font-size: 14px;" scope="row">VAPOUR PHASE</th>
-          <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;"></td>
-            <td style="text-align: left; font-size: 12px;"></td>
-          </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Tank Cargo Temp(<sup>0</sup>C)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading.before?.liquidTemperature}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading.after?.liquidTemperature}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.before?.vapourTemperature}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.after?.vapourTemperature}}</td>
           </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Tank Cargo Press(Bars)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td style="text-align: left; font-size: 12px;">{{reading.before?.tankCargoPressure}}</td>
-            <td style="text-align: left; font-size: 12px;">{{reading.after?.tankCargoPressure}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.before?.vapourPressure}}</td>
+            <td style="text-align: left; font-size: 12px;">{{reading.after?.vapourPressure}}</td>
           </ng-container>
         </tr>
         <tr>

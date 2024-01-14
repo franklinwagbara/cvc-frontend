@@ -6,9 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./all-coq-certificates.component.css']
 })
 export class AllCoqCertificatesComponent implements OnInit {
+  certificates: any[]
+
+  certificateKeysMappedToHeaders = {
+
+  }
 
   ngOnInit(): void {
     
+  }
+
+  onViewData(event: any): void {
+    window.location.assign(event?.url);
   }
 
 }
