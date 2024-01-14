@@ -234,13 +234,13 @@
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Total Metric Tons (Air)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td colspan="2" style="text-align: left; font-size: 12px;">{{reading?.calc?.totalMetricTonsAir}}</td>
+            <td colspan="2" style="text-align: center; font-size: 12px;">{{reading?.calc?.totalMetricTonsAir}}</td>
           </ng-container>
         </tr>
         <tr>
           <th style="text-align: left; font-size: 14px;" scope="row">Total Metric Tons (Vac)</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <td colspan="2" style="text-align: left; font-size: 12px;">{{reading?.calc?.totalMetricTonsVac}}</td>
+            <td colspan="2" style="text-align: center; font-size: 12px;">{{reading?.calc?.totalMetricTonsVac}}</td>
           </ng-container>
         </tr>
         <tr>
