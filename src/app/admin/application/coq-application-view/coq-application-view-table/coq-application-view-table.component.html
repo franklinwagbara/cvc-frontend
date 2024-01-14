@@ -4,14 +4,6 @@
       <th>Reference Number</th>
       <td>{{ application?.Reference }}</td>
     </tr>
-    <!-- <tr>
-      <th>Company Name</th>
-      <td>{{ application?.companyName }}</td>
-    </tr> -->
-    <!-- <tr>
-      <th>Company Email</th>
-      <td>{{ application?.email }}</td>
-    </tr> -->
     <tr>
       <th>Plant Name</th>
       <td>{{ application?.Plant }}</td>
@@ -37,7 +29,7 @@
       <td>{{ application?.Jetty }}</td>
     </tr>
     <tr>
-      <th>Quauntity Reflected On Bill</th>
+      <th>Quantity Reflected On Bill</th>
       <td>{{ application?.QuauntityReflectedOnBill }}</td>
     </tr>
     <tr>
@@ -50,7 +42,7 @@
     </tr>
     <tr>
       <th>Depot Price</th>
-      <td>{{ application?.DepotPrice }}</td>
+      <td>{{ application?.DepotPrice | currency:'NGN' }}</td>
     </tr>
 
     <tr>
@@ -58,7 +50,7 @@
       <td>{{ application?.DateOfVesselArrival | date }}</td>
     </tr>
     <tr>
-      <th>Date Of ST After Discharge</th>
+      <th>Date Of Shore Tank After Discharge</th>
       <td>{{ application?.DateOfSTAfterDischarge | date }}</td>
     </tr>
     <tr>
@@ -104,11 +96,5 @@
         </button>
       </td>
     </tr>
-    <!-- <tr>
-      <th>View Full Application Details</th>
-      <td>
-        <button mat-raised-button class="btn" (click)="viewApplicationInFull()">View All</button>
-      </td>
-    </tr> -->
   </tbody>
 </table>

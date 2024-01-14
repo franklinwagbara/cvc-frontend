@@ -96,7 +96,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
-  allowDischarge = true;
+  allowDischarge = false;
 
   public titleColor = 'slate';
 

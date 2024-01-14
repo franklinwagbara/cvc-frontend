@@ -10,21 +10,23 @@
       <div class="container">
         <div class="payment-details__container">
           <br />
-          <h3 class="sub-title">Please Note</h3>
-          <ol style="font-family: candara">
-            <li>
-              Processing of your application shall commence upon confirmation of
-              payment
-            </li>
-            <li>
-              Kindly review the following information carefully before
-              proceeding to make payment
-            </li>
-            <li>
-              Application information can not be changed after payment and
-              submission have been completed
-            </li>
-          </ol>
+          <div *ngIf="paymentSummary?.paymentStatus !== 'PaymentCompleted'">
+            <h3 class="sub-title">Please Note</h3>
+            <ol style="font-family: candara">
+              <li>
+                Processing of your application shall commence upon confirmation of
+                payment
+              </li>
+              <li>
+                Kindly review the following information carefully before
+                proceeding to make payment
+              </li>
+              <li>
+                Application information can not be changed after payment and
+                submission have been completed
+              </li>
+            </ol>
+          </div>
           <div class="payment-details__table-container">
             <h3 class="sub-title">Payment Details</h3>
             <hr />
@@ -52,30 +54,30 @@
                   <tr>
                     <td class="col-title">Application Fee</td>
                     <td class="font-bold">
-                      {{ paymentSummary?.applicationFee }}
+                      {{ paymentSummary?.applicationFee | currency:'NGN' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="col-title">NOA Fee</td>
                     <td class="font-bold">
-                      {{ paymentSummary?.noaFee }}
+                      {{ paymentSummary?.noaFee | currency:'NGN' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="col-title">CoQ Fee</td>
                     <td class="font-bold">
-                      {{ paymentSummary?.coqFee }}
+                      {{ paymentSummary?.coqFee | currency:'NGN' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="col-title">Service Charge</td>
                     <td class="font-bold">
-                      {{ paymentSummary?.serviceCharge }}
+                      {{ paymentSummary?.serviceCharge | currency:'NGN' }}
                     </td>
                   </tr>
                   <tr>
                     <td class="col-title">Total Amount</td>
-                    <td class="font-bold">{{ paymentSummary?.total }}</td>
+                    <td class="font-bold">{{ paymentSummary?.total | currency:'NGN' }}</td>
                   </tr>
                   <tr *ngIf="paymentSummary?.paymentStatus">
                     <td class="col-title">Payment Status</td>

@@ -1,12 +1,11 @@
 <div class="view-application-container">
-  <a
+  <button
     (click)="location.back()"
-    class="flex my-1 justify-start back-btn-color items-center"
-    mat-raised-button
+    class="my-4"
+    mat-button
   >
-    <i class="material-icons">keyboard_double_arrow_left</i>
-    <span>Back</span></a
-  >
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
+  </button>
   <div class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
       APPLICATION REFERENCE : {{ application?.Reference }}
@@ -81,13 +80,6 @@
             Send Back
           </button>
 
-          <!-- <button
-            mat-stroked-button
-            color="primary"
-            (click)="action('assignApplication')"
-          >
-            Delegate Application
-          </button> -->
         </div>
       </div>
     </div>
