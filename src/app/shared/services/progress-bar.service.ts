@@ -11,7 +11,6 @@ export class ProgressBarService {
   }
 
   public open() {
-    // ProgressBarService.open = !ProgressBarService.open;
     this.progressBar.next(true);
   }
 

@@ -65,6 +65,7 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.popup.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();
@@ -78,17 +79,10 @@ export class CertificatesComponent implements OnInit, AfterViewInit {
   }
 
   onViewData(event: any, type: string) {
-    // this.router.navigate([`/admin/view-application/${event.appId}`], {
-    //   queryParams: { id: event.id, appSource: AppSource.Licence },
-    // });
     window.open(
       `${environment.apiUrl}/licenses/view_license?id=${event.id}`,
       '_blank'
     );
-
-    // window.location.assign(
-    //   `${environment.apiUrl}/licenses/view_license?id=${event.id}`
-    // );
   }
 
   openPdfInNewTab(event: any, type: string) {

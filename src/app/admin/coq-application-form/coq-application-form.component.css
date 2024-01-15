@@ -7,7 +7,7 @@
 }
 
 .form-wrapper {
-  @apply bg-[#f4f4f4] flex flex-col items-center shadow-lg border-none rounded-md w-[90%] justify-center border-2 rounded-md m-8 px-0 py-4 pt-6;
+  @apply bg-[#f4f4f4] flex flex-col items-center shadow-lg border-none rounded-md w-[90%] justify-center border-2 rounded-md m-3 px-0 py-4 pt-4;
 }
 
 .form-wrapper h1 {
@@ -98,8 +98,14 @@ table {
 
 td,
 th {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
   width: fit-content;
-  padding: 4px;
+}
+
+table td,
+th {
+  @apply mx-4 pr-3;
 }
 
 .table-title {

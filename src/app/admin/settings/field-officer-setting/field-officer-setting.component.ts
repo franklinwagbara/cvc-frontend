@@ -44,11 +44,11 @@ export class FieldOfficerSettingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.spinner.open();
     this.fetchAllData();
   }
 
   public fetchAllData() {
-    this.spinner.open();
     forkJoin([
       this.depotOfficerService.getAllMappings(),
       this.libraryService.getAppDepots(),
@@ -63,11 +63,13 @@ export class FieldOfficerSettingComponent implements OnInit {
         this.elpsUsers = res[3].data;
         this.roles = res[4].data;
         this.spinner.close();
+        this.progressBar.close();
       },
       error: (error: any) => {
         console.error(error);
         this.popUp.open('Something went wrong while fetching data.', 'error');
         this.spinner.close();
+        this.progressBar.close();
       },
     });
   }
@@ -117,10 +119,7 @@ export class FieldOfficerSettingComponent implements OnInit {
   
             this.allUsers = responses[0];
           }
-          this.progressBar.close();
-          setTimeout(() => {
-            window.location.reload();
-          }, 2500)
+          this.fetchAllData()
         },
         error: (error: unknown) => {
           console.log(error);
@@ -131,7 +130,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     }
   }
 
-  editData(event: Event) {
+  editData(event: any) {
     const data = {
       data: {
         users: this.allUsers,

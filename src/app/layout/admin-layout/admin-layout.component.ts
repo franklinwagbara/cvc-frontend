@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService } from '../../../../src/app/shared/services';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -17,7 +16,8 @@ export class AdminLayoutComponent implements OnInit {
   constructor(
     private pageManagerService: PageManagerService,
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private elRef: ElementRef
   ) {}
 
   ngOnInit(): void {

@@ -1,23 +1,22 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog, } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
-import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
 import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
+import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -33,19 +32,16 @@ export class CoqApplicationViewComponent implements OnInit {
   public currentUser: LoginModel;
   public coqId: number;
   public documents: any;
-  public tanksList: any;
+  public tanksList: any[];
 
   constructor(
     private snackBar: MatSnackBar,
     private auth: AuthenticationService,
-    private appService: ApplyService,
     private coqService: CoqService,
-    private applicationService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
     private spinner: SpinnerService,
     public route: ActivatedRoute,
-    private router: Router,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
     public location: Location
@@ -60,12 +56,7 @@ export class CoqApplicationViewComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.spinner.show('Loading application');
-      // this.appId = parseInt(params['id']);
       this.appSource = params['appSource'];
-      // this.coqId = parseInt(params['coqId']);
-
-      // if (this.appSource != AppSource.Licence) this.getApplication();
-      // else this.getLicence();
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
@@ -106,33 +97,7 @@ export class CoqApplicationViewComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
-
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
-  }
-
-  getLicence() {
-    this.licenceService.getLicence(this.appId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.licence = res.data;
-        }
-
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
+        console.log(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -194,6 +159,7 @@ export class CoqApplicationViewComponent implements OnInit {
       data: {
         data: operationConfiguration[type].data,
       },
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((res) => {
@@ -201,6 +167,26 @@ export class CoqApplicationViewComponent implements OnInit {
 
       this.getApplication();
     });
+  }
+
+  previewDetails(): void {
+    const vesselData = {
+      dateOfArrival: this.application?.DateOfVesselArrival,
+      dateOfUllage: this.application?.DateOfVesselUllage,
+      dateOfShoreTank: this.application?.DateOfSTAfterDischarge,
+      depotPrice: this.application?.DepotPrice
+    }
+    const isGasProduct = this.application?.ProductType.toLowerCase() === 'gas';
+    this.dialog.open(CoqApplicationPreviewComponent, { data: {
+      tankData: {},
+      isGasProduct,
+      vesselDischargeData: isGasProduct ? {
+        ...vesselData,
+        quauntityReflectedOnBill: this.application?.QuauntityReflectedOnBill,
+        arrivalShipFigure: this.application?.ArrivalShipFigure,
+        dischargeShipFigure: this.application?.DischargeShipFigure,
+      } : vesselData,
+    } })
   }
 
   showMore(type: string) {

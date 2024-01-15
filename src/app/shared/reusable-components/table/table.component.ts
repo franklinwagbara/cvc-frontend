@@ -19,6 +19,12 @@ import { MatSort } from '@angular/material/sort';
 import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { IApplication } from '../../interfaces/IApplication';
+import { MatDialog } from '@angular/material/dialog';
+import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
+import { LibaryService } from '../../services/libary.service';
+import { ProgressBarService } from '../../services/progress-bar.service';
+import { PopupService } from '../../services/popup.service';
+import { ProductService } from '../../services/product.service';
 
 interface IColumn {
   columnDef: string;
@@ -52,6 +58,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
+  @Input('EnableDischargeClearanceControls') enableDischargeClearanceControls?: boolean = false;
   @Input('EnableViewCertificateControl')
   enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
@@ -89,6 +96,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
+  allowDischarge = false;
+
   public titleColor = 'slate';
 
   public divFlexDirection = 'column';
@@ -106,6 +115,13 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public dataSource = new MatTableDataSource<any>(this.items);
   public selection = new SelectionModel<any>(true, []);
+
+  constructor(
+    private dialog: MatDialog,
+    private progressBar: ProgressBarService,
+    private productService: ProductService,
+    private popUp: PopupService
+  ) {}
 
   ngOnInit(): void {
     this.initialComponents();
@@ -234,6 +250,19 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
+    if (this.enableDischargeClearanceControls) {
+      this.columns.push({
+        columnDef: 'discharge_onspec_control',
+        header: '',
+        cell: (item) => 'discharge_onspec_control'
+      },
+      {
+        columnDef: 'discharge_offspec_control',
+        header: '',
+        cell: (item) => 'discharge_offspec_control'
+      });
+    }
+
     this.columns.unshift({
       columnDef: 'select',
       header: '',
@@ -310,6 +339,35 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onViewDebitNote.emit(row);
   }
 
+  onAllowDischarge(): void {
+    this.progressBar.open();
+    this.productService.getAllProductTypes().subscribe({
+      next: (res: any) => {
+        const productTypes = res?.data;
+        this.progressBar.close();
+        const dialogRef = this.dialog.open(
+          DischargeClearanceFormComponent, 
+          { data: { productTypes }, disableClose: true }
+        );
+        dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
+          if (result.submitted) {
+            this.allowDischarge = true;
+          }
+        })
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.progressBar.close();
+        this.popUp.open('Failed to initiate discharge clearance', 'error');
+      }
+    })
+  }
+
+  stopDischarge(): void {
+    this.allowDischarge = false;
+    // Send notification to regional state coordinator
+  }
+  
   initiateCoQ(row: any) {
     this.onInitiateCoQ.emit(row);
   }
