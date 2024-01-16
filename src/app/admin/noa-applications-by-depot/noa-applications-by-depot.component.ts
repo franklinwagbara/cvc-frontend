@@ -25,6 +25,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
+    jetty: 'Jetty',
     capacity: 'Capacity',
     status: 'Status',
     rrr: 'RRR',
@@ -44,11 +45,13 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   public fetchAllData() {
-    this.spinner.show('Fetching all applications...');
+    this.spinner.show('Loading applications...');
 
     this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
         this.applications = res?.data;
+        this.applications = this.applications
+          .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
         this.spinner.close();
       },
       error: (error: unknown) => {
@@ -60,7 +63,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   viewApplication(event: any): void {
-    this.router.navigate(['admin', 'view-application', event.id]);
+    this.router.navigate(['admin', 'coq-and-plant', 'noa-applications-by-depot', event.id]);
   }
 
   public get isFieldOfficer(): boolean {
@@ -71,6 +74,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   initiateCoQ(event: any) {
     this.router.navigate([
       'admin',
+      'coq-and-plant',
       'noa-applications-by-depot',
       event.id,
       'certificate-of-quantity',
@@ -78,11 +82,3 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     ]);
   }
 }
-
-// export interface CoQApplication {
-//   marketerName: string;
-//   imoNumber: string;
-//   vesselName: string;
-//   loadingPort: string;
-//   dischargePort: string;
-// }

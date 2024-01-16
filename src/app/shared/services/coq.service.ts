@@ -40,8 +40,8 @@ export class CoqService {
     return this.http.post<any>(`${API}/submit`, null, { params: { id } });
   }
 
-  getAllCoQCerts(appId: number): Observable<any> {
-    return of([]);
+  getAllCoQCerts(): Observable<any> {
+    return this.http.get<any>(`${API}/all-coq-cert`);
   }
 
   getAllDebitNotes(appId: number): Observable<any> {

@@ -17,6 +17,7 @@ import { LayoutModule } from './layout/layout.module';
 import { ProgressBarService } from './shared/services/progress-bar.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
+
 @NgModule({
   declarations: [AppComponent, AccessDeniedComponent],
   imports: [

@@ -25,7 +25,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     dateOfSTAfterDischarge: 'Date of Shore-Tank After Discharge',
     gov: 'GOV',
     gsv: 'GSV',
-    createdBy: 'Created By',
+    depotPrice: 'Depot Price (NGN)'
   };
 
   constructor(
@@ -51,6 +51,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.popUp.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();
@@ -63,7 +64,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     this.router.navigate(
       [
         'admin',
-        'certificate-of-quantity',
+        'coq-and-plant',
         'coq-applications-by-depot',
         event.id,
       ]

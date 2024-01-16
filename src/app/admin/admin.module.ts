@@ -25,7 +25,6 @@ import { AppStageDocsComponent } from './settings/app-stage-docs/app-stage-docs.
 import { BranchSettingComponent } from './settings/branch-setting/branch-setting.component';
 import { FieldZonalOfficeComponent } from './settings/field-zonal-office/field-zonal-office.component';
 import { ModulesSettingComponent } from './settings/modules-setting/modules-setting.component';
-import { StaffdeskComponent } from './staffdesk/staffdesk.component';
 import { AppProcessComponent } from './settings/app-process/app-process.component';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
@@ -80,13 +79,12 @@ import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-no
 import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailConfigComponent } from './settings/email-config/email-config.component';
-
+import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     DashboardComponent,
-    StaffdeskComponent,
     ApplicationComponent,
     AllStaffComponent,
     ModulesSettingComponent,
@@ -139,6 +137,7 @@ import { EmailConfigComponent } from './settings/email-config/email-config.compo
     AllNoaClearancesComponent,
     CoqApplicationPreviewComponent,
     EmailConfigComponent,
+    AllCoqApplicationsComponent,
   ],
 
   imports: [

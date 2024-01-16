@@ -4,7 +4,6 @@
 }
 
 .filterWrapper {
-  display: flex;
-  justify-content: space-between;
   margin: 40px 0px;
+  @apply flex justify-between flex-col lg:flex-row gap-4;
 }

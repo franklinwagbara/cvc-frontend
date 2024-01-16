@@ -150,14 +150,14 @@
       </textarea>
       <div
         *ngIf="form.get('comment')?.dirty && form.get('comment')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Comment is required!
       </div>
     </div>
   </form>
 </div>
-<div class="flex pb-2">
+<div class="flex pb-2 gap-2">
   <button mat-button mat-dialog-close [disabled]="submitting">Close</button>
   <button
     *ngIf="submitting"

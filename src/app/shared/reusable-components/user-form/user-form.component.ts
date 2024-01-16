@@ -122,12 +122,11 @@ export class UserFormComponent implements OnInit {
         this.currentValue ? this.currentValue.status : '',
         Validators.required,
       ],
-      // signatureImage: [
-      //   this.currentValue ? this.currentValue.signatureImage : '',
-      // ],
+
+      signatureImage: [
+        this.currentValue ? this.currentValue.signatureImage : '',
+      ],
     });
-    // console.log(this.currentValue);
-    // this.form.get('elpsId').setValue(this.currentValue.id);
   }
 
   ngOnInit(): void {
@@ -158,10 +157,8 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('roleId', this.form.get('roleId').value);
     formDataToSubmit.append('locationId', this.form.get('locationId').value);
     formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    // formDataToSubmit.append('branchId', this.form.get('branchId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
-    //formDataToSubmit.append('signatureImage', this.file);
+    formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {

@@ -1,0 +1,136 @@
+<div id="noa-application-preview">
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="row" colspan="5" style="text-align: center; font-size: 14px;">Reference Information</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Reference</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Application Type</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Application Status</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Initiated On</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Submitted On</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ noaInfo?.reference }}</td>
+        <td>{{ noaInfo?.appType }}</td>
+        <td>{{ noaInfo?.applicationStatus }}</td>
+        <td>{{ noaInfo?.createdDate }}</td>
+        <td>{{ noaInfo?.submittedDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <br />
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="row" colspan="3" style="text-align: center; font-size: 14px;">Company Information</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Company Name</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Company Email</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Marketer's Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ noaInfo?.companyName }}</td>
+        <td>{{ noaInfo?.email }}</td>
+        <td>{{ noaInfo?.marketersName }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <br />
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="row" colspan="4" style="text-align: center; font-size: 14px;">Vessel Information</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Vessel Name</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Vessel Type</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Mother Vessel</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Loading Port</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">IMO Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ noaInfo?.vessel.name }}</td>
+        <td>{{ noaInfo?.vessel.vesselType }}</td>
+        <td>{{ noaInfo?.motherVessel }}</td>
+        <td>{{ noaInfo?.loadingPort }}</td>
+        <td>{{ noaInfo?.vessel?.imoNumber }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br />
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="row" colspan="5" style="text-align: center; font-size: 14px;">Payment Information</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Payment Status</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Payment Description</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">RRR</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Total Amount Paid</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Payment Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ noaInfo?.status }}</td>
+        <td>{{ noaInfo?.paymentDescription }}</td>
+        <td>{{ noaInfo?.rrr }}</td>
+        <td>{{ noaInfo?.totalAmount }}</td>
+        <td>{{ noaInfo?.paymnetDate }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br />
+  <table
+    *ngIf="noaInfo?.documents.length"
+    class="table table-bordered"
+  >
+    <thead>
+      <tr>
+        <th scope="row" colspan="2" style="text-align: center; font-size: 14px;">Uploaded Documents</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Document</th>
+        <th scope="col" style="text-align: left; font-size: 14px;">Source Url</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doc of (noaInfo?.documents || []); trackBy: trackByFn; let i = index">
+        <td>{{ doc?.docName || doc?.name }}</td>
+        <td>{{ doc?.source || doc?.docSource }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br />
+  <table>
+    <tr>
+      <th scope="row" style="text-align: left; font-size: 14px;">Processing Officer's Remark</th>
+      <td>{{ comment }}</td>
+    </tr>
+  </table>
+
+  <div id="coq-preview-print-wrapper" class="text-right">
+    <button 
+      mat-button 
+      class="print-btn"
+      style="display: hidden;"
+      (click)="print()"
+    >Print</button>
+  </div>
+</div>

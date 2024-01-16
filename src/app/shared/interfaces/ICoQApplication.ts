@@ -3,6 +3,7 @@ export interface ICoQApplication extends ICOQ {}
 export interface ICOQ {
   appId: number;
   createdBy: string;
+  createdDate: string;
   dateOfSTAfterDischarge: string;
   dateOfVesselArrival: string;
   dateOfVesselUllage: string;

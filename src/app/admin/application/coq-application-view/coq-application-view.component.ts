@@ -1,22 +1,22 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatDialog, } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
+import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
-import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
+import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
-import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
-import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -55,7 +55,7 @@ export class CoqApplicationViewComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      this.spinner.show('Loading application');
+      this.spinner.show('Loading application...');
       this.appSource = params['appSource'];
     });
 

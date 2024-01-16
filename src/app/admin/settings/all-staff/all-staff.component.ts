@@ -75,12 +75,7 @@ export class AllStaffComponent implements OnInit {
         if (res[3].success) this.locations = res[3].data;
 
         if (res[4].success) this.offices = res[4].data;
-
-        // if (res[3].success) this.offices = res[3].data.data;
-
-        // if (res[4].success) this.branches = res[4].data.data;
-
-        // this.progressBar.close();
+        
         this.spinner.close();
       },
       error: (error: unknown) => {
