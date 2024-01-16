@@ -108,7 +108,7 @@
       <div class="">
         <button
           mat-raised-button
-          (click)="this.data.data.action === 'EDIT' ? EditFee() : createFee()"
+          (click)="this.data.data.action === 'EDIT' ? editFee() : createFee()"
           [disabled]="form.invalid"
           *ngIf="!isLoading"
         >

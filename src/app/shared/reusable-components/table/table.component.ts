@@ -58,7 +58,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableDischargeClearanceControls') enableDischargeClearanceControls?: boolean = false;
+  @Input('EnableDischargeClearanceControls')
+  enableDischargeClearanceControls?: boolean = false;
   @Input('EnableViewCertificateControl')
   enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
@@ -71,7 +72,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
-  keysMappedToHeaders: ITableKeysMappedToHeaders|any = {};
+  keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
   @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
@@ -251,16 +252,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     if (this.enableDischargeClearanceControls) {
-      this.columns.push({
-        columnDef: 'discharge_onspec_control',
-        header: '',
-        cell: (item) => 'discharge_onspec_control'
-      },
-      {
-        columnDef: 'discharge_offspec_control',
-        header: '',
-        cell: (item) => 'discharge_offspec_control'
-      });
+      this.columns.push(
+        {
+          columnDef: 'discharge_onspec_control',
+          header: '',
+          cell: (item) => 'discharge_onspec_control',
+        },
+        {
+          columnDef: 'discharge_offspec_control',
+          header: '',
+          cell: (item) => 'discharge_offspec_control',
+        }
+      );
     }
 
     this.columns.unshift({
@@ -345,29 +348,30 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       next: (res: any) => {
         const productTypes = res?.data;
         this.progressBar.close();
-        const dialogRef = this.dialog.open(
-          DischargeClearanceFormComponent, 
-          { data: { productTypes }, disableClose: true }
-        );
+        const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
+          data: { productTypes },
+          disableClose: true,
+          // panelClass: 'pannelClass',
+        });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
           if (result.submitted) {
             this.allowDischarge = true;
           }
-        })
+        });
       },
       error: (error: unknown) => {
         console.log(error);
         this.progressBar.close();
         this.popUp.open('Failed to initiate discharge clearance', 'error');
-      }
-    })
+      },
+    });
   }
 
   stopDischarge(): void {
     this.allowDischarge = false;
     // Send notification to regional state coordinator
   }
-  
+
   initiateCoQ(row: any) {
     this.onInitiateCoQ.emit(row);
   }

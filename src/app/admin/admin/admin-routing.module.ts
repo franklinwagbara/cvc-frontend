@@ -36,7 +36,7 @@ import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
 import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
-
+import { EmailConfigComponent } from '../settings/email-config/email-config.component';
 
 const routes: Routes = [
   { path: '', component: AdminComponent },
@@ -82,6 +82,7 @@ const routes: Routes = [
   { path: 'payment/:id', component: ViewPaymentComponent },
   { path: 'roles', component: RolesComponent },
   { path: 'products', component: ProductsComponent },
+  { path: 'email-config', component: EmailConfigComponent },
   {
     path: 'noa-applications-by-depot',
     component: NoaApplicationsByDepotComponent,
@@ -104,9 +105,7 @@ const routes: Routes = [
     path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     canActivate: [CoqGuard],
-    data: {
-    
-    }
+    data: {},
   },
   {
     path: 'certificate-of-quantity/new-application',

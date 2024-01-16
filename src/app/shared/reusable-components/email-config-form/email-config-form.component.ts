@@ -12,26 +12,22 @@ import {
   MatDialog,
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {
-  IAppFee,
-  IApplicationType,
-} from '../../../../../src/app/company/apply/new-application/new-application.component';
+
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { AdminService } from '../../services/admin.service';
-import { Chain } from '@angular/compiler';
 import { SpinnerService } from '../../services/spinner.service';
+import { IEmailList } from 'src/app/admin/settings/email-config/email-config.component';
 
 @Component({
-  selector: 'app-app-fee-form',
-  templateUrl: './app-fee-form.component.html',
-  styleUrls: ['./app-fee-form.component.css'],
+  selector: 'app-email-config-form',
+  templateUrl: './email-config-form.component.html',
+  styleUrls: ['./email-config-form.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppFeeFormComponent implements OnInit {
+export class EmailConfigFormComponent implements OnInit {
   public form: FormGroup;
-  public appFees: IAppFee;
-  public applicationTypes: IApplicationType[];
+  public emailList: IEmailList;
   public isSubmitted = false;
   public isLoading = false;
 
@@ -40,63 +36,67 @@ export class AppFeeFormComponent implements OnInit {
     private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<AppFeeFormComponent>,
+    public dialogRef: MatDialogRef<EmailConfigFormComponent>,
     private cd: ChangeDetectorRef,
     private progressBar: ProgressBarService,
     private popUp: PopupService,
     private adminService: AdminService,
     private spinner: SpinnerService
   ) {
-    this.applicationTypes = data.data.applicationTypes;
-
     this.form = formBuilder.group({
-      applicationTypeId: ['', [Validators.required]],
-      serciveCharge: ['', [Validators.required]],
-      noaFee: ['', [Validators.required]],
-      coqFee: ['', [Validators.required]],
-      processingFee: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      isActive: [''],
     });
   }
   ngOnInit(): void {
-    if (this.data.data.action === 'EDIT') this.getAppFee();
+    if (this.data.data?.action === 'EDIT') {
+      console.log(this.data.data);
+      this.emailList = this.data.data.emailList;
+      this.form.get('name').setValue(this.emailList.name);
+      this.form.get('email').setValue(this.emailList.email);
+      this.form.get('isActive').setValue(this.emailList.isActive);
+    }
   }
 
   get f() {
     return this.form.controls;
   }
 
-  getAppFee() {
-    this.adminService.getAppFeeById(this.data.data.appFeeId).subscribe({
-      next: (res) => {
-        this.appFees = res.data;
-        this.form.get('noaFee').setValue(this.appFees.noaFee);
-        this.form.get('coqFee').setValue(this.appFees.coqFee);
-        this.form.get('processingFee').setValue(this.appFees.processingFee);
-        this.form.get('serciveCharge').setValue(this.appFees.serciveCharge);
-        this.form
-          .get('applicationTypeId')
-          .setValue(this.appFees.applicationTypeId);
-        this.cd.markForCheck();
-      },
-      error: (err) => {
-        this.snackBar.open(err?.message, null, {
-          panelClass: ['error'],
-        });
-        this.progressBar.close();
-      },
-    });
-  }
+  // getAppFee() {
+  //   this.adminService.getAppFeeById(this.data.data.appFeeId).subscribe({
+  //     next: (res) => {
+  //       this.appFees = res.data;
+  //       this.form.get('noaFee').setValue(this.appFees.noaFee);
+  //       this.form.get('coqFee').setValue(this.appFees.coqFee);
+  //       this.form.get('processingFee').setValue(this.appFees.processingFee);
+  //       this.form.get('serciveCharge').setValue(this.appFees.serciveCharge);
+  //       this.form
+  //         .get('applicationTypeId')
+  //         .setValue(this.appFees.applicationTypeId);
+  //       this.cd.markForCheck();
+  //     },
+  //     error: (err) => {
+  //       this.snackBar.open(err?.message, null, {
+  //         panelClass: ['error'],
+  //       });
+  //       this.progressBar.close();
+  //     },
+  //   });
+  // }
 
-  createFee() {
+  addEmail() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     this.progressBar.open();
     this.isLoading = true;
-    this.adminService.addAppFees(this.form.value).subscribe({
+    const formData = this.form.value;
+    formData.isActive = true;
+    this.adminService.addEmail(formData).subscribe({
       next: (res) => {
         this.progressBar.close();
         this.isLoading = false;
-        this.snackBar.open('Application fee was created successfully!', null, {
+        this.snackBar.open('Email was added successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -113,18 +113,19 @@ export class AppFeeFormComponent implements OnInit {
     });
   }
 
-  editFee() {
+  editEmail() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     this.progressBar.open();
     this.isLoading = true;
-    let formData = this.form.value;
-    formData.id = this.data.data.appFeeId;
-    this.adminService.editAppFees(formData).subscribe({
+    const formData = this.form.value;
+    formData.id = this.data?.data?.emailList?.id;
+    formData.isActive = true;
+    this.adminService.editEmail(formData).subscribe({
       next: (res) => {
         this.progressBar.close();
         this.isLoading = false;
-        this.snackBar.open('Application fee was modified successfully!', null, {
+        this.snackBar.open('Email modified successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
