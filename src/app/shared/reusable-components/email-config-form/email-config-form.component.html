@@ -36,8 +36,9 @@
     >
       <label>Email Status</label>
       <select formControlName="isActive" class="form-control">
-        <option [value]="true">Active</option>
-        <option [value]="false">Inactive</option>
+        <option *ngFor="let a of emailStatus" [ngValue]="a.value">
+          {{ a.name }}
+        </option>
       </select>
     </div>
 
