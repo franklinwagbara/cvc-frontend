@@ -46,6 +46,8 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
 import { TanksComponent } from './settings/processing-plant/tanks/tanks.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -69,7 +71,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     DashboardComponent,

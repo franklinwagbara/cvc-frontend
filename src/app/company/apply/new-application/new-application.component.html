@@ -110,6 +110,25 @@
               </select>
             </div>
 
+            <div class="flex flex-col">
+              <mat-form-field>
+                <mat-label>Estimated Time of Arrival (ETA) </mat-label>
+                <div class="flex">
+                  <input
+                    matInput
+                    formControlName="eta"
+                    [matDatepicker]="etaDatePicker"
+                    [min]="dateValidation.min"
+                  />
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="etaDatePicker"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #etaDatePicker></mat-datepicker>
+                </div>
+              </mat-form-field>
+            </div>
+
             <button
               *ngIf="isNext"
               class="btn-next"
