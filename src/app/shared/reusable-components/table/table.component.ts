@@ -58,8 +58,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableDischargeClearanceControl')
-  enableDischargeClearanceControl?: boolean = false;
+  @Input('EnableDischargeClearanceControls')
+  enableDischargeClearanceControls?: boolean = false;
   @Input('EnableViewCertificateControl')
   enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
@@ -97,11 +97,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
-  allowDischarge = false;
-
   public titleColor = 'slate';
-
-  public divFlexDirection = 'column';
 
   public headers: string[];
   public keys: string[];
@@ -151,17 +147,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableInitiateCoQControl) {
-      this.columns.push({
-        columnDef: 'action_controls',
-        header: '',
-        cell: (item: IApplication) => {
-          if (item) return 'initiate_coq_control';
-          else return '';
-        },
-      });
-    }
-
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -201,6 +186,30 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_control',
       });
+    }
+
+    if (this.enableInitiateCoQControl) {
+      this.columns.push({
+        columnDef: 'action_controls',
+        header: '',
+        cell: (item: IApplication) => {
+          if (item) return 'initiate_coq_control';
+          else return '';
+        },
+      });
+    }
+
+    if (this.enableDischargeClearanceControls) {
+      this.columns.push({
+        columnDef: 'discharge_offspec_control',
+        header: '',
+        cell: (item) => 'discharge_offspec_control',
+      }),
+        this.columns.push({
+          columnDef: 'discharge_onspec_control',
+          header: '',
+          cell: (item) => 'discharge_onspec_control',
+        });
     }
 
     if (this.enableViewCertificateControl) {
@@ -249,21 +258,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_debit_note_control',
       });
-    }
-
-    if (this.enableDischargeClearanceControl) {
-      this.columns.push(
-        {
-          columnDef: 'discharge_onspec_control',
-          header: '',
-          cell: (item) => 'discharge_onspec_control',
-        },
-        {
-          columnDef: 'discharge_offspec_control',
-          header: '',
-          cell: (item) => 'discharge_offspec_control',
-        }
-      );
     }
 
     this.columns.unshift({
@@ -342,20 +336,19 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onViewDebitNote.emit(row);
   }
 
-  onAllowDischarge(): void {
+  onDischargeClearance(row: any, allow: boolean): void {
     this.progressBar.open();
     this.productService.getAllProductTypes().subscribe({
       next: (res: any) => {
         const productTypes = res?.data;
         this.progressBar.close();
         const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
-          data: { productTypes },
+          data: { productTypes, noaApp: row, allowDischarge: allow },
           disableClose: true,
-          // panelClass: 'pannelClass',
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
           if (result.submitted) {
-            this.allowDischarge = true;
+            row.allowDischarge = allow;
           }
         });
       },
@@ -365,11 +358,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         this.popUp.open('Failed to initiate discharge clearance', 'error');
       },
     });
-  }
-
-  stopDischarge(): void {
-    this.allowDischarge = false;
-    // Send notification to regional state coordinator
   }
 
   initiateCoQ(row: any) {

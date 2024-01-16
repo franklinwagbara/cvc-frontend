@@ -49,7 +49,8 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
     this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
-        this.applications = res?.data;
+        // get apps and add allowDischarge prop to each one
+        this.applications = res?.data?.map((el) => ({...el, allowDischarge: false }));
         this.applications = this.applications
           .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
         this.spinner.close();
