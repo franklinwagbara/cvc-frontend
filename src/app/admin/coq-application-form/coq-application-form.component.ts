@@ -789,13 +789,12 @@ export class CoqApplicationFormComponent
       tapeCorrection,
       liquidTemperature,
       observedLiquidVolume,
-      shrinkageFactorLiquid,
+      shrinkageFactor: shrinkageFactorLiquid,
       tankVolume,
-      shrinkageFactorVapour,
+      vapourFactor: shrinkageFactorVapour,
       vapourTemperature,
       vapourPressure,
       molecularWeight,
-      vapourFactor,
       vcf,
     } = data;
 
@@ -814,7 +813,6 @@ export class CoqApplicationFormComponent
         vapourTemperature,
         vapourPressure,
         molecularWeight,
-        vapourFactor,
       },
     };
   }

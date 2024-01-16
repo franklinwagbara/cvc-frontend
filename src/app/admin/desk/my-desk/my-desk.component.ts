@@ -124,7 +124,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type: string) {
-    if (this.appType$.getValue() == 'COQ') {
+    if (this.appType$.getValue() === 'COQ') {
       this.router.navigate([`/admin/desk/view-coq-application/${event.id}`], {
         queryParams: {
           id: event.appId,
@@ -133,10 +133,11 @@ export class MyDeskComponent implements OnInit {
           coqId: event.id,
         },
       });
-    } else
+    } else if (this.appType$.getValue() === 'NOA') {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
+    }
   }
 
   public get getColumnHeaders() {

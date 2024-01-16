@@ -263,8 +263,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
     if (
-      currentUser.userRoles === UserRole.FIELDOFFICER ||
-      currentUser?.location === LOCATION.FO
+      currentUser.userRoles === UserRole.FIELDOFFICER
     ) {
       let coqSubRoutes = [
         {
