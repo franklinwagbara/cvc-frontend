@@ -58,12 +58,6 @@ export class ViewApplicationComponent implements OnInit {
         if (isNaN(this.appId)) {
           this.location.back();
         }
-        // this.appSource = params['appSource'];
-        // console.log('App Source =============> ', this.appSource);
-        // this.coqId = parseInt(params['coqId']);
-
-        // if (this.appSource != AppSource.Licence) this.getApplication();
-        else this.getLicence();
       } else {
         this.location.back();
       }
@@ -74,7 +68,6 @@ export class ViewApplicationComponent implements OnInit {
         this.coqId = parseInt(params['coqId']);
 
         if (this.appSource != AppSource.Licence) this.getApplication();
-        else this.getLicence();
       } else {
         this.location.back();
       }

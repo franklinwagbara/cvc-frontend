@@ -66,6 +66,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
     false;
+  @Input('EnableViewClearanceControl') enableViewClearanceControl?: boolean =
+    false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
@@ -241,6 +243,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'view_debit_notes_control',
         header: '',
         cell: (item) => 'view_debit_notes_control',
+      });
+    }
+
+    if (this.enableViewClearanceControl) {
+      this.columns.push({
+        columnDef: 'view_clearance_control',
+        header: '',
+        cell: (item) => 'view_clearance_control',
       });
     }
 
