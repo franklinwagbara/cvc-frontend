@@ -56,7 +56,6 @@ export class EmailConfigFormComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.data.data?.action === 'EDIT') {
-      console.log(this.data.data);
       this.emailList = this.data.data.emailList;
       this.form.get('name').setValue(this.emailList.name);
       this.form.get('email').setValue(this.emailList.email);
