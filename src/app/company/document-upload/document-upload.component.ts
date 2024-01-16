@@ -233,7 +233,7 @@ export class DocumentUploadComponent implements OnInit {
       next: (res) => {
         this.progressBar.close();
         this.popUp.open('Document(s) upload was successfull.', 'success');
-        this.router.navigate(['/company/apply']);
+        this.router.navigate(['/company/myapplication']);
       },
       error: (res: unknown) => {
         this.progressBar.close();

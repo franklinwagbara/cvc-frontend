@@ -64,10 +64,7 @@ export class AdminService {
   }
 
   updateStaff(model) {
-    return this.http.put<any>(
-      `${environment.apiUrl}/account/edit-staff`,
-      model
-    );
+    return this.http.post<any>(`${environment.apiUrl}/staff/edit-user`, model);
   }
 
   getStaffDashboard() {
