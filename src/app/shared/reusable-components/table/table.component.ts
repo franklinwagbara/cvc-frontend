@@ -12,13 +12,19 @@ import {
 } from '@angular/core';
 import { DataSource, SelectionModel } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
-import { ITableKeysMappedToHeaders } from 'src/app/shared/interfaces/ITableKeysMappedToHeaders';
+import { ITableKeysMappedToHeaders } from '../../../../../src/app/shared/interfaces/ITableKeysMappedToHeaders';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { IApplication } from '../../interfaces/IApplication';
+import { MatDialog } from '@angular/material/dialog';
+import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
+import { LibaryService } from '../../services/libary.service';
+import { ProgressBarService } from '../../services/progress-bar.service';
+import { PopupService } from '../../services/popup.service';
+import { ProductService } from '../../services/product.service';
 
 interface IColumn {
   columnDef: string;
@@ -40,6 +46,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() enableGenerateRRR = false;
   @Input() enableConfirmPayment = false;
   @Input() enableUploadDocument = false;
+  @Input() enableViewTank: boolean = false;
   @Input('title-color') titleColorProp?: string = 'slate';
   @Input() noTitle = false;
   @Input() noControls?: boolean = false;
@@ -51,11 +58,21 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableViewLicenceControl') enableViewLicenceControl?: boolean = false;
+  @Input('EnableDischargeClearanceControl')
+  enableDischargeClearanceControl?: boolean = false;
+  @Input('EnableViewCertificateControl')
+  enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
+  @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
+    false;
+  @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
+    false;
+  @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
+  @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
+    false;
   @Input('table_keysMappedToHeaders')
-  keysMappedToHeaders: ITableKeysMappedToHeaders = {};
+  keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
   @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
@@ -64,10 +81,15 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onEditData = new EventEmitter<any>();
   @Output() onInitiateCoQ = new EventEmitter<any>();
   @Output() onViewData = new EventEmitter<any>();
+  @Output() onViewCoQCerts = new EventEmitter<any>();
+  @Output() onViewCoQCert = new EventEmitter<any>();
+  @Output() onViewDebitNotes = new EventEmitter<any>();
+  @Output() onViewDebitNote = new EventEmitter<any>();
   @Output() onGenerateRRR = new EventEmitter<any>();
   @Output() onConfirmPayment = new EventEmitter<any>();
   @Output() onUploadDocument = new EventEmitter<any>();
   @Output() onFileUpload = new EventEmitter<any>();
+  @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
 
@@ -76,8 +98,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
 
   public titleColor = 'slate';
-
-  public divFlexDirection = 'column';
 
   public headers: string[];
   public keys: string[];
@@ -92,6 +112,13 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public dataSource = new MatTableDataSource<any>(this.items);
   public selection = new SelectionModel<any>(true, []);
+
+  constructor(
+    private dialog: MatDialog,
+    private progressBar: ProgressBarService,
+    private productService: ProductService,
+    private popUp: PopupService
+  ) {}
 
   ngOnInit(): void {
     this.initialComponents();
@@ -119,16 +146,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         },
       });
     }
-    if (this.enableInitiateCoQControl) {
-      this.columns.push({
-        columnDef: 'action_controls',
-        header: '',
-        cell: (item: IApplication) => {
-          if (item) return 'initiate_coq_control'
-          else return '';
-        },
-      });
-    }
+
     if (
       this.enableUploadDocument ||
       this.enableConfirmPayment ||
@@ -139,7 +157,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: 'Action Controls',
         cell: (item: Application) => {
           if (item.rrr && item.paymentStatus === 'Processing') return '';
-          else if (item.rrr && item.paymentStatus === 'Payment confirmed')
+          else if (
+            item.rrr &&
+            item.paymentStatus === 'Payment confirmed' &&
+            item.status !== 'Processing' &&
+            item.status !== 'Completed'
+          )
             return 'uploadDocument_control';
           else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
             return 'confirmPayment_control';
@@ -165,11 +188,30 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableViewLicenceControl) {
+    if (this.enableDischargeClearanceControl) {
+      this.columns.push({
+        columnDef: 'discharge_clearance_control',
+        header: '',
+        cell: (item) => 'discharge_clearance_control',
+      });
+    }
+
+    if (this.enableInitiateCoQControl) {
+      this.columns.push({
+        columnDef: 'action_controls',
+        header: '',
+        cell: (item: IApplication) => {
+          if (item) return 'initiate_coq_control';
+          else return '';
+        },
+      });
+    }
+
+    if (this.enableViewCertificateControl) {
       this.columns.push({
         columnDef: 'view_control',
         header: '',
-        cell: (item) => 'view_licence_control',
+        cell: (item) => 'view_certificate_control',
       });
     }
 
@@ -179,6 +221,53 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_schedule_control',
       });
+    }
+
+    if (this.enableViewCoQCertsControl) {
+      this.columns.push({
+        columnDef: 'view_coq_certs_control',
+        header: '',
+        cell: (item) => 'view_coq_certs_control',
+      });
+    }
+
+    if (this.enableViewDebitNotesControl) {
+      this.columns.push({
+        columnDef: 'view_debit_notes_control',
+        header: '',
+        cell: (item) => 'view_debit_notes_control',
+      });
+    }
+
+    if (this.enableViewCoQCertControl) {
+      this.columns.push({
+        columnDef: 'view_coq_cert_control',
+        header: '',
+        cell: (item) => 'view_coq_cert_control',
+      });
+    }
+
+    if (this.enableViewDebitNoteControl) {
+      this.columns.push({
+        columnDef: 'view_debit_note_control',
+        header: '',
+        cell: (item) => 'view_debit_note_control',
+      });
+    }
+
+    if (this.enableDischargeClearanceControl) {
+      this.columns.push(
+        {
+          columnDef: 'discharge_onspec_control',
+          header: '',
+          cell: (item) => 'discharge_onspec_control',
+        },
+        {
+          columnDef: 'discharge_offspec_control',
+          header: '',
+          cell: (item) => 'discharge_offspec_control',
+        }
+      );
     }
 
     this.columns.unshift({
@@ -199,6 +288,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   fileUpload(file, row) {
     this.onFileUpload.emit({ file, doc: row });
+  }
+
+  viewTank(row) {
+    this.onViewTank.emit(row);
   }
 
   generateRRR(row) {
@@ -233,8 +326,54 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onEditData.emit(row);
   }
 
-  viewData(row) {
+  viewData(row: any) {
     this.onViewData.emit(row);
+  }
+
+  viewDebitNotes(row: any) {
+    this.onViewDebitNotes.emit(row);
+  }
+
+  viewCoQCerts(row: any) {
+    this.onViewCoQCerts.emit(row);
+  }
+
+  viewCoQCert(row: any) {
+    this.onViewCoQCert.emit(row);
+  }
+
+  viewDebitNote(row: any) {
+    this.onViewDebitNote.emit(row);
+  }
+
+  onDischargeClearance(row: any): void {
+    this.progressBar.open();
+    this.productService.getAllProductTypes().subscribe({
+      next: (res: any) => {
+        const productTypes = res?.data;
+        this.progressBar.close();
+        const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
+          data: { productTypes },
+          disableClose: true,
+          // panelClass: 'pannelClass',
+        });
+        dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
+          if (result.submitted) {
+            //this.allowDischarge = true;
+          }
+        });
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.progressBar.close();
+        this.popUp.open('Failed to initiate discharge clearance', 'error');
+      },
+    });
+  }
+
+  stopDischarge(): void {
+    //this.allowDischarge = false;
+    // Send notification to regional state coordinator
   }
 
   initiateCoQ(row: any) {

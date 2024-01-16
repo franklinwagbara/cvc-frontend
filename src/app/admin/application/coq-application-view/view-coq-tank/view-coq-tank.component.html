@@ -1,0 +1,36 @@
+<div>
+  <h3 class="page-title bg-teal-500 text-teal-400">TANKS</h3>
+  <div class="flex justify-end my-1">
+    <button mat-stroked-button class="text-red-600" (click)="dialogRef.close()">
+      Close
+    </button>
+  </div>
+
+  <div *ngFor="let a of tanks; let i = index" class="!text-green-500">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ i + 1 }}. {{ a[0]?.tankName }} </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <generic-table
+          [table_title]="tableTitles.branches"
+          [title-color]="'teal'"
+          [table_keysMappedToHeaders]="
+            productType === 'Gas'
+              ? gasTankKeysMappedToHeaders
+              : liquidTankKeysMappedToHeaders
+          "
+          [table_content]="a"
+          [table_controls_horizontal]="true"
+          [noDeleteButton]="true"
+          [noCheckControls]="true"
+          [noAddButton]="true"
+          [noFilter]="true"
+          [noEditControl]="true"
+          [enableViewTank]="true"
+          [noTitle]="true"
+        ></generic-table>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</div>

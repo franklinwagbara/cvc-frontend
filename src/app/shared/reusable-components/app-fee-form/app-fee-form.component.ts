@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   IAppFee,
   IApplicationType,
-} from 'src/app/company/apply/new-application/new-application.component';
+} from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { AdminService } from '../../services/admin.service';
@@ -33,6 +33,7 @@ export class AppFeeFormComponent implements OnInit {
   public appFees: IAppFee;
   public applicationTypes: IApplicationType[];
   public isSubmitted = false;
+  public isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -90,46 +91,53 @@ export class AppFeeFormComponent implements OnInit {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     this.progressBar.open();
+    this.isLoading = true;
     this.adminService.addAppFees(this.form.value).subscribe({
       next: (res) => {
         this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open('Application fee was created successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
+        this.cd.markForCheck();
       },
       error: (err) => {
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
         this.progressBar.close();
+        this.isLoading = false;
+        this.cd.markForCheck();
       },
     });
   }
 
-  EditFee() {
+  editFee() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     this.progressBar.open();
-
+    this.isLoading = true;
     let formData = this.form.value;
     formData.id = this.data.data.appFeeId;
     this.adminService.editAppFees(formData).subscribe({
       next: (res) => {
         this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open('Application fee was modified successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
+        this.cd.markForCheck();
       },
       error: (err) => {
         this.progressBar.close();
+        this.isLoading = false;
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
+        this.cd.markForCheck();
       },
     });
   }
-
-  onClose() {}
 }

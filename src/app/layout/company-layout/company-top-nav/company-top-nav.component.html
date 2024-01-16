@@ -1,7 +1,7 @@
 <nav id="company-top-nav">
   <div class="brand-logo">
     <img src="../../../../assets/img/brand/logo.png" />
-    <span>CVC</span>
+    <span class="pl-2">CVC</span>
   </div>
 
   <div class="nav-wrapper">
@@ -16,27 +16,135 @@
       </app-dropdown>
       <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">
       </app-dropdown>
-      <app-dropdown title="MY CERTIFICATE" path="company/mycertificates">
+      <app-dropdown title="MY CERTIFICATES" path="company/mycertificates">
       </app-dropdown>
-      <!-- <app-dropdown title="TEMPLATES" [menu-items]="templateMenuItems">
-      </app-dropdown> -->
     </div>
 
-    <div class="user-group">
-      <div class="user">
-        <svg-icon [icon]="'user'" fill="black" [size]="32"></svg-icon>
-        <span>{{ currentUsername.lastName }}</span>
-      </div>
+    <ng-container *ngIf="currWindowWidth >= 841">
+      <ng-container *ngTemplateOutlet="userprofile"></ng-container>
+    </ng-container>
 
-      <div class="logout" (click)="auth.logout()">
-        <svg-icon
-          [icon]="'logout'"
-          fill="none"
-          stroke="black"
-          [size]="20"
-        ></svg-icon>
-        <span>logout</span>
+    <ng-template #iconTemp let-icon="iconName">
+      <svg-icon [icon]="icon" class="fill-green-800"></svg-icon>
+    </ng-template>
+
+    <button
+      id="company-navmenu-trigger"
+      class="mr-8"
+      mat-fab
+      [matMenuTriggerFor]="navmenu"
+    >
+      <mat-icon class="menu">menu</mat-icon>
+    </button>
+    <mat-menu #navmenu class="company-navmenu">
+      <button mat-menu-item routerLink="/company/dashboard">
+        <div class="menu-item-content">
+          <ng-container 
+            *ngTemplateOutlet="iconTemp; context: iconContexts.dashboard">
+          </ng-container>
+          <span>Dashboard</span>
+        </div>
+      </button>
+      <button mat-menu-item [mat-menu-trigger-for]="applicationsdropdown">
+        <div class="menu-item-content">
+          <ng-container 
+            *ngTemplateOutlet="iconTemp; context: iconContexts.applications">
+          </ng-container>
+          <span>Applications</span>
+        </div>
+      </button>
+      <mat-menu #applicationsdropdown>
+        <button mat-menu-item routerLink="/company/apply">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.apply">
+            </ng-container>
+            <span>Apply</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/myapplication">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.myapps">
+            </ng-container>
+            <span>My Applications</span>
+          </div>
+        </button>
+      </mat-menu>
+      <button mat-menu-item [mat-menu-trigger-for]="accountdropdown">
+        <div class="menu-item-content">
+          <ng-container 
+            *ngTemplateOutlet="iconTemp; context: iconContexts.account">
+          </ng-container>
+          <span>My Account</span>
+        </div>
+      </button>
+      <mat-menu #accountdropdown>
+        <button mat-menu-item routerLink="/company/companyinformation">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.profile">
+            </ng-container>
+            <span>Company Profile</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/changepassword">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.changepass">
+            </ng-container>
+            <span>Change Password</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/processing-plant">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.procplant">
+            </ng-container>
+            <span>Processing Plants</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/messages">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.messages">
+            </ng-container>
+            <span>Messages</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/myschedule">
+          <div class="menu-item-content">
+            <ng-container 
+              *ngTemplateOutlet="iconTemp; context: iconContexts.schedules">
+            </ng-container>
+            <span>My Schedule</span>
+          </div>
+        </button>
+      </mat-menu>
+      <button mat-menu-item routerLink="/company/mycertificates">
+        <div class="menu-item-content">
+          <ng-container 
+            *ngTemplateOutlet="iconTemp; context: iconContexts.certificates">
+          </ng-container>
+          <span>My Certificates</span>
+        </div>
+      </button>
+      <hr class="w-full"/>
+      <div *ngTemplateOutlet="userprofile"></div>
+    </mat-menu>
+
+    <ng-template #userprofile>
+      <div class="user-group">
+        <div class="logout" (click)="auth.logout()">
+          <svg-icon
+            [icon]="'logout'"
+            fill="none"
+            stroke="black"
+            [size]="20"
+          ></svg-icon>
+          <span>Log out</span>
+        </div>
       </div>
-    </div>
+    </ng-template>
   </div>
 </nav>

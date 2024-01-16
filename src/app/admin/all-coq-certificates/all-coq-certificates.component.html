@@ -1,0 +1,21 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL CoQ CERTIFICATES</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'CoQ Certificates'"
+          [title-color]="'green'"
+          [table_keysMappedToHeaders]="certificateKeysMappedToHeaders"
+          [table_content]="certificates"
+          [EnableViewCertificateControl]="true"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          (onViewData)="onViewData($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 
 const api = `${environment.apiUrl}/licenses`;
 
@@ -20,5 +20,11 @@ export class LicenceService {
 
   public getLicence(id: number) {
     return this.http.get<any>(`${api}/view_license`, { params: { id } });
+  }
+
+  public viewCertificate(id: number) {
+    return this.http.get<any>(`${api}/view_license?id=${id}`, {
+      responseType: 'arraybuffer' as 'json',
+    });
   }
 }

@@ -3,9 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { tokenNotExpired } from 'src/app/helpers/tokenUtils';
+import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
 import { UserRole } from '../constants/userRole';
 import { LOCATION } from '../constants/location';
@@ -60,18 +60,18 @@ export class AuthenticationService {
     // this.currentUserSubject.next(null);
     this._isLoggedIn = false;
 
-    window.location.assign(`${environment.apiUrl}/auth/log-out`);
+    window.location.assign(`${environment.apiUrl}/account/logout`);
   }
 
   public get isCompany() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles == UserRole.Company) return true;
+    if (user.userRoles == UserRole.COMPANY) return true;
     else return false;
   }
 
   public get isStaff() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles != UserRole.Company) return true;
+    if (user.userRoles != UserRole.COMPANY) return true;
     else return false;
   }
 
@@ -138,10 +138,10 @@ export class AuthenticationService {
       );
   }
 
-  getCompanyResource(companyCode: string) {
+  getCOMPANYResource(COMPANYCode: string) {
     return this.http
-      .get<any>(`${environment.apiUrl}/account/getCompanyResource`, {
-        params: { companyCode: companyCode },
+      .get<any>(`${environment.apiUrl}/account/getCOMPANYResource`, {
+        params: { COMPANYCode: COMPANYCode },
       })
       .pipe(retry(this.num));
   }

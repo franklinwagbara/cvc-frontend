@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
-import { INominatedSurveyor } from 'src/app/shared/interfaces/INominatedSurveyor';
-import { FormDialogComponent, FormKeysProp } from 'src/app/shared/reusable-components/form-dialog/form-dialog.component';
-import { NominatedSurveyorService } from 'src/app/shared/services/nominated-surveyor.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { INominatedSurveyor } from '../../../../../src/app/shared/interfaces/INominatedSurveyor';
+import { FormDialogComponent, FormKeysProp } from '../../../../../src/app/shared/reusable-components/form-dialog/form-dialog.component';
+import { NominatedSurveyorService } from '../../../../../src/app/shared/services/nominated-surveyor.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-nominated-surveyor-setting',
@@ -28,35 +28,41 @@ export class NominatedSurveyorSettingComponent implements OnInit {
     private progressBar: ProgressBarService,
     private spinner: SpinnerService,
     private nominatedSurveyorService: NominatedSurveyorService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.spinner.open();
-
+    this.getAllNominatedSurveyors();
+  }
+  
+  getAllNominatedSurveyors(): void {
     this.nominatedSurveyorService.getAllNominatedSurveyors().subscribe({
       next: (res: any) => {
         this.surveyors = res?.data;
         this.spinner.close();
+        this.progressBar.close();
+        this.cd.markForCheck();
       },
       error: (error: any) => {
         console.log(error);
         this.spinner.close();
+        this.progressBar.close();
         this.snackBar.open('Something went wrong while fetching users', null, { panelClass: ['error'] });
       }
     })
   }
   
-  addData(): void {
+  addData(data?: any): void {
     const formData: FormKeysProp = {
-      name: {validator: [Validators.required] },
-      email: {validator: null }
+      name: {validator: [Validators.required], value: data?.name || '' },
+      email: {validator: null, value: data?.email || '' }
     }
     const dialogRef = this.dialog.open(
       FormDialogComponent, 
       { 
         data: { title: 'Add Nominated Surveyor', formData, formType: 'Create' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px'
       }
@@ -69,14 +75,14 @@ export class NominatedSurveyorSettingComponent implements OnInit {
           next: () => {
             this.progressBar.close();
             this.snackBar.open(`Added Nominated Surveyor successfully`, null, { panelClass: ['success']});
-            setTimeout(() => {
-              window.location.reload();
-            }, 2500);
+            this.progressBar.open();
+            this.getAllNominatedSurveyors();
           },
           error: (error: any) => {
             console.log(error);
             this.progressBar.close();
             this.snackBar.open('Something went wrong. Could not add nominated surveyor.', null, { panelClass: ['error'] });
+            this.addData(result);
           }
         })
       }
@@ -85,15 +91,14 @@ export class NominatedSurveyorSettingComponent implements OnInit {
 
   editData(row: any): void {
     const formData: FormKeysProp = {
-      id: {value: row.id, disabled: true }, 
-      name: {validator: [Validators.required], value: row.name },
-      email: {validator: null, value: row.email }
+      id: {value: row?.id, disabled: true, }, 
+      name: {validator: [Validators.required], value: row?.name },
+      email: {validator: null, value: row?.email }
     }
     const dialogRef = this.dialog.open(
       FormDialogComponent, 
       { 
         data: { title: 'Edit Nominated Surveyor', formData, formType: 'Edit' }, 
-        disableClose: true,
         width: '400px',
         minHeight: '300px',
       }
@@ -104,15 +109,18 @@ export class NominatedSurveyorSettingComponent implements OnInit {
         this.nominatedSurveyorService.editNominatedSurveyor(result).subscribe({
           next: (res: any) => {
             this.progressBar.close();
-            this.snackBar.open(`Nominated Surveyor with id: ${result.id} edited successfully`, null, {panelClass: ['success']});
-            setTimeout(() => {
-              window.location.reload();
-            }, 2500);
+            this.snackBar.open(
+              `Nominated Surveyor with id: ${result.id} edited successfully`, 
+              null, {panelClass: ['success']
+            });
+            this.progressBar.open();
+            this.getAllNominatedSurveyors();
           },
           error: (error: any) => {
             console.log(error);
             this.progressBar.close();
             this.snackBar.open('Something went wrong. Could not edit nominated surveyor.');
+            this.editData(result);
           }
         })
       }
@@ -126,9 +134,8 @@ export class NominatedSurveyorSettingComponent implements OnInit {
         next: () => {
           this.progressBar.close();
           this.snackBar.open('Selected Nominated Surveyor(s) deleted successfully', null, { panelClass: ['success']}); 
-          setTimeout(() => {
-            window.location.reload();
-          }, 2500);
+          this.progressBar.open();
+          this.getAllNominatedSurveyors();
         },
         error: (error: unknown) => {
           this.progressBar.close();

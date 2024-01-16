@@ -1,24 +1,23 @@
-import { Category } from 'src/app/admin/settings/modules-setting/modules-setting.component';
-
 import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
-import { AdminService } from '../../services/admin.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
 import { PopupService } from '../../services/popup.service';
 import { CoqService } from '../../services/coq.service';
+import { LoginModel } from '../../models/login-model';
+import { UserRole } from '../../constants/userRole';
+import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
+
 
 @Component({
   selector: 'app-approve-form',
@@ -30,12 +29,13 @@ export class ApproveFormComponent implements OnInit {
   public application: IApplication;
   public currentUser: Staff;
   public isFO: boolean;
+  public isCOQProcessor: boolean;
   public coqId: number;
+  public isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private appService: ApplyService,
     private progressBarService: ProgressBarService,
@@ -43,11 +43,13 @@ export class ApproveFormComponent implements OnInit {
     private popup: PopupService,
     private cd: ChangeDetectorRef,
     private router: Router,
-    private coqService: CoqService
+    private coqService: CoqService,
+    private dialog: MatDialog,
   ) {
     this.application = data.data.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
+    this.isCOQProcessor = data.data.isCOQProcessor;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
@@ -55,10 +57,9 @@ export class ApproveFormComponent implements OnInit {
   }
   ngOnInit(): void {
     const tempUser = this.auth.currentUser;
-
     this.auth.getAllStaff().subscribe({
       next: (res) => {
-        this.currentUser = res.data.data.find(
+        this.currentUser = res.data.data?.find(
           (u) => u.email === tempUser.userId
         );
 
@@ -66,10 +67,8 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not user information!',
-          'error'
-        );
+        console.log(error);
+        this.popup.open('Failed to fetch user information!', 'error');
         this.progressBarService.close();
       },
     });
@@ -79,15 +78,26 @@ export class ApproveFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  public get isApprover() {
+    const currentUser = this.auth.currentUser as LoginModel;
+    return (currentUser as any).userRoles === UserRole.APPROVER;
+  }
+
+  public get isFAD() {
+    const currentUser = this.auth.currentUser as LoginModel;
+    return (currentUser as any).userRoles === UserRole.FAD;
+  }
+
   public approve() {
-    debugger;
-    if (this.isFO) this.approveFO();
+    // if (this.isFO) this.approveFO();
+    // else this.approveOther();
+    if (this.isCOQProcessor) this.approveFO();
     else this.approveOther();
   }
 
   private approveOther() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Approve,
@@ -99,29 +109,40 @@ export class ApproveFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successfully!', 'success');
+          this.popup.open(
+            this.isApprover
+              ? 'Application approved successfully!'
+              : 'Operation was successful!',
+            'success'
+          );
           this.dialogRef.close();
         }
-
         this.progressBarService.close();
+        this.isLoading = false;
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
       },
 
-      error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not user information!',
-          'error'
-        );
+      error: (error: any) => {
+        this.popup.open('Failed to process application', 'error');
 
         this.progressBarService.close();
+        this.isLoading = false;
+        this.cd.markForCheck();
       },
     });
   }
 
+  preview(): void {
+    this.dialog.open(
+      NoaApplicationPreviewComponent,
+      { data: { application: this.application, remark: this.form.controls['comment'].value } }
+    )
+  }
+
   private approveFO() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
       applicationId: this.coqId,
       action: ApplicationActionType.Approve,
@@ -131,22 +152,25 @@ export class ApproveFormComponent implements OnInit {
     this.coqService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.popup.open('Operation was successfully!', 'success');
+          this.popup.open(
+            this.isFAD
+              ? 'Application approved successfully!'
+              : 'Operation was successful!',
+            'success'
+          );
           this.dialogRef.close();
         }
-
+        this.isLoading = false;
         this.progressBarService.close();
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
       },
 
       error: (error: unknown) => {
-        this.popup.open(
-          'Operation failed! Could not user information!',
-          'error'
-        );
-
+        this.popup.open('Failed to process application', 'error');
+        this.isLoading = false;
         this.progressBarService.close();
+        this.cd.markForCheck();
       },
     });
   }

@@ -1,15 +1,17 @@
 $primary: #aaefdf;
 $primary-dark: #6aad9e;
 $text-dark: #035024;
-$nav-height: 60px;
+$nav-height: 70px;
 $logo-height: 60px;
 
 #company-top-nav {
-  background: #83a4d4;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
   min-height: $nav-height;
-  @apply flex justify-evenly items-center flex-wrap;
+  @apply flex justify-between items-center flex-wrap bg-white shadow-md px-4;
 }
 
 .brand-logo {
@@ -29,20 +31,50 @@ $logo-height: 60px;
 }
 
 .nav-list {
-  @apply flex  font-semibold gap-5 text-sm -mb-[14px] flex-nowrap;
+  @apply flex font-semibold gap-3 text-sm -mb-[14px] flex-nowrap;
+}
+
+::ng-deep .mat-menu-content {
+  @apply w-[270px] overflow-hidden flex flex-col items-center justify-center text-[20px] font-medium pb-4;
+}
+
+::ng-deep .mat-menu-item {
+  @apply text-[20px] font-medium;
+}
+
+.menu-item-content {
+  @apply flex items-center justify-start gap-3;
+}
+
+.menu {
+  @apply text-[#2D8A75] text-[32px];
+}
+
+@media screen and (max-width: 840px) {
+  .nav-list {
+    display: none;
+  }
+  #company-navmenu-trigger {
+    display: block;
+  }
+}
+
+@media screen and (min-width: 841px) {
+  #company-navmenu-trigger {
+    display: none;
+  }
 }
 
 .user,
 .logout {
   transition: all 0.3s ease-in-out;
-  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer;
+  @apply flex items-center gap-2 px-3 py-[7px] rounded-t-lg cursor-pointer text-red-400 hover:bg-red-400;
 }
 
 .logout:hover {
-  background-color: $primary-dark;
-  color: white;
+  @apply bg-red-400 text-white;
 }
 
 .user-group {
-  @apply flex gap-2 -mb-[14px];
+  @apply flex gap-2;
 }

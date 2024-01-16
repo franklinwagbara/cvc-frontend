@@ -1,13 +1,14 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { environment } from 'src/environments/environment';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { environment } from '../../../../src/environments/environment';
 
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AuthenticationService, GenericService } from '../../shared/services';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 
 @Component({
   templateUrl: 'paymentsum.component.html',
@@ -30,6 +31,7 @@ export class PaymentSumComponent implements OnInit {
     private route: ActivatedRoute,
     private progressbar: ProgressBarService,
     private applicationServer: ApplyService,
+    private appService: ApplicationService,
     private popUp: PopupService,
     private spinner: SpinnerService,
     private cd: ChangeDetectorRef
@@ -41,40 +43,43 @@ export class PaymentSumComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.progressbar.open();
     this.route.params.subscribe((params) => {
       this.application_id = params['id'];
       this.getPaymentSummary();
+      this.cd.markForCheck();
     });
   }
 
   getPaymentSummary() {
+    this.spinner.show('Fetching payment details');
     this.progressbar.open();
-    this.spinner.open();
     this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
       next: (res) => {
         if (res.success) {
           this.paymentSummary = res.data;
-          this.rrr$.next(this.paymentSummary.rrr);
-          this.applicationStatus$.next(this.paymentSummary.paymentStatus);
+          this.rrr$.next(this.paymentSummary?.rrr);
+          this.applicationStatus$.next(this.paymentSummary?.paymentStatus);
 
           this.isPaymentConfirmed$.next(
-            this.paymentSummary.rrr &&
-              this.paymentSummary.paymentStatus === 'PaymentCompleted'
+            this.paymentSummary?.rrr &&
+              this.paymentSummary?.paymentStatus === 'PaymentCompleted'
           );
 
           this.isPaymentNotComfirmed$.next(
-            this.paymentSummary.rrr &&
-              this.paymentSummary.paymentStatus !== 'PaymentCompleted'
+            this.paymentSummary?.rrr &&
+              this.paymentSummary?.paymentStatus !== 'PaymentCompleted'
           );
+          if (this.paymentSummary?.paymentStatus === 'PaymentCompleted') {
+            this.popUp.open('Payment completed successfully!', 'success');
+          }
         }
-        this.progressbar.close();
         this.spinner.close();
+        this.progressbar.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.progressbar.close();
         this.spinner.close();
+        this.progressbar.close();
         this.cd.markForCheck();
       },
     });
@@ -83,7 +88,7 @@ export class PaymentSumComponent implements OnInit {
   generateRRR() {
     this.route.params.subscribe((params) => {
       this.progressbar.open();
-      this.spinner.open();
+      this.spinner.show('Generating RRR');
       this.application_id = params['id'];
 
       this.applicationServer.createPayment_RRR(this.application_id).subscribe({
@@ -97,16 +102,16 @@ export class PaymentSumComponent implements OnInit {
             );
 
             this.popUp.open('RRR was generated successfully!', 'success');
-            this.progressbar.close();
             this.spinner.close();
+            this.progressbar.close();
             this.cd.markForCheck();
           }
         },
         error: (error: unknown) => {
           //todo: display error dialog
           this.popUp.open('RRR generation failed!', 'error');
-          this.progressbar.close();
           this.spinner.close();
+          this.progressbar.close();
           this.cd.markForCheck();
         },
       });
@@ -122,6 +127,10 @@ export class PaymentSumComponent implements OnInit {
   uploadDocument() {
     // window.location.href = environment.apiUrl + '/upload-document';
     this.router.navigate([`/company/upload-document/${this.application_id}`]);
+  }
+
+  back() {
+    // this.router.navigate([`/company/new`]);
   }
 }
 

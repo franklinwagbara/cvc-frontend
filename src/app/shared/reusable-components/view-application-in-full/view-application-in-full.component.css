@@ -7,7 +7,7 @@
 }
 
 .application-details h1 {
-  @apply text-[#3e4e50] my-8;
+  @apply text-[#3e4e50] mb-4;
 }
 
 hr {
@@ -20,7 +20,7 @@ hr {
 
 .info-sections-wrapper h2 {
   color: #ffebcd;
-  @apply bg-[#85A7D6] text-center p-3 rounded;
+  @apply bg-gradient-to-r from-[#71B280] to-[#134E5E] text-center p-3 rounded;
 }
 
 .info-section {
@@ -40,14 +40,15 @@ hr {
 }
 
 .info-wrapper > div > h5 {
-  @apply bg-[#3e4e50] rounded-md text-center p-2 text-white tracking-wider;
+  @apply bg-[#3e4e50] rounded-md text-center p-2 text-white tracking-wider min-w-fit;
 }
 
 .info-wrapper > h4 {
   @apply font-medium tracking-wide;
 }
 
-.info-wrapper div > span, .empty {
+.info-wrapper div > span,
+.empty {
   word-wrap: break-word;
   @apply block text-center text-lg lg:text-xl bg-[#fff] rounded-sm p-4 font-medium;
 }
@@ -90,4 +91,8 @@ hr {
 
 .mat-expansion-panel {
   min-width: 50%;
+}
+
+.back-btn-color {
+  background-color: rgb(229 240 246 / var(--tw-bg-opacity)) !important;
 }

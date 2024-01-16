@@ -1,14 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppException } from 'src/app/shared/exceptions/AppException';
-import { IJetty } from 'src/app/shared/interfaces/ijetty';
-import { IVesselType } from 'src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { JettyService } from 'src/app/shared/services/jetty.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { AppException } from '../../../../../src/app/shared/exceptions/AppException';
+import { IVesselType } from '../../../../../src/app/shared/reusable-components/permit-stage-doc-form/permit-stage-doc-form.component';
+import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-new-application',
@@ -32,7 +30,9 @@ export class NewApplicationComponent implements OnInit {
   public isMobile = false;
   public selectedFacility: IFacility[] = [];
   public vesselTypes: IVesselType[] = [];
-  public jetties: IJetty[] = [];
+  public vesselInfo: IVessel | any;
+  public imoNumber: string;
+  public showLoader: boolean = false;
 
   public segmentState: 1 | 2 | 3;
 
@@ -82,22 +82,23 @@ export class NewApplicationComponent implements OnInit {
       productId: ['', Validators.required],
     });
 
-    this.isLoading = true;
-
     this.stateControl.valueChanges.subscribe((value) => {
       if (!value) return;
       this.getLGAByStateId(value);
     });
 
     this.segmentState = 1;
-
+    // this.validateImo();
     this.getFacilityTypes();
     this.getApplicationTypes();
     this.getStates();
     this.getProducts();
     this.getVesselTypes();
     this.getDepots();
-    this.getJetties();
+  }
+
+  public get vesselFormControl() {
+    return this.vesselForm.controls;
   }
 
   public get activateFirstSegment() {
@@ -157,13 +158,18 @@ export class NewApplicationComponent implements OnInit {
       marketerName: this.vesselForm.value.marketerName,
     };
 
-    this.spinner.open();
+    this.spinner.show('Saving vessel details');
     this.appService.apply(payload).subscribe({
       next: (res) => {
         const appId = res.data.appId;
         this.spinner.close();
         this.cd.markForCheck();
-
+        this.popUp.open(
+          `${this.selectedAppDepots.length} ${
+            this.selectedAppDepots.length > 1 ? 'Depots' : 'Depot'
+          } added successfully.`,
+          'success'
+        );
         this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {
@@ -189,7 +195,7 @@ export class NewApplicationComponent implements OnInit {
     this.appDepotForm.reset();
 
     if (!isExist) this.selectedAppDepots.push(newDepot);
-    else this.popUp.open('This tank has been added before!', 'error');
+    else this.popUp.open('This depot has been added before!', 'error');
     this.cd.markForCheck();
   }
 
@@ -258,6 +264,7 @@ export class NewApplicationComponent implements OnInit {
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -270,13 +277,14 @@ export class NewApplicationComponent implements OnInit {
         this.applicationTypes = res.data;
         this.applicationTypeId = this.applicationTypes.find(
           (x) => x.name.toLowerCase() == 'new'
-        ).id;
+        )?.id;
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -285,13 +293,17 @@ export class NewApplicationComponent implements OnInit {
     this.spinner.open();
     this.libraryService.getProducts().subscribe({
       next: (res) => {
-        this.products = res.data;
+        this.products = res?.data.sort((a: any, b: any) => {
+          return a?.name.toLowerCase() < b?.name.toLowerCase ? -1 :
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+        });
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -300,13 +312,17 @@ export class NewApplicationComponent implements OnInit {
     this.spinner.open();
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
-        this.depots = res.data;
+        this.depots = (res?.data || []).sort((a: any, b: any) => {
+          return a?.name.toLowerCase() < b?.name.toLowerCase() ? -1 :
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+        });
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: AppException) => {
         this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -356,6 +372,34 @@ export class NewApplicationComponent implements OnInit {
         this.spinner.close();
       },
     });
+  }
+
+  public CheckVesselDetails() {
+    // this.showLoader = true;
+    this.spinner.show(' Searching vessel details');
+    this.imoNumber = this.vesselForm.get('imoNumber').value;
+    this.appService.getVesselByImoNumber(this.imoNumber).subscribe({
+      next: (res) => {
+        if (res.data) {
+          this.vesselInfo = res.data;
+          this.vesselForm.get('vesselName').setValue(this.vesselInfo.name);
+        }
+        // this.showLoader = false;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (e) => {
+        this.vesselInfo = null;
+        this.vesselForm.get('vesselName').setValue('');
+        // this.showLoader = false;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+  validateImo() {
+    if (this.vesselForm.get('imoNumber').value != '') this.CheckVesselDetails();
   }
 }
 

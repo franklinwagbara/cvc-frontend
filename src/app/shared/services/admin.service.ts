@@ -3,12 +3,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../src/environments/environment';
 import { LoginModel } from '../models/login-model';
 import { IApplicationProcess } from '../interfaces/IApplicationProcess';
 import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
-import { IAppFee } from 'src/app/company/apply/new-application/new-application.component';
+import { IAppFee } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { IRole } from '../interfaces/IRole';
+import { IEmailList } from 'src/app/admin/settings/email-config/email-config.component';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -61,6 +62,13 @@ export class AdminService {
 
   createStaff(model) {
     return this.http.post<any>(`${environment.apiUrl}/Staff/add-user`, model);
+  }
+
+  submitDischargeClearance(model: any) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/Staff/discharge-crearance`,
+      model
+    );
   }
 
   updateStaff(model) {
@@ -422,6 +430,76 @@ export class AdminService {
   }
 
   public deleteAppFee(id: IAppFee) {
+    return this.http
+      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public getEmailList() {
+    return this.http
+      .get<any>(
+        `${environment.apiUrl}/EmailConfiguration/all-email-configuration`
+      )
+      .pipe(retry(this.num));
+  }
+
+  public addEmail(data: IEmailList) {
+    return this.http
+      .post<any>(
+        `${environment.apiUrl}/EmailConfiguration/create-email-configuration`,
+        data
+      )
+      .pipe(retry(this.num));
+  }
+
+  public editEmail(data: IEmailList) {
+    return this.http
+      .post<any>(
+        `${environment.apiUrl}/EmailConfiguration/update-email-configuration`,
+        data
+      )
+      .pipe(retry(this.num));
+  }
+
+  public deleteEmail(id: IAppFee) {
+    return this.http
+      .delete<any>(
+        `${environment.apiUrl}/EmailConfiguration/delete-email-configuration?id=${id}`
+      )
+      .pipe(retry(this.num));
+  }
+
+  public getproductTypes() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Product/all-product-types`)
+      .pipe(retry(this.num));
+  }
+
+  public getproducts() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Product/all-products`)
+      .pipe(retry(this.num));
+  }
+
+  public addproducts(data: IAppFee) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Product/create-products`, data)
+      .pipe(retry(this.num));
+  }
+
+  public editproducts(data: any) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Product/edit-products`, data)
+      .pipe(retry(this.num));
+  }
+
+  public getproductsById(id: IAppFee) {
+    return this.http
+      .get<any>(`${environment.apiUrl}/AppFee/get-product-byId?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public deleteproducts(id: IAppFee) {
     return this.http
       .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
       .pipe(retry(this.num));

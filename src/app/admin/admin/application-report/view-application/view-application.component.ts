@@ -2,25 +2,26 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
-import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
-import { AuthenticationService } from 'src/app/shared/services';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { AppSource } from '../../../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../../../src/app/shared/interfaces/IApplication';
+import { AddScheduleFormComponent } from '../../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
+import { ApproveFormComponent } from '../../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
+import { SendBackFormComponent } from '../../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
+import { AuthenticationService } from '../../../../../../src/app/shared/services';
+import { AdminService } from '../../../../../../src/app/shared/services/admin.service';
+import { ApplyService } from '../../../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../../src/app/shared/services/spinner.service';
 import { ShowMoreComponent } from '../../../../shared/reusable-components/show-more/show-more.component';
+import { ApplicationService } from '../../../../../../src/app/shared/services/application.service';
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
 export class ViewApplicationComponent implements OnInit {
-  public application: IApplication;
+  public application: IApplication | any;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -28,7 +29,7 @@ export class ViewApplicationComponent implements OnInit {
   constructor(
     private snackBar: MatSnackBar,
     private auth: AuthenticationService,
-    private appService: ApplyService,
+    private appService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
     private spinner: SpinnerService,
@@ -151,21 +152,10 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication().subscribe((res) => {
-        this.application = res.data.data;
-
-        this.progressBar.close();
-        this.cd.markForCheck();
-      });
     });
   }
 

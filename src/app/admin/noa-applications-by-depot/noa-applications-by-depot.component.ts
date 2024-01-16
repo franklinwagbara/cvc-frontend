@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { IApplication } from '../../shared/interfaces/IApplication';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../shared/services/application.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { PopupService } from '../../shared/services/popup.service';
+
 
 @Component({
   selector: 'app-noa-applications-by-depot',
@@ -13,17 +13,23 @@ import { PopupService } from 'src/app/shared/services/popup.service';
 })
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
+  products: any[];
 
   public tableTitles = {
     applications: 'NOA Applications',
   };
 
   public applicationKeysMappedToHeaders = {
-    // marketerName: 'Marketer Name',
+    reference: 'Reference',
+    companyName: 'Company Name',
+    companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
-    loadingPort: 'Loading Port',
-    imoNumber: 'IMO Number',
-    eta: 'Estimated Time of Arrival',
+    vesselType: 'Vessel Type',
+    jetty: 'Jetty',
+    capacity: 'Capacity',
+    status: 'Status',
+    rrr: 'RRR',
+    createdDate: 'Initiated Date',
   };
 
   constructor(
@@ -39,41 +45,40 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   public fetchAllData() {
-    this.spinner.open();
+    this.spinner.show('Loading applications...');
 
-    this.applicationService.viewApplicationByDepot(1).subscribe({
-      next: (res) => {
-        this.applications = res.data;
+    this.applicationService.viewApplicationByDepot().subscribe({
+      next: (res: any) => {
+        this.applications = res?.data;
+        this.applications = this.applications
+          .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
         this.spinner.close();
-        this.cdr.markForCheck();
       },
       error: (error: unknown) => {
-        this.popUp.open('Something went wrong while retrieving data.', 'error');
-
+        console.log(error);
+        this.popUp.open('Something went wrong while retrieving data', 'error');
         this.spinner.close();
-        this.cdr.markForCheck();
-      },
-    });
+      }
+    })
   }
 
-  initiateCoq(event: any) {
-    const row = event;
-    // Call the endpoint to create an empty coq
-    this.router.navigate([
-      `/admin/noa-applications-by-depot/${event.id}/certificate-of-quantity/new-application`,
-    ]);
+  viewApplication(event: any): void {
+    this.router.navigate(['admin', 'coq-and-plant', 'noa-applications-by-depot', event.id]);
   }
 
   public get isFieldOfficer(): boolean {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser && currentUser?.userRoles.includes('Field_Officer');
   }
-}
 
-// export interface CoQApplication {
-//   marketerName: string;
-//   imoNumber: string;
-//   vesselName: string;
-//   loadingPort: string;
-//   dischargePort: string;
-// }
+  initiateCoQ(event: any) {
+    this.router.navigate([
+      'admin',
+      'coq-and-plant',
+      'noa-applications-by-depot',
+      event.id,
+      'certificate-of-quantity',
+      'new-application',
+    ]);
+  }
+}

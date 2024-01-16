@@ -8,13 +8,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { LicenceService } from 'src/app/shared/services/licence.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { environment } from 'src/environments/environment';
-import { IPermit } from 'src/app/shared/interfaces/IPermit';
+import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { LicenceService } from '../../../../src/app/shared/services/licence.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { environment } from '../../../../src/environments/environment';
+import { IPermit } from '../../../../src/app/shared/interfaces/IPermit';
 
 @Component({
   selector: 'app-my-permits',
@@ -77,5 +77,13 @@ export class MypermitsComponent implements OnInit, AfterViewInit {
     window.location.assign(
       `${environment.apiUrl}/licenses/view_license?id=${event.id}`
     );
+  }
+
+  viewCoQCerts(row: any) {
+    this.router.navigateByUrl(`/company/mycertificates/${row.id}/coqs`);
+  }
+
+  viewDebitNotes(row: any) {
+    this.router.navigateByUrl(`/company/mycertificates/${row.id}/debit-notes`);
   }
 }

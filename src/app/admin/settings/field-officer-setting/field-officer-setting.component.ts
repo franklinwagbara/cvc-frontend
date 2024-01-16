@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IDepot } from 'src/app/shared/interfaces/IDepot';
-import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
-import { IRole } from 'src/app/shared/interfaces/IRole';
-import { AdminService } from 'src/app/shared/services/admin.service';
+import { IPlant } from '../../../shared/interfaces/IPlant';
+import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
+import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { Staff } from '../all-staff/all-staff.component';
-import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
-import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-field-officer-setting',
@@ -20,7 +20,7 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 })
 export class FieldOfficerSettingComponent implements OnInit {
   depotOfficers: IDepotOfficer[];
-  depots: IDepot[];
+  depots: IPlant[];
   allUsers: Staff[];
   elpsUsers: any[];
   roles: IRole[];
@@ -37,21 +37,21 @@ export class FieldOfficerSettingComponent implements OnInit {
     private dialog: MatDialog,
     private adminService: AdminService,
     private depotOfficerService: DepotOfficerService,
-    private libService: LibaryService,
+    private libraryService: LibaryService,
     private spinner: SpinnerService,
     private progressBar: ProgressBarService,
     private popUp: PopupService
   ) {}
 
   ngOnInit(): void {
+    this.spinner.open();
     this.fetchAllData();
   }
 
   public fetchAllData() {
-    this.spinner.open();
     forkJoin([
       this.depotOfficerService.getAllMappings(),
-      this.libService.getAppDepots(),
+      this.libraryService.getAppDepots(),
       this.adminService.getAllStaff(),
       this.adminService.getElpsStaffList(),
       this.adminService.getRoles(),
@@ -63,11 +63,13 @@ export class FieldOfficerSettingComponent implements OnInit {
         this.elpsUsers = res[3].data;
         this.roles = res[4].data;
         this.spinner.close();
+        this.progressBar.close();
       },
       error: (error: any) => {
         console.error(error);
         this.popUp.open('Something went wrong while fetching data.', 'error');
         this.spinner.close();
+        this.progressBar.close();
       },
     });
   }
@@ -82,12 +84,7 @@ export class FieldOfficerSettingComponent implements OnInit {
         offices: this.offices,
       },
     };
-    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        
-      }
-    });
+    this.dialog.open(DepotOfficerFormComponent, { data });
   }
 
   deleteData(selected: any[]) {
@@ -115,17 +112,17 @@ export class FieldOfficerSettingComponent implements OnInit {
               `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
               'success'
             );
-  
+
             const responses = res
               .map((r) => r.data.data)
               .sort((a, b) => a.length - b.length);
   
             this.allUsers = responses[0];
           }
-  
-          this.progressBar.close();
+          this.fetchAllData()
         },
         error: (error: unknown) => {
+          console.log(error);
           this.progressBar.close();
           this.popUp.open('Something went wrong while deleting data!', 'error');
         },
@@ -133,7 +130,7 @@ export class FieldOfficerSettingComponent implements OnInit {
     }
   }
 
-  editData(event: Event) {
+  editData(event: any) {
     const data = {
       data: {
         users: this.allUsers,

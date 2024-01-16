@@ -41,6 +41,11 @@ import { RenewApplicationComponent } from './apply/renew-application/renew-appli
 import { ViewApplicationComponent } from './view-application/view-application.component';
 import { ApplicationViewTableComponent } from './view-application/application-view-table/application-view-table.component';
 import { ViewMessageComponent } from './messages/view-message/view-message.component';
+import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
+import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
+import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
+import { TanksComponent } from './settings/processing-plant/tanks/tanks.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   imports: [
@@ -64,6 +69,7 @@ import { ViewMessageComponent } from './messages/view-message/view-message.compo
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,
+    MatProgressBarModule
   ],
   declarations: [
     DashboardComponent,
@@ -86,6 +92,10 @@ import { ViewMessageComponent } from './messages/view-message/view-message.compo
     ViewApplicationComponent,
     ApplicationViewTableComponent,
     ViewMessageComponent,
+    ViewCoqCertsComponent,
+    ViewDebitNotesComponent,
+    ProcessingPlantComponent,
+    TanksComponent,
   ],
   providers: [],
 })

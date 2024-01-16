@@ -1,6 +1,18 @@
+.charts-container {
+  @apply flex flex-col lg:flex-row gap-4;
+}
+
 .chart-container {
   box-shadow: -2px 0px 4px 0px rgb(148, 147, 147);
   border-radius: 15px;
   border-color: transparent !important;
-  @apply p-3 pb-24;
+  @apply p-3 pb-24 flex-1 h-[600px];
+}
+
+.chart-title {
+  @apply mb-4;
+}
+
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {   
+  stroke: #FBD430;
 }

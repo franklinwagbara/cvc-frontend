@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { IApplicationFormDTO } from 'src/app/company/apply/new-application/new-application.component';
+import { environment } from '../../../../src/environments/environment';
+import { IApplicationFormDTO } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { Observable } from 'rxjs';
 
 const API = `${environment.apiUrl}/application`;
@@ -42,10 +42,14 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/all-applications`);
   }
 
-  viewApplicationByDepot(depotId: number): Observable<any> {
-    return this.http.get<any>(`${API}/view-application-by-depot`, {
-      params: { id: depotId },
-    });
+  // viewApplicationByDepot(depotId: number): Observable<any> {
+  //   return this.http.get<any>(`${API}/view-application-by-depot`, {
+  //     params: { id: depotId },
+  //   });
+  // }
+
+  viewApplicationByDepot(): Observable<any> {
+    return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
   }
 
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {
@@ -58,5 +62,11 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/get-app-vessel-info`, {
       params: { id: appId, depotId },
     });
+  }
+
+  public getVesselByImoNumber(imoNumber: string) {
+    return this.http.get<any>(
+      `${environment.apiUrl}/Vessel/verify-IMO-numbers?imoNumber=${imoNumber}`
+    );
   }
 }

@@ -1,10 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { GenericService, AuthenticationService } from 'src/app/shared/services';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { environment } from 'src/environments/environment';
+import { GenericService, AuthenticationService } from '../../../../../src/app/shared/services';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { environment } from '../../../../../src/environments/environment';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,7 +17,7 @@ export class DashboardComponent implements OnInit {
 
   tableTitles = {
     messages: 'Messages',
-    processingForThreeWeeks: 'Applications in Process in the Pass Three Weeks',
+    processingForThreeWeeks: 'Applications in Process in the Past Three Weeks',
     onStaffDeskForFiveDays: 'Applcations on My Desk in the Last Five Days',
   };
 
@@ -39,8 +37,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     public generic: GenericService,
     private auth: AuthenticationService,
-    private router: Router,
-    private progressBar: ProgressBarService,
     private spinner: SpinnerService,
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar
@@ -71,11 +67,11 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.auth.logout();
     // this.router.navigate([]);
-    window.location.href = environment.apiUrl + '/auth/log-out';
+    window.location.href = environment.apiUrl + '/account/logout';
   }
 }
 
-class DashBoardModel {
+export class DashBoardModel {
   deskCount: number;
   tApproved: number;
   rejectedCount: number;

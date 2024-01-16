@@ -3,18 +3,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { GenericService } from 'src/app/shared/services';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { GenericService } from '../../../../src/app/shared/services';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { AppSource } from '../../../../src/app/shared/constants/appSource';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
   IFacility,
   ITankDTO,
 } from '../apply/new-application/new-application.component';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'myapplication.component.html',
@@ -40,7 +40,7 @@ export class MyApplicationComponent implements OnInit {
     companyName: 'Company Name',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    capacity: 'Capacity',
+    // capacity: 'Capacity',
     createdDate: 'Date Initiated',
     status: 'Status',
   };
@@ -73,8 +73,11 @@ export class MyApplicationComponent implements OnInit {
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
-          this.applications = res.data;
-          this.applications$.next(res.data);
+          this.applications = res.data.sort((a, b) => {
+            return new Date(a.createdDate) > new Date(b.createdDate) ? -1 :
+              new Date(a.createdDate) < new Date(b.createdDate) ? 1 : 0;
+          });
+          this.applications$.next(res.data)
 
           //todo: display success dialog
           this.progressbar.close();
@@ -205,6 +208,8 @@ export interface Application {
   status: string;
   submittedDate: string;
   applicationDocs: any[];
+  totalAmount?: string;
+  jetty?: string;
 
   createdDate: string;
   paymnetDate: string;
@@ -242,6 +247,7 @@ export interface Vessel {
   callSIgn: string;
   imoNumber: string;
   tanks: ITankDTO[];
+  jetty?: string;
   facilitySources: IFacility[];
 }
 

@@ -17,6 +17,9 @@ import { DocumentUploadComponent } from './document-upload/document-upload.compo
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
 import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
 import { ViewApplicationInFullComponent } from '../shared/reusable-components/view-application-in-full/view-application-in-full.component';
+import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
+import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
+import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -27,6 +30,7 @@ const routes: Routes = [
   // { path: 'mypermits', component: MypermitsComponent },
   { path: 'apply', component: ApplyComponent },
   { path: 'myapplication', component: MyApplicationComponent },
+  { path: 'processing-plant', component: ProcessingPlantComponent },
   { path: 'registerdirector', component: RegisterDirectorComponent },
   { path: 'upload', component: UploadComponent },
   { path: 'previewapp/:id', component: PreviewAppComponent },
@@ -35,6 +39,11 @@ const routes: Routes = [
   { path: 'new', component: NewApplicationComponent },
   { path: 'renew', component: RenewApplicationComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
+  { path: 'mycertificates/:id/coqs', component: ViewCoqCertsComponent },
+  {
+    path: 'mycertificates/:id/debit-notes',
+    component: ViewDebitNotesComponent,
+  },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,

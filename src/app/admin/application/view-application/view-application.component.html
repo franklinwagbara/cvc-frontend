@@ -1,147 +1,99 @@
-<div class="view-application">
-  <h2 mat-dialog-title class="text-center title">
-    APPLICATION REFERENCE : {{ application?.reference }}
-  </h2>
-  <div mat-dialog-content class="content">
-    <div class="application-view">
-      <app-application-view-table
-        [application]="application"
-        [appId]="appId"
-        [appSource]="appSource"
-      ></app-application-view-table>
-    </div>
-    <div class="application-controls">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> CURRENT DESK </mat-panel-title>
-        </mat-expansion-panel-header>
-        <p>{{ application?.currentDesk }}</p>
-      </mat-expansion-panel>
+<div class="view-application-container">
+  <button
+    (click)="location.back()"
+    class="my-4 text-lg"
+    mat-button
+  >
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
+  </button>
 
-      <!-- <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> INSPECTION FORM(S) </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="
-            let inspectionForm of application?.inspectionForm | firstN : 4
-          "
-        >
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ inspectionForm.actionBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Remark</div>
-            <div class="item-content">{{ inspectionForm.comment }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Date</div>
-            <div class="item-content">{{ inspectionForm.date }}</div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('inspectionForm')">Show more</p>
-      </mat-expansion-panel> -->
+  <div class="view-application">
+    <h2 mat-dialog-title class="text-center page-title">
+      APPLICATION REFERENCE : {{ application?.reference }}
+    </h2>
 
-      <!-- <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title> APPLICATION REPORTS </mat-panel-title>
-      </mat-expansion-panel-header>
-      <p>application reports</p>
-    </mat-expansion-panel> -->
+    <div mat-dialog-content class="content !overflow-x-auto">
+      <div class="application-view">
+        <app-application-view-table
+          [application]="application"
+          [appId]="appId"
+          [appSource]="appSource"
+        ></app-application-view-table>
+      </div>
+      <div class="application-controls">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> CURRENT DESK </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ application?.currentDesk }}</p>
+        </mat-expansion-panel>
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> EXTRA PAYMENTS </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let extraPayment of application?.extraPayments | firstN : 4"
-        >
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ extraPayment.actionBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Remark</div>
-            <div class="item-content">{{ extraPayment.comment }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Date</div>
-            <div class="item-content">{{ extraPayment.date }}</div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('extraPayments')">Show more</p>
-      </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div
+            class="card-list"
+            *ngFor="let applicationDoc of application?.documents | firstN : 4"
+          >
+            <div class="card-item">
+              <div class="item-title">
+                <a [href]="applicationDoc.docSource" target="_blank">
+                  <img
+                    *ngIf="isPDF(applicationDoc.docSource)"
+                    src="../../../../assets/image/pdfIcon.png"
+                    alt="open file"
+                  />
 
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let applicationDoc of application?.documents | firstN : 4"
-        >
-          <div class="card-item">
-            <div class="item-title">
-              <a [href]="applicationDoc.docSource" target="_blank">
-                <img
-                  *ngIf="isPDF(applicationDoc.docSource)"
-                  src="../../../../assets/image/pdfIcon.png"
-                  alt="open file"
-                />
+                  <img
+                    *ngIf="isIMG(applicationDoc.docSource)"
+                    src="../../../../assets/image/imageIcon.png"
+                    alt="open file"
+                  />
 
-                <img
-                  *ngIf="isIMG(applicationDoc.docSource)"
-                  src="../../../../assets/image/imageIcon.png"
-                  alt="open file"
-                />
-
-                <img
-                  *ngIf="
-                    !isIMG(applicationDoc.docSource) &&
-                    !isPDF(applicationDoc.docSource)
-                  "
-                  src="../../../../assets/image/otherFileType.png"
-                  alt="open file"
-                />
-              </a>
-            </div>
-            <div class="item-content">
-              <a [href]="applicationDoc.docSource" target="_blank">
-                {{ applicationDoc.docName }}
-              </a>
+                  <img
+                    *ngIf="
+                      !isIMG(applicationDoc.docSource) &&
+                      !isPDF(applicationDoc.docSource)
+                    "
+                    src="../../../../assets/image/otherFileType.png"
+                    alt="open file"
+                  />
+                </a>
+              </div>
+              <div class="item-content">
+                <a [href]="applicationDoc.docSource" target="_blank">
+                  {{ applicationDoc.docName }}
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <p class="show-more" (click)="showMore('applicationDocs')">Show more</p>
-      </mat-expansion-panel>
-    </div>
-    <div class="application-controls" *ngIf="isStaffDesk">
-      <div class="actions">
-        <button mat-raised-button color="primary" (click)="action('approve')">
-          Approve
-        </button>
-        <button mat-raised-button color="warn" (click)="action('sendBack')">
-          Send Back
-        </button>
-        <!-- <button
-          mat-stroked-button
-          color="accent"
-          (click)="action('addSchedule')"
-        >
-          Add Schedule
-        </button> -->
+          <p class="show-more" (click)="showMore('applicationDocs')">
+            Show more
+          </p>
+        </mat-expansion-panel>
+      </div>
+      <div class="application-controls" *ngIf="isStaffDesk">
+        <div class="actions">
+          <button
+            mat-raised-button
+            class="bg-green-500 text-white"
+            (click)="action('approve')"
+          >
+            Approve
+          </button>
+          <button mat-raised-button color="warn" (click)="action('sendBack')">
+            Send Back
+          </button>
 
-        <!-- todo: display button only if role is HMUR -->
-        <button
-          mat-stroked-button
-          color="primary"
-          (click)="action('assignApplication')"
-        >
-          Delegate Application
-        </button>
+          <!-- <button
+            mat-stroked-button
+            color="primary"
+            (click)="action('assignApplication')"
+          >
+            Delegate Application
+          </button> -->
+        </div>
       </div>
     </div>
   </div>

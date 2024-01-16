@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { forkJoin } from 'rxjs';
-import { UserFormComponent } from 'src/app/shared/reusable-components/user-form/user-form.component';
-import { IBranch } from 'src/app/shared/interfaces/IBranch';
-import { MoveApplicationFormComponent } from 'src/app/shared/reusable-components/move-application-form/move-application-form.component';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { UserFormComponent } from '../../../../../src/app/shared/reusable-components/user-form/user-form.component';
+import { IBranch } from '../../../../../src/app/shared/interfaces/IBranch';
+import { MoveApplicationFormComponent } from '../../../../../src/app/shared/reusable-components/move-application-form/move-application-form.component';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { FieldOffice } from '../field-zonal-office/field-zonal-office.component';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-all-staff',
@@ -75,12 +75,7 @@ export class AllStaffComponent implements OnInit {
         if (res[3].success) this.locations = res[3].data;
 
         if (res[4].success) this.offices = res[4].data;
-
-        // if (res[3].success) this.offices = res[3].data.data;
-
-        // if (res[4].success) this.branches = res[4].data.data;
-
-        // this.progressBar.close();
+        
         this.spinner.close();
       },
       error: (error: unknown) => {
@@ -120,13 +115,15 @@ export class AllStaffComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.adminHttpService.getAllStaff().subscribe((res) => {
-        this.users = res.data;
-
-        this.progressBar.close();
-      });
+      if (res) {
+        this.progressBar.open();
+  
+        this.adminHttpService.getAllStaff().subscribe((res) => {
+          this.users = res.data;
+  
+          this.progressBar.close();
+        });
+      }
     });
   }
 
@@ -182,16 +179,22 @@ export class AllStaffComponent implements OnInit {
           if (type === 'users') this.users = responses[0];
           this.progressBar.open();
 
-          this.adminHttpService.getAllStaff().subscribe((res) => {
-            this.users = res.data;
-
-            this.progressBar.close();
+          this.adminHttpService.getAllStaff().subscribe({
+            next: (res: any) => {
+              this.users = res.data;
+              this.progressBar.close();
+            },
+            error: (error: unknown) => {
+              console.log(error);
+              this.progressBar.close();
+            }
           });
         }
 
         this.progressBar.close();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });

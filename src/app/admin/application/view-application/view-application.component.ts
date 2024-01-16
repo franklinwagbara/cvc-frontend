@@ -2,25 +2,27 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
-import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
-import { AuthenticationService } from 'src/app/shared/services';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
-import { LicenceService } from 'src/app/shared/services/licence.service';
+import { Location } from '@angular/common';
+import { AppSource } from '../../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
+import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
+import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
+import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { LoginModel } from 'src/app/shared/models/login-model';
-import { LOCATION } from 'src/app/shared/constants/location';
+import { LoginModel } from '../../../../../src/app/shared/models/login-model';
+import { LOCATION } from '../../../../../src/app/shared/constants/location';
 
 @Component({
-  selector: 'app-view-application',
+  selector: 'app-view-coq-application',
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
@@ -44,18 +46,41 @@ export class ViewApplicationComponent implements OnInit {
     public route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private licenceService: LicenceService
-  ) {}
+    private licenceService: LicenceService,
+    public location: Location
+  ) {
+    this.route.params.subscribe((params) => {
+      if (Object.keys(params).length !== 0) {
+        console.log(params);
+        this.spinner.open();
+        this.appId = parseInt(params['id']);
+        console.log('Applications Id =================> ', this.appId);
+        if (isNaN(this.appId)) {
+          this.location.back();
+        }
+        this.appSource = params['appSource'];
+        console.log('App Source =============> ', this.appSource);
+        this.coqId = parseInt(params['coqId']);
+
+        if (this.appSource != AppSource.Licence) this.getApplication();
+        else this.getLicence();
+      } else {
+        this.location.back();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      this.spinner.open();
-      this.appId = parseInt(params['id']);
-      this.appSource = params['appSource'];
-      this.coqId = parseInt(params['coqId']);
+      if (Object.keys(params).length !== 0) {
+        this.appSource = params['appSource'];
+        this.coqId = parseInt(params['coqId']);
 
-      if (this.appSource != AppSource.Licence) this.getApplication();
-      else this.getLicence();
+        if (this.appSource != AppSource.Licence) this.getApplication();
+        else this.getLicence();
+      } else {
+        this.location.back();
+      }
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
@@ -75,6 +100,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getApplication() {
+    this.spinner.show('Fetching application');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
@@ -102,6 +128,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getLicence() {
+    this.spinner.show('Loading license details');
     this.licenceService.getLicence(this.appId).subscribe({
       next: (res) => {
         if (res.success) {

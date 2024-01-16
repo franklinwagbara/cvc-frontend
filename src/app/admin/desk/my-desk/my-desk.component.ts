@@ -3,17 +3,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { IBranch } from 'src/app/shared/interfaces/IBranch';
-import { AssignApplicationFormComponent } from 'src/app/shared/reusable-components/assign-application-form/assign-application-form.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+import { AppSource } from '../../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
+import { IBranch } from '../../../../../src/app/shared/interfaces/IBranch';
+import { AssignApplicationFormComponent } from '../../../../../src/app/shared/reusable-components/assign-application-form/assign-application-form.component';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
 import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
+import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 @Component({
   selector: 'app-my-desk',
@@ -28,6 +31,8 @@ export class MyDeskComponent implements OnInit {
 
   public appType$ = new BehaviorSubject<string>('NOA');
 
+  public coqApplications: ICOQ[];
+
   public users: Staff[];
   public userDetail: any;
   public roles: any;
@@ -41,13 +46,13 @@ export class MyDeskComponent implements OnInit {
 
   public applicationKeysMappedToHeaders = {
     reference: 'Reference Number',
-    importName: 'Import Name',
+    // importName: 'Import Name',
     companyEmail: 'Company Email',
-    // appType: 'Application Type',
+    applicationType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     capacity: 'Capacity',
-    paymnetStatus: 'Payment Status',
+    paymentStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
   };
@@ -97,6 +102,7 @@ export class MyDeskComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -112,9 +118,14 @@ export class MyDeskComponent implements OnInit {
 
   ngAfterViewInit(): void {}
 
+  get isFieldOfficer(): boolean {
+    const currentUser = decodeFullUserInfo();
+    return currentUser.userRoles === UserRole.FIELDOFFICER;
+  }
+
   onViewData(event: any, type: string) {
     if (this.appType$.getValue() == 'COQ') {
-      this.router.navigate([`/admin/view-application/${event.id}`], {
+      this.router.navigate([`/admin/view-coq-application/${event.id}`], {
         queryParams: {
           id: event.appId,
           appSource: AppSource.MyDesk,
@@ -123,7 +134,7 @@ export class MyDeskComponent implements OnInit {
         },
       });
     } else
-      this.router.navigate([`/admin/view-application/${event.id}`], {
+      this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
   }
@@ -132,6 +143,17 @@ export class MyDeskComponent implements OnInit {
     return this.appType$.getValue() == 'NOA'
       ? this.applicationKeysMappedToHeaders
       : this.coqKeysMappedToHeaders;
+  }
+
+  initiateCoq(event: any) {
+    this.router.navigate([
+      'admin', 
+      'my-desk', 
+      'noa-applications',
+      event.id, 
+      'certificate-of-quantity', 
+      'new-application'
+    ]);
   }
 
   onAssignApplication() {

@@ -1,0 +1,100 @@
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Reference Number</th>
+      <td>{{ application?.Reference }}</td>
+    </tr>
+    <tr>
+      <th>Plant Name</th>
+      <td>{{ application?.Plant }}</td>
+    </tr>
+    <tr *ngIf="application?.ProductType">
+      <th>Product Type</th>
+      <td>{{ application?.ProductType }}</td>
+    </tr>
+    <tr *ngIf="application?.VesselName">
+      <th>Vessel Name</th>
+      <td>{{ application?.VesselName }}</td>
+    </tr>
+    <tr *ngIf="application?.MotherVessel">
+      <th>Mother Vessel</th>
+      <td>{{ application?.MotherVessel }}</td>
+    </tr>
+    <tr *ngIf="application?.LoadingPort">
+      <th>Loading Port</th>
+      <td>{{ application?.LoadingPort }}</td>
+    </tr>
+    <tr *ngIf="application?.Jetty">
+      <th>Jetty</th>
+      <td>{{ application?.Jetty }}</td>
+    </tr>
+    <tr>
+      <th>Quantity Reflected On Bill</th>
+      <td>{{ application?.QuauntityReflectedOnBill }}</td>
+    </tr>
+    <tr>
+      <th>Arrival Ship Figure</th>
+      <td>{{ application?.ArrivalShipFigure }}</td>
+    </tr>
+    <tr>
+      <th>Discharge Ship Figure</th>
+      <td>{{ application?.DischargeShipFigure }}</td>
+    </tr>
+    <tr>
+      <th>Depot Price</th>
+      <td>{{ application?.DepotPrice | currency:'NGN' }}</td>
+    </tr>
+
+    <tr>
+      <th>Date Of Vessel Arrival</th>
+      <td>{{ application?.DateOfVesselArrival | date }}</td>
+    </tr>
+    <tr>
+      <th>Date Of Shore Tank After Discharge</th>
+      <td>{{ application?.DateOfSTAfterDischarge | date }}</td>
+    </tr>
+    <tr>
+      <th>Date Of Vessel Ullage</th>
+      <td>{{ application?.DateOfVesselUllage | date }}</td>
+    </tr>
+
+    <tr>
+      <th>Application Type</th>
+      <td>COQ</td>
+    </tr>
+
+    <tr>
+      <th>Application Status</th>
+      <td>{{ application?.Status }}</td>
+    </tr>
+    <tr *ngIf="application?.NameConsignee">
+      <th>Name of Consignee</th>
+      <td>{{ application?.NameConsignee }}</td>
+    </tr>
+    <tr *ngIf="application?.NominatedSurveyor">
+      <th>Nominated Surveyor</th>
+      <td>{{ application?.NominatedSurveyor }}</td>
+    </tr>
+    <tr>
+      <th>Initiated On</th>
+      <td>{{ application?.DateCreated | date }}</td>
+    </tr>
+    <tr>
+      <th>Submitted On</th>
+      <td>{{ application?.SubmittedDate | date }}</td>
+    </tr>
+    <tr>
+      <th>Tanks</th>
+      <td>
+        <button
+          mat-raised-button
+          [disabled]="tankList?.length < 1"
+          class="btn"
+          (click)="viewTanks()"
+        >
+          View Tanks
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

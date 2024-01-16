@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -54,7 +54,13 @@ import { AppDepotFormComponent } from './reusable-components/app-depot-form/app-
 import { RoleFormComponent } from './reusable-components/role-form/role-form.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DepotOfficerFormComponent } from './reusable-components/depot-officer-form/depot-officer-form.component';
-
+import { ProcessingPlantFormComponent } from './reusable-components/processing-plant-form/processing-plant-form.component';
+import { ProductFormComponent } from './reusable-components/product-form/product-form.component';
+import { TankFormComponent } from './reusable-components/tank-form/tank-form.component';
+import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
+import { DischargeClearanceFormComponent } from './reusable-components/discharge-clearance-form/discharge-clearance-form.component';
+import { EmailConfigFormComponent } from './reusable-components/email-config-form/email-config-form.component';
+import { NoaApplicationPreviewComponent } from './reusable-components/noa-application-preview/noa-application-preview.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +80,7 @@ import { DepotOfficerFormComponent } from './reusable-components/depot-officer-f
     ApproveFormComponent,
     SendBackFormComponent,
     AddScheduleFormComponent,
+    DischargeClearanceFormComponent,
     FlatTableComponent,
     SpinnerComponent,
     AssignApplicationFormComponent,
@@ -86,6 +93,12 @@ import { DepotOfficerFormComponent } from './reusable-components/depot-officer-f
     AppDepotFormComponent,
     RoleFormComponent,
     DepotOfficerFormComponent,
+    ProcessingPlantFormComponent,
+    ProductFormComponent,
+    TankFormComponent,
+    AbbreviateNumberPipe,
+    EmailConfigFormComponent,
+    NoaApplicationPreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -126,6 +139,8 @@ import { DepotOfficerFormComponent } from './reusable-components/depot-officer-f
     DropdownComponent,
     FirstNPipe,
     FormatTimeAmPmPipe,
+    AbbreviateNumberPipe,
+    CurrencyPipe,
   ],
 })
 export class SharedModule {}

@@ -44,10 +44,6 @@ export class FormDialogComponent implements OnInit {
     }
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
-
   trackByFn(index: number) {
     return index;
   }

@@ -8,14 +8,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { AppSource } from 'src/app/shared/constants/appSource';
-import { IApplication } from 'src/app/shared/interfaces/IApplication';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-// import { ApplicationService } from 'src/app/shared/services/application.service';
+import { AppSource } from '../../../../src/app/shared/constants/appSource';
+import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
+import { AdminService } from '../../../../src/app/shared/services/admin.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+// import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 import { Category } from '../settings/modules-setting/modules-setting.component';
-import { ApplicationService } from 'src/app/shared/services/application.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 
 
 @Component({
@@ -89,7 +89,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
   }
 
   onViewData(event: any, type: string) {
-    this.router.navigate([`/admin/view-application/${event.id}`], {
+    this.router.navigate([`/admin/applications/noa-applications/${event.id}`], {
       queryParams: { id: event.id, appSource: AppSource.Application },
     });
   }

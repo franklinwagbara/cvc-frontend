@@ -1,15 +1,45 @@
 <div class="apply-container">
+
   <div class="apply-wrapper">
     <h1>NEW CVC CERTIFICATION</h1>
     <div class="form-wrapper">
       <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
         <form [formGroup]="vesselForm" class="main-form">
           <div class="first-segment" *ngIf="activateFirstSegment">
+            <h5 class="w-full">Vessel Information</h5>
             <div class="flex flex-col">
-              <span class="input-label"> Vessel Name </span>
+              <span class="input-label"> IMO Number </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['imoNumber'].touched &&
+                    vesselFormControl['imoNumber'].invalid
+                }"
+                autofocus
+                type="text"
+                class="rounded-r p-2"
+                placeholder="IMO Number"
+                formControlName="imoNumber"
+                (blur)="validateImo()"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="flex justify-between w-full input-label">
+                <span class=""> Vessel Name </span>
+                <span *ngIf="vesselInfo" class="text-green-600">
+                  Vessel found
+                </span>
+              </div>
               <input
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                [readOnly]="vesselInfo"
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselName'].touched &&
+                    vesselFormControl['vesselName'].invalid
+                }"
+                class="rounded-r p-2"
                 placeholder="Vessel Name"
                 formControlName="vesselName"
               />
@@ -18,9 +48,14 @@
             <div class="flex flex-col">
               <span class="input-label"> Mother Vessel </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['motherVessel'].touched &&
+                    vesselFormControl['motherVessel'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Vessel Name"
+                class="rounded-r p-2"
+                placeholder="Mother Vessel Name"
                 formControlName="motherVessel"
               />
             </div>
@@ -28,8 +63,13 @@
             <div class="flex flex-col">
               <span class="input-label"> Loading Port </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['loadingPort'].touched &&
+                    vesselFormControl['loadingPort'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Loading Port"
                 formControlName="loadingPort"
               />
@@ -38,8 +78,13 @@
             <div class="flex flex-col">
               <span class="input-label"> Jetty </span>
               <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['jetty'].touched &&
+                    vesselFormControl['jetty'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 placeholder="Discharge Port"
                 formControlName="jetty"
               />
@@ -62,25 +107,21 @@
             <div class="flex flex-col">
               <span class="input-label"> Vessel Type </span>
               <select
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselTypeId'].touched &&
+                    vesselFormControl['vesselTypeId'].invalid
+                }"
                 type="text"
-                class="border border-t border-b rounded-r p-2"
+                class="rounded-r p-2"
                 formControlName="vesselTypeId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Vessel Type --</option>
                 <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
                   {{ vt.name }}
                 </option>
               </select>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> IMO Number </span>
-              <input
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="IMO Number"
-                formControlName="imoNumber"
-              />
             </div>
 
             <button
@@ -97,7 +138,8 @@
 
       <div class="second-segment" *ngIf="activateSecondSegment">
         <div class="appDepotForm">
-          <form class="appDepotForm" [formGroup]="appDepotForm">
+          <form class="appDepotForm depot-form" [formGroup]="appDepotForm">
+            <h5 class="w-full">Depot Configuration</h5>
             <div class="flex flex-col">
               <span class="input-label"> Depot Name </span>
               <select
@@ -105,7 +147,7 @@
                 class="border border-t border-b rounded-r p-2"
                 formControlName="depotId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Depot --</option>
                 <option *ngFor="let d of depots" [ngValue]="d.id">
                   {{ d.name }}
                 </option>
@@ -130,7 +172,7 @@
                 class="border border-t border-b rounded-r p-2"
                 formControlName="productId"
               >
-                <option disabled>--select--</option>
+                <option value="" [selected]="true">-- Select Product --</option>
                 <option *ngFor="let p of products" [ngValue]="p.id">
                   {{ p.name }}
                 </option>
@@ -174,7 +216,8 @@
                   </tr>
                 </tbody>
               </table>
-
+            </div>
+            <div>
               <button
                 class="btn-back"
                 mat-raised-button

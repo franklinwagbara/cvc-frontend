@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import { PreviewModel, uploadFile } from '../../../shared/models/apply.model';
 import {
   AuthenticationService,

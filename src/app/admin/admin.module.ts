@@ -25,7 +25,6 @@ import { AppStageDocsComponent } from './settings/app-stage-docs/app-stage-docs.
 import { BranchSettingComponent } from './settings/branch-setting/branch-setting.component';
 import { FieldZonalOfficeComponent } from './settings/field-zonal-office/field-zonal-office.component';
 import { ModulesSettingComponent } from './settings/modules-setting/modules-setting.component';
-import { StaffdeskComponent } from './staffdesk/staffdesk.component';
 import { AppProcessComponent } from './settings/app-process/app-process.component';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
@@ -43,7 +42,7 @@ import { ApplicationReportComponent } from './admin/application-report/applicati
 import { PaymentReportComponent } from './admin/payment-report/payment-report.component';
 import { ApplicationReportBarChartComponent } from './admin/application-report/bar-chart/bar-chart.component';
 import { PaymentReportBarChartComponent } from './admin/payment-report/bar-chart/bar-chart.component';
-import { LicenceComponent } from './licence/licence.component';
+import { CertificatesComponent } from './certificates/certificates.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { CoqApplicationFormComponent } from './coq-application-form/coq-application-form.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -65,13 +64,27 @@ import { ViewPaymentComponent } from './payment/view-payment/view-payment.compon
 import { RolesComponent } from './settings/roles/roles.component';
 import { JettySettingComponent } from './settings/jetty-setting/jetty-setting.component';
 import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
-
+import { MatStepperModule } from '@angular/material/stepper';
+import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
+import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
+import { ProductsComponent } from './settings/products/products.component';
+import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
+import { MatCardModule } from '@angular/material/card';
+import { CoqApplicationViewComponent } from './application/coq-application-view/coq-application-view.component';
+import { CoqApplicationViewTableComponent } from './application/coq-application-view/coq-application-view-table/coq-application-view-table.component';
+import { ViewCoqTankComponent } from './application/coq-application-view/view-coq-tank/view-coq-tank.component';
+import { AllCoqCertificatesComponent } from './all-coq-certificates/all-coq-certificates.component';
+import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearances.component';
+import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
+import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { EmailConfigComponent } from './settings/email-config/email-config.component';
+import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 
 @NgModule({
   declarations: [
     AdminComponent,
     DashboardComponent,
-    StaffdeskComponent,
     ApplicationComponent,
     AllStaffComponent,
     ModulesSettingComponent,
@@ -98,7 +111,7 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     PaymentExtrasComponent,
     ApplicationReportBarChartComponent,
     PaymentReportBarChartComponent,
-    LicenceComponent,
+    CertificatesComponent,
     ScheduleComponent,
     AppFeeComponent,
     AppDepotComponent,
@@ -106,13 +119,25 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     ViewPaymentComponent,
     PaymentViewTableComponent,
     RolesComponent,
-
     CoqApplicationFormComponent,
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
     FieldOfficerSettingComponent,
     JettySettingComponent,
     NominatedSurveyorSettingComponent,
+    EditCoqFormComponent,
+    CoqFormReviewComponent,
+    ProductsComponent,
+    ProcessingPlantCoqFormComponent,
+    CoqApplicationViewComponent,
+    CoqApplicationViewTableComponent,
+    ViewCoqTankComponent,
+    ViewNoaApplicationComponent,
+    AllCoqCertificatesComponent,
+    AllNoaClearancesComponent,
+    CoqApplicationPreviewComponent,
+    EmailConfigComponent,
+    AllCoqApplicationsComponent,
   ],
 
   imports: [
@@ -131,11 +156,14 @@ import { NominatedSurveyorSettingComponent } from './settings/nominated-surveyor
     MatSelectModule,
     MatInputModule,
     MatButtonModule,
+    MatCardModule,
     MatIconModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatStepperModule,
+    MatProgressSpinnerModule,
   ],
   exports: [],
   providers: [

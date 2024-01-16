@@ -1,14 +1,13 @@
 .card-area {
-  @apply relative mt-1 px-10  mb-28 pb-8 xl:mb-0 xl:h-card_area grid sm:grid-cols-2 grid-cols-1 md:grid-cols-2  xl:grid-cols-4  gap-1 lg:gap-4 2xl:gap-8 pt-14;
+  @apply m-2 mb-8 p-8 flex flex-wrap gap-4;
 }
 
 .card {
-  /* box-shadow: 11px 14px 0px 0px #84690f; */
-  /* box-shadow: 11px 14px 0px 0px #cab262; */
   box-shadow: 3px 5px 1px 0px #9b884a;
   border-radius: 60px;
   border-color: transparent !important;
-  @apply p-10 pb-16 h-52  flex flex-col gap-3 bg-gradient-to-r from-yellow-200 to-yellow-400;
+  min-width: fit-content;
+  @apply p-6 pb-4 flex flex-1 flex-col h-52 flex-wrap gap-2 justify-between bg-gradient-to-r from-yellow-200 to-yellow-400;
 }
 
 .card-red {
@@ -44,7 +43,7 @@
 }
 
 .card-data span {
-  @apply text-8xl font-semibold text-gray-800 lg:text-8xl;
+  @apply text-4xl font-semibold text-gray-800 lg:text-6xl;
 }
 
 .card-data div {
@@ -53,7 +52,7 @@
 
 .content {
   /* box-shadow: 0px 4px 5px #888888; */
-  @apply relative mx-5 -mt-content_mt bg-content_area min-h-[1000px] p-6;
+  @apply mt-20 mx-5 -mt-content_mt bg-content_area min-h-[1000px] p-6;
 }
 
 /** Dashboard css ends here */

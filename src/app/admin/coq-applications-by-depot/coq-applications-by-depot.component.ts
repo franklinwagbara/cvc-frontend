@@ -1,12 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   ICOQ,
   ICoQApplication,
-} from 'src/app/shared/interfaces/ICoQApplication';
-import { CoqService } from 'src/app/shared/services/coq.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+} from '../../shared/interfaces/ICoQApplication';
+import { CoqService } from '../../shared/services/coq.service';
+import { PopupService } from '../../shared/services/popup.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
+import { CoqAppFormService } from '../../shared/services/coq-app-form.service';
 
 @Component({
   selector: 'app-coq-applications-by-depot',
@@ -16,19 +17,15 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 export class CoqApplicationsByDepotComponent implements OnInit {
   public coqs: ICoQApplication[];
 
-  public tableTitles = {
-    coqs: 'Certificate of Quality(s)',
-  };
-
   public coqKeysMappedToHeaders = {
-    importName: 'Importer',
+    importName: 'Importer Name',
     vesselName: 'Vessel Name',
     depotName: 'Receiving Terminal',
     dateOfVesselUllage: 'Date of Vessel Ullage',
     dateOfSTAfterDischarge: 'Date of Shore-Tank After Discharge',
     gov: 'GOV',
     gsv: 'GSV',
-    createdBy: 'Created By',
+    depotPrice: 'Depot Price (NGN)'
   };
 
   constructor(
@@ -36,6 +33,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     private popUp: PopupService,
     private coqService: CoqService,
+    public coqFormService: CoqAppFormService,
     private router: Router
   ) {}
 
@@ -48,12 +46,12 @@ export class CoqApplicationsByDepotComponent implements OnInit {
 
     this.coqService.getAllCOQs().subscribe({
       next: (res) => {
-        this.coqs = res.data;
-
+        this.coqs = (res?.data || []).reverse();
         this.spinner.close();
         this.cdr.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.popUp.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();
@@ -66,12 +64,10 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     this.router.navigate(
       [
         'admin',
-        'noa-applications-by-depot',
-        event.appId,
-        'certificate-of-quantity',
-        'new-application',
-      ],
-      { queryParams: { depotId: event.depotId, view: true, coqId: event.id } }
+        'coq-and-plant',
+        'coq-applications-by-depot',
+        event.id,
+      ]
     );
   }
 }

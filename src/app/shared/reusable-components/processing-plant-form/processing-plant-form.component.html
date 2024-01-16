@@ -1,0 +1,89 @@
+<h1 mat-dialog-title>
+  {{ this.data.data.action === "EDIT" ? "Edit Plant" : "Add New Plant" }}
+</h1>
+<div mat-dialog-content class="min-w-[500px]">
+  <form [formGroup]="form">
+    <div class="mb-[10px]">
+      <div class="mb-[10px]">
+        <label>Plant Name</label>
+        <input type="text" formControlName="name" class="form-control" />
+        <mat-error
+          *ngIf="(f['name'].dirty || isSubmitted) && f['name']?.invalid"
+          class=""
+        >
+          Plant name is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label> State</label>
+        <select formControlName="stateId" class="form-control">
+          <option selected disabled>--Select from options --</option>
+          <option *ngFor="let state of states" [ngValue]="state.id">
+            {{ state.name }}
+          </option>
+        </select>
+        <mat-error
+          *ngIf="(f['stateId'].dirty || isSubmitted) && f['stateId']?.invalid"
+          class=""
+        >
+          State is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label>LGA</label>
+        <select formControlName="lgaid" class="form-control">
+          <option selected disabled>--Select from options --</option>
+          <option *ngFor="let lga of lga" [ngValue]="lga.id">
+            {{ lga.name }}
+          </option>
+        </select>
+        <mat-error
+          *ngIf="(f['lgaid'].dirty || isSubmitted) && f['lgaid']?.invalid"
+          class=""
+        >
+          LGA is required!
+        </mat-error>
+      </div>
+
+      <div class="mb-[10px]">
+        <label>City Name</label>
+        <input type="text" formControlName="city" class="form-control" />
+        <mat-error
+          *ngIf="(f['city'].dirty || isSubmitted) && f['city']?.invalid"
+          class=""
+        >
+          City is required!
+        </mat-error>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>Close</button>
+
+      <div
+        class="
+      "
+      >
+        <button
+          mat-raised-button
+          (click)="
+            this.data.data.action === 'EDIT' ? editPlant() : createPlant()
+          "
+          [disabled]="form.invalid"
+          *ngIf="!isLoading"
+        >
+          Save
+        </button>
+        <a
+          *ngIf="isLoading"
+          class="!flex !justify-center !items-center"
+          mat-mini-fab
+          color="disabled"
+        >
+          <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+        </a>
+      </div>
+    </div>
+  </form>
+</div>

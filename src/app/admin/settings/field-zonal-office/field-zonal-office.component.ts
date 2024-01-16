@@ -1,14 +1,14 @@
 import { forkJoin } from 'rxjs';
-import { FieldOfficeFormComponent } from 'src/app/shared/reusable-components/field-office-form/field-office-form.component';
-import { AdminService } from 'src/app/shared/services/admin.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { FieldOfficeFormComponent } from '../../../../../src/app/shared/reusable-components/field-office-form/field-office-form.component';
+import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
-import { LibaryService } from 'src/app/shared/services/libary.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 
 @Component({
   selector: 'app-field-zonal-office',

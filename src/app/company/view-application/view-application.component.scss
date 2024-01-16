@@ -1,11 +1,23 @@
 .view-application {
-  @apply mt-14 m-10 shadow-md bg-slate-100 p-5 flex flex-col min-w-fit;
+  @apply flex flex-col;
+}
+
+.view-application-container {
+  @apply m-2 shadow-md bg-slate-100 p-5;
 }
 
 .title {
-  background: #83a4d4;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #b6fbff, #83a4d4);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #b6fbff, #83a4d4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #83a4d4; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #b6fbff,
+    #83a4d4
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #b6fbff,
+    #83a4d4
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   @apply px-10 py-5 text-[#3e4e50] shadow-md;
 }
 
@@ -55,4 +67,8 @@
 
 .mat-expansion-panel {
   min-width: 50%;
+}
+
+.back-btn-color {
+  background-color: rgb(229 240 246 / var(--tw-bg-opacity)) !important;
 }

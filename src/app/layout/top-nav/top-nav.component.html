@@ -8,22 +8,25 @@
       viewBox="0 0 24 24"
       width="23"
       height="23"
+      stroke="#216832"
       (click)="navToggle()"
     >
       <rect y="10.5" width="24" height="3" />
       <rect y="3.5" width="24" height="3" />
       <rect y="17.5" width="24" height="3" />
     </svg>
-    <svg *ngIf="menuOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" (click)="navToggle()">
+    <svg *ngIf="menuOpen" xmlns="http://www.w3.org/2000/svg" width="30" height="30" stroke="#216832" viewBox="0 0 24 24" (click)="navToggle()">
       <path fill="currentColor" d="M21 15.61L19.59 17l-5.01-5l5.01-5L21 8.39L17.44 12L21 15.61M3 6h13v2H3V6m0 7v-2h10v2H3m0 5v-2h13v2H3Z"/>
     </svg>
   </div>
+
   <div class="avatar">
-    <img src="../../../assets/img/brand/logo.png" alt="avatar" />
+    <svg-icon [icon]="'user'" fill="black" [size]="38"></svg-icon>
     <div class="account-info">
-      <h4>{{ currentUserInfo?.lastName }}</h4>
-      <h5>{{ currentUserInfo?.userRoles }}</h5>
+      <h4 class="pl-1">{{ currentUserInfo?.lastName }}</h4>
+      <h5 class="pl-1">{{ currentUserInfo?.userRoles }}</h5>
     </div>
+
     <div class="logout">
       <svg
         xmlns="http://www.w3.org/2000/svg"

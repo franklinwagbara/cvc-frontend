@@ -3,17 +3,7 @@
   margin: 30px auto 30px auto;
 }
 
-.title {
-  background-color: #0d2357ed;
-  border-radius: 10px 10px 0px 0px;
-  text-align: center;
-  color: #fff;
-  padding: 8px 0px;
-  letter-spacing: 3px;
-}
-
 .filterWrapper {
-  display: flex;
-  justify-content: space-between;
   margin: 40px 0px;
+  @apply flex justify-between flex-col lg:flex-row gap-4;
 }

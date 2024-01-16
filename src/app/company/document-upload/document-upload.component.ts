@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplyService } from 'src/app/shared/services/apply.service';
+import { ApplyService } from '../../../../src/app/shared/services/apply.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { PopupService } from 'src/app/shared/services/popup.service';
+import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 
 @Component({
@@ -37,7 +37,8 @@ export class DocumentUploadComponent implements OnInit {
     public dialog: MatDialog,
     public appService: ApplicationService,
     private popUp: PopupService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -59,8 +60,8 @@ export class DocumentUploadComponent implements OnInit {
         this.documents = res.data.docs;
         this.documents = this.documents.map((d) => {
           d.source = d.docSource
-            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-            : `<img width="20" src="assets/image/no-document.png" />`;
+            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+            : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
@@ -70,12 +71,14 @@ export class DocumentUploadComponent implements OnInit {
         this.documentConfig = res.data.apiData;
 
         this.progressBar.close();
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
         this.progressBar.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -115,8 +118,8 @@ export class DocumentUploadComponent implements OnInit {
               d.fileId = res.fileId;
               d.available = 'Document Uploaded';
               d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" src="assets/image/no-document.png" />`;
+                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
             }
 
             return d;
@@ -127,12 +130,14 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File was uploaded successfully!', null, {
             panelClass: ['success'],
           });
+          this.cd.markForCheck();
         },
         error: (error: unknown) => {
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
           });
+          this.cd.markForCheck();
         },
       });
   }
@@ -172,8 +177,8 @@ export class DocumentUploadComponent implements OnInit {
               d.fileId = res.fileId;
               d.available = 'Document Uploaded';
               d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" src="assets/image/no-document.png" />`;
+                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
             }
 
             return d;
@@ -215,9 +220,11 @@ export class DocumentUploadComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
+      if (res) {
+        this.progressBar.open();
 
-      this.getUploadDocuments();
+        this.getUploadDocuments();
+      }
     });
   }
 
@@ -232,12 +239,14 @@ export class DocumentUploadComponent implements OnInit {
     this.applicationService.submitApplication(payload).subscribe({
       next: (res) => {
         this.progressBar.close();
-        this.popUp.open('Document(s) upload was successfull.', 'success');
-        this.router.navigate(['/company/myapplication']);
+        // this.popUp.open('Document(s) upload was successfull.', 'success');
+        this.popUp.open('Application was submitted successfully', 'success');
+        this.router.navigate(['/company/dashboard']);
       },
       error: (res: unknown) => {
         this.progressBar.close();
-        this.popUp.open('Document(s) upload failed!', 'error');
+        // this.popUp.open('Document(s) upload failed!', 'error');
+        this.popUp.open('Application submission failed!', 'error');
       },
     });
   }
@@ -253,20 +262,21 @@ export class DocumentConfig {
 }
 
 export class DocumentInfo {
-  Id: string;
-  docId: string;
-  docName: string;
-  docSource: string;
-  applicationId: number;
-  source: string;
-  fileId: string;
-  available: string;
-  docType: string;
-  company: string;
+  id?: string;
+  docId?: string;
+  docName?: string;
+  docSource?: string;
+  applicationId?: number;
+  source?: string;
+  fileId?: string;
+  available?: string;
+  docType?: string;
+  company?: string;
   success?: boolean;
   fileSizeInKb?: any;
   percentProgress?: any;
-  fileName: string;
+  fileName?: string;
+  docIndex?: number
 }
 
 export interface IUploadDocInfo {

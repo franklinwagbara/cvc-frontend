@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, Subject } from 'rxjs';
 import {
   Category,
   Phase,
-} from 'src/app/admin/settings/modules-setting/modules-setting.component';
-import { IMenuItem, ISubmenu } from 'src/app/shared/interfaces/menuItem';
-import { LoginModel } from 'src/app/shared/models/login-model';
-import { AuthenticationService } from 'src/app/shared/services';
-import { ApplyService } from 'src/app/shared/services/apply.service';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
+} from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
+import { IMenuItem, ISubmenu } from '../../../../../src/app/shared/interfaces/menuItem';
+import { LoginModel } from '../../../../../src/app/shared/models/login-model';
+import { AuthenticationService } from '../../../../../src/app/shared/services';
+import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
+import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+
 
 @Component({
   selector: 'app-company-top-nav',
@@ -22,6 +23,8 @@ export class CompanyTopNavComponent implements OnInit {
   public categories: Category[];
   public permitTypes: Phase[];
   public currentUsername: LoginModel;
+
+  currWindowWidth: number;
 
   public dashboardMenuItems: IMenuItem[] = [];
   public applicationsMenuItems: IMenuItem[] = [
@@ -49,10 +52,16 @@ export class CompanyTopNavComponent implements OnInit {
       subMenu: null,
     },
     {
+      name: 'Processing Plants',
+      url: 'company/processing-plant',
+      subMenu: null,
+    },
+    {
       name: 'Messages',
       url: 'company/messages',
       subMenu: null,
     },
+
     {
       name: 'My Schedule',
       url: 'company/myschedule',
@@ -77,36 +86,27 @@ export class CompanyTopNavComponent implements OnInit {
     private applyService: ApplyService,
     private spinner: SpinnerService,
     private snackBar: MatSnackBar,
-    public auth: AuthenticationService
-  ) {}
+    public auth: AuthenticationService,
+  ) {
+  }
+
+  iconContexts = {
+    dashboard: { iconName: 'dashboard' },
+    applications: { iconName: 'apps' },
+    account: { iconName: 'user' },
+    certificates: { iconName: 'approval' },
+    schedules: { iconName: 'schedules' },
+    changepass: { iconName: 'password' },
+    profile: { iconName: 'group' },
+    procplant: { iconName: 'fueltank'},
+    messages: { iconName: 'message' },
+    apply: { iconName: 'right' },
+    myapps: { iconName: 'apps' }
+  }
 
   ngOnInit(): void {
-    // this.getCategoriesAndPermitTypes();
+    this.currWindowWidth = window.innerWidth;
     this.currentUsername = this.auth.currentUser;
-
-    // this.categories$.subscribe((cats: Category[]) => {
-    //   this.permitTypes$.subscribe((permitTypes) => {
-    //     cats.forEach((cat) => {
-    //       this.applicationsMenuItems[0].subMenu.push({
-    //         name: cat.name,
-    //         url: '',
-    //         subMenu: ((): ISubmenu[] => {
-    //           const subMenu: ISubmenu[] = [];
-
-    //           permitTypes.forEach((p) => {
-    //             if (p.categoryName === cat.name)
-    //               subMenu.push({
-    //                 name: p.code,
-    //                 url: `company/apply/${cat.id}/${p.id}`,
-    //                 subMenu: null,
-    //               });
-    //           });
-    //           return subMenu;
-    //         })(),
-    //       });
-    //     });
-    //   });
-    // });
   }
 
   getCategoriesAndPermitTypes() {
@@ -134,5 +134,10 @@ export class CompanyTopNavComponent implements OnInit {
         this.spinner.close();
       },
     });
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.currWindowWidth = window.innerWidth;
   }
 }

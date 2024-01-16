@@ -20,7 +20,7 @@ import {
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { AppException } from '../../exceptions/AppException';
 import { AdminService } from '../../services/admin.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
@@ -68,7 +68,7 @@ export class AssignApplicationFormComponent
     private gen: GenericService
   ) {
     this.staffs = data.data.staffs.filter(
-      (s: StaffWithName) => s.role == UserRole.Head
+      (s: StaffWithName) => s.role == UserRole.HEAD
     );
 
     this.staffs = this.staffs.map((s: StaffWithName) => {

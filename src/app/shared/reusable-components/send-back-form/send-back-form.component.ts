@@ -7,7 +7,7 @@ import {
 } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { Staff } from 'src/app/admin/settings/all-staff/all-staff.component';
+import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
@@ -25,8 +25,7 @@ export class SendBackFormComponent implements OnInit {
   public form: FormGroup;
   public application: IApplication;
   public currentUser: Staff;
-  public isFO: boolean;
-  public coqId: number;
+  public isLoading = false;
 
   constructor(
     public dialogRef: MatDialogRef<SendBackFormComponent>,
@@ -41,9 +40,7 @@ export class SendBackFormComponent implements OnInit {
     private router: Router,
     private coqService: CoqService
   ) {
-    this.application = data.data.application;
-    this.isFO = data.data.isFO;
-    this.coqId = data.data.coqId;
+    this.application = data?.data?.application;
 
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
@@ -51,10 +48,9 @@ export class SendBackFormComponent implements OnInit {
   }
   ngOnInit(): void {
     const tempUser = this.auth.currentUser;
-
     this.auth.getAllStaff().subscribe({
       next: (res) => {
-        this.currentUser = res.data.data.find(
+        this.currentUser = res.data.data?.find(
           (u) => u.email === tempUser.userId
         );
 
@@ -86,7 +82,7 @@ export class SendBackFormComponent implements OnInit {
 
   sendBackOther() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
       applicationId: this.application.id,
       action: ApplicationActionType.Reject,
@@ -98,13 +94,14 @@ export class SendBackFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 
           this.dialogRef.close();
-        }
 
+        }
+        this.isLoading = false;
         this.progressBarService.close();
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
@@ -118,17 +115,18 @@ export class SendBackFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
-
+        this.isLoading = false;
         this.progressBarService.close();
+        this.cd.markForCheck();
       },
     });
   }
 
   sendBackFO() {
     this.progressBarService.open();
-
+    this.isLoading = true;
     const model = {
-      applicationId: this.application.applicationTypeId,
+      applicationId: this.application.id,
       action: ApplicationActionType.Reject,
       comment: this.form.controls['comment'].value,
       // delegatedUserId: '',
@@ -138,13 +136,14 @@ export class SendBackFormComponent implements OnInit {
     this.coqService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successfully!', null, {
+          this.snackBar.open('Operation was successful!', null, {
             panelClass: ['success'],
           });
 
           this.dialogRef.close();
-        }
 
+        }
+        this.isLoading = false;
         this.progressBarService.close();
         this.router.navigate(['/admin/my-desk']);
         this.cd.markForCheck();
@@ -158,8 +157,9 @@ export class SendBackFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
-
+        this.isLoading = false;
         this.progressBarService.close();
+        this.cd.markForCheck();
       },
     });
   }

@@ -1,11 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { Application } from 'src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { ApplicationService } from '../../services/application.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 import { AppSource } from '../../constants/appSource';
 import { ShowMoreComponent } from '../show-more/show-more.component';
 import { AddScheduleFormComponent } from '../add-schedule-form/add-schedule-form.component';
@@ -18,7 +19,7 @@ import { UserType } from '../../constants/userType';
 @Component({
   selector: 'app-view-application-in-full',
   templateUrl: './view-application-in-full.component.html',
-  styleUrls: ['./view-application-in-full.component.css']
+  styleUrls: ['./view-application-in-full.component.css'],
 })
 export class ViewApplicationInFullComponent implements OnInit {
   application: Application;
@@ -29,7 +30,7 @@ export class ViewApplicationInFullComponent implements OnInit {
   isIMG = Util.isIMG;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private route: ActivatedRoute,
     private auth: AuthenticationService,
     private applicationService: ApplicationService,
@@ -37,12 +38,13 @@ export class ViewApplicationInFullComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private progressBar: ProgressBarService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public location: Location
   ) {
     this.route.queryParams.subscribe((value: Params) => {
       this.appId = parseInt(value['id']);
       this.appSource = value['appSource'];
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -51,24 +53,24 @@ export class ViewApplicationInFullComponent implements OnInit {
         return;
       }
       window.scrollTo(0, 0);
-    })
+    });
     this.getApplication();
     this.currentUser = this.auth.currentUser;
   }
 
   getApplication() {
-    this.spinner.open();
+    this.spinner.show('Loading application details');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
           this.application = res.data;
         }
-
-        this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
+        this.spinner.close();
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -77,8 +79,6 @@ export class ViewApplicationInFullComponent implements OnInit {
           }
         );
 
-        this.progressBar.close();
-        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -133,9 +133,10 @@ export class ViewApplicationInFullComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
+      if (res) {
+        this.progressBar.open();
+        this.getApplication();
+      }
     });
   }
 
@@ -168,17 +169,10 @@ export class ViewApplicationInFullComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
   }
-
 }
