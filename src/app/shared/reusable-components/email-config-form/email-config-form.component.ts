@@ -31,6 +31,11 @@ export class EmailConfigFormComponent implements OnInit {
   public isSubmitted = false;
   public isLoading = false;
 
+  public emailStatus = [
+    { name: 'Active', value: true },
+    { name: 'Inactive', value: false },
+  ];
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private snackBar: MatSnackBar,
@@ -96,7 +101,7 @@ export class EmailConfigFormComponent implements OnInit {
       next: (res) => {
         this.progressBar.close();
         this.isLoading = false;
-        this.snackBar.open('Email was added successfully!', null, {
+        this.snackBar.open('Email record added successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
@@ -120,12 +125,11 @@ export class EmailConfigFormComponent implements OnInit {
     this.isLoading = true;
     const formData = this.form.value;
     formData.id = this.data?.data?.emailList?.id;
-    formData.isActive = true;
     this.adminService.editEmail(formData).subscribe({
       next: (res) => {
         this.progressBar.close();
         this.isLoading = false;
-        this.snackBar.open('Email modified successfully!', null, {
+        this.snackBar.open('Email record modified successfully!', null, {
           panelClass: ['success'],
         });
         this.dialogRef.close();
