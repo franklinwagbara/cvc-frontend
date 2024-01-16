@@ -78,8 +78,8 @@ import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearanc
 import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
 import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { EmailConfigComponent } from './settings/email-config/email-config.component';
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
-
 
 @NgModule({
   declarations: [
@@ -136,6 +136,7 @@ import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-appl
     AllCoqCertificatesComponent,
     AllNoaClearancesComponent,
     CoqApplicationPreviewComponent,
+    EmailConfigComponent,
     AllCoqApplicationsComponent,
   ],
 

@@ -58,7 +58,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableDischargeClearanceControl') enableDischargeClearanceControl?: boolean = false;
+  @Input('EnableDischargeClearanceControl')
+  enableDischargeClearanceControl?: boolean = false;
   @Input('EnableViewCertificateControl')
   enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
@@ -71,7 +72,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
-  keysMappedToHeaders: ITableKeysMappedToHeaders|any = {};
+  keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
   @Input('table_title') title = 'Title';
   @Input('table_content') items: any[] = [];
@@ -91,7 +92,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
-  
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild('tableControls') tableControlsDiv: ElementRef;
@@ -191,8 +192,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'discharge_clearance_control',
         header: '',
-        cell: (item) => 'discharge_clearance_control'
-      })
+        cell: (item) => 'discharge_clearance_control',
+      });
     }
 
     if (this.enableInitiateCoQControl) {
@@ -252,6 +253,21 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_debit_note_control',
       });
+    }
+
+    if (this.enableDischargeClearanceControl) {
+      this.columns.push(
+        {
+          columnDef: 'discharge_onspec_control',
+          header: '',
+          cell: (item) => 'discharge_onspec_control',
+        },
+        {
+          columnDef: 'discharge_offspec_control',
+          header: '',
+          cell: (item) => 'discharge_offspec_control',
+        }
+      );
     }
 
     this.columns.unshift({
@@ -336,19 +352,30 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       next: (res: any) => {
         const productTypes = res?.data;
         this.progressBar.close();
-        const dialogRef = this.dialog.open(
-          DischargeClearanceFormComponent, 
-          { data: { productTypes, noaApp: row }, disableClose: true, minWidth: '400px' }
-        );
+        const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
+          data: { productTypes },
+          disableClose: true,
+          // panelClass: 'pannelClass',
+        });
+        dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
+          if (result.submitted) {
+            //this.allowDischarge = true;
+          }
+        });
       },
       error: (error: unknown) => {
         console.log(error);
         this.progressBar.close();
         this.popUp.open('Failed to initiate discharge clearance', 'error');
-      }
-    })
+      },
+    });
   }
-  
+
+  stopDischarge(): void {
+    //this.allowDischarge = false;
+    // Send notification to regional state coordinator
+  }
+
   initiateCoQ(row: any) {
     this.onInitiateCoQ.emit(row);
   }

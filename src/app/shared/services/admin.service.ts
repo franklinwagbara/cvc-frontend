@@ -9,6 +9,7 @@ import { IApplicationProcess } from '../interfaces/IApplicationProcess';
 import { Schedule } from '../reusable-components/add-schedule-form/add-schedule-form.component';
 import { IAppFee } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { IRole } from '../interfaces/IRole';
+import { IEmailList } from 'src/app/admin/settings/email-config/email-config.component';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -434,6 +435,40 @@ export class AdminService {
   public deleteAppFee(id: IAppFee) {
     return this.http
       .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .pipe(retry(this.num));
+  }
+
+  public getEmailList() {
+    return this.http
+      .get<any>(
+        `${environment.apiUrl}/EmailConfiguration/all-email-configuration`
+      )
+      .pipe(retry(this.num));
+  }
+
+  public addEmail(data: IEmailList) {
+    return this.http
+      .post<any>(
+        `${environment.apiUrl}/EmailConfiguration/create-email-configuration`,
+        data
+      )
+      .pipe(retry(this.num));
+  }
+
+  public editEmail(data: IEmailList) {
+    return this.http
+      .post<any>(
+        `${environment.apiUrl}/EmailConfiguration/update-email-configuration`,
+        data
+      )
+      .pipe(retry(this.num));
+  }
+
+  public deleteEmail(id: IAppFee) {
+    return this.http
+      .delete<any>(
+        `${environment.apiUrl}/EmailConfiguration/delete-email-configuration?id=${id}`
+      )
       .pipe(retry(this.num));
   }
 
