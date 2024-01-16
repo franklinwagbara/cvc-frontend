@@ -1,7 +1,6 @@
-import { Component, ElementRef, Inject, Input, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { BehaviorSubject, Observable, debounce } from 'rxjs';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BehaviorSubject } from 'rxjs';
 import { CoQData } from '../coq-application-form.component';
 
 @Component({
@@ -31,8 +30,6 @@ export class CoqApplicationPreviewComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PreviewData,
-    private dialogRef: MatDialogRef<CoqApplicationPreviewComponent>,
-    private elementRef: ElementRef
   ) {}
 
   ngOnInit(): void {
@@ -70,8 +67,8 @@ export class CoqApplicationPreviewComponent implements OnInit {
         const vapourWtVacAft = correctedVapVolAft * item.after.vapourFactor;
         const liqDensityAirB4 = parseFloat((item.before?.liquidDensityVac * 0.0011).toFixed(4));
         const liqDensityAirAft = parseFloat((item.after?.liquidDensityVac * 0.0011).toFixed(4));
-        const vapourWtAirB4 = ((liqDensityAirB4 / item.before.liquidDensityVac) * vapourWtVacB4).toFixed(4);
-        const vapourWtAirAft = ((liqDensityAirAft / item.after.liquidDensityVac) * vapourWtVacAft).toFixed(4);
+        const vapourWtAirB4 = parseFloat(((liqDensityAirB4 / item.before.liquidDensityVac) * vapourWtVacB4).toFixed(4));
+        const vapourWtAirAft = parseFloat(((liqDensityAirAft / item.after.liquidDensityVac) * vapourWtVacAft).toFixed(4));
         const totalWtVacB4 = item.before.liquidDensityVac + vapourWtVacB4;
         const totalWtVacAft = item.after.liquidDensityVac + vapourWtVacAft;
         const totalWtAirB4 = item.before.liquidDensityAir + vapourWtAirB4;
@@ -110,14 +107,15 @@ export class CoqApplicationPreviewComponent implements OnInit {
           temperatureCalc: (273 / (273 + item.after?.vapourTemperature)).toFixed(4),
           pressureCalc: ((item.after?.vapourPressure + 1.013) / 1.013).toFixed(4),
         }
-        item.calc.totalMetricTonsVac = item.calc?.after?.liquidWeightVac - item.calc?.before?.liquidWeightVac;
-        item.calc.totalMetricTonsAir = item.calc?.after?.liquidWeightAir - item.calc?.before?.liquidWeightAir;
+        item.calc.totalMetricTonsVac = item.calc.after?.liquidWeightVac - item.calc.before?.liquidWeightVac;
+        item.calc.totalMetricTonsAir = item.calc.after?.liquidWeightAir - item.calc.before?.liquidWeightAir;
         item.calc.receivedQtyVac = 
-          (item.calc?.after?.liquidWeightVac + item.calc?.after?.vapourWeightVac) - 
-          (item.calc?.before?.liquidWeightVac + item.calc?.before?.vapourWeightVac)
+          (item.calc.after?.liquidWeightVac + item.calc.after?.vapourWeightVac) - 
+          (item.calc.before?.liquidWeightVac + item.calc.before?.vapourWeightVac)
         item.calc.receivedQtyAir = 
-          (item.calc?.after?.liquidWeightAir + item.calc?.after?.vapourWeightAir) -
-          (item.calc?.before?.liquidWeightAir + item.calc?.before?.vapourWeightAir)
+          (item.calc.after?.liquidWeightAir + item.calc.after?.vapourWeightAir) -
+          (item.calc.before?.liquidWeightAir + item.calc.before?.vapourWeightAir)
+        console.log('Received Quantity Air ===========> ', item.calc.receivedQtyAir);
         return item;
       })
 
@@ -133,10 +131,6 @@ export class CoqApplicationPreviewComponent implements OnInit {
     }
   }
 
-  setDataSource(): void {
-    
-  }
-
   trackByFn(index: number) {
     return index;
   }
@@ -145,6 +139,9 @@ export class CoqApplicationPreviewComponent implements OnInit {
     // remove unwanted elements from print preview
     (document.querySelector('#coq-application-preview-table') as HTMLElement).style.display = 'none';
     (document.querySelector('#coq-preview-print-wrapper') as HTMLElement).style.display = 'none';
+    setTimeout(() => {
+      (document.querySelector('#coq-preview-print-wrapper') as HTMLElement).style.display = 'block';
+    }, 2000);
 
     const printContents = document.getElementById('coq-data-preview-content');
     const windowPrt = window.open('', '', 'left=0,top=0,width=1000,height=1000,toolbar=0,scrollbars=0,status=0');
@@ -153,10 +150,6 @@ export class CoqApplicationPreviewComponent implements OnInit {
     windowPrt.focus()
     windowPrt.print();
     windowPrt.close();
-  }
-
-  onClose() {
-    
   }
 
 }

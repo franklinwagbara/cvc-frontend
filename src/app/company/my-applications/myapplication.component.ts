@@ -208,6 +208,8 @@ export interface Application {
   status: string;
   submittedDate: string;
   applicationDocs: any[];
+  totalAmount?: string;
+  jetty?: string;
 
   createdDate: string;
   paymnetDate: string;
@@ -245,6 +247,7 @@ export interface Vessel {
   callSIgn: string;
   imoNumber: string;
   tanks: ITankDTO[];
+  jetty?: string;
   facilitySources: IFacility[];
 }
 

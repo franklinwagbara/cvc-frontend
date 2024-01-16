@@ -64,7 +64,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     this.router.navigate(
       [
         'admin',
-        'certificate-of-quantity',
+        'coq-and-plant',
         'coq-applications-by-depot',
         event.id,
       ]

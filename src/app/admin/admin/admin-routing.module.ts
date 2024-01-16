@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { StaffdeskComponent } from '../staffdesk/staffdesk.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AllStaffComponent } from '../settings/all-staff/all-staff.component';
 import { ModulesSettingComponent } from '../settings/modules-setting/modules-setting.component';
@@ -17,7 +15,6 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
 import { AppDepotComponent } from '../settings/app-depot/app-depot.component';
 import { PaymentComponent } from '../payment/payment.component';
@@ -35,26 +32,43 @@ import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-a
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
-import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
 import { AllCoqCertificatesComponent } from '../all-coq-certificates/all-coq-certificates.component';
 import { AllNoaClearancesComponent } from '../all-noa-clearances/all-noa-clearances.component';
 import { AdminGuard } from 'src/app/shared/guards/admin.guard';
+import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-applications.component';
 
 
 const routes: Routes = [
-  { path: '', component: AdminComponent, pathMatch: 'full', },
-  {path: 'dashboard', redirectTo: 'staff-dashboard', pathMatch: 'full', },
-  { path: 'staff-dashboard', component: DashboardComponent, pathMatch: 'full', },
-  { path: 'staff-desk', component: StaffdeskComponent, pathMatch: 'full', },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: AdminComponent, pathMatch: 'full', },
+  { path: 'applications', redirectTo: 'applications/noa-applications', pathMatch: 'full' },
   {
-    path: 'all-applications',
+    path: 'applications/noa-applications',
     component: ApplicationComponent,
     pathMatch: 'full',
     canActivate: [NoaAndApplicationsGuard],
   },
   {
+    path: 'applications/noa-applications/:id',
+    component: ViewApplicationComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'applications/coq-applications',
+    component: AllCoqApplicationsComponent,
+    pathMatch: 'full',
+    canActivate: [NoaAndApplicationsGuard],
+  },
+  {
+    path: 'applications/coq-applications/:id',
+    component: CoqApplicationViewComponent,
+    pathMatch: 'full',
+    canActivate: [NoaAndApplicationsGuard],
+  },
+  {
     path: 'settings',
-    redirectTo: 'settings/all-staff'
+    redirectTo: 'settings/all-staff',
+    pathMatch: 'full'
   },
   { path: 'settings/all-staff', component: AllStaffComponent, pathMatch: 'full', },
   { path: 'settings/modules', component: ModulesSettingComponent, pathMatch: 'full', },
@@ -70,7 +84,8 @@ const routes: Routes = [
     component: NominatedSurveyorSettingComponent,
     pathMatch: 'full',
   },
-  { path: 'my-desk', component: MyDeskComponent, pathMatch: 'full', },
+  { path: 'desk', component: MyDeskComponent, pathMatch: 'full', },
+  { path: 'desk/view-application/:id', component: ViewApplicationComponent, pathMatch: 'full' },
   { path: 'view-application/:id', component: ViewApplicationComponent, pathMatch: 'full', },
   { path: 'view-coq-application/:id', component: CoqApplicationViewComponent, pathMatch: 'full', },
   {
@@ -78,8 +93,9 @@ const routes: Routes = [
     component: ViewApplicationInFullComponent,
     pathMatch: 'full',
   },
-  { path: 'application-report', component: ApplicationReportComponent, pathMatch: 'full', },
-  { path: 'payment-report', component: PaymentReportComponent, pathMatch: 'full', },
+  { path: 'reports', redirectTo: 'reports/application-report', pathMatch: 'full' },
+  { path: 'reports/application-report', component: ApplicationReportComponent, pathMatch: 'full', },
+  { path: 'reports/payment-report', component: PaymentReportComponent, pathMatch: 'full', },
   {
     path: 'certificates',
     component: CertificatesComponent,
@@ -89,7 +105,8 @@ const routes: Routes = [
   { path: 'view-schedule/:id', component: ScheduleComponent, pathMatch: 'full', },
   { path: 'settings/app-fees', component: AppFeeComponent, pathMatch: 'full', },
   { path: 'settings/app-depots', component: AppDepotComponent, pathMatch: 'full', },
-  { path: 'payments', component: PaymentComponent, pathMatch: 'full', },
+  { path: 'payments', redirectTo: 'payments/all-payments', pathMatch: 'full' },
+  { path: 'payments/all-payments', component: PaymentComponent, pathMatch: 'full', },
   { path: 'payment/:id', component: ViewPaymentComponent, pathMatch: 'full', },
   { path: 'settings/roles', component: RolesComponent, pathMatch: 'full', },
   { path: 'settings/products', component: ProductsComponent, pathMatch: 'full', },
@@ -125,6 +142,11 @@ const routes: Routes = [
     component: CoqApplicationFormComponent,
     pathMatch: 'full',
     canActivate: [CoqGuard],
+  },
+  {
+    path: 'all-approvals',
+    redirectTo: 'all-approvals/coq-certificates',
+    pathMatch: 'full'
   },
   {
     path: 'all-approvals/coq-certificates',

@@ -637,11 +637,15 @@ export class CoqApplicationFormComponent
         : new Date(this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value).toLocaleDateString(),
       depotPrice: this.isGasProduct 
         ? this.vesselGasInfoForm.controls['depotPrice'].value 
-        : this.vesselLiqInfoForm.controls['depotPrice'].value
+        : this.vesselLiqInfoForm.controls['depotPrice'].value,
+      documents: this.documents,
+      productName: this.requirement.productName
     }
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
-        tankData: this.isGasProduct ? this.coqFormService.gasProductReviewData : this.coqFormService.liquidProductReviewData,
+        tankData: this.isGasProduct 
+          ? this.coqFormService.gasProductReviewData 
+          : this.coqFormService.liquidProductReviewData,
         isGasProduct: this.isGasProduct,
         vesselDischargeData: this.isGasProduct ? {
           ...vesselData,
@@ -711,7 +715,7 @@ export class CoqApplicationFormComponent
     if (this.isGasProduct) {
       payload = {
         ...reference,
-        productId: this.productSelection.value,
+        productId: this.isProcessingPlant ? this.productSelection.value : null,
         quauntityReflectedOnBill:
           this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
         arrivalShipFigure:

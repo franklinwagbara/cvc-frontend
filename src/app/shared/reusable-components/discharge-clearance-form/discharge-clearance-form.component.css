@@ -1,3 +1,11 @@
 small {
   @apply mx-2;
 }
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #228d27 !important;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #228d27;
+}

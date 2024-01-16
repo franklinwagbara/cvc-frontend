@@ -62,7 +62,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'MY DESK',
-        url: '/admin/my-desk',
+        url: '/admin/desk',
       },
     ],
   },
@@ -78,8 +78,13 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL APPLICATIONS',
-        url: '/admin/all-applications',
+        title: 'NoA APPLICATIONS',
+        url: '/admin/applications/noa-applications',
+      },
+      {
+        id: 2,
+        title: 'CoQ APPLICATIONS',
+        url: '/admin/applications/coq-applications',
       },
     ],
   },
@@ -249,30 +254,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let foundActiveNav = false;
-        let route = this.menuItems.find((r) => r.title.toLowerCase() === this.router.url.split('/')[0].replace(/-/g, ' '));
-        route.active = true;
-        route.subMenuActive = true;
-        // for (let item of this.menuItems) {
-        //   for (let subItem of item.subRoutes) {
-        //     if (this.router.url.split('/')[1].toLowerCase().startsWith(subItem.url.split('/')[1].replace(/-/g, ' ').toLowerCase()) || 
-        //       this.router.url.split('/')[0].replace(/-/g, ' ') === item.title.toLowerCase()
-        //     ) {
-        //       item.active = true;
-        //       item.subMenuActive = true;
-        //       foundActiveNav = true;
-        //       break;
-        //     }
-        //   }
-        //   if (foundActiveNav) break;
-        // }
-      });
-  }
 
-  ngOnInit() {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
     if (currentUser.userRoles === UserRole.FIELDOFFICER || currentUser?.location === LOCATION.FO) {
@@ -327,6 +309,18 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        let route = this.menuItems.find((r) => r.title.toLowerCase() === this.router.url.replace(/-/g, ' ').split('/')[2]);
+        if (route) {
+          route.active = true;
+          route.subMenuActive = true;
+        } 
+      });
+  }
+
+  ngOnInit() {
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {

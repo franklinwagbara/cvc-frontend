@@ -90,12 +90,12 @@
             </ng-container>
           </div>
           <div>
-            <h5>Discharge Port</h5>
+            <h5>Jetty</h5>
             <hr />
             <ng-container
-              *ngIf="application?.vessel?.dischargePort; else noData"
+              *ngIf="application?.jetty; else noData"
             >
-              <span>{{ application?.vessel?.dischargePort }}</span>
+              <span>{{ application?.jetty }}</span>
             </ng-container>
           </div>
           <div>
@@ -122,6 +122,20 @@
             <hr />
             <ng-container *ngIf="application?.paymentDescription; else noData">
               <span>{{ application?.paymentDescription }}</span>
+            </ng-container>
+          </div>
+          <div>
+            <h5>RRR</h5>
+            <hr />
+            <ng-container *ngIf="application?.rrr; else noData">
+              <span>{{ application?.rrr }}</span>
+            </ng-container>
+          </div>
+          <div *ngIf="application?.totalAmount">
+            <h5>Total Amount Paid</h5>
+            <hr />
+            <ng-container *ngIf="application?.totalAmount; else noData">
+              <span>NGN {{ application?.totalAmount }}</span>
             </ng-container>
           </div>
           <div>

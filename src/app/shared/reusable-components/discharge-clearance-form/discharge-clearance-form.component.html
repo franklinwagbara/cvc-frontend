@@ -1,33 +1,45 @@
-<h1 class="text-center" mat-dialog-title>Vessel Discharge Clearance form</h1>
-<div mat-dialog-content class="">
-  <form [formGroup]="form" class="p-2">
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Vessel Name</label>
-      <input formControlName="vesselName" class="form-control" />
+<h1 class="text-center" mat-dialog-title>Vessel Discharge Clearance</h1>
+<div mat-dialog-content class="p-2">
+  <form [formGroup]="form" class="p-2 grid grid-cols-9 gap-4">
+    <div class="form-group col-span-3" >
+      <label>Vessel Name <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="vesselName" 
+        class="form-control" 
+        [ngClass]="{'is-invalid': form.get('vesselName')?.dirty && form.get('vesselName')?.invalid}"
+      />
       <div
         *ngIf="form.get('vesselName')?.dirty && form.get('vesselName')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Vessel name is required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Loading Port</label>
-      <input formControlName="loadingPort" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Loading Port <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="vesselPort" 
+        class="form-control" 
+        [ngClass]="{'is-invalid': form.get('vesselPort')?.dirty && form.get('vesselPort')?.invalid}"
+      />
       <div
         *ngIf="
-          form.get('loadingPort')?.dirty && form.get('loadingPort')?.invalid
+          form.get('vesselPort')?.dirty && form.get('vesselPort')?.invalid
         "
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Loading port is required!
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Product Type</label>
-      <select formControlName="product" class="form-control">
+    <div class="fomr-group col-span-3" >
+      <label>Product Type <sup class="tex-red-500">*</sup></label>
+      <select 
+        formControlName="product" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('product')?.dirty && form.get('product')?.invalid}"
+      >
         <option value="" [selected]="true">-- Select Product Type --</option>
         <option *ngFor="let pType of data.productTypes" [ngValue]="pType">
           {{ pType }}
@@ -35,120 +47,163 @@
       </select>
       <div
         *ngIf="form.get('product')?.dirty && form.get('product')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Product type is required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Density</label>
+    <div class="form-group col-span-3" >
+      <label>Density <sup class="tex-red-500">*</sup></label>
       <input
         formControlName="density"
         type="number"
         min="0"
         class="form-control"
+        [ngClass]="{'is-invalid': form.get('density')?.dirty && form.get('density')?.invalid}"
       />
       <div
         *ngIf="form.get('density')?.dirty && form.get('density')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Density is required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>RON</label>
-      <input formControlName="ron" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>RON <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="ron" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('ron')?.dirty && form.get('ron')?.invalid}"
+      />
       <div
         *ngIf="form.get('ron')?.dirty && form.get('ron')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         RON required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Flash Point</label>
-      <input formControlName="flashPoint" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Flash Point <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="flashPoint" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('flashPoint')?.dirty && form.get('flashPoint')?.invalid}"
+      />
       <div
         *ngIf="form.get('flashPoint')?.dirty && form.get('flashPoint')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Flash point is required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Colour</label>
-      <input type="text" formControlName="colour" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Colour <sup class="tex-red-500">*</sup></label>
+      <input 
+        type="text" 
+        formControlName="color" 
+        class="form-control" 
+        [ngClass]="{'is-invalid': form.get('color')?.dirty && form.get('color')?.invalid}"
+      />
       <div
-        *ngIf="form.get('colour')?.dirty && form.get('colour')?.invalid"
-        class="alert alert-danger"
+        *ngIf="form.get('color')?.dirty && form.get('color')?.invalid"
+        class="alert alert-danger mt-2 p-2"
       >
         Color is required!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Final Boiling Point</label>
-      <input type="number" formControlName="finalBoilingPoint" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Final Boiling Point <sup class="tex-red-500">*</sup></label>
+      <input 
+        type="number" 
+        formControlName="finalBoilingPoint" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('finalBoilingPoint')?.dirty && form.get('finalBoilingPoint')?.invalid}"
+      />
       <div
         *ngIf="
           form.get('finalBoilingPoint')?.dirty &&
           form.get('finalBoilingPoint')?.invalid
         "
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Final Boiling Point!
       </div>
     </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Odour</label>
-      <input type="text" formControlName="odour" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Odour <sup class="tex-red-500">*</sup></label>
+      <input 
+        type="text" 
+        formControlName="odour" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('odour')?.dirty && form.get('odour')?.invalid}"
+      />
       <div
         *ngIf="form.get('odour')?.dirty && form.get('odour')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Odour is required!
       </div>
     </div>
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Oxygenate</label>
-      <input formControlName="oxygenate" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Oxygenate <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="oxygenate" 
+        class="form-control" 
+        [ngClass]="{'is-invalid': form.get('oxygenate')?.dirty && form.get('oxygenate')?.invalid}"
+      />
       <div
         *ngIf="form.get('oxygenate')?.dirty && form.get('oxygenate')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Oxygenate is required!
       </div>
     </div>
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Others</label>
-      <input formControlName="others" class="form-control" />
+    <div class="form-group col-span-3" >
+      <label>Others <sup class="tex-red-500">*</sup></label>
+      <input 
+        formControlName="others" 
+        class="form-control" 
+        [ngClass]="{'is-invalid': form.get('others')?.dirty && form.get('others')?.invalid}"
+      />
       <div
         *ngIf="form.get('others')?.dirty && form.get('others')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
         Others is required!
       </div>
     </div>
+    <div class="form-group col-span-9" >
+      <mat-checkbox
+        [checked]="form.controls['isAllowed'].value"
+        (change)="checkAllow()"
+      >Allow Discharge</mat-checkbox>
+    </div>
 
-    <div class="form-group" style="margin-bottom: 10px">
-      <label>Comment</label>
-      <textarea rows="4" formControlName="comment" class="form-control">
+    <div class="form-group col-span-9" >
+      <label>Comment <sup class="tex-red-500">*</sup></label>
+      <textarea 
+        rows="4" 
+        formControlName="comment" 
+        class="form-control"
+        [ngClass]="{'is-invalid': form.get('comment')?.dirty && form.get('comment')?.invalid}"
+      >
       </textarea>
       <div
         *ngIf="form.get('comment')?.dirty && form.get('comment')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger mt-2 p-2"
       >
-        Others is required!
+        Comment is required!
       </div>
     </div>
   </form>
 </div>
-<div class="flex pb-2">
+<div class="flex pb-2 gap-2">
   <button mat-button mat-dialog-close [disabled]="submitting">Close</button>
   <button
     *ngIf="submitting"

@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from '../../services/popup.service';
-import { AdminService } from '../../services/admin.service';
+import { DischargeClearanceService } from '../../services/discharge-clearance.service';
 
 @Component({
   selector: 'app-discharge-clearance-form',
@@ -18,42 +18,56 @@ import { AdminService } from '../../services/admin.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DischargeClearanceFormComponent implements OnInit {
+  noaApp: any;
   public form: FormGroup;
   public roles: any;
   submitting = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[] },
+    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[], noaApp: any },
     public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
     private popUp: PopupService,
-    private adminService: AdminService,
     private formBuilder: FormBuilder,
     private spinner: SpinnerService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private dischargeClearance: DischargeClearanceService
   ) {
     this.form = this.formBuilder.group({
       vesselName: ['', Validators.required],
-      loadingPort: ['', Validators.required],
+      vesselPort: ['', Validators.required],
       product: ['', Validators.required],
       density: ['', Validators.required],
       ron: ['', Validators.required],
       finalBoilingPoint: ['', Validators.required],
       flashPoint: ['', Validators.required],
-      colour: ['', Validators.required],
+      color: ['', Validators.required],
       odour: ['', Validators.required],
       oxygenate: ['', Validators.required],
       others: ['', Validators.required],
+      isAllowed: [false, Validators.required],
       comment: ['', Validators.required],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.noaApp = this.data.noaApp;
+  }
+
+  checkAllow() {
+    this.form.controls['isAllowed'].setValue(!this.form.controls['isAllowed'].value);
+  }
 
   submit() {
     this.submitting = true;
-    const formData = this.form.value;
-    this.adminService.submitDischargeClearance(formData).subscribe({
-      next: (res) => {
+    const formData = { 
+      ...this.form.value, 
+      appId: this.noaApp.id, 
+      dischargeId: this.noaApp?.dischargeId || 0,
+      depotId: 0
+    };
+    console.log('Form data =========> ', formData);
+    this.dischargeClearance.createVesselDischargeClearance(formData).subscribe({
+      next: (res: any) => {
         this.submitting = false;
         if (res?.success) {
           this.popUp.open('Form submitted successfully!', 'success');

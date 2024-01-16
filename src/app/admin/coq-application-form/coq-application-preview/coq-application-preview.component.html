@@ -9,29 +9,25 @@
     <tr>
       <div class="flex flex-1">
         <th style="text-align: left; font-size: 14px;">{{ data.isGasProduct ? 'MARKETERS NAME' : 'MARKETER/PDT OWNER' }}:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Ringardas Nigeria Limited</td>
+        <td style="font-size: 12px;">{{ vesselDischargeData?.marketerName }}</td>
       </div>
       <div class="flex flex-1">
         <th style="text-align: left; font-size: 14px;">PRODUCT:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Fuel Oils</td>
+        <td style="font-size: 12px;">{{ vesselDischargeData?.productName }}</td>
       </div>
       <div clas="flex flex-1">
         <th style="text-align: left; font-size: 14px;">VESSEL NAME:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Vessel Fury</td>
+        <td style="font-size: 12px;">{{ vesselDischargeData?.vesselName }}</td>
       </div>
     </tr>
     <tr>
       <div class="flex flex-1">
         <th style="text-align: left; font-size: 14px;">MOTHER VESSEL:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Vessel Titanic</td>
-      </div>
-      <div class="flex flex-1">
-        <th style="text-align: left; font-size: 14px;">JETTY:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Jetty Flash</td>
+        <td style="font-size: 12px;">{{ vesselDischargeData?.motherVessel }}</td>
       </div>
       <div class="flex flex-1">
         <th style="text-align: left; font-size: 14px;">{{ data.isGasProduct ? 'TERMINAL' : 'RECEIVING TERMINAL' }}:&nbsp;&nbsp;</th>
-        <td style="font-size: 12px;">Ringardas Depot PLC</td>
+        <td style="font-size: 12px;">{{ vesselDischargeData?.jetty }}</td>
       </div>
     </tr>
     <tr>
@@ -128,7 +124,7 @@
         <tr>
           <th style="text-align: left;">Tank No.</th>
           <ng-container *ngFor="let reading of tankData; trackBy: trackByFn; let i = index">
-            <th scope="col" colspan="2">{{ reading?.before?.tank | uppercase }} ({{this.data.productName | uppercase}})</th>
+            <th scope="col" colspan="2">{{ reading?.before?.tank | uppercase }} ({{vesselDischargeData?.productName | uppercase}})</th>
           </ng-container>
         </tr>
         <tr>
@@ -414,6 +410,29 @@
       </table>
     </div>
   </div>
+
+  <br />
+  <br />
+  <table
+    *ngIf="vesselDischargeData?.documents.length"
+    class="table table-bordered"
+  >
+    <thead>
+      <tr>
+        <th scope="row" colspan="2" style="text-align: center; font-size: 14px;">Uploaded Documents</th>
+      </tr>
+      <tr>
+        <th scope="col" style="text-align: left; font-size: 14px;">Document</th>
+        <th scope="col" style="text-align: center; font-size: 14px;">Source Url</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let doc of (vesselDischargeData?.documents || []); trackBy: trackByFn; let i = index">
+        <td>{{ doc?.docName }}</td>
+        <td>{{ doc?.source || doc?.docSource }}</td>
+      </tr>
+    </tbody>
+  </table>
 
   <table
     *ngIf="previewSource === 'submitted-coq-view'"

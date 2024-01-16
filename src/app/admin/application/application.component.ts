@@ -89,7 +89,7 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
   }
 
   onViewData(event: any, type: string) {
-    this.router.navigate([`/admin/view-application/${event.id}`], {
+    this.router.navigate([`/admin/applications/noa-applications/${event.id}`], {
       queryParams: { id: event.id, appSource: AppSource.Application },
     });
   }
