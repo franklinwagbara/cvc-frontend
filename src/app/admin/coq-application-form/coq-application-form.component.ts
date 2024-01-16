@@ -690,7 +690,7 @@ export class CoqApplicationFormComponent
         }
         this.cd.markForCheck();
         setTimeout(() => {
-          this.router.navigate(['admin', 'coq-applications-by-depot']);
+          this.router.navigate(['admin', 'coq-and-plant', 'coq-applications-by-depot']);
         }, 2400)
       },
       error: (error: unknown) => {

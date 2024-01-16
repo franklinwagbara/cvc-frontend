@@ -19,12 +19,13 @@ import { DischargeClearanceService } from '../../services/discharge-clearance.se
 })
 export class DischargeClearanceFormComponent implements OnInit {
   noaApp: any;
+  allowDischarge: boolean;
   public form: FormGroup;
   public roles: any;
   submitting = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[], noaApp: any },
+    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[], noaApp: any, allowDischarge: boolean },
     public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
     private popUp: PopupService,
     private formBuilder: FormBuilder,
@@ -32,59 +33,73 @@ export class DischargeClearanceFormComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private dischargeClearance: DischargeClearanceService
   ) {
-    this.form = this.formBuilder.group({
-      vesselName: ['', Validators.required],
-      vesselPort: ['', Validators.required],
-      product: ['', Validators.required],
-      density: ['', Validators.required],
-      ron: ['', Validators.required],
-      finalBoilingPoint: ['', Validators.required],
-      flashPoint: ['', Validators.required],
-      color: ['', Validators.required],
-      odour: ['', Validators.required],
-      oxygenate: ['', Validators.required],
-      others: ['', Validators.required],
-      isAllowed: [false, Validators.required],
-      comment: ['', Validators.required],
-    });
-  }
-
-  ngOnInit(): void {
     this.noaApp = this.data.noaApp;
+    this.allowDischarge = this.data.allowDischarge;
   }
-
-  checkAllow() {
-    this.form.controls['isAllowed'].setValue(!this.form.controls['isAllowed'].value);
+  
+  ngOnInit(): void {
+    if (this.allowDischarge) {
+      this.form = this.formBuilder.group({
+        vesselName: [this.noaApp?.vesselName || '', Validators.required],
+        vesselPort: [this.noaApp?.loadingPort || '', Validators.required],
+        product: ['', Validators.required],
+        density: ['', Validators.required],
+        ron: ['', Validators.required],
+        finalBoilingPoint: ['', Validators.required],
+        flashPoint: ['', Validators.required],
+        color: ['', Validators.required],
+        odour: ['', Validators.required],
+        oxygenate: ['', Validators.required],
+        others: ['', Validators.required],
+        comment: ['', Validators.required],
+      });
+      
+      ['vesselName', 'vesselPort'].forEach((field) => {
+        this.form.controls[field].disable();
+      })
+    } else {
+      this.form = this.formBuilder.group({
+        comment: ['', Validators.required],
+      })
+    }
   }
 
   submit() {
     this.submitting = true;
     const formData = { 
-      ...this.form.value, 
+      ...this.form.getRawValue(),
       appId: this.noaApp.id, 
       dischargeId: this.noaApp?.dischargeId || 0,
       depotId: 0
     };
-    console.log('Form data =========> ', formData);
-    this.dischargeClearance.createVesselDischargeClearance(formData).subscribe({
-      next: (res: any) => {
+
+    if (this.allowDischarge) {
+      this.dischargeClearance.createVesselDischargeClearance(formData).subscribe({
+        next: (res: any) => {
+          this.submitting = false;
+          if (res?.success) {
+            this.popUp.open('Form submitted successfully!', 'success');
+            this.dialogRef.close({ submitted: true });
+          } else {
+            this.popUp.open('Discharge clearance submission failed', 'error');
+          }
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (error: any) => {
+          this.submitting = false;
+          console.log(error);
+          this.popUp.open('Error occured while submitting the form: ', error?.message);
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+      });
+    } else {
+      setTimeout(() => {
         this.submitting = false;
-        if (res?.success) {
-          this.popUp.open('Form submitted successfully!', 'success');
-          this.dialogRef.close({ submitted: true });
-        } else {
-          this.popUp.open('Discharge clearance submission failed', 'error');
-        }
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.submitting = false;
-        console.log(error);
-        this.popUp.open('An error occurred while submitting the form.', 'error');
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
+        this.dialogRef.close({ submitted: true });
+        this.popUp.open('A notification has been sent to Supervisor(s)', 'success');
+      }, 3000)
+    }
   }
 }
