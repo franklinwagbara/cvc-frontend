@@ -124,7 +124,6 @@ const routes: Routes = [
     path: 'coq-and-plant/noa-applications-by-depot/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    canActivate: [CoqGuard],
   },
   {
     path: 'coq-and-plant/coq-applications-by-depot',
