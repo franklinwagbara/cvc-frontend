@@ -2,6 +2,7 @@ import { Component, Inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
+  MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
@@ -15,6 +16,7 @@ import { PopupService } from '../../services/popup.service';
 import { CoqService } from '../../services/coq.service';
 import { LoginModel } from '../../models/login-model';
 import { UserRole } from '../../constants/userRole';
+import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
 
 
 @Component({
@@ -41,7 +43,8 @@ export class ApproveFormComponent implements OnInit {
     private popup: PopupService,
     private cd: ChangeDetectorRef,
     private router: Router,
-    private coqService: CoqService
+    private coqService: CoqService,
+    private dialog: MatDialog,
   ) {
     this.application = data.data.application;
     this.isFO = data.data.isFO;
@@ -128,6 +131,13 @@ export class ApproveFormComponent implements OnInit {
         this.cd.markForCheck();
       },
     });
+  }
+
+  preview(): void {
+    this.dialog.open(
+      NoaApplicationPreviewComponent, 
+      { data: { application: this.application, remark: this.form.controls['comment'].value } } 
+    )
   }
 
   private approveFO() {

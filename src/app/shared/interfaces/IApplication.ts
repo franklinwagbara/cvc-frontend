@@ -23,6 +23,7 @@ export interface IApplication {
   tankList?: Array<ITank> | null;
   depotList?: Array<IPlant> | null;
   eta?: string;
+  createdDate?: string;
 
   applicationType?: string;
 }

@@ -80,9 +80,8 @@
             {{
               column.cell(row) === "undefined" ||
               column.cell(row) === "edit_control" ||
+              column.cell(row) === "discharge_clearance_control" ||
               column.cell(row) === "initiate_coq_control" ||
-              column.cell(row) === "discharge_onspec_control" ||
-              column.cell(row) === "discharge_offspec_control" ||
               column.cell(row) === "view_control" ||
               column.cell(row) === "view_coq_certs_control" ||
               column.cell(row) === "view_debit_notes_control" ||
@@ -145,30 +144,21 @@
                 mat-flat-button
                 color="accent"
                 style="background-color: #3c8d5a;"
-                *ngIf="column.cell(row) === 'discharge_onspec_control' && !allowDischarge"
-                [disabled]="row?.status?.toLowerCase() !== 'completed'"
-                (click)="onAllowDischarge()"
-              >Allow Discharge</button>
+                *ngIf="column.cell(row) === 'discharge_clearance_control' 
+                  && row?.status?.toLowerCase() === 'completed'"
+                (click)="onDischargeClearance(row)"
+              >Discharge Clearance</button>
 
               <button
                 mat-flat-button
                 color="accent"
                 class="view-button"
-                *ngIf="column.cell(row) === 'initiate_coq_control' && allowDischarge"
-                [disabled]="row?.status?.toLowerCase() !== 'completed'"
+                *ngIf="column.cell(row) === 'initiate_coq_control' 
+                  && row?.status?.toLowerCase() === 'completed'"
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ
               </button>
-
-              <button
-                mat-flat-button
-                color="accent"
-                style="background-color: #a73030;"
-                *ngIf="column.cell(row) === 'discharge_offspec_control'"
-                [disabled]="row?.status?.toLowerCase() !== 'completed'"
-                (click)="stopDischarge()"
-              >Not Ok</button>
 
               <button
                 mat-flat-button

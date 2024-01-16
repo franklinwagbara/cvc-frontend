@@ -59,6 +59,7 @@ import { ProductFormComponent } from './reusable-components/product-form/product
 import { TankFormComponent } from './reusable-components/tank-form/tank-form.component';
 import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
 import { DischargeClearanceFormComponent } from './reusable-components/discharge-clearance-form/discharge-clearance-form.component';
+import { NoaApplicationPreviewComponent } from './reusable-components/noa-application-preview/noa-application-preview.component';
 
 
 @NgModule({
@@ -96,6 +97,7 @@ import { DischargeClearanceFormComponent } from './reusable-components/discharge
     ProductFormComponent,
     TankFormComponent,
     AbbreviateNumberPipe,
+    NoaApplicationPreviewComponent,
   ],
   imports: [
     CommonModule,
@@ -137,7 +139,7 @@ import { DischargeClearanceFormComponent } from './reusable-components/discharge
     FirstNPipe,
     FormatTimeAmPmPipe,
     AbbreviateNumberPipe,
-    CurrencyPipe
+    CurrencyPipe,
   ],
 })
 export class SharedModule {}

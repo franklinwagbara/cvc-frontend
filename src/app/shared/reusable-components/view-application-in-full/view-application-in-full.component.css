@@ -40,7 +40,7 @@ hr {
 }
 
 .info-wrapper > div > h5 {
-  @apply bg-[#3e4e50] rounded-md text-center p-2 text-white tracking-wider;
+  @apply bg-[#3e4e50] rounded-md text-center p-2 text-white tracking-wider min-w-fit;
 }
 
 .info-wrapper > h4 {

@@ -48,28 +48,38 @@ export class ViewApplicationComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
     public location: Location
-  ) {}
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
+  ) {
+    this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
         console.log(params);
         this.spinner.open();
         this.appId = parseInt(params['id']);
+        console.log('Applications Id =================> ', this.appId);
+        if (isNaN(this.appId)) {
+          this.location.back();
+        }
+        this.appSource = params['appSource'];
+        console.log('App Source =============> ', this.appSource);
+        this.coqId = parseInt(params['coqId']);
+
+        if (this.appSource != AppSource.Licence) this.getApplication();
+        else this.getLicence();
+      } else {
+        this.location.back();
+      }
+    });
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (Object.keys(params).length !== 0) {
         this.appSource = params['appSource'];
         this.coqId = parseInt(params['coqId']);
 
         if (this.appSource != AppSource.Licence) this.getApplication();
         else this.getLicence();
-      }
-    });
-
-    this.route.params.subscribe((params) => {
-      if (Object.keys(params).length !== 0) {
-        this.appId = parseInt(params['id']);
-
-        if (this.appSource != AppSource.Licence) this.getApplication();
-        else this.getLicence();
+      } else {
+        this.location.back();
       }
     });
 

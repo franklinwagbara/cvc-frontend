@@ -134,7 +134,7 @@ export class MyDeskComponent implements OnInit {
         },
       });
     } else
-      this.router.navigate([`/admin/view-application/${event.id}`], {
+      this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
   }

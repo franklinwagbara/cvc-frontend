@@ -27,7 +27,7 @@ export class ViewCoqCertsComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.open();
-    this.coqService.getAllCoQCerts(1).subscribe({
+    this.coqService.getAllCoQCerts().subscribe({
       next: (res: any) => {
         this.spinner.close();
         this.coqs = res.data;

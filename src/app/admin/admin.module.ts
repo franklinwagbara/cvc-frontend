@@ -25,7 +25,6 @@ import { AppStageDocsComponent } from './settings/app-stage-docs/app-stage-docs.
 import { BranchSettingComponent } from './settings/branch-setting/branch-setting.component';
 import { FieldZonalOfficeComponent } from './settings/field-zonal-office/field-zonal-office.component';
 import { ModulesSettingComponent } from './settings/modules-setting/modules-setting.component';
-import { StaffdeskComponent } from './staffdesk/staffdesk.component';
 import { AppProcessComponent } from './settings/app-process/app-process.component';
 import { MyDeskComponent } from './desk/my-desk/my-desk.component';
 import { BarChartComponent } from './admin/dashboard/bar-chart/bar-chart.component';
@@ -79,13 +78,13 @@ import { AllNoaClearancesComponent } from './all-noa-clearances/all-noa-clearanc
 import { ViewNoaApplicationComponent } from './noa-applications-by-depot/view-noa-application/view-noa-application.component';
 import { CoqApplicationPreviewComponent } from './coq-application-form/coq-application-preview/coq-application-preview.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 
 
 @NgModule({
   declarations: [
     AdminComponent,
     DashboardComponent,
-    StaffdeskComponent,
     ApplicationComponent,
     AllStaffComponent,
     ModulesSettingComponent,
@@ -137,6 +136,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AllCoqCertificatesComponent,
     AllNoaClearancesComponent,
     CoqApplicationPreviewComponent,
+    AllCoqApplicationsComponent,
   ],
 
   imports: [

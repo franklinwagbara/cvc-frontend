@@ -62,7 +62,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'MY DESK',
-        url: '/admin/my-desk',
+        url: '/admin/desk',
       },
     ],
   },
@@ -78,8 +78,13 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'ALL APPLICATIONS',
-        url: '/admin/all-applications',
+        title: 'NoA APPLICATIONS',
+        url: '/admin/applications/noa-applications',
+      },
+      {
+        id: 2,
+        title: 'CoQ APPLICATIONS',
+        url: '/admin/applications/coq-applications',
       },
     ],
   },
@@ -101,7 +106,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'NoA CLEARANCES',
-        url: '/admin/all-approvals/noa-clearance'
+        url: '/admin/all-approvals/noa-clearances'
       }
     ],
   },
@@ -135,17 +140,17 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'APPLICATION REPORT',
-        url: '/admin/application-report',
+        url: '/admin/reports/application-report',
       },
       {
         id: 2,
-        title: 'PERMIT REPORT',
+        title: 'CLEARANCE REPORT',
         url: '#',
       },
       {
         id: 3,
         title: 'PAYMENT REPORT',
-        url: '/admin/payment-report',
+        url: '/admin/reports/payment-report',
       },
     ],
   },
@@ -161,68 +166,68 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'USER SETUP',
-        url: '/admin/all-staff',
+        title: 'USERS',
+        url: '/admin/settings/all-staff',
       },
       {
         id: 2,
-        title: 'MODULE SETTINGS',
-        url: '/admin/modules-setting',
+        title: 'MODULES',
+        url: '/admin/settings/modules',
       },
       {
         id: 3,
         title: 'APPPLICATION STAGE DOCS',
-        url: '/admin/application-stage-docs',
+        url: '/admin/settings/application-stage-docs',
       },
       {
         id: 4,
         title: 'FIELD/ZONAL OFFICES',
-        url: '/admin/field-zone-office',
+        url: '/admin/settings/field-zone-office',
       },
       {
         id: 5,
-        title: 'BRANCHES SETUP',
-        url: '/admin/branch-setting',
+        title: 'BRANCHES',
+        url: '/admin/settings/branches',
       },
       {
         id: 6,
         title: 'APPLICATION PROCESS',
-        url: '/admin/application-process',
+        url: '/admin/settings/application-process',
       },
       {
         id: 7,
-        title: 'FIELD OFFICER SETUP',
-        url: '/admin/field-officer-setting',
+        title: 'FIELD/DEPOT OFFICER',
+        url: '/admin/settings/field-officer',
       },
       {
         id: 8,
-        title: 'APPLICATION FEE',
-        url: '/admin/app-fees',
+        title: 'APPLICATION FEES',
+        url: '/admin/settings/app-fees',
       },
       {
         id: 9,
-        title: 'APPLICATION DEPOT',
-        url: '/admin/app-depots',
+        title: 'APPLICATION DEPOTS',
+        url: '/admin/settings/app-depots',
       },
       {
         id: 10,
-        title: 'JETTY CONFIGURATION',
-        url: '/admin/jetty-setting',
-      },
-      {
-        id: 10,
-        title: 'SURVEYOR CONFIGURATION',
-        url: '/admin/nominated-surveyor-setting',
+        title: 'JETTY',
+        url: '/admin/settings/jetty',
       },
       {
         id: 11,
-        title: 'ROLE SETTINGS',
-        url: '/admin/roles',
+        title: 'NOMINATED SURVEYORS',
+        url: '/admin/settings/nominated-surveyors',
       },
       {
-        id: 11,
-        title: 'PRODUCT SETTINGS',
-        url: '/admin/products',
+        id: 12,
+        title: 'ROLES',
+        url: '/admin/settings/roles',
+      },
+      {
+        id: 13,
+        title: 'PRODUCTS',
+        url: '/admin/settings/products',
       },
     ],
   },
@@ -249,25 +254,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        let foundActiveNav = false;
-        for (let item of this.menuItems) {
-          for (let subItem of item.subRoutes) {
-            if (this.router.url === subItem.url) {
-              item.active = true;
-              item.subMenuActive = true;
-              foundActiveNav = true;
-              break;
-            }
-          }
-          if (foundActiveNav) break;
-        }
-      });
-  }
 
-  ngOnInit() {
     const currentUser = decodeFullUserInfo();
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
     if (currentUser.userRoles === UserRole.FIELDOFFICER || currentUser?.location === LOCATION.FO) {
@@ -275,12 +262,12 @@ export class SidebarComponent implements OnInit, OnChanges {
         {
           id: 1,
           title: 'NoA Applications',
-          url: '/admin/noa-applications-by-depot',
+          url: '/admin/coq-and-plant/noa-applications-by-depot',
         },
         {
           id: 2,
           title: 'CoQ Applications',
-          url: '/admin/coq-applications-by-depot',
+          url: '/admin/coq-and-plant/coq-applications-by-depot',
         },
       ]
 
@@ -288,13 +275,13 @@ export class SidebarComponent implements OnInit, OnChanges {
         coqSubRoutes.push({
           id: 3,
           title: 'Processing Plant',
-          url: '/admin/certificate-of-quantity/new-application'
+          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application'
         });
       }
 
       this.menuItems = this.menuItems.slice(0, 2).concat({
         id: 3,
-        title: 'CoQ & Plant',
+        title: 'CoQ And Plant',
         iconName: 'carbon',
         iconId: 'carbon',
         iconColor: 'white',
@@ -322,6 +309,18 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        let route = this.menuItems.find((r) => r.title.toLowerCase() === this.router.url.replace(/-/g, ' ').split('/')[2]);
+        if (route) {
+          route.active = true;
+          route.subMenuActive = true;
+        } 
+      });
+  }
+
+  ngOnInit() {
     this.isCollapsed$.subscribe((val: boolean) => {
       this.isCollapsed = val;
       this.menuItems = this.menuItems.map((item) => {

@@ -1,14 +1,14 @@
 <div class="setting-desk">
-  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL CoQ CERTIFICATES</h2>
+  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL CoQ APPLICATIONS</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
-          [table_title]="'CoQ Certificates'"
+          [table_title]="'CoQ Applications'"
           [title-color]="'green'"
-          [table_keysMappedToHeaders]="certificateKeysMappedToHeaders"
-          [table_content]="certificates"
-          [EnableViewCertificateControl]="true"
+          [table_keysMappedToHeaders]="coqKeysMappedToHeaders"
+          [table_content]="coqs"
+          [EnableViewControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"

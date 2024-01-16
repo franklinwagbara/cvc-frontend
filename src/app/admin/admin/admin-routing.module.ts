@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { StaffdeskComponent } from '../staffdesk/staffdesk.component';
 import { ApplicationComponent } from '../application/application.component';
 import { AllStaffComponent } from '../settings/all-staff/all-staff.component';
 import { ModulesSettingComponent } from '../settings/modules-setting/modules-setting.component';
@@ -17,7 +15,6 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 import { AppFeeComponent } from '../settings/app-fee/app-fee.component';
 import { ApplicationReportComponent } from './application-report/application-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin.component';
 import { AppDepotComponent } from '../settings/app-depot/app-depot.component';
 import { PaymentComponent } from '../payment/payment.component';
@@ -35,82 +32,138 @@ import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-a
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
-import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
+import { AllCoqCertificatesComponent } from '../all-coq-certificates/all-coq-certificates.component';
+import { AllNoaClearancesComponent } from '../all-noa-clearances/all-noa-clearances.component';
+import { AdminGuard } from 'src/app/shared/guards/admin.guard';
+import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-applications.component';
 
 
 const routes: Routes = [
-  { path: '', component: AdminComponent },
-  { path: 'staff-dashboard', component: DashboardComponent },
-  { path: 'staff-desk', component: StaffdeskComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: 'dashboard', component: AdminComponent, pathMatch: 'full', },
+  { path: 'applications', redirectTo: 'applications/noa-applications', pathMatch: 'full' },
   {
-    path: 'all-applications',
+    path: 'applications/noa-applications',
     component: ApplicationComponent,
+    pathMatch: 'full',
     canActivate: [NoaAndApplicationsGuard],
   },
-  { path: 'all-staff', component: AllStaffComponent },
-  { path: 'modules-setting', component: ModulesSettingComponent },
-  { path: 'application-stage-docs', component: AppStageDocsComponent },
-  { path: 'field-zone-office', component: FieldZonalOfficeComponent },
-  { path: 'branch-setting', component: BranchSettingComponent },
-  { path: 'jetty-setting', component: JettySettingComponent },
-  { path: 'phasedocuments', component: PhasedocumentsComponent },
-  { path: 'application-process', component: AppProcessComponent },
-  { path: 'field-officer-setting', component: FieldOfficerSettingComponent },
   {
-    path: 'nominated-surveyor-setting',
-    component: NominatedSurveyorSettingComponent,
+    path: 'applications/noa-applications/:id',
+    component: ViewApplicationComponent,
+    pathMatch: 'full',
   },
-  { path: 'my-desk', component: MyDeskComponent },
-  { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'view-coq-application/:id', component: CoqApplicationViewComponent },
+  {
+    path: 'applications/coq-applications',
+    component: AllCoqApplicationsComponent,
+    pathMatch: 'full',
+    canActivate: [NoaAndApplicationsGuard],
+  },
+  {
+    path: 'applications/coq-applications/:id',
+    component: CoqApplicationViewComponent,
+    pathMatch: 'full',
+    canActivate: [NoaAndApplicationsGuard],
+  },
+  {
+    path: 'settings',
+    redirectTo: 'settings/all-staff',
+    pathMatch: 'full'
+  },
+  { path: 'settings/all-staff', component: AllStaffComponent, pathMatch: 'full', },
+  { path: 'settings/modules', component: ModulesSettingComponent, pathMatch: 'full', },
+  { path: 'settings/application-stage-docs', component: AppStageDocsComponent, pathMatch: 'full', },
+  { path: 'settings/field-zone-office', component: FieldZonalOfficeComponent, pathMatch: 'full', },
+  { path: 'settings/branches', component: BranchSettingComponent, pathMatch: 'full', },
+  { path: 'settings/jetty', component: JettySettingComponent, pathMatch: 'full', },
+  { path: 'settings/phasedocuments', component: PhasedocumentsComponent, pathMatch: 'full', },
+  { path: 'settings/application-process', component: AppProcessComponent, pathMatch: 'full', },
+  { path: 'settings/field-officer', component: FieldOfficerSettingComponent, pathMatch: 'full', },
+  {
+    path: 'settings/nominated-surveyors',
+    component: NominatedSurveyorSettingComponent,
+    pathMatch: 'full',
+  },
+  { path: 'desk', component: MyDeskComponent, pathMatch: 'full', },
+  { path: 'desk/view-application/:id', component: ViewApplicationComponent, pathMatch: 'full' },
+  { path: 'view-application/:id', component: ViewApplicationComponent, pathMatch: 'full', },
+  { path: 'view-coq-application/:id', component: CoqApplicationViewComponent, pathMatch: 'full', },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
+    pathMatch: 'full',
   },
-  { path: 'application-report', component: ApplicationReportComponent },
-  { path: 'payment-report', component: PaymentReportComponent },
+  { path: 'reports', redirectTo: 'reports/application-report', pathMatch: 'full' },
+  { path: 'reports/application-report', component: ApplicationReportComponent, pathMatch: 'full', },
+  { path: 'reports/payment-report', component: PaymentReportComponent, pathMatch: 'full', },
   {
     path: 'certificates',
     component: CertificatesComponent,
     canActivate: [NoaAndApplicationsGuard],
+    pathMatch: 'full',
   },
-  { path: 'schedules', component: ScheduleComponent },
-  { path: 'view-schedule/:id', component: ScheduleComponent },
-  { path: 'app-fees', component: AppFeeComponent },
-  { path: 'app-depots', component: AppDepotComponent },
-  { path: 'payments', component: PaymentComponent },
-  { path: 'payment/:id', component: ViewPaymentComponent },
-  { path: 'roles', component: RolesComponent },
-  { path: 'products', component: ProductsComponent },
+  { path: 'view-schedule/:id', component: ScheduleComponent, pathMatch: 'full', },
+  { path: 'settings/app-fees', component: AppFeeComponent, pathMatch: 'full', },
+  { path: 'settings/app-depots', component: AppDepotComponent, pathMatch: 'full', },
+  { path: 'payments', redirectTo: 'payments/all-payments', pathMatch: 'full' },
+  { path: 'payments/all-payments', component: PaymentComponent, pathMatch: 'full', },
+  { path: 'payment/:id', component: ViewPaymentComponent, pathMatch: 'full', },
+  { path: 'settings/roles', component: RolesComponent, pathMatch: 'full', },
+  { path: 'settings/products', component: ProductsComponent, pathMatch: 'full', },
   {
-    path: 'noa-applications-by-depot',
+    path: 'coq-and-plant',
+    redirectTo: 'coq-and-plant/noa-applications-by-depot',
+    pathMatch: 'full',
+  },
+  {
+    path: 'coq-and-plant/noa-applications-by-depot',
     component: NoaApplicationsByDepotComponent,
+    pathMatch: 'full',
   },
   {
-    path: 'noa-applications-by-depot/:id',
-    component: ViewNoaApplicationComponent,
+    path: 'coq-and-plant/noa-applications-by-depot/:id',
+    component: ViewApplicationComponent,
+    pathMatch: 'full',
     canActivate: [CoqGuard],
   },
   {
-    path: 'coq-applications-by-depot',
+    path: 'coq-and-plant/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
+    pathMatch: 'full',
     canActivate: [CoqGuard],
   },
   {
-    path: 'certificate-of-quantity/coq-applications-by-depot/:id',
+    path: 'coq-and-plant/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
+    pathMatch: 'full',
   },
   {
-    path: 'noa-applications-by-depot/:id/certificate-of-quantity/new-application',
+    path: 'coq-and-plant/noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
+    pathMatch: 'full',
     canActivate: [CoqGuard],
-    data: {
-    
-    }
   },
   {
-    path: 'certificate-of-quantity/new-application',
+    path: 'all-approvals',
+    redirectTo: 'all-approvals/coq-certificates',
+    pathMatch: 'full'
+  },
+  {
+    path: 'all-approvals/coq-certificates',
+    component: AllCoqCertificatesComponent,
+    pathMatch: 'full',
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'all-approvals/noa-clearances',
+    component: AllNoaClearancesComponent,
+    pathMatch: 'full',
+    canActivate: [AdminGuard]
+  },
+  {
+    path: 'coq-and-plant/processing-plant/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
+    pathMatch: 'full',
     canActivate: [CoqGuard],
     data: {
       type: ApplicationTerm.PROCESSINGPLANT,
