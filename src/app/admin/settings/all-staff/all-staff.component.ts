@@ -52,7 +52,6 @@ export class AllStaffComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBar.open();
     this.spinner.open();
 
     forkJoin([
@@ -61,7 +60,6 @@ export class AllStaffComponent implements OnInit {
       this.adminHttpService.getRoles(),
       this.libService.getAllLocations(),
       this.libService.getAllOffices(),
-      // this.adminHttpService.getBranches(),
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {

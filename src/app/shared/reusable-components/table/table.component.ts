@@ -255,21 +255,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableDischargeClearanceControl) {
-      this.columns.push(
-        {
-          columnDef: 'discharge_onspec_control',
-          header: '',
-          cell: (item) => 'discharge_onspec_control',
-        },
-        {
-          columnDef: 'discharge_offspec_control',
-          header: '',
-          cell: (item) => 'discharge_offspec_control',
-        }
-      );
-    }
-
     this.columns.unshift({
       columnDef: 'select',
       header: '',

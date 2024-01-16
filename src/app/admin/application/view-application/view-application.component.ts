@@ -72,15 +72,15 @@ export class ViewApplicationComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      if (Object.keys(params).length !== 0) {
-        this.appSource = params['appSource'];
-        this.coqId = parseInt(params['coqId']);
+      // if (Object.keys(params).length !== 0) {
+      //   this.appSource = params['appSource'];
+      //   this.coqId = parseInt(params['coqId']);
 
-        if (this.appSource != AppSource.Licence) this.getApplication();
-        else this.getLicence();
-      } else {
-        this.location.back();
-      }
+      //   if (this.appSource != AppSource.Licence) this.getApplication();
+      //   else this.getLicence();
+      // } else {
+      //   this.location.back();
+      // }
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;

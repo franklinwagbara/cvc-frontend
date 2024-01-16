@@ -2,60 +2,64 @@
   <tbody>
     <tr>
       <th>Reference Number</th>
-      <td>{{ application?.Reference }}</td>
+      <td>{{ application?.reference }}</td>
     </tr>
     <tr>
       <th>Plant Name</th>
-      <td>{{ application?.Plant }}</td>
+      <td>{{ application?.plant }}</td>
     </tr>
-    <tr *ngIf="application?.ProductType">
+    <tr *ngIf="application?.productType">
       <th>Product Type</th>
-      <td>{{ application?.ProductType }}</td>
+      <td>{{ application?.productType }}</td>
     </tr>
-    <tr *ngIf="application?.VesselName">
+    <tr *ngIf="application?.vessel?.name">
       <th>Vessel Name</th>
-      <td>{{ application?.VesselName }}</td>
+      <td>{{ application?.vessel?.name }}</td>
     </tr>
-    <tr *ngIf="application?.MotherVessel">
+    <tr *ngIf="application?.marketerName">
+      <th>Marketer Name</th>
+      <td>{{ application?.marketerName }}</td>
+    </tr>
+    <tr *ngIf="application?.motherVessel">
       <th>Mother Vessel</th>
-      <td>{{ application?.MotherVessel }}</td>
+      <td>{{ application?.motherVessel }}</td>
     </tr>
-    <tr *ngIf="application?.LoadingPort">
+    <tr *ngIf="application?.loadingPort">
       <th>Loading Port</th>
-      <td>{{ application?.LoadingPort }}</td>
+      <td>{{ application?.loadingPort }}</td>
     </tr>
-    <tr *ngIf="application?.Jetty">
+    <tr *ngIf="application?.jetty">
       <th>Jetty</th>
-      <td>{{ application?.Jetty }}</td>
+      <td>{{ application?.jetty }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.quauntityReflectedOnBill">
       <th>Quantity Reflected On Bill</th>
-      <td>{{ application?.QuauntityReflectedOnBill }}</td>
+      <td>{{ application?.quauntityReflectedOnBill }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.arrivalShipFigure">
       <th>Arrival Ship Figure</th>
-      <td>{{ application?.ArrivalShipFigure }}</td>
+      <td>{{ application?.arrivalShipFigure }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.dischargeShipFigure">
       <th>Discharge Ship Figure</th>
-      <td>{{ application?.DischargeShipFigure }}</td>
+      <td>{{ application?.dischargeShipFigure }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.depotPrice">
       <th>Depot Price</th>
-      <td>{{ application?.DepotPrice | currency:'NGN' }}</td>
+      <td>{{ application?.depotPrice | currency:'NGN' }}</td>
     </tr>
 
-    <tr>
+    <tr *ngIf="application?.dateOfVesselArrival">
       <th>Date Of Vessel Arrival</th>
-      <td>{{ application?.DateOfVesselArrival | date }}</td>
+      <td>{{ application?.dateOfVesselArrival | date }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.dateOfSTAfterDischarge">
       <th>Date Of Shore Tank After Discharge</th>
-      <td>{{ application?.DateOfSTAfterDischarge | date }}</td>
+      <td>{{ application?.dateOfSTAfterDischarge | date }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.dateOfVesselUllage">
       <th>Date Of Vessel Ullage</th>
-      <td>{{ application?.DateOfVesselUllage | date }}</td>
+      <td>{{ application?.dateOfVesselUllage | date }}</td>
     </tr>
 
     <tr>
@@ -63,25 +67,25 @@
       <td>COQ</td>
     </tr>
 
-    <tr>
+    <tr *ngIf="application?.status">
       <th>Application Status</th>
-      <td>{{ application?.Status }}</td>
+      <td>{{ application?.status }}</td>
     </tr>
-    <tr *ngIf="application?.NameConsignee">
+    <tr *ngIf="application?.nameConsignee">
       <th>Name of Consignee</th>
-      <td>{{ application?.NameConsignee }}</td>
+      <td>{{ application?.nameConsignee }}</td>
     </tr>
-    <tr *ngIf="application?.NominatedSurveyor">
+    <tr *ngIf="application?.nominatedSurveyor">
       <th>Nominated Surveyor</th>
-      <td>{{ application?.NominatedSurveyor }}</td>
+      <td>{{ application?.nominatedSurveyor }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.dateCreated">
       <th>Initiated On</th>
-      <td>{{ application?.DateCreated | date }}</td>
+      <td>{{ application?.dateCreated | date }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.submittedDate">
       <th>Submitted On</th>
-      <td>{{ application?.SubmittedDate | date }}</td>
+      <td>{{ application?.submittedDate | date }}</td>
     </tr>
     <tr>
       <th>Tanks</th>

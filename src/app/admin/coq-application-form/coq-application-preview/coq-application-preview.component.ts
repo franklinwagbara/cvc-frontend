@@ -115,7 +115,6 @@ export class CoqApplicationPreviewComponent implements OnInit {
         item.calc.receivedQtyAir = 
           (item.calc.after?.liquidWeightAir + item.calc.after?.vapourWeightAir) -
           (item.calc.before?.liquidWeightAir + item.calc.before?.vapourWeightAir)
-        console.log('Received Quantity Air ===========> ', item.calc.receivedQtyAir);
         return item;
       })
 
