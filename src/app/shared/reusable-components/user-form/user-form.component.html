@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Add Staff</h1>
-<div mat-dialog-content class="w-[1000px] h-screen">
+<div mat-dialog-content class="h-screen">
   <form [formGroup]="form" (ngSubmit)="createUser()">
     <div class="form-group" style="margin-bottom: 10px">
       <label>User Information from ELPS</label>
@@ -58,11 +58,17 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>User Role</label>
-      <select name="roleId" formControlName="roleId" class="form-control">
+      <select
+        [(ngModel)]="selectedRole"
+        name="roleId"
+        formControlName="roleId"
+        class="form-control"
+        (ngModelChange)="onRoleChanges()"
+      >
         <option
           *ngFor="let ut of roles"
           [selected]="ut.name === currentValue?.role"
-          [ngValue]="ut.id"
+          [ngValue]="ut"
         >
           {{ ut.name }}
         </option>
@@ -111,19 +117,32 @@
         formControlName="signatureImage"
         accept="image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
         class="form-control"
+        [ngClass]="{
+          '!border !border-1 !border-red-500':
+            form.valid && !form.get('signatureImage').value && onRoleChanges()
+        }"
         type="file"
         id="formFile"
       />
+      <mat-error
+        *ngIf="
+          form.valid && !form.get('signatureImage').value && onRoleChanges()
+        "
+        class="text-[14px]"
+        >Signature is required for the users with the selected role!</mat-error
+      >
     </div>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
+  <button mat-button mat-dialog-close>Close</button>
   <button
     mat-raised-button
     [color]="!currentValue ? 'secondary' : 'primary'"
     (click)="!currentValue ? createUser() : updateUser()"
-    [disabled]="form.invalid"
+    [disabled]="
+      form.invalid || (!form.get('signatureImage').value && onRoleChanges())
+    "
   >
     {{ !currentValue ? "Create" : "Update" }}
   </button>

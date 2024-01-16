@@ -23,6 +23,7 @@ import { FieldOffice } from '../../../../../src/app/admin/settings/field-zonal-o
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
 import { IBranch } from '../../interfaces/IBranch';
+import { UserRole } from '../../constants/userRole';
 
 @Component({
   selector: 'app-user-form',
@@ -43,6 +44,15 @@ export class UserFormComponent implements OnInit {
   public selectedUserFromElps: StaffWithName;
   public usersDropdownSettings: IDropdownSettings = {};
   public closeDropdownSelection = false;
+  public selectedRole: any;
+
+  public requiredSignatureRoles = [
+    UserRole.APPROVER,
+    UserRole.CONTROLLER,
+    UserRole.SUPERVISOR,
+    UserRole.REVIEWER,
+    UserRole.FAD,
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -142,6 +152,10 @@ export class UserFormComponent implements OnInit {
     };
   }
 
+  onRoleChanges() {
+    return this.requiredSignatureRoles.includes(this.selectedRole?.name);
+  }
+
   createUser() {
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
     this.progressBar.open();
@@ -190,10 +204,19 @@ export class UserFormComponent implements OnInit {
 
     const formDataToSubmit = new FormData();
 
-    const formKeys = ['id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
+    const formKeys = [
+      'id',
+      'firstName',
+      'lastName',
+      'email',
+      'phone',
+      'userType',
+      'roleId',
+      'isActive',
+    ];
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);
-    })
+    });
     formDataToSubmit.append('signatureImage', this.file);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
@@ -219,9 +242,9 @@ export class UserFormComponent implements OnInit {
     });
   }
 
-  onClose() {
-    console.log(this.form);
-  }
+  // onClose() {
+  //   console.log(this.form);
+  // }
 
   onFileChange(event: any) {
     this.file = event.target.files[0];
@@ -243,7 +266,10 @@ export class UserFormComponent implements OnInit {
 
   toggleCloseDropdownSelection() {
     this.closeDropdownSelection = !this.closeDropdownSelection;
-    this.usersDropdownSettings = { ...this.usersDropdownSettings, closeDropDownOnSelection: this.closeDropdownSelection };
+    this.usersDropdownSettings = {
+      ...this.usersDropdownSettings,
+      closeDropDownOnSelection: this.closeDropdownSelection,
+    };
   }
 
   onDeSelect(event: ListItem) {
