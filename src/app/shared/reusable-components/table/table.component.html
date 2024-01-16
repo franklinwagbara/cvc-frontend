@@ -80,10 +80,12 @@
             {{
               column.cell(row) === "undefined" ||
               column.cell(row) === "edit_control" ||
-              column.cell(row) === "discharge_clearance_control" ||
+              
               column.cell(row) === "initiate_coq_control" ||
               column.cell(row) === "view_control" ||
               column.cell(row) === "view_coq_certs_control" ||
+              column.cell(row) === "discharge_onspec_control" ||
+              column.cell(row) === "discharge_offspec_control" ||
               column.cell(row) === "view_debit_notes_control" ||
               column.cell(row) === "view_coq_cert_control" ||
               column.cell(row) === "view_debit_note_control" ||
@@ -143,18 +145,9 @@
               <button
                 mat-flat-button
                 color="accent"
-                style="background-color: #3c8d5a;"
-                *ngIf="column.cell(row) === 'discharge_clearance_control' 
-                  && row?.status?.toLowerCase() === 'completed'"
-                (click)="onDischargeClearance(row)"
-              >Discharge Clearance</button>
-
-              <button
-                mat-flat-button
-                color="accent"
                 class="view-button"
                 *ngIf="column.cell(row) === 'initiate_coq_control' 
-                  && row?.status?.toLowerCase() === 'completed'"
+                  && row?.status?.toLowerCase() === 'completed' && row?.allowDischarge"
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ
@@ -164,10 +157,34 @@
                 mat-flat-button
                 color="accent"
                 class="view-button"
+                style="background-color: #3c8d5a;"
+                *ngIf="column.cell(row) === 'discharge_onspec_control' 
+                  && row?.status?.toLowerCase() === 'completed' && !row?.allowDischarge"
+                (click)="onDischargeClearance(row, true)"
+              >
+                Allow Discharge
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                style="background-color: #b51c29;"
+                *ngIf="column.cell(row) === 'discharge_offspec_control' 
+                  && row?.status?.toLowerCase() === 'completed'"
+                (click)="onDischargeClearance(row, false)"
+              >
+                Discharge Not Ok
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
                 *ngIf="column.cell(row) === 'view_certificate_control'"
                 (click)="viewData(row)"
               >
-                View Certificate
+                View Clearance
               </button>
 
               <button
