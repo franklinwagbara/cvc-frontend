@@ -125,7 +125,7 @@ export class MyDeskComponent implements OnInit {
 
   onViewData(event: any, type: string) {
     if (this.appType$.getValue() == 'COQ') {
-      this.router.navigate([`/admin/view-coq-application/${event.id}`], {
+      this.router.navigate([`/admin/desk/view-coq-application/${event.id}`], {
         queryParams: {
           id: event.appId,
           appSource: AppSource.MyDesk,
