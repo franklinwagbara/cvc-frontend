@@ -23,6 +23,7 @@ import { FieldOffice } from '../../../../../src/app/admin/settings/field-zonal-o
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { AdminService } from '../../services/admin.service';
 import { IBranch } from '../../interfaces/IBranch';
+import { UserRole } from '../../constants/userRole';
 
 @Component({
   selector: 'app-user-form',
@@ -43,6 +44,17 @@ export class UserFormComponent implements OnInit {
   public selectedUserFromElps: StaffWithName;
   public usersDropdownSettings: IDropdownSettings = {};
   public closeDropdownSelection = false;
+  public selectedRole: any;
+  public isLoading = false;
+
+  public requiredSignatureRoles = [
+    UserRole.APPROVER,
+    UserRole.CONTROLLER,
+    UserRole.FIELDOFFICER,
+    // UserRole.SUPERVISOR,
+    // UserRole.REVIEWER,
+    // UserRole.FAD,
+  ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -123,13 +135,12 @@ export class UserFormComponent implements OnInit {
         Validators.required,
       ],
 
-      signatureImage: [
-        this.currentValue ? this.currentValue.signatureImage : '',
-      ],
+      signatureFile: [this.currentValue ? this.currentValue.signatureFile : ''],
     });
   }
 
   ngOnInit(): void {
+    console.log(this.data);
     this.usersDropdownSettings = {
       singleSelection: false,
       idField: 'id',
@@ -142,9 +153,15 @@ export class UserFormComponent implements OnInit {
     };
   }
 
+  onRoleChanges() {
+    this.selectedRole = this.form.get('roleId').value;
+    return this.requiredSignatureRoles.includes(this.selectedRole?.name);
+  }
+
   createUser() {
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
     this.progressBar.open();
+    this.isLoading = true;
     const formDataToSubmit = new FormData();
 
     formDataToSubmit.append('id', '0');
@@ -154,11 +171,11 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('email', this.form.get('email').value);
     formDataToSubmit.append('phone', this.form.get('phone').value);
     formDataToSubmit.append('userType', this.form.get('userType').value);
-    formDataToSubmit.append('roleId', this.form.get('roleId').value);
+    formDataToSubmit.append('roleId', this.selectedRole?.id);
     formDataToSubmit.append('locationId', this.form.get('locationId').value);
     formDataToSubmit.append('officeId', this.form.get('officeId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
-    formDataToSubmit.append('signatureImage', this.file);
+    formDataToSubmit.append('signatureFile', this.file);
 
     this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {
@@ -166,7 +183,7 @@ export class UserFormComponent implements OnInit {
           this.snackBar.open('Staff was created successfully!', null, {
             panelClass: ['success'],
           });
-
+          this.isLoading = false;
           this.dialogRef.close();
         }
       },
@@ -178,6 +195,7 @@ export class UserFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
+        this.isLoading = false;
         this.progressBar.close();
       },
     });
@@ -185,16 +203,25 @@ export class UserFormComponent implements OnInit {
 
   updateUser() {
     this.progressBar.open();
-
+    this.isLoading = true;
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
 
     const formDataToSubmit = new FormData();
 
-    const formKeys = ['id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'roleId', 'isActive'];
+    const formKeys = [
+      'id',
+      'firstName',
+      'lastName',
+      'email',
+      'phone',
+      'userType',
+      'isActive',
+    ];
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);
-    })
-    formDataToSubmit.append('signatureImage', this.file);
+    });
+    formDataToSubmit.append('signatureFile', this.file);
+    formDataToSubmit.append('roleId', this.selectedRole.id);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
       next: (res) => {
@@ -202,7 +229,7 @@ export class UserFormComponent implements OnInit {
           this.snackBar.open('Staff was updated successfully!', null, {
             panelClass: ['success'],
           });
-
+          this.isLoading = false;
           this.dialogRef.close();
         }
       },
@@ -214,14 +241,15 @@ export class UserFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
+        this.isLoading = false;
         this.progressBar.close();
       },
     });
   }
 
-  onClose() {
-    console.log(this.form);
-  }
+  // onClose() {
+  //   console.log(this.form);
+  // }
 
   onFileChange(event: any) {
     this.file = event.target.files[0];
@@ -243,7 +271,10 @@ export class UserFormComponent implements OnInit {
 
   toggleCloseDropdownSelection() {
     this.closeDropdownSelection = !this.closeDropdownSelection;
-    this.usersDropdownSettings = { ...this.usersDropdownSettings, closeDropDownOnSelection: this.closeDropdownSelection };
+    this.usersDropdownSettings = {
+      ...this.usersDropdownSettings,
+      closeDropDownOnSelection: this.closeDropdownSelection,
+    };
   }
 
   onDeSelect(event: ListItem) {
