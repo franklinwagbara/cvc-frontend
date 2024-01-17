@@ -208,11 +208,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'discharge_offspec_control',
       }),
-      this.columns.push({
-        columnDef: 'discharge_onspec_control',
-        header: '',
-        cell: (item) => 'discharge_onspec_control',
-      });
+        this.columns.push({
+          columnDef: 'discharge_onspec_control',
+          header: '',
+          cell: (item) => 'discharge_onspec_control',
+        });
     }
 
     if (this.enableViewCertificateControl) {
