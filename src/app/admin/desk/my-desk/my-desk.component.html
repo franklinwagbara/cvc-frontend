@@ -8,15 +8,16 @@
         <generic-table
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
-          [EnableViewControl]="true"
+          [EnableViewCoQCertControl]="true"
           [EnableInitiateCoQControl]="isFieldOfficer"
+          [EnableGenDebitNoteControl]="isFAD"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
           [noTitle]="true"
           (onViewData)="onViewData($event, 'applications')"
-          (onInitiateCoQ)="initiateCoq($event)"
-          
+          (onViewCoQCert)="onViewCoqCert($event)"
+          (onGenDebitNote)="genDebitNote($event)"
         >
         </generic-table>
       </div>
