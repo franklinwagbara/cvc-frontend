@@ -288,9 +288,10 @@ export class Staff {
   officeId: any;
   userType: string;
   elpsId: string;
-  signatureImage: any;
+  signatureFile: any;
   id: any;
   name?: string;
+  signature?: any;
 
   constructor(item: Staff) {
     this.firstName = item.firstName;
@@ -309,7 +310,8 @@ export class Staff {
     this.officeId = item.officeId;
     this.userType = item.userType;
     this.elpsId = item.elpsId;
-    this.signatureImage = item.signatureImage;
+    this.signatureFile = item.signatureFile;
+    this.signature = item.signature;
   }
 }
 
