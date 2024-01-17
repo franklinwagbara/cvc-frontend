@@ -147,6 +147,7 @@ export class PaymentSummary {
   totalAmount = '';
   // status: string = '';
   paymentStatus = '';
+  paymentDescription?: string;
 
   applicationType: string;
   accreditationFee: number;

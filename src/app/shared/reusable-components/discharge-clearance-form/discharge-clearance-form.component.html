@@ -1,4 +1,7 @@
 <h1 class="text-center" mat-dialog-title>{{ allowDischarge ? 'Allow Discharge Clearance' : 'Disallow Discharge Form' }}</h1>
+
+<div *ngIf="errorMessage" class="alert alert-danger p-2">{{ errorMessage }}</div>
+
 <div mat-dialog-content class="p-2">
   <form [formGroup]="form" class="p-2 grid grid-cols-9 gap-4">
     <ng-container *ngIf="allowDischarge">
@@ -139,12 +142,16 @@
   
       <div class="form-group col-span-3" >
         <label>Odour <sup class="tex-red-500">*</sup></label>
-        <input 
+        <select 
           type="text" 
           formControlName="odour" 
           class="form-control"
           [ngClass]="{'is-invalid': form.get('odour')?.dirty && form.get('odour')?.invalid}"
-        />
+        >
+          <option value="" [selected]="true">-- Select Odour --</option>
+          <option value="marketable">Marketable</option>
+          <option value="foul">Foul</option>
+        </select>
         <div
           *ngIf="form.get('odour')?.dirty && form.get('odour')?.invalid"
           class="alert alert-danger mt-2 p-2"

@@ -17,6 +17,7 @@ import { CoqService } from '../../services/coq.service';
 import { LoginModel } from '../../models/login-model';
 import { UserRole } from '../../constants/userRole';
 import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
+import { CoqApplicationPreviewComponent } from 'src/app/admin/coq-application-form/coq-application-preview/coq-application-preview.component';
 
 
 @Component({
@@ -26,7 +27,7 @@ import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-a
 })
 export class ApproveFormComponent implements OnInit {
   public form: FormGroup;
-  public application: IApplication;
+  public application: any;
   public currentUser: Staff;
   public isFO: boolean;
   public isCOQProcessor: boolean;
@@ -46,16 +47,17 @@ export class ApproveFormComponent implements OnInit {
     private coqService: CoqService,
     private dialog: MatDialog,
   ) {
-    this.application = data.data.application;
+    this.application = data?.data?.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
     this.isCOQProcessor = data.data.isCOQProcessor;
-
+  }
+  
+  ngOnInit(): void {
+  
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
     });
-  }
-  ngOnInit(): void {
     const tempUser = this.auth.currentUser;
     this.auth.getAllStaff().subscribe({
       next: (res) => {
@@ -89,8 +91,6 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
-    // if (this.isFO) this.approveFO();
-    // else this.approveOther();
     if (this.isCOQProcessor) this.approveFO();
     else this.approveOther();
   }
@@ -119,11 +119,12 @@ export class ApproveFormComponent implements OnInit {
         }
         this.progressBarService.close();
         this.isLoading = false;
-        this.router.navigate(['/admin/my-desk']);
+        this.router.navigate(['/admin/desk']);
         this.cd.markForCheck();
       },
 
       error: (error: any) => {
+        console.log(error);
         this.popup.open('Failed to process application', 'error');
 
         this.progressBarService.close();
@@ -134,10 +135,24 @@ export class ApproveFormComponent implements OnInit {
   }
 
   preview(): void {
-    this.dialog.open(
-      NoaApplicationPreviewComponent, 
-      { data: { application: this.application, remark: this.form.controls['comment'].value } } 
-    )
+    if (this.isCOQProcessor) {
+      this.dialog.open(
+        CoqApplicationPreviewComponent, 
+        { 
+          data: { 
+            vesselDischargeData: this.application, 
+            remark: this.form.controls['comment'].value, 
+            previewSource: 'submitted-coq-view',
+            isGasProduct: this.application?.productType === 'Gas'
+          } 
+        } 
+      )
+    } else {
+      this.dialog.open(
+        NoaApplicationPreviewComponent, 
+        { data: { application: this.application, remark: this.form.controls['comment'].value } } 
+      )
+    }
   }
 
   private approveFO() {
