@@ -73,7 +73,7 @@ export class MypermitsComponent implements OnInit, AfterViewInit {
     // this.categories = [...this.categories];
   }
 
-  onViewData(event: any, type: string) {
+  onViewData(event: any) {
     window.location.assign(
       `${environment.apiUrl}/licenses/view_license?id=${event.id}`
     );

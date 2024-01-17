@@ -8,11 +8,15 @@
 }
 
 .application-view {
-  @apply flex-1 w-[100%] xl:w-[33%];
+  @apply flex-1;
+}
+
+.app-view-container {
+  @apply flex flex-col lg:flex-row;
 }
 
 .application-controls {
-  @apply flex-1 flex flex-col gap-4;
+  @apply flex-1 flex flex-col gap-4 w-full;
 }
 
 .view-application {

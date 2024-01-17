@@ -137,7 +137,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'view-coq-application/:id',
+    path: 'desk/view-coq-application/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
   },

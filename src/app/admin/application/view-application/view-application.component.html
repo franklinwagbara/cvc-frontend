@@ -13,13 +13,15 @@
     </h2>
 
     <div mat-dialog-content class="content !overflow-x-auto">
-      <div class="application-view">
+      <div class="application-view min-w-[500px]">
         <app-application-view-table
           [application]="application"
           [appId]="appId"
           [appSource]="appSource"
         ></app-application-view-table>
       </div>
+      
+
       <div class="application-controls">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
@@ -95,6 +97,7 @@
           </button> -->
         </div>
       </div>
+     
     </div>
   </div>
 </div>

@@ -86,6 +86,7 @@
               column.cell(row) === "discharge_onspec_control" ||
               column.cell(row) === "discharge_offspec_control" ||
               column.cell(row) === "view_debit_notes_control" ||
+              column.cell(row) === "view_clearance_control" ||
               column.cell(row) === "view_coq_cert_control" ||
               column.cell(row) === "view_debit_note_control" ||
               column.cell(row) === "view_certificate_control" ||
@@ -189,6 +190,16 @@
                 color="accent"
                 class="view-button"
                 *ngIf="column.cell(row) === 'view_certificate_control'"
+                (click)="viewData(row)"
+              >
+                View Certificate
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_clearance_control'"
                 (click)="viewData(row)"
               >
                 View Clearance
