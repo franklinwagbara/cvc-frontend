@@ -148,7 +148,7 @@
                 color="accent"
                 class="view-button"
                 *ngIf="column.cell(row) === 'initiate_coq_control' 
-                  && row?.status?.toLowerCase() === 'completed' && row?.allowDischarge"
+                  && row?.status?.toLowerCase() === 'completed' && row?.hasCleared"
                 (click)="initiateCoQ(row)"
               >
                 Initiate CoQ
@@ -160,7 +160,7 @@
                 class="view-button"
                 style="background-color: #3c8d5a;"
                 *ngIf="column.cell(row) === 'discharge_onspec_control' 
-                  && row?.status?.toLowerCase() === 'completed' && !row?.allowDischarge"
+                  && row?.status?.toLowerCase() === 'completed' && !row?.hasCleared"
                 (click)="onDischargeClearance(row, true)"
               >
                 Allow Discharge
@@ -172,7 +172,7 @@
                 class="view-button"
                 style="background-color: #b51c29;"
                 *ngIf="column.cell(row) === 'discharge_offspec_control' 
-                  && row?.status?.toLowerCase() === 'completed'"
+                  && row?.status?.toLowerCase() === 'completed' && !row?.hasCleared"
                 (click)="onDischargeClearance(row, false)"
               >
                 Discharge Not Ok

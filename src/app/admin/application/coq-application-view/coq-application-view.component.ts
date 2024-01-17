@@ -17,6 +17,7 @@ import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -33,6 +34,7 @@ export class CoqApplicationViewComponent implements OnInit {
   public coqId: number;
   public documents: any;
   public tanksList: any[];
+  appLoaded = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -63,24 +65,28 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
+    return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
+  }
+
+  public get isFAD() {
+    return (this.currentUser as any).userRoles === UserRole.FAD;
   }
 
   public get isCOQProcessor() {
-    return (
-      (this.currentUser as any).userRoles === 'FAD' ||
-      (this.currentUser as any).userRoles === 'Controller' ||
-      this.currentUser.location == LOCATION.FO
-    );
+    return (this.currentUser as any).userRoles === UserRole.CONTROLLER;
   }
 
   public get isFO() {
-    return this.currentUser.location == LOCATION.FO;
+    return this.currentUser.userRoles === LOCATION.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {
     const currentUser = this.auth.currentUser;
     return currentUser.userId == scheduleBy;
+  }
+
+  previewDebitNote() {
+    window.location.assign('#');
   }
 
   getApplication() {
@@ -90,6 +96,7 @@ export class CoqApplicationViewComponent implements OnInit {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
+          this.appLoaded = true;
         }
 
         this.progressBar.close();
@@ -118,7 +125,6 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
-    this.application.reference = this.application.Reference;
     const operationConfiguration = {
       approve: {
         data: {
@@ -155,18 +161,13 @@ export class CoqApplicationViewComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
   }
 
   previewDetails(): void {

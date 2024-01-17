@@ -94,6 +94,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
+  @Output() allowDischarge = new EventEmitter<boolean>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -230,6 +231,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
+    if (this.enableViewClearanceControl) {
+      this.columns.push({
+        columnDef: 'view_clearance_control',
+        header: '',
+        cell: (item) => 'view_clearance_control',
+      });
+    }
+
     if (this.enableViewCoQCertsControl) {
       this.columns.push({
         columnDef: 'view_coq_certs_control',
@@ -243,14 +252,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'view_debit_notes_control',
         header: '',
         cell: (item) => 'view_debit_notes_control',
-      });
-    }
-
-    if (this.enableViewClearanceControl) {
-      this.columns.push({
-        columnDef: 'view_clearance_control',
-        header: '',
-        cell: (item) => 'view_clearance_control',
       });
     }
 
@@ -357,8 +358,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
-          if (result.submitted) {
-            row.allowDischarge = allow;
+          if (result.submitted && allow) {
+            this.allowDischarge.emit(true);
           }
         });
       },

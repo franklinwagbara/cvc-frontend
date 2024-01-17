@@ -70,6 +70,12 @@
                     </td>
                   </tr>
                   <tr>
+                    <td class="col-title">Payment Description</td>
+                    <td class="font-bold">
+                      {{ paymentSummary?.paymentDescription }}
+                    </td>
+                  </tr>
+                  <tr>
                     <td class="col-title">Service Charge</td>
                     <td class="font-bold">
                       {{ paymentSummary?.serviceCharge | currency:'NGN' }}
