@@ -359,7 +359,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
           if (result.submitted && allow) {
-            this.allowDischarge.emit(true);
+            this.allowDischarge.emit(allow);
           }
         });
       },
