@@ -70,6 +70,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
+  @Input('EnableGenDebitNoteControl') enableGenDebitNoteControl?: boolean =
+    false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
     false;
@@ -95,6 +97,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
   @Output() allowDischarge = new EventEmitter<boolean>();
+  @Output() onGenDebitNote = new EventEmitter<boolean>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -188,6 +191,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'view_control',
         header: '',
         cell: (item) => 'view_control',
+      });
+    }
+
+    if (this.enableGenDebitNoteControl) {
+      this.columns.push({
+        columnDef: 'generate_debit_note_control',
+        header: '',
+        cell: (item) => 'generate_debit_note_control',
       });
     }
 
@@ -345,6 +356,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   viewDebitNote(row: any) {
     this.onViewDebitNote.emit(row);
+  }
+
+  genDebitNote(row: any) {
+    this.onGenDebitNote.emit(row);
   }
 
   onDischargeClearance(row: any, allow: boolean): void {

@@ -87,6 +87,7 @@
               column.cell(row) === "discharge_onspec_control" ||
               column.cell(row) === "discharge_offspec_control" ||
               column.cell(row) === "view_debit_notes_control" ||
+              column.cell(row) === "generate_debit_note_control" ||
               column.cell(row) === "view_clearance_control" ||
               column.cell(row) === "view_coq_cert_control" ||
               column.cell(row) === "view_debit_note_control" ||
@@ -210,6 +211,16 @@
 
               <button
                 mat-flat-button
+                style="background-color: blueviolet; color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_coq_cert_control'"
+                (click)="viewCoQCert(row)"
+              >
+                View CoQ Certificate
+              </button>
+
+              <button
+                mat-flat-button
                 style="background-color: rgb(129, 42, 139); color: white"
                 class="view-button"
                 *ngIf="column.cell(row) === 'view_debit_notes_control'"
@@ -218,7 +229,7 @@
                 View Debit Notes
               </button>
 
-              <button
+              <!-- <button
                 mat-flat-button
                 style="background-color: blueviolet; color: white"
                 class="view-button"
@@ -226,7 +237,7 @@
                 (click)="viewCoQCerts(row)"
               >
                 View Certificate
-              </button>
+              </button> -->
 
               <button
                 mat-flat-button
@@ -236,6 +247,16 @@
                 (click)="viewDebitNotes(row)"
               >
                 View Debit Note
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'generate_debit_note_control'"
+                (click)="genDebitNote(row)"
+              >
+                Generate Debit Note
               </button>
 
               <button

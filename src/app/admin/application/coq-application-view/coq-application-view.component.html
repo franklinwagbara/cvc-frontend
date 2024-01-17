@@ -15,7 +15,7 @@
       <div class="application-view flex-1">
         <app-coq-application-view-table
           [application]="application"
-          [appId]="appId"
+          [appId]="coqId"
           [appSource]="appSource"
           [tankList]="tanksList"
           [isCoqProcessor]="isCOQProcessor"
@@ -99,7 +99,7 @@
           <button
             mat-raised-button
             class="bg-green-500 text-white"
-            (click)="action('approve')"
+            (click)="generateDebitNote()"
           >
             Generate Debit Note
           </button>
