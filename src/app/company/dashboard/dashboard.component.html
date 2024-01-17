@@ -2,7 +2,13 @@
   <div class="dashboard-wrapper">
     <div class="card">
       <div>
-        <h1>{{ dashboard?.deskCount > 0 ? (dashboard?.deskCount | abbreviatevalue) : '0'}}</h1>
+        <h1>
+          {{
+            dashboard?.deskCount > 0
+              ? (dashboard?.deskCount | abbreviatevalue)
+              : "0"
+          }}
+        </h1>
         <img src="../../../assets/img/icons/common/apps.png" />
       </div>
       <p>Application(s)</p>
@@ -10,7 +16,13 @@
 
     <div class="card blue-card">
       <div>
-        <h1>{{ dashboard?.tProcessing > 0 ? (dashboard?.tProcessing | abbreviatevalue) : '0' }}</h1>
+        <h1>
+          {{
+            dashboard?.tProcessing > 0
+              ? (dashboard?.tProcessing | abbreviatevalue)
+              : "0"
+          }}
+        </h1>
         <img src="../../../assets/img/icons/common/processing.png" />
       </div>
       <p>Processing</p>
@@ -18,7 +30,13 @@
 
     <div class="card green-card">
       <div>
-        <h1>{{ dashboard?.tApproved > 0 ? (dashboard?.tApproved | abbreviatevalue) : '0' }}</h1>
+        <h1>
+          {{
+            dashboard?.tApproved > 0
+              ? (dashboard?.tApproved | abbreviatevalue)
+              : "0"
+          }}
+        </h1>
         <img src="../../../assets/img/icons/common/approval.png" />
       </div>
       <p>Approval(s)</p>
@@ -27,22 +45,29 @@
     <div class="card orange-card">
       <div>
         <h1>
-          {{ dashboard?.debitNote ? ( dashboard?.debitNote | abbreviatevalue) : '0' }}
+          {{
+            dashboard?.debitNote
+              ? (dashboard?.debitNote | abbreviatevalue)
+              : "0"
+          }}
         </h1>
         <img src="../../../assets/img/icons/common/money-stack.png" />
       </div>
       <p class="flex items-center justify-between">
         <span>Total Amount Owed</span>
-        <img src="../../../assets/img/icons/common/currency-ngn.png" width="37" height="37" />
+        <img
+          src="../../../assets/img/icons/common/currency-ngn.png"
+          width="37"
+          height="37"
+        />
       </p>
     </div>
   </div>
 
   <div class="apply" [routerLink]="['/company/apply']">
-    <button
-      mat-button 
-      class="apply-button"
-    >Click Here to Apply for Clearance</button>
+    <button mat-button class="apply-button">
+      Click Here to Apply for Clearance
+    </button>
   </div>
 
   <div class="notification-wrapper">
@@ -54,34 +79,56 @@
     <hr />
 
     <div class="messages-wrapper">
-      <div class="message-container">
+      <div class="w-full !min-w-[600px] !overflow-x-auto">
         <h3>RECENT MESSAGE(S)</h3>
         <table class="table table-auto data-table">
           <thead>
             <tr>
-              <th>Seen</th>
-              <th>Subject</th>
-              <th>Date</th>
+              <th *ngFor="let h of msgColumns">{{ h.header }}</th>
             </tr>
           </thead>
-  
-          <tbody>
-            <tr *ngFor="let msg of messages; let i = index">
-              <td (click)="viewMessage(i)" class="cursor-pointer">
+
+          <tbody class="">
+            <tr *ngFor="let msg of messages | async; let i = index">
+              <td
+                *ngFor="let h of msgColumns"
+                (click)="viewMessage(i)"
+                class="cursor-pointer"
+              >
                 <i
+                  *ngIf="h.header === 'Seen'"
                   class="fas"
                   [ngClass]="{
-                    'fa-envelope-open': msg.seen,
-                    'fa-envelope text-green-700': !msg.seen
+                    'fa-envelope-open': msg.isRead,
+                    'fa-envelope text-green-700': !msg.isRead
                   }"
                 ></i>
+                <!-- <span *ngIf="h.header === 'Seen'"></span> -->
+                <span *ngIf="h.header !== 'Seen' && h.header !== 'Date'">{{
+                  msg[h.columnDef]
+                }}</span>
+                <span *ngIf="h.header === 'Date'">{{
+                  msg[h.columnDef] | date
+                }}</span>
               </td>
-              <td (click)="viewMessage(i)" class="cursor-pointer">
-                {{ msg.subject }}
-              </td>
-              <td>{{ msg.date | date }}</td>
+              <!-- <td (click)="viewMessage(i)" class="cursor-pointer">
+               
+              </td> -->
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td [attr.colspan]="msgColumns.length + 1">
+                <mat-paginator
+                  #paginator
+                  [length]="length"
+                  [pageSize]="pageSize"
+                  [pageSizeOptions]="pageSizeOptions"
+                  aria-label="Select page"
+                ></mat-paginator>
+              </td>
+            </tr>
+          </tfoot>
         </table>
       </div>
       <div class="news-container">
@@ -97,7 +144,6 @@
           </tbody>
         </table>
       </div>
-  </div>
-
+    </div>
   </div>
 </div>
