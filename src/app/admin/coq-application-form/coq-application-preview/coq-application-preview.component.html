@@ -443,15 +443,15 @@
     <tbody>
       <tr>
         <th style="text-align: left; font-size: 14px;" scope="row">Name</th>
-        <td style="text-align: left; font-size: 12px;">{{ data.officer?.name }}</td>
+        <td style="text-align: left; font-size: 12px;">{{ userInfo?.firstName + ' ' + userInfo?.lastName }}</td>
       </tr>
       <tr>
         <th style="text-align: left; font-size: 14px;" scope="row">Role</th>
-        <td style="text-align: left; font-size: 12px;">{{ data.officer?.role }}</td>
+        <td style="text-align: left; font-size: 12px;">{{ userInfo?.userRoles }}</td>
       </tr>
       <tr>
         <th style="text-align: left; font-size: 14px;" scope="row">Remarks</th>
-        <td style="text-align: left; font-size: 12px;">{{ data.officer?.remarks }}</td>
+        <td style="text-align: left; font-size: 12px;">{{ data?.remark }}</td>
       </tr>
     </tbody>
   </table>

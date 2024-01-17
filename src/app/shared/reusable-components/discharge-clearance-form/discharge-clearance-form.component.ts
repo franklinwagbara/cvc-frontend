@@ -1,5 +1,4 @@
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Inject,
@@ -7,7 +6,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from '../../services/popup.service';
 import { DischargeClearanceService } from '../../services/discharge-clearance.service';
 
@@ -15,7 +13,6 @@ import { DischargeClearanceService } from '../../services/discharge-clearance.se
   selector: 'app-discharge-clearance-form',
   templateUrl: './discharge-clearance-form.component.html',
   styleUrls: ['./discharge-clearance-form.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DischargeClearanceFormComponent implements OnInit {
   noaApp: any;
@@ -23,13 +20,13 @@ export class DischargeClearanceFormComponent implements OnInit {
   public form: FormGroup;
   public roles: any;
   submitting = false;
+  errorMessage = '';
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[], noaApp: any, allowDischarge: boolean },
     public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
     private popUp: PopupService,
     private formBuilder: FormBuilder,
-    private spinner: SpinnerService,
     private cd: ChangeDetectorRef,
     private dischargeClearance: DischargeClearanceService
   ) {
@@ -81,16 +78,20 @@ export class DischargeClearanceFormComponent implements OnInit {
             this.popUp.open('Form submitted successfully!', 'success');
             this.dialogRef.close({ submitted: true });
           } else {
-            this.popUp.open('Discharge clearance submission failed', 'error');
+            this.errorMessage = 'An error occurred: ' + res?.message;
+            setTimeout(() => {
+              this.errorMessage = '';
+            }, 3000)
           }
-          this.spinner.close();
           this.cd.markForCheck();
         },
         error: (error: any) => {
           this.submitting = false;
+          this.errorMessage = 'Something went wrong while submitting clearance';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 3000)
           console.log(error);
-          this.popUp.open('Error occured while submitting the form: ', error?.message);
-          this.spinner.close();
           this.cd.markForCheck();
         },
       });

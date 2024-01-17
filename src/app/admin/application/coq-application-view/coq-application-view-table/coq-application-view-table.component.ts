@@ -13,6 +13,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
   @Input() tankList: any;
   @Input() appId: number;
   @Input() appSource: string;
+  @Input() isCoqProcessor: boolean;
 
   public depotId?: number;
   public coqId?: number;

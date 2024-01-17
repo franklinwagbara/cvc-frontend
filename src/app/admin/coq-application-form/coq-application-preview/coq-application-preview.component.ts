@@ -2,6 +2,7 @@ import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core'
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { CoQData } from '../coq-application-form.component';
+import { AuthenticationService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-coq-application-preview',
@@ -25,14 +26,19 @@ export class CoqApplicationPreviewComponent implements OnInit {
   grandTotalWeightVac: number;
   grandTotalWeightKg: number;
   previewSource: 'coq-form-view' | 'submitted-coq-view';
+  userInfo: any;
 
   @ViewChild('coqPreview') coqPreview: ElementRef
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PreviewData,
+    private auth: AuthenticationService,
   ) {}
 
+  
   ngOnInit(): void {
+    this.userInfo = this.auth.currentUser;
+
     this.displayedColumns = this.data?.isGasProduct ? this.gasColumns : this.liquidColumns;
     this.tankData = this.data?.tankData;
     this.previewSource = this.data?.previewSource;
@@ -159,5 +165,5 @@ interface PreviewData {
   productName?: string;
   vesselDischargeData: any;
   previewSource: 'coq-form-view' | 'submitted-coq-view';
-  officer?: { name: string; role: string; remarks: string; }
+  remark: string;
 }

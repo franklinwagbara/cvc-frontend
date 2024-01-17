@@ -17,6 +17,8 @@ import { Category } from '../../settings/modules-setting/modules-setting.compone
 import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
 import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 import { UserRole } from 'src/app/shared/constants/userRole';
+import { AppType } from 'src/app/shared/constants/appType';
+import { AuthenticationService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-my-desk',
@@ -69,6 +71,15 @@ export class MyDeskComponent implements OnInit {
     status: 'Status',
   };
 
+  public dnKeysMappedToHeaders = {
+    reference: 'Reference',
+    name: 'Name',
+    depotName: 'Depot Name',
+    depotPrice: 'Depot Price',
+    gsv: 'GSV',
+    debitNote: 'Debit Note'
+  }
+
   constructor(
     private adminService: AdminService,
     private applicationService: ApplicationService,
@@ -77,7 +88,8 @@ export class MyDeskComponent implements OnInit {
     private progressBar: ProgressBarService,
     private spinner: SpinnerService,
     public cd: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private auth: AuthenticationService
   ) {
     this.categories$.subscribe((data) => {
       this.categories = [...data];
@@ -123,8 +135,12 @@ export class MyDeskComponent implements OnInit {
     return currentUser.userRoles === UserRole.FIELDOFFICER;
   }
 
+  get isFAD() {
+    return this.auth.currentUser.userRoles == UserRole.FAD;
+  }
+
   onViewData(event: any, type: string) {
-    if (this.appType$.getValue() === 'COQ') {
+    if (this.appType$.getValue() === AppType.COQ || this.isFAD) {
       this.router.navigate([`/admin/desk/view-coq-application/${event.id}`], {
         queryParams: {
           id: event.appId,
@@ -133,7 +149,7 @@ export class MyDeskComponent implements OnInit {
           coqId: event.id,
         },
       });
-    } else if (this.appType$.getValue() === 'NOA') {
+    } else if (this.appType$.getValue() === AppType.NOA) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
@@ -141,9 +157,11 @@ export class MyDeskComponent implements OnInit {
   }
 
   public get getColumnHeaders() {
-    return this.appType$.getValue() == 'NOA'
+    return this.appType$.getValue() == AppType.NOA
       ? this.applicationKeysMappedToHeaders
-      : this.coqKeysMappedToHeaders;
+      : this.appType$.getValue() == AppType.COQ
+      ? this.coqKeysMappedToHeaders
+      : this.dnKeysMappedToHeaders;
   }
 
   initiateCoq(event: any) {

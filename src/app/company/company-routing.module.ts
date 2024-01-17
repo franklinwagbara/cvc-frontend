@@ -7,7 +7,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MyApplicationComponent } from './my-applications/myapplication.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
-import { MypermitsComponent } from './permits/mypermits.component';
+import { MyapprovalsComponent } from './approvals/myapprovals.component';
 import { RegisterDirectorComponent } from './director/registerdirector.component';
 import { CompanyInformationComponent } from './company-information/companyinformation.component';
 import { UploadComponent } from './apply/upload.component';
@@ -39,16 +39,16 @@ const routes: Routes = [
   { path: 'new', component: NewApplicationComponent },
   { path: 'renew', component: RenewApplicationComponent },
   { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'mycertificates/:id/coqs', component: ViewCoqCertsComponent },
+  { path: 'approvals/:id/coqs', component: ViewCoqCertsComponent },
   {
-    path: 'mycertificates/:id/debit-notes',
+    path: 'approvals/:id/debit-notes',
     component: ViewDebitNotesComponent,
   },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
   },
-  { path: 'mycertificates', component: MypermitsComponent },
+  { path: 'approvals', component: MyapprovalsComponent },
   {
     path: 'companyinformation',
     component: CompanyInformationComponent,
