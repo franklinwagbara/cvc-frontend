@@ -119,19 +119,14 @@ export class ProductsComponent implements OnInit {
     const typeToModelMapper = {
       products: {
         id: 'id',
-        applicationType: 'Application Type',
-        serciveCharge: 'Sercive Charge',
-        noaFee: 'NOA Fee',
-        coqFee: 'COQ Fee',
-        processingFee: 'Processing Fee',
       },
     };
     const listOfDataToDelete = [...event];
     const requests = (listOfDataToDelete as any[]).map((req) => {
-      if (type === 'applicationFees') {
-        return this.adminService.deleteAppFee(req[typeToModelMapper[type].id]);
+      if (type === 'products') {
+        return this.adminService.deleteproduct(req[typeToModelMapper[type].id]);
       } else {
-        return this.adminService.deleteAppFee(req[typeToModelMapper[type].id]);
+        return this.adminService.deleteproduct(req[typeToModelMapper[type].id]);
       }
     });
     this.progressBarService.open();

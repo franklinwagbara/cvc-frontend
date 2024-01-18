@@ -499,7 +499,7 @@ export class AdminService {
       .pipe(retry(this.num));
   }
 
-  public deleteproducts(id: IAppFee) {
+  public deleteproduct(id: IAppFee) {
     return this.http
       .delete<any>(`${environment.apiUrl}/Product/${id}`)
       .pipe(retry(this.num));
