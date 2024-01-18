@@ -46,6 +46,7 @@ import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 import { Location } from '@angular/common';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -943,13 +944,7 @@ export class CoqApplicationFormComponent
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
-    if (
-      ['e', 'E', '+', '-'].includes(evt.key) &&
-      (evt.target as HTMLElement).tagName.toLowerCase() === 'input' &&
-      (evt.target as HTMLInputElement).type !== 'text'
-    ) {
-      evt.preventDefault();
-    }
+    Util.blockSpecialNonNumerics(evt);
   }
 }
 

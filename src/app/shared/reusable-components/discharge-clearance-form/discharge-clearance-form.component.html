@@ -93,7 +93,8 @@
       <div class="form-group col-span-3" >
         <label>Flash Point <sup class="tex-red-500">*</sup></label>
         <input 
-          formControlName="flashPoint" 
+          type="number"
+          formControlName="flashPoint"
           class="form-control"
           [ngClass]="{'is-invalid': form.get('flashPoint')?.dirty && form.get('flashPoint')?.invalid}"
         />
