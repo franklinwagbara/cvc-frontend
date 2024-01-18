@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -20,7 +19,7 @@ import { IPermit } from '../../shared/interfaces/IPermit';
   templateUrl: 'myapprovals.component.html',
   styleUrls: ['./myapprovals.component.scss'],
 })
-export class MyapprovalsComponent implements OnInit, AfterViewInit {
+export class MyapprovalsComponent implements OnInit {
   public approvals: IPermit[];
 
   public tableTitles = {
@@ -54,7 +53,7 @@ export class MyapprovalsComponent implements OnInit, AfterViewInit {
 
     forkJoin([this.licenceService.getCompanyLicences()]).subscribe({
       next: (res) => {
-        if (res[0].success) this.approvals = res[0].data;
+        if (res[0].success) this.approvals = res[0].data.reverse();
 
         this.spinner.close();
         this.cd.markForCheck();
@@ -68,14 +67,8 @@ export class MyapprovalsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    // this.categories = [...this.categories];
-  }
-
   onViewData(event: any) {
-    window.location.assign(
-      `${environment.apiUrl}/licenses/view_license?id=${event.id}`
-    );
+    window.open(`${environment.apiUrl}/licenses/view_license?id=${event.id}`, '_blank');
   }
 
   viewCoQCerts(row: any) {

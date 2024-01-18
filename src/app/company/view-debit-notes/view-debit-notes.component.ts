@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { PaymentService } from 'src/app/shared/services/payment.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-view-debit-notes',
@@ -11,6 +13,7 @@ import { SpinnerService } from '../../../../src/app/shared/services/spinner.serv
 })
 export class ViewDebitNotesComponent implements OnInit {
   debitNotes: any[];
+  appId: number;
 
   debitNoteKeysMappedToHeaders = {
     reference: 'Reference',
@@ -18,28 +21,35 @@ export class ViewDebitNotesComponent implements OnInit {
   }
 
   constructor(
-    private router: Router,
-    private coqService: CoqService,
+    private route: ActivatedRoute,
+    private paymentService: PaymentService,
     private spinner: SpinnerService,
-    private popUp: PopupService
-  ) {}
+    private popUp: PopupService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.route.params.subscribe((params) => {
+      this.appId = parseInt(params['id']);
+    })
+  }
 
   ngOnInit(): void {
     this.spinner.open();
-    this.coqService.getAllDebitNotes(1).subscribe({
+    this.paymentService.getAllDebitNotes(this.appId).subscribe({
       next: (res: any) => {
         this.spinner.close();
         this.debitNotes = res.data;
+        this.cd.markForCheck();
       },
       error: (error: any) => {
         console.log(error);
         this.spinner.close();
+        this.cd.markForCheck();
         this.popUp.open('Something went wrong. Failed to fetch debit notes.', 'error');
       }
     });
   }
 
   viewDebitNote(row: any) {
-
+    window.open(`${environment.apiUrl}/CoQ/debit_note/${row.id}`);
   }
 }
