@@ -60,8 +60,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableDischargeClearanceControls')
   enableDischargeClearanceControls?: boolean = false;
-  @Input('EnableViewCertificateControl')
-  enableViewCertificateControl?: boolean = false;
+  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
@@ -218,12 +217,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'discharge_offspec_control',
         header: '',
         cell: (item) => 'discharge_offspec_control',
-      }),
-        this.columns.push({
-          columnDef: 'discharge_onspec_control',
-          header: '',
-          cell: (item) => 'discharge_onspec_control',
-        });
+      });
+      this.columns.push({
+        columnDef: 'discharge_onspec_control',
+        header: '',
+        cell: (item) => 'discharge_onspec_control',
+      });
     }
 
     if (this.enableViewCertificateControl) {
@@ -334,7 +333,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.toggleAllRows();
   }
 
-  editData(row) {
+  editData(row: any) {
     this.onEditData.emit(row);
   }
 
