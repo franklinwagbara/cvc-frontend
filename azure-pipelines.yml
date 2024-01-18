@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- main
+- master
 
 pool:
   vmImage: ubuntu-latest
@@ -20,6 +20,7 @@ steps:
     npm install
     ng build --configuration production --aot
   displayName: 'npm install and build'
+  workingDirectory: '$(Build.SourcesDirectory)'
 - task: AzureStaticWebApp@0
   inputs:
       app_location: "/"
