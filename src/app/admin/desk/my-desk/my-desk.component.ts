@@ -19,6 +19,9 @@ import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 import { UserRole } from 'src/app/shared/constants/userRole';
 import { AppType } from 'src/app/shared/constants/appType';
 import { AuthenticationService } from 'src/app/shared/services';
+import { environment } from 'src/environments/environment';
+import { PaymentService } from 'src/app/shared/services/payment.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 @Component({
   selector: 'app-my-desk',
@@ -41,6 +44,7 @@ export class MyDeskComponent implements OnInit {
   public staffList: any;
   public offices: FieldOffice[];
   public branches: IBranch[];
+  isLoading = true;
 
   public tableTitles = {
     applications: 'All Applications',
@@ -89,7 +93,9 @@ export class MyDeskComponent implements OnInit {
     private spinner: SpinnerService,
     public cd: ChangeDetectorRef,
     private router: Router,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private paymentService: PaymentService,
+    private popUp: PopupService
   ) {
     this.categories$.subscribe((data) => {
       this.categories = [...data];
@@ -136,7 +142,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   get isFAD() {
-    return this.auth.currentUser.userRoles == UserRole.FAD;
+    return this.auth.currentUser.userRoles === UserRole.FAD;
   }
 
   onViewData(event: any, type: string) {
@@ -153,6 +159,37 @@ export class MyDeskComponent implements OnInit {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
+    }
+  }
+
+  onViewCoqCert(event: any) {
+    if (this.isFAD) {
+      window.open(`${environment.apiUrl}/CoQ/view_CoQ_cert?${event.id}`, '_blank');
+    }
+  }
+
+  genDebitNote(event: any) {
+    if (this.isFAD) {
+      this.isLoading = true;
+    this.spinner.show('Generating Debit Note...');
+
+    this.paymentService.generateDebitNote(event.id).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.popUp.open('Debit Note generated successfully', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/admin/desk']);
+          }, 3000)
+        }
+        this.isLoading = false;
+        this.spinner.close();
+      }, 
+      error: (error: unknown) => {
+        console.log(error);
+        this.popUp.open('Something went wrong while generating Debit Note', 'error');
+        this.spinner.close();
+      }
+    });
     }
   }
 

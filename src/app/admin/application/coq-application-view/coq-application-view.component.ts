@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
@@ -18,6 +18,8 @@ import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { UserRole } from 'src/app/shared/constants/userRole';
+import { PaymentService } from 'src/app/shared/services/payment.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -35,6 +37,7 @@ export class CoqApplicationViewComponent implements OnInit {
   public documents: any;
   public tanksList: any[];
   appLoaded = false;
+  isLoading = true;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -46,7 +49,10 @@ export class CoqApplicationViewComponent implements OnInit {
     public route: ActivatedRoute,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
-    public location: Location
+    public location: Location,
+    private paymentService: PaymentService,
+    private popUp: PopupService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -87,6 +93,29 @@ export class CoqApplicationViewComponent implements OnInit {
 
   previewDebitNote() {
     window.location.assign('#');
+  }
+
+  generateDebitNote() {
+    this.isLoading = true;
+    this.spinner.show('Generating Debit Note...');
+
+    this.paymentService.generateDebitNote(this.coqId).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.popUp.open('Debit Note generated successfully', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/admin/desk']);
+          }, 3000)
+        }
+        this.isLoading = false;
+        this.spinner.close();
+      }, 
+      error: (error: unknown) => {
+        console.log(error);
+        this.popUp.open('Something went wrong while generating Debit Note', 'error');
+        this.spinner.close();
+      }
+    });
   }
 
   getApplication() {
