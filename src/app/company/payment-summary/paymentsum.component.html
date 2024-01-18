@@ -69,7 +69,7 @@
                       {{ paymentSummary?.coqFee | currency:'NGN' }}
                     </td>
                   </tr>
-                  <tr>
+                  <tr *ngIf="paymentSummary?.paymentDescription">
                     <td class="col-title">Payment Description</td>
                     <td class="font-bold">
                       {{ paymentSummary?.paymentDescription }}

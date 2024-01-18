@@ -78,6 +78,7 @@ export class PaymentSumComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
         this.spinner.close();
         this.progressbar.close();
         this.cd.markForCheck();
@@ -125,7 +126,6 @@ export class PaymentSumComponent implements OnInit {
   }
 
   uploadDocument() {
-    // window.location.href = environment.apiUrl + '/upload-document';
     this.router.navigate([`/company/upload-document/${this.application_id}`]);
   }
 
