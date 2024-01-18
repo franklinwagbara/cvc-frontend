@@ -1,6 +1,6 @@
 <div class="bg-white">
   <div class="flex bg-gray-300 justify-between items-center">
-    <h5 class="px-2">{{ message.subject }}</h5>
+    <h5 class="px-2 message-subject">{{ message.subject }}</h5>
     <i
       mat-dialog-close
       (click)="closeDialog()"
@@ -8,7 +8,7 @@
       >close</i
     >
   </div>
-  <div class="p-2" [innerHTML]="content"></div>
+  <div class="p-3" [innerHTML]="content"></div>
   <div class="flex justify-between p-8">
     <i
       (click)="back()"

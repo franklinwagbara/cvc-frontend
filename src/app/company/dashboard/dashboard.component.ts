@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompanyService } from '../../../../src/app/shared/services/company.service';
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
@@ -10,6 +10,9 @@ import { LoginModel } from '../../shared/models/login-model';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewMessageComponent } from '../messages/view-message/view-message.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { Observable } from 'rxjs';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -22,7 +25,29 @@ export class DashboardComponent implements OnInit {
   public generic: GenericService;
   public currentUsername: LoginModel;
   public dashboard: IDashboard;
-  public messages: IMessage[];
+  public messages: Observable<IMessage[]>;
+  public length = 10;
+  public pageSizeOptions = [5, 10, 15, 20];
+  public pageSize = 10;
+  @ViewChild('paginator', { read: MatPaginator })
+  paginator!: MatPaginator;
+  public dataSource = new MatTableDataSource<any>();
+  public messagesCopy: IMessage[];
+
+  msgColumns = [
+    {
+      columnDef: 'isRead',
+      header: 'Seen',
+    },
+    {
+      columnDef: 'subject',
+      header: 'Subject',
+    },
+    {
+      columnDef: 'date',
+      header: 'Date',
+    },
+  ];
 
   constructor(
     private gen: GenericService,
@@ -66,20 +91,22 @@ export class DashboardComponent implements OnInit {
   }
 
   public getCompanyMessages() {
-    this.progress.open();
     this.spinner.open();
 
     this.companyService.getCompanyMessages().subscribe({
       next: (res) => {
-        this.messages = res.data;
-        this.progress.close();
+        this.messagesCopy = res.data;
+        this.length = this.messagesCopy.length;
+        this.dataSource = new MatTableDataSource<any>(this.messagesCopy);
+        this.cd.detectChanges();
+        this.dataSource.paginator = this.paginator;
+        this.messages = this.dataSource.connect();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: any) => {
         this.popUp.open(error?.message, 'error');
         this.spinner.close();
-        this.progress.close();
         this.cd.markForCheck();
       },
     });
@@ -87,7 +114,7 @@ export class DashboardComponent implements OnInit {
 
   viewMessage(index: number) {
     this.dialog.open(ViewMessageComponent, {
-      data: { index: index, messages: this.messages },
+      data: { index: index, messages: this.messagesCopy },
       panelClass: 'view-message-content',
     });
   }
@@ -132,7 +159,7 @@ export interface IDashboard {
 export interface IMessage {
   id: number;
   subject: string;
-  seen: boolean;
+  isRead: boolean;
   content: string;
   date: string;
 }

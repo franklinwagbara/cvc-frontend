@@ -128,7 +128,6 @@ export class UserFormComponent implements OnInit {
 
       officeId: [this.currentValue ? this.currentValue.officeId : ''],
 
-      // officeId: [this.currentValue ? this.currentValue.officeId : ''],
       // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
         this.currentValue ? this.currentValue.status : '',
@@ -140,7 +139,6 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.usersDropdownSettings = {
       singleSelection: false,
       idField: 'id',

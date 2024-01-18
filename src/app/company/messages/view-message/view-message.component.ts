@@ -14,7 +14,7 @@ import { CompanyService } from '../../../../../src/app/shared/services/company.s
 @Component({
   selector: 'app-view-message',
   templateUrl: './view-message.component.html',
-  styleUrls: ['./view-message.component.css'],
+  styleUrls: ['./view-message.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewMessageComponent implements OnInit {

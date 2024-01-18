@@ -495,13 +495,13 @@ export class AdminService {
 
   public getproductsById(id: IAppFee) {
     return this.http
-      .get<any>(`${environment.apiUrl}/AppFee/get-product-byId?id=${id}`)
+      .get<any>(`${environment.apiUrl}/Product/Product/${id}`)
       .pipe(retry(this.num));
   }
 
-  public deleteproducts(id: IAppFee) {
+  public deleteproduct(id: IAppFee) {
     return this.http
-      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .delete<any>(`${environment.apiUrl}/Product/${id}`)
       .pipe(retry(this.num));
   }
 }
