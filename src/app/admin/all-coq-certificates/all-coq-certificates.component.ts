@@ -16,7 +16,6 @@ export class AllCoqCertificatesComponent implements OnInit {
   certificateKeysMappedToHeaders = {
     certifcateNo: 'Certificate No',
     issuedDate: 'Issued Date',
-    expireDate: 'Expired Date',
   }
 
   constructor(
@@ -46,8 +45,7 @@ export class AllCoqCertificatesComponent implements OnInit {
   }
 
   onViewData(event: any): void {
-    const url = `${environment.apiUrl}/coq/${event?.productType.toLowerCase() === 'gas' ? 'view_gas-cert' : 'view_liquid-cert'}`;
-    window.location.assign(url);
+    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${event.id}`);
   }
 
 }

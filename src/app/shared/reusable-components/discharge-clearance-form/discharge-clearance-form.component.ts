@@ -70,6 +70,7 @@ export class DischargeClearanceFormComponent implements OnInit {
 
   submit() {
     this.submitting = true;
+    this.errorMessage = '';
     const formData = { 
       ...this.form.getRawValue(),
       appId: this.noaApp.id, 
@@ -87,19 +88,13 @@ export class DischargeClearanceFormComponent implements OnInit {
               this.dialogRef.close({ submitted: true });
             } else {
               this.errorMessage = 'An error occurred: ' + res?.message;
-              setTimeout(() => {
-                this.errorMessage = '';
-              }, 3000)
             }
             this.cd.markForCheck();
           },
           error: (error: any) => {
+            console.log(error);
             this.submitting = false;
             this.errorMessage = 'Something went wrong while submitting clearance';
-            setTimeout(() => {
-              this.errorMessage = '';
-            }, 3000)
-            console.log(error);
             this.cd.markForCheck();
           },
         });
