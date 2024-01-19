@@ -9,6 +9,8 @@
           [table_keysMappedToHeaders]="fieldOfficeKeysMappedToHeaders"
           [table_content]="offices"
           [noTitle]="true"
+          [noDeleteButton]="true"
+          [noCheckControls]="true"
           [table_controls_horizontal]="true"
           (onAddData)="onAddData($event, 'fieldOffices')"
           (onDeleteData)="onDeleteData($event, 'fieldOffices')"

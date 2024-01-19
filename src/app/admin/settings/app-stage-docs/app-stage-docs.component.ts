@@ -71,7 +71,6 @@ export class AppStageDocsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBarService.open();
     this.getAppDocInfo();
   }
 
@@ -143,8 +142,6 @@ export class AppStageDocsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
       this.getAppDocInfo();
     });
   }
@@ -213,7 +210,35 @@ export class AppStageDocsComponent implements OnInit {
     // });
   }
 
-  onEditData(event: Event, type: string) {}
+  onEditData(event: any, type: string) {
+    const operationConfiguration = {
+      permitStageDocument: {
+        data: {
+          docs: this.docs,
+
+          facilityTypeDoc: event,
+          applicationTypes: this.applicationTypes,
+          vesselTypes: this.vesselTypes,
+          action: 'EDIT',
+        },
+        form: PermitStageDocFormComponent,
+      },
+    };
+
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+      data: {
+        data: operationConfiguration[type].data,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      //this.progressBarService.open();
+
+      this.ngOnInit();
+      //this.progressBarService.close();
+      this.cd.markForCheck();
+    });
+  }
 }
 
 export interface PermitStageDocument {

@@ -336,15 +336,19 @@ export class AdminService {
 
   createOffice(model) {
     return this.http
-      .post<any>(`${environment.apiUrl}/configuration/add-field-office`, model)
+      .post<any>(`${environment.apiUrl}/Location/create-office`, model)
+      .pipe(retry(this.num));
+  }
+
+  editOffice(model) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Location/edit-office`, model)
       .pipe(retry(this.num));
   }
 
   deleteOffice(id: number) {
     return this.http
-      .delete<any>(
-        `${environment.apiUrl}/configuration/delete-field-office?id=${id}`
-      )
+      .delete<any>(`${environment.apiUrl}/Location/delete-office?id=${id}`)
       .pipe(retry(this.num));
   }
 
