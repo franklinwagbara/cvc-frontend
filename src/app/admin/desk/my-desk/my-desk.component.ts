@@ -15,7 +15,6 @@ import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
 import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 import { UserRole } from 'src/app/shared/constants/userRole';
 import { AppType } from 'src/app/shared/constants/appType';
 import { AuthenticationService } from 'src/app/shared/services';
@@ -65,6 +64,19 @@ export class MyDeskComponent implements OnInit {
     createdDate: 'Initiation Date',
   };
 
+  public fieldOfficerNoaKeysMappedToHeaders = {
+    reference: 'Reference',
+    companyName: 'Company Name',
+    companyEmail: 'Company Email',
+    vesselName: 'Vessel Name',
+    vesselType: 'Vessel Type',
+    jetty: 'Jetty',
+    capacity: 'Capacity',
+    status: 'Status',
+    rrr: 'RRR',
+    createdDate: 'Initiated Date',
+  }
+
   public coqKeysMappedToHeaders = {
     companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
@@ -97,7 +109,7 @@ export class MyDeskComponent implements OnInit {
     private router: Router,
     private auth: AuthenticationService,
     private paymentService: PaymentService,
-    private popUp: PopupService
+    private popUp: PopupService,
   ) {
     this.categories$.subscribe((data) => {
       this.categories = [...data];
@@ -111,10 +123,18 @@ export class MyDeskComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.open();
 
-    forkJoin([this.applicationService.getApplicationsOnDesk()]).subscribe({
+    forkJoin([
+      this.isFieldOfficer ? this.applicationService.viewApplicationByDepot() 
+        : this.applicationService.getApplicationsOnDesk()
+    ]).subscribe({
       next: (res) => {
         if (res[0].success) {
           this.applications = res[0].data;
+          if (this.isFieldOfficer) {
+            this.applications = this.applications
+              .filter((app) => app.status === 'Completed')
+              .reverse();
+          }
           if (this.applications.length > 0)
             this.appType$.next(this.applications[0].applicationType);
           this.applications$.next(this.applications);
@@ -155,7 +175,7 @@ export class MyDeskComponent implements OnInit {
           coqId: event.id,
         },
       });
-    } else if (this.appType$.getValue() === AppType.NOA) {
+    } else if (this.isFieldOfficer || this.appType$.getValue() === AppType.NOA) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
@@ -194,7 +214,8 @@ export class MyDeskComponent implements OnInit {
   }
 
   public get getColumnHeaders() {
-    return this.appType$.getValue() == AppType.NOA
+    return this.isFieldOfficer ? this.fieldOfficerNoaKeysMappedToHeaders
+      : this.appType$.getValue() == AppType.NOA
       ? this.applicationKeysMappedToHeaders
       : this.appType$.getValue() == AppType.COQ
       ? this.coqKeysMappedToHeaders

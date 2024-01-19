@@ -161,7 +161,7 @@
                 class="view-button"
                 style="background-color: #3c8d5a;"
                 *ngIf="column.cell(row) === 'discharge_onspec_control' 
-                  && row?.status?.toLowerCase() === 'completed' && !row?.hasCleared"
+                  && row?.status === 'Completed' && !row?.hasCleared"
                 (click)="onDischargeClearance(row, true)"
               >
                 Allow Discharge
@@ -173,7 +173,7 @@
                 class="view-button"
                 style="background-color: #b51c29;"
                 *ngIf="column.cell(row) === 'discharge_offspec_control' 
-                  && row?.status?.toLowerCase() === 'completed' && !row?.hasCleared"
+                  && row?.status === 'Completed' && !row?.hasCleared"
                 (click)="onDischargeClearance(row, false)"
               >
                 Discharge Not Ok
@@ -227,16 +227,6 @@
                 (click)="viewDebitNotes(row)"
               >
                 View Debit Notes
-              </button>
-
-              <button
-                mat-flat-button
-                style="background-color: blueviolet; color: white"
-                class="view-button"
-                *ngIf="column.cell(row) === 'view_certificate_control'"
-                (click)="viewCoQCerts(row)"
-              >
-                View Certificate
               </button>
 
               <button

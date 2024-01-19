@@ -77,7 +77,7 @@
       </div>
 
       <ng-container *ngIf="!loading">
-        <div class="application-controls" *ngIf="isStaffDesk">
+        <div class="application-controls" *ngIf="isStaffDesk && !isFieldOfficer">
           <div class="actions">
             <button
               mat-raised-button

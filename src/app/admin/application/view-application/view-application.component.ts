@@ -51,10 +51,8 @@ export class ViewApplicationComponent implements OnInit {
   ) {
     this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
-        console.log(params);
         this.spinner.open();
         this.appId = parseInt(params['id']);
-        
         if (isNaN(this.appId)) {
           this.location.back();
         }
@@ -68,8 +66,6 @@ export class ViewApplicationComponent implements OnInit {
         this.coqId = parseInt(params['coqId']);
 
         if (this.appSource != AppSource.Licence) this.getApplication();
-      } else {
-        this.location.back();
       }
     });
   }
@@ -84,6 +80,10 @@ export class ViewApplicationComponent implements OnInit {
 
   public get isFO() {
     return this.currentUser.location == LOCATION.FO;
+  }
+
+  public get isFieldOfficer() {
+    return this.currentUser.userRoles == UserRole.FIELDOFFICER;
   }
 
   isCreatedByMe(scheduleBy: string) {
