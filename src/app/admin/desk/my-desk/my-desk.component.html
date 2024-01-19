@@ -8,7 +8,8 @@
         <generic-table
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
-          [EnableViewCoQCertControl]="true"
+          [EnableViewControl]="!isFAD"
+          [EnableViewCoQCertControl]="isFAD"
           [EnableInitiateCoQControl]="isFieldOfficer"
           [EnableGenDebitNoteControl]="isFAD"
           [noAddOrDeleteButton]="true"

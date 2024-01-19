@@ -4,13 +4,11 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
-import { IApplication } from '../../../../../src/app/shared/interfaces/IApplication';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 
-import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
@@ -20,6 +18,7 @@ import { LicenceService } from '../../../../../src/app/shared/services/licence.s
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 @Component({
   selector: 'app-view-coq-application',
@@ -34,6 +33,7 @@ export class ViewApplicationComponent implements OnInit {
   public licence: any;
   public currentUser: LoginModel;
   public coqId: number;
+  public loading: boolean;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -54,7 +54,7 @@ export class ViewApplicationComponent implements OnInit {
         console.log(params);
         this.spinner.open();
         this.appId = parseInt(params['id']);
-        console.log('Applications Id =================> ', this.appId);
+        
         if (isNaN(this.appId)) {
           this.location.back();
         }
@@ -79,7 +79,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
+    return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
   }
 
   public get isFO() {
@@ -92,18 +92,21 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getApplication() {
+    this.loading = true;
     this.spinner.show('Fetching application');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
           this.application = res.data;
         }
-
+        this.loading = false;
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.log(error);
+        this.loading = false;
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,

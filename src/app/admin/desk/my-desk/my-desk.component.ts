@@ -22,6 +22,7 @@ import { AuthenticationService } from 'src/app/shared/services';
 import { environment } from 'src/environments/environment';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { LoginModel } from 'src/app/shared/models/login-model';
 
 @Component({
   selector: 'app-my-desk',
@@ -45,6 +46,7 @@ export class MyDeskComponent implements OnInit {
   public offices: FieldOffice[];
   public branches: IBranch[];
   isLoading = true;
+  currentUser: LoginModel
 
   public tableTitles = {
     applications: 'All Applications',
@@ -103,6 +105,7 @@ export class MyDeskComponent implements OnInit {
         this.applications = app;
       });
     });
+    this.currentUser = this.auth.currentUser as LoginModel;
   }
 
   ngOnInit(): void {
@@ -134,15 +137,12 @@ export class MyDeskComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit(): void {}
-
   get isFieldOfficer(): boolean {
-    const currentUser = decodeFullUserInfo();
-    return currentUser.userRoles === UserRole.FIELDOFFICER;
+    return this.currentUser.userRoles === UserRole.FIELDOFFICER;
   }
 
   get isFAD() {
-    return this.auth.currentUser.userRoles === UserRole.FAD;
+    return this.currentUser.userRoles === UserRole.FAD;
   }
 
   onViewData(event: any, type: string) {
@@ -171,25 +171,25 @@ export class MyDeskComponent implements OnInit {
   genDebitNote(event: any) {
     if (this.isFAD) {
       this.isLoading = true;
-    this.spinner.show('Generating Debit Note...');
+      this.spinner.show('Generating Debit Note...');
 
-    this.paymentService.generateDebitNote(event.id).subscribe({
-      next: (res: any) => {
-        if (res?.success) {
-          this.popUp.open('Debit Note generated successfully', 'success');
-          setTimeout(() => {
-            this.router.navigate(['/admin/desk']);
-          }, 3000)
+      this.paymentService.generateDebitNote(event.id).subscribe({
+        next: (res: any) => {
+          if (res?.success) {
+            this.popUp.open('Debit Note generated successfully', 'success');
+            setTimeout(() => {
+              this.router.navigate(['/admin/desk']);
+            }, 3000)
+          }
+          this.isLoading = false;
+          this.spinner.close();
+        }, 
+        error: (error: unknown) => {
+          console.log(error);
+          this.popUp.open('Something went wrong while generating Debit Note', 'error');
+          this.spinner.close();
         }
-        this.isLoading = false;
-        this.spinner.close();
-      }, 
-      error: (error: unknown) => {
-        console.log(error);
-        this.popUp.open('Something went wrong while generating Debit Note', 'error');
-        this.spinner.close();
-      }
-    });
+      });
     }
   }
 

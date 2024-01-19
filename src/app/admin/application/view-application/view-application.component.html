@@ -75,28 +75,31 @@
           </p>
         </mat-expansion-panel>
       </div>
-      <div class="application-controls" *ngIf="isStaffDesk">
-        <div class="actions">
-          <button
-            mat-raised-button
-            class="bg-green-500 text-white"
-            (click)="action('approve')"
-          >
-            Approve
-          </button>
-          <button mat-raised-button color="warn" (click)="action('sendBack')">
-            Send Back
-          </button>
 
-          <!-- <button
-            mat-stroked-button
-            color="primary"
-            (click)="action('assignApplication')"
-          >
-            Delegate Application
-          </button> -->
-        </div>
-      </div>
+      <ng-container *ngIf="!loading">
+        <div class="application-controls" *ngIf="isStaffDesk">
+          <div class="actions">
+            <button
+              mat-raised-button
+              class="bg-green-500 text-white"
+              (click)="action('approve')"
+            >
+              Approve
+            </button>
+            <button mat-raised-button color="warn" (click)="action('sendBack')">
+              Send Back
+            </button>
+  
+            <!-- <button
+              mat-stroked-button
+              color="primary"
+              (click)="action('assignApplication')"
+            >
+              Delegate Application
+            </button> -->
+          </div>
+        </div>  
+      </ng-container>
      
     </div>
   </div>
