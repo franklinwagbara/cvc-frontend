@@ -40,7 +40,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
   viewTanks() {
     const operationConfiguration = {
       tanks: this.tankList,
-      productType: this.application.ProductType,
+      productType: this.application.productType,
       form: ViewCoqTankComponent,
     };
 
