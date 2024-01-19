@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   AppType,
   Doc,
+  IFacilityTypeDoc,
 } from '../../../../../src/app/admin/settings/app-stage-docs/app-stage-docs.component';
 import {
   Category,
@@ -49,6 +50,7 @@ export class PermitStageDocFormComponent implements OnInit {
   // public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
   public vesselTypes: IVesselType[];
+  public facilityTypeDoc: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -90,6 +92,14 @@ export class PermitStageDocFormComponent implements OnInit {
       unSelectAllText: 'UnSelect All',
       allowSearchFilter: true,
     };
+
+    if (this.data?.data?.action === 'EDIT') {
+      console.log(this.data.data);
+      this.facilityTypeDoc = this.data.data.facilityTypeDoc;
+      this.form.get('vesselTypeId').setValue(this.facilityTypeDoc.vesselType);
+      this.form.get('applicationTypeId').setValue(this.facilityTypeDoc.appType);
+      this.form.get('applicationTypeId').setValue(this.facilityTypeDoc.appType);
+    }
   }
 
   onClose() {
@@ -97,6 +107,34 @@ export class PermitStageDocFormComponent implements OnInit {
   }
 
   createPermitStageDoc() {
+    this.progressBar.open();
+
+    this.appDocService.addDoc(this.form.value).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.snackBar.open(
+            'Permit Stage document was created successfull!',
+            null,
+            {
+              panelClass: ['success'],
+            }
+          );
+
+          this.dialogRef.close();
+        }
+
+        this.progressBar.close();
+      },
+      error: (error: AppException) => {
+        this.snackBar.open(error.message, null, {
+          panelClass: ['error'],
+        });
+        this.progressBar.close();
+      },
+    });
+  }
+
+  editPermitStageDoc() {
     this.progressBar.open();
 
     this.appDocService.addDoc(this.form.value).subscribe({

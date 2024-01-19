@@ -4,7 +4,12 @@ import { AdminService } from '../../../../../src/app/shared/services/admin.servi
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
@@ -14,6 +19,7 @@ import { LibaryService } from '../../../../../src/app/shared/services/libary.ser
   selector: 'app-field-zonal-office',
   templateUrl: './field-zonal-office.component.html',
   styleUrls: ['./field-zonal-office.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FieldZonalOfficeComponent implements OnInit {
   public offices: FieldOffice[];
@@ -25,8 +31,8 @@ export class FieldZonalOfficeComponent implements OnInit {
 
   public fieldOfficeKeysMappedToHeaders = {
     name: 'Name',
-    stateName: 'State Name',
-    address: 'Address',
+    stateName: 'State',
+    // address: 'Address',
   };
 
   constructor(
@@ -36,7 +42,8 @@ export class FieldZonalOfficeComponent implements OnInit {
     private progressBarService: ProgressBarService,
     private spinner: SpinnerService,
     private adminHttpService: AdminService,
-    private libraryService: LibaryService
+    private libraryService: LibaryService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,13 +56,13 @@ export class FieldZonalOfficeComponent implements OnInit {
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
-          this.offices = res[0].data.data;
+          this.offices = res[0].data;
         }
 
-        if (res[1].success) this.stateList = res[1].data.data;
-
+        if (res[1].success) this.stateList = res[1].data;
         // this.progressBarService.close();
         this.spinner.close();
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open(
@@ -68,6 +75,7 @@ export class FieldZonalOfficeComponent implements OnInit {
 
         // this.progressBarService.close();
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -75,7 +83,7 @@ export class FieldZonalOfficeComponent implements OnInit {
   onAddData(event: Event, type: string) {
     const operationConfiguration = {
       fieldOffices: {
-        data: { stateList: this.stateList },
+        data: { stateList: this.stateList, },
         form: FieldOfficeFormComponent,
       },
     };
@@ -145,9 +153,27 @@ export class FieldZonalOfficeComponent implements OnInit {
       },
     });
   }
+  onEditData(event: any, type: string) {
+    const operationConfiguration = {
+      fieldOffices: {
+        data: { stateList: this.stateList, office: event, action: 'EDIT' },
+        form: FieldOfficeFormComponent,
+      },
+    };
 
-  onEditData(event: Event, type: string) {
-    console.log('on edit', event, type);
+    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+      data: {
+        data: operationConfiguration[type].data,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      //this.progressBarService.open();
+
+      this.ngOnInit();
+      //this.progressBarService.close();
+      this.cd.markForCheck();
+    });
   }
 }
 
@@ -171,4 +197,5 @@ export interface State {
   id: number;
   stateName: string;
   stateCode: string;
+  name?: string;
 }
