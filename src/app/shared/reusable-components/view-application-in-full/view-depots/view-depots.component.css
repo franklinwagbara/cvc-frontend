@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  max-width: 700px;
+  padding: 1rem;
+}
+
+.title h2 {
+  @apply text-[#3e4e50];
+}
+
+.heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  @apply bg-[#3e4e50] text-white p-2 rounded-t-lg;
+}
+
+.items {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  @apply bg-[#3e4e508f] text-white p-2;
+}
+
+.items:nth-child(odd) {
+  @apply bg-white text-[#3e4e50e1];
+}
+
+.items:hover {
+  opacity: 0.9;
+}

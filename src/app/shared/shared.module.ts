@@ -61,6 +61,7 @@ import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
 import { DischargeClearanceFormComponent } from './reusable-components/discharge-clearance-form/discharge-clearance-form.component';
 import { EmailConfigFormComponent } from './reusable-components/email-config-form/email-config-form.component';
 import { NoaApplicationPreviewComponent } from './reusable-components/noa-application-preview/noa-application-preview.component';
+import { ViewDepotsComponent } from './reusable-components/view-application-in-full/view-depots/view-depots.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { NoaApplicationPreviewComponent } from './reusable-components/noa-applic
     AbbreviateNumberPipe,
     EmailConfigFormComponent,
     NoaApplicationPreviewComponent,
+    ViewDepotsComponent,
   ],
   imports: [
     CommonModule,

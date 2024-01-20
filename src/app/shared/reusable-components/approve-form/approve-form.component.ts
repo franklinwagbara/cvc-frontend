@@ -17,8 +17,6 @@ import { CoqService } from '../../services/coq.service';
 import { LoginModel } from '../../models/login-model';
 import { UserRole } from '../../constants/userRole';
 import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
-import { CoqApplicationPreviewComponent } from 'src/app/admin/coq-application-form/coq-application-preview/coq-application-preview.component';
-
 
 @Component({
   selector: 'app-approve-form',
@@ -45,7 +43,7 @@ export class ApproveFormComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router,
     private coqService: CoqService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
     this.application = data?.data?.application;
     this.isFO = data.data.isFO;
@@ -54,10 +52,15 @@ export class ApproveFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (!this.isApprover)
+      this.form = this.formBuilder.group({
+        comment: ['', Validators.required],
+      });
+    else
+      this.form = this.formBuilder.group({
+        comment: [''],
+      });
 
-    this.form = this.formBuilder.group({
-      comment: ['', Validators.required],
-    });
     const tempUser = this.auth.currentUser;
     this.auth.getAllStaff().subscribe({
       next: (res) => {
@@ -135,10 +138,12 @@ export class ApproveFormComponent implements OnInit {
   }
 
   preview(): void {
-    this.dialog.open(
-      NoaApplicationPreviewComponent,
-      { data: { application: this.application, remark: this.form.controls['comment'].value } }
-    )
+    this.dialog.open(NoaApplicationPreviewComponent, {
+      data: {
+        application: this.application,
+        remark: this.form.controls['comment'].value,
+      },
+    });
   }
 
   private approveFO() {

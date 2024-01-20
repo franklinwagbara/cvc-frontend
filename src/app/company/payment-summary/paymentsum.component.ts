@@ -159,4 +159,6 @@ export class PaymentSummary {
   vesselLicenseFee: number;
   coqFee: number;
   noaFee: number;
+
+  description: string;
 }
