@@ -17,6 +17,7 @@ import { CoqService } from '../../services/coq.service';
 import { LoginModel } from '../../models/login-model';
 import { UserRole } from '../../constants/userRole';
 import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
+import { CoqApplicationPreviewComponent } from 'src/app/admin/coq-application-form/coq-application-preview/coq-application-preview.component';
 
 @Component({
   selector: 'app-approve-form',
@@ -138,12 +139,24 @@ export class ApproveFormComponent implements OnInit {
   }
 
   preview(): void {
-    this.dialog.open(NoaApplicationPreviewComponent, {
-      data: {
-        application: this.application,
-        remark: this.form.controls['comment'].value,
-      },
-    });
+    if (this.isCOQProcessor) {
+      this.dialog.open(CoqApplicationPreviewComponent, {
+        data: {
+          vesselDischargeData: this.application,
+          remark: this.form.controls['comment'].value,
+          previewSource: 'submitted-coq-view',
+          isGasProduct: this.application?.productType === 'Gas',
+        },
+      });
+    } else {
+      this.dialog.open(NoaApplicationPreviewComponent, {
+        data: {
+          application: this.application,
+          remark: this.form.controls['comment'].value,
+        },
+        panelClass: 'applicaion-preview',
+      });
+    }
   }
 
   private approveFO() {

@@ -7,10 +7,10 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-all-noa-clearances',
   templateUrl: './all-noa-clearances.component.html',
-  styleUrls: ['./all-noa-clearances.component.css']
+  styleUrls: ['./all-noa-clearances.component.css'],
 })
 export class AllNoaClearancesComponent implements OnInit {
-  clearances: any[]
+  clearances: any[];
 
   clearanceKeysMappedToHeaders = {
     licenseNo: 'Clearance ID',
@@ -18,8 +18,8 @@ export class AllNoaClearancesComponent implements OnInit {
     companyName: 'Company Name',
     vesselName: 'Vessel Name',
     vesselTypeType: 'Vessel Type',
-    email: 'Company Email'
-  }
+    email: 'Company Email',
+  };
 
   constructor(
     private licenseService: LicenceService,
@@ -36,17 +36,20 @@ export class AllNoaClearancesComponent implements OnInit {
     this.spinner.show('Loading clearances...');
     this.licenseService.getLicences().subscribe({
       next: (res: any) => {
-        this.clearances = res?.data;
+        this.clearances = res?.data.reverse();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
         console.log(error);
         this.spinner.close();
-        this.popUp.open('Something went wrong while fetching clearances', 'error');
+        this.popUp.open(
+          'Something went wrong while fetching clearances',
+          'error'
+        );
         this.cd.markForCheck();
-      }
-    })
+      },
+    });
   }
 
   onViewData(event: any): void {

@@ -364,6 +364,12 @@ export class AdminService {
       .pipe(retry(this.num));
   }
 
+  getDirectorate() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Staff/getdirectorate`)
+      .pipe(retry(this.num));
+  }
+
   createBranch(model) {
     return this.http
       .post<any>(`${environment.apiUrl}/configuration/add-branch`, model)

@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -16,6 +21,7 @@ import { LibaryService } from '../../../../../src/app/shared/services/libary.ser
   selector: 'app-all-staff',
   templateUrl: './all-staff.component.html',
   styleUrls: ['./all-staff.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllStaffComponent implements OnInit {
   public users: Staff[];
@@ -25,6 +31,7 @@ export class AllStaffComponent implements OnInit {
   public offices: FieldOffice[];
   public branches: IBranch[];
   public locations: ILocation[];
+  public directorate: any[];
 
   tableTitles = {
     users: 'User Settings',
@@ -37,6 +44,7 @@ export class AllStaffComponent implements OnInit {
     phoneNumber: 'Phone Number',
     role: 'Role',
     office: 'Office',
+    directorate: 'Directorate',
     appCount: 'Applications on Desk',
     isActive: 'Status',
     createdBy: 'Created By',
@@ -48,7 +56,8 @@ export class AllStaffComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService,
     private spinner: SpinnerService,
-    private libService: LibaryService
+    private libService: LibaryService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +69,7 @@ export class AllStaffComponent implements OnInit {
       this.adminHttpService.getRoles(),
       this.libService.getAllLocations(),
       this.libService.getAllOffices(),
+      this.adminHttpService.getDirectorate(),
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
@@ -74,7 +84,10 @@ export class AllStaffComponent implements OnInit {
 
         if (res[4].success) this.offices = res[4].data;
 
+        if (res[5]) this.directorate = res[5];
+        console.log(this.directorate);
         this.spinner.close();
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open(
@@ -87,6 +100,7 @@ export class AllStaffComponent implements OnInit {
 
         // this.progressBar.close();
         this.spinner.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -101,6 +115,7 @@ export class AllStaffComponent implements OnInit {
           branches: this.branches,
           locations: this.locations,
           offices: this.offices,
+          directorate: this.directorate,
         },
         form: UserFormComponent,
       },
@@ -184,10 +199,12 @@ export class AllStaffComponent implements OnInit {
             next: (res: any) => {
               this.users = res.data;
               this.progressBar.close();
+              this.cd.markForCheck();
             },
             error: (error: unknown) => {
               console.log(error);
               this.progressBar.close();
+              this.cd.markForCheck();
             },
           });
         }
@@ -201,6 +218,7 @@ export class AllStaffComponent implements OnInit {
         });
 
         this.progressBar.close();
+        this.cd.markForCheck();
       },
     });
   }
@@ -233,6 +251,7 @@ export class AllStaffComponent implements OnInit {
         this.users = res.data;
 
         this.progressBar.close();
+        this.cd.markForCheck();
       });
     });
   }
@@ -248,6 +267,7 @@ export class AllStaffComponent implements OnInit {
           branches: this.branches,
           locations: this.locations,
           currentValue: event,
+          directorate: this.directorate,
         },
         form: UserFormComponent,
       },
@@ -292,6 +312,7 @@ export class Staff {
   id: any;
   name?: string;
   signature?: any;
+  directorate?: any;
 
   constructor(item: Staff) {
     this.firstName = item.firstName;
