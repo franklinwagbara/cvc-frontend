@@ -1,5 +1,4 @@
 <div class="apply-container">
-
   <div class="apply-wrapper">
     <h1>NEW CVC CLEARANCE</h1>
     <div class="form-wrapper">
@@ -103,7 +102,9 @@
                 class="rounded-r p-2"
                 formControlName="vesselTypeId"
               >
-                <option value="" [selected]="true">-- Select Vessel Type --</option>
+                <option value="" [selected]="true">
+                  -- Select Vessel Type --
+                </option>
                 <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
                   {{ vt.name }}
                 </option>
@@ -144,7 +145,7 @@
       <div class="second-segment" *ngIf="activateSecondSegment">
         <div class="appDepotForm">
           <form class="appDepotForm depot-form" [formGroup]="appDepotForm">
-            <h5 class="w-full">Depot Configuration</h5>
+            <h5 class="w-full">Destination Depot</h5>
             <div class="flex flex-col">
               <span class="input-label"> Depot Name </span>
               <select
