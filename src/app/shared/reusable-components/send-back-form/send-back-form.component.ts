@@ -14,7 +14,6 @@ import { ProgressBarService } from '../../services/progress-bar.service';
 import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
-import { CoqService } from '../../services/coq.service';
 
 @Component({
   selector: 'app-send-back-form',
@@ -37,8 +36,7 @@ export class SendBackFormComponent implements OnInit {
     private progressBarService: ProgressBarService,
     private auth: AuthenticationService,
     private cd: ChangeDetectorRef,
-    private router: Router,
-    private coqService: CoqService
+    private router: Router
   ) {
     this.application = data?.data?.application;
 
@@ -75,12 +73,7 @@ export class SendBackFormComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  public sendBack() {
-    if (this.isFO) this.sendBackFO();
-    else this.sendBackOther();
-  }
-
-  sendBackOther() {
+  sendBack() {
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
@@ -99,49 +92,6 @@ export class SendBackFormComponent implements OnInit {
           });
 
           this.dialogRef.close();
-
-        }
-        this.isLoading = false;
-        this.progressBarService.close();
-        this.router.navigate(['/admin/my-desk']);
-        this.cd.markForCheck();
-      },
-
-      error: (error: unknown) => {
-        this.snackBar.open(
-          'Operation failed! Could not perform operations!',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
-        this.isLoading = false;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      },
-    });
-  }
-
-  sendBackFO() {
-    this.progressBarService.open();
-    this.isLoading = true;
-    const model = {
-      applicationId: this.application.id,
-      action: ApplicationActionType.Reject,
-      comment: this.form.controls['comment'].value,
-      // delegatedUserId: '',
-      // currentUserId: this.currentUser.id,
-    };
-
-    this.coqService.processApplication(model).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.snackBar.open('Operation was successful!', null, {
-            panelClass: ['success'],
-          });
-
-          this.dialogRef.close();
-
         }
         this.isLoading = false;
         this.progressBarService.close();

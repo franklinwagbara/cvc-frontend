@@ -26,7 +26,6 @@ export interface IApplication {
   createdDate?: string;
 
   applicationType?: string;
-  id?: number;
 }
 
 export interface IDoc {

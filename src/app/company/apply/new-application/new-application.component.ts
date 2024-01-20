@@ -49,8 +49,7 @@ export class NewApplicationComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private route: ActivatedRoute,
     private router: Router,
-    private spinner: SpinnerService,
-    private jettyService: JettyService
+    private spinner: SpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -236,22 +235,6 @@ export class NewApplicationComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  public getJetties() {
-    this.spinner.open();
-
-    this.jettyService.getAllJetty().subscribe({
-      next: (res) => {
-        this.jetties = res.data;
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: AppException) => {
-        this.popUp.open(error.message, 'error');
-        this.spinner.close();
-      },
-    });
-  }
-
   public getFacilityTypes() {
     this.spinner.open();
 
@@ -294,8 +277,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res?.data.sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase ? -1 :
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();
@@ -313,8 +299,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
         this.depots = (res?.data || []).sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase() ? -1 :
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase()
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();

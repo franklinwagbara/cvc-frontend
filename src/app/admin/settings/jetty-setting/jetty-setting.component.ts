@@ -4,7 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { IJetty } from '../../../../../src/app/shared/interfaces/IJetty';
-import { FormDialogComponent, FormKeysProp } from '../../../../../src/app/shared/reusable-components/form-dialog/form-dialog.component';
+import {
+  FormDialogComponent,
+  FormKeysProp,
+} from '../../../../../src/app/shared/reusable-components/form-dialog/form-dialog.component';
 import { JettyService } from '../../../../../src/app/shared/services/jetty.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
@@ -49,15 +52,17 @@ export class JettySettingComponent implements OnInit {
         });
         this.spinner.close();
         this.progressBar.close();
-      }
-    })
+      },
+    });
   }
 
-  addData(): void {
-    const formData: FormKeysProp = {name: {validator: [Validators.required] }}
+  addData(data?: any): void {
+    const formData: FormKeysProp = {
+      name: { validator: [Validators.required], value: data?.name || '' },
+    };
     const dialogRef = this.dialog.open(FormDialogComponent, {
-      data: { title: 'New Jetty', formData, formType: 'Create' }, disableClose: true,
-    })
+      data: { title: 'New Jetty', formData, formType: 'Create' },
+    });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.progressBar.open();
@@ -74,7 +79,9 @@ export class JettySettingComponent implements OnInit {
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open('Jetty created successfully', null, { panelClass: ['success']});
+            this.snackBar.open('Jetty created successfully', null, {
+              panelClass: ['success'],
+            });
           },
           error: (error: unknown) => {
             console.log(error);
@@ -85,15 +92,20 @@ export class JettySettingComponent implements OnInit {
             );
             this.progressBar.close();
             this.addData(result);
-          }
-        })
+          },
+        });
       }
     });
   }
 
   editData(value: any): void {
-    const formData: FormKeysProp = {id: {value: value.id, disabled: true }, name: {validator: [Validators.required], value: value.name }}
-    const dialogRef = this.dialog.open(FormDialogComponent, {data: { title: 'Edit Jetty', formData, formType: 'Edit'} });
+    const formData: FormKeysProp = {
+      id: { value: value.id, disabled: true },
+      name: { validator: [Validators.required], value: value.name },
+    };
+    const dialogRef = this.dialog.open(FormDialogComponent, {
+      data: { title: 'Edit Jetty', formData, formType: 'Edit' },
+    });
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
         this.progressBar.open();
@@ -101,12 +113,16 @@ export class JettySettingComponent implements OnInit {
           next: (val: any) => {
             this.progressBar.close();
             if (!val.success) {
-              this.snackBar.open('Failed to edit Jetty.', null, { panelClass: ['error']});
+              this.snackBar.open('Failed to edit Jetty.', null, {
+                panelClass: ['error'],
+              });
               return;
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open('Jetty edited successfully', null, { panelClass: ['success']});
+            this.snackBar.open('Jetty edited successfully', null, {
+              panelClass: ['success'],
+            });
           },
           error: (error: unknown) => {
             console.log(error);
@@ -117,8 +133,8 @@ export class JettySettingComponent implements OnInit {
             );
             this.progressBar.close();
             this.editData(result);
-          }
-        })
+          },
+        });
       }
     });
   }
@@ -140,8 +156,10 @@ export class JettySettingComponent implements OnInit {
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open(`Jetty with id: ${selected[i].id} deleted successfully`);
-          })
+            this.snackBar.open(
+              `Jetty with id: ${selected[i].id} deleted successfully`
+            );
+          });
         },
         error: (error: unknown) => {
           console.log(error);
