@@ -74,6 +74,11 @@ export class ViewApplicationComponent implements OnInit {
     this.currentUser = this.auth.currentUser as LoginModel;
   }
 
+  public get isApprover() {
+    const currentUser = this.auth.currentUser as LoginModel;
+    return (currentUser as any).userRoles === UserRole.APPROVER;
+  }
+
   public get isSupervisor() {
     return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
   }
@@ -226,7 +231,7 @@ export class ViewApplicationComponent implements OnInit {
       },
       applicationDocs: {
         data: {
-          applicationDocs: this.application.applicationDocs,
+          applicationDocs: this.application.documents,
         },
       },
     };

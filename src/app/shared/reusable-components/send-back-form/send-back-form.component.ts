@@ -92,7 +92,6 @@ export class SendBackFormComponent implements OnInit {
           });
 
           this.dialogRef.close();
-        
         }
         this.isLoading = false;
         this.progressBarService.close();

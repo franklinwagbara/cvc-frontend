@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
 import { UserRole } from '../constants/userRole';
+import { LOCATION } from '../constants/location';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -71,6 +72,12 @@ export class AuthenticationService {
   public get isStaff() {
     const user = this.currentUser as LoginModel;
     if (user.userRoles != UserRole.COMPANY) return true;
+    else return false;
+  }
+
+  public get isFOLocation() {
+    const user = this.currentUser as LoginModel;
+    if (user.location == LOCATION.FO) return true;
     else return false;
   }
 

@@ -13,11 +13,10 @@
       <div class="item-title">Vessel Type</div>
       <div class="item-content">{{ application?.vessel?.vesselType }}</div>
     </div>
-    
   </div>
 
   <form [formGroup]="form" (ngSubmit)="approve()">
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="fomr-group" style="margin-bottom: 10px" *ngIf="!isApprover">
       <label>Remark</label>
       <textarea
         formControlName="comment"
@@ -34,18 +33,18 @@
     </div>
   </form>
 </div>
-<div class="flex">
+<div class="flex mt-4">
   <div class="items-center flex w-full">
     <button mat-button mat-dialog-close>Close</button>
     <div class="flex">
       <button
         mat-raised-button
-        class="bg-green-500 "
+        class="bg-green-500"
         (click)="approve()"
         [disabled]="form.invalid"
         *ngIf="!isLoading"
       >
-        Approve
+        {{ !isApprover ? "Pass For Approval" : "Approved" }}
       </button>
       <a
         *ngIf="isLoading"

@@ -53,9 +53,15 @@ export class ApproveFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      comment: ['', Validators.required],
-    });
+    if (!this.isApprover)
+      this.form = this.formBuilder.group({
+        comment: ['', Validators.required],
+      });
+    else
+      this.form = this.formBuilder.group({
+        comment: [''],
+      });
+
     const tempUser = this.auth.currentUser;
     this.auth.getAllStaff().subscribe({
       next: (res) => {
