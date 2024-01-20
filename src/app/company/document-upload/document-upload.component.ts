@@ -222,7 +222,7 @@ export class DocumentUploadComponent implements OnInit {
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         this.progressBar.open();
-  
+
         this.getUploadDocuments();
       }
     });

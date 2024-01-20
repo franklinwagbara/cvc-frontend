@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Application } from '../../../../../../src/app/company/my-applications/myapplication.component';
+import { AuthenticationService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-application-view-table',
@@ -15,7 +16,11 @@ export class ApplicationViewTableComponent implements OnInit {
   public depotId?: number;
   public coqId?: number;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    public authService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((param) => {

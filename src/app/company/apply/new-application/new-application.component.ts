@@ -283,8 +283,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res?.data.sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase ? -1 :
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();
@@ -302,8 +305,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
         this.depots = (res?.data || []).sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase() ? -1 : 
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase()
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();
