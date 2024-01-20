@@ -26,7 +26,7 @@ import { CompanyRoutingModule } from './company-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
-import { MypermitsComponent } from './permits/mypermits.component';
+import { MyapprovalsComponent } from './approvals/myapprovals.component';
 import { ApplyComponent } from './apply/apply.component';
 import { MyApplicationComponent } from './my-applications/myapplication.component';
 import { RegisterDirectorComponent } from './director/registerdirector.component';
@@ -46,6 +46,8 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
 import { TanksComponent } from './settings/processing-plant/tanks/tanks.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -69,14 +71,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   declarations: [
     DashboardComponent,
     MessagesComponent,
     ChangePasswordComponent,
     MyScheduleComponent,
-    MypermitsComponent,
+    MyapprovalsComponent,
     ApplyComponent,
     MyApplicationComponent,
     RegisterDirectorComponent,

@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Add Staff</h1>
-<div mat-dialog-content class="w-[1000px] h-screen">
+<div mat-dialog-content class="h-screen">
   <form [formGroup]="form" (ngSubmit)="createUser()">
     <div class="form-group" style="margin-bottom: 10px">
       <label>User Information from ELPS</label>
@@ -58,11 +58,16 @@
 
     <div class="form-group" style="margin-bottom: 10px">
       <label>User Role</label>
-      <select name="roleId" formControlName="roleId" class="form-control">
+      <select
+        name="roleId"
+        formControlName="roleId"
+        class="form-control"
+        (change)="onRoleChanges()"
+      >
         <option
           *ngFor="let ut of roles"
           [selected]="ut.name === currentValue?.role"
-          [ngValue]="ut.id"
+          [ngValue]="ut"
         >
           {{ ut.name }}
         </option>
@@ -105,26 +110,65 @@
     </div>
 
     <div class="mb-3">
-      <label for="formFile" class="form-label">Upload Signature Image</label>
+      <label for="formFile" class="">{{
+        currentValue?.signature
+          ? "Replace Signature Image"
+          : "Upload Signature Image"
+      }}</label>
       <input
         (change)="onFileChange($event)"
-        formControlName="signatureImage"
+        formControlName="signatureFile"
         accept="image/*,.doc, .docx,.ppt, .pptx,.txt,.pdf"
         class="form-control"
+        [ngClass]="{
+          '!border !border-1 !border-red-500':
+            form.valid &&
+            !form.get('signatureFile').value &&
+            !currentValue?.signature &&
+            onRoleChanges()
+        }"
         type="file"
         id="formFile"
       />
+      <mat-error
+        *ngIf="
+          form.valid &&
+          !form.get('signatureFile').value &&
+          !currentValue?.signature &&
+          onRoleChanges()
+        "
+        class="text-[14px]"
+        >Signature is required for the users with the selected role!</mat-error
+      >
+      <div class="flex items-center" *ngIf="currentValue?.signature">
+        <i class="material-icons text-[15px]">attach_file</i>
+        <i class="text-[13px]">Signature alredy uploaded</i>
+      </div>
     </div>
   </form>
 </div>
+
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close (click)="onClose()">Close</button>
-  <button
-    mat-raised-button
-    [color]="!currentValue ? 'secondary' : 'primary'"
-    (click)="!currentValue ? createUser() : updateUser()"
-    [disabled]="form.invalid"
-  >
-    {{ !currentValue ? "Create" : "Update" }}
-  </button>
+  <button mat-button mat-dialog-close>Close</button>
+  <div class="">
+    <button
+      mat-raised-button
+      [color]="!currentValue ? 'secondary' : 'primary'"
+      (click)="!currentValue ? createUser() : updateUser()"
+      [disabled]="
+        form.invalid || (!form.get('signatureFile').value && onRoleChanges())
+      "
+      *ngIf="!isLoading"
+    >
+      {{ !currentValue ? "Create" : "Update" }}
+    </button>
+    <a
+      *ngIf="isLoading"
+      class="!flex !justify-center !items-center"
+      mat-mini-fab
+      color="disabled"
+    >
+      <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+    </a>
+  </div>
 </div>

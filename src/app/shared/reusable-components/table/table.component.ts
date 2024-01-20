@@ -58,15 +58,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noEditControl?: boolean = false;
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
-  @Input('EnableDischargeClearanceControl')
-  enableDischargeClearanceControl?: boolean = false;
-  @Input('EnableViewCertificateControl')
-  enableViewCertificateControl?: boolean = false;
+  @Input('EnableDischargeClearanceControls')
+  enableDischargeClearanceControls?: boolean = false;
+  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =
     false;
+  @Input('EnableViewClearanceControl') enableViewClearanceControl?: boolean =
+    false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
+    false;
+  @Input('EnableGenDebitNoteControl') enableGenDebitNoteControl?: boolean =
     false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
@@ -92,6 +95,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onViewTank = new EventEmitter<any>();
   @Output() onMoveApplication = new EventEmitter<any>();
   @Output() onSelect = new EventEmitter<any>();
+  @Output() allowDischarge = new EventEmitter<boolean>();
+  @Output() onGenDebitNote = new EventEmitter<boolean>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -188,11 +193,11 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
-    if (this.enableDischargeClearanceControl) {
+    if (this.enableGenDebitNoteControl) {
       this.columns.push({
-        columnDef: 'discharge_clearance_control',
+        columnDef: 'generate_debit_note_control',
         header: '',
-        cell: (item) => 'discharge_clearance_control',
+        cell: (item) => 'generate_debit_note_control',
       });
     }
 
@@ -204,6 +209,19 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
           if (item) return 'initiate_coq_control';
           else return '';
         },
+      });
+    }
+
+    if (this.enableDischargeClearanceControls) {
+      this.columns.push({
+        columnDef: 'discharge_offspec_control',
+        header: '',
+        cell: (item) => 'discharge_offspec_control',
+      });
+      this.columns.push({
+        columnDef: 'discharge_onspec_control',
+        header: '',
+        cell: (item) => 'discharge_onspec_control',
       });
     }
 
@@ -220,6 +238,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'view_control',
         header: '',
         cell: (item) => 'view_schedule_control',
+      });
+    }
+
+    if (this.enableViewClearanceControl) {
+      this.columns.push({
+        columnDef: 'view_clearance_control',
+        header: '',
+        cell: (item) => 'view_clearance_control',
       });
     }
 
@@ -253,21 +279,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_debit_note_control',
       });
-    }
-
-    if (this.enableDischargeClearanceControl) {
-      this.columns.push(
-        {
-          columnDef: 'discharge_onspec_control',
-          header: '',
-          cell: (item) => 'discharge_onspec_control',
-        },
-        {
-          columnDef: 'discharge_offspec_control',
-          header: '',
-          cell: (item) => 'discharge_offspec_control',
-        }
-      );
     }
 
     this.columns.unshift({
@@ -322,7 +333,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.toggleAllRows();
   }
 
-  editData(row) {
+  editData(row: any) {
     this.onEditData.emit(row);
   }
 
@@ -346,20 +357,23 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onViewDebitNote.emit(row);
   }
 
-  onDischargeClearance(row: any): void {
+  genDebitNote(row: any) {
+    this.onGenDebitNote.emit(row);
+  }
+
+  onDischargeClearance(row: any, allow: boolean): void {
     this.progressBar.open();
     this.productService.getAllProductTypes().subscribe({
       next: (res: any) => {
         const productTypes = res?.data;
         this.progressBar.close();
         const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
-          data: { productTypes },
+          data: { productTypes, noaApp: row, allowDischarge: allow },
           disableClose: true,
-          // panelClass: 'pannelClass',
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
-          if (result.submitted) {
-            //this.allowDischarge = true;
+          if (result.submitted && allow) {
+            this.allowDischarge.emit(allow);
           }
         });
       },
@@ -369,11 +383,6 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         this.popUp.open('Failed to initiate discharge clearance', 'error');
       },
     });
-  }
-
-  stopDischarge(): void {
-    //this.allowDischarge = false;
-    // Send notification to regional state coordinator
   }
 
   initiateCoQ(row: any) {

@@ -1,31 +1,29 @@
 import {
   Component,
   OnInit,
-  AfterViewInit,
   ChangeDetectorRef,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
-import { IApplication } from '../../../../src/app/shared/interfaces/IApplication';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
-import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { LicenceService } from '../../../../src/app/shared/services/licence.service';
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
-import { environment } from '../../../../src/environments/environment';
-import { IPermit } from '../../../../src/app/shared/interfaces/IPermit';
+import { ProgressBarService } from '../../shared/services/progress-bar.service';
+import { SpinnerService } from '../../shared/services/spinner.service';
+import { LicenceService } from '../../shared/services/licence.service';
+import { PopupService } from '../../shared/services/popup.service';
+import { environment } from '../../../environments/environment';
+import { IPermit } from '../../shared/interfaces/IPermit';
 
 @Component({
   selector: 'app-my-permits',
-  templateUrl: 'mypermits.component.html',
-  styleUrls: ['./mypermits.component.scss'],
+  templateUrl: 'myapprovals.component.html',
+  styleUrls: ['./myapprovals.component.scss'],
 })
-export class MypermitsComponent implements OnInit, AfterViewInit {
-  public permits: IPermit[];
+export class MyapprovalsComponent implements OnInit {
+  public approvals: IPermit[];
 
   public tableTitles = {
-    permits: 'MY CERTIFICATES',
+    approvals: 'MY CERTIFICATES',
   };
 
   public applicationKeysMappedToHeaders = {
@@ -55,7 +53,7 @@ export class MypermitsComponent implements OnInit, AfterViewInit {
 
     forkJoin([this.licenceService.getCompanyLicences()]).subscribe({
       next: (res) => {
-        if (res[0].success) this.permits = res[0].data;
+        if (res[0].success) this.approvals = res[0].data.reverse();
 
         this.spinner.close();
         this.cd.markForCheck();
@@ -69,21 +67,15 @@ export class MypermitsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    // this.categories = [...this.categories];
-  }
-
-  onViewData(event: any, type: string) {
-    window.location.assign(
-      `${environment.apiUrl}/licenses/view_license?id=${event.id}`
-    );
+  onViewData(event: any) {
+    window.open(`${environment.apiUrl}/licenses/view_license?id=${event.id}`, '_blank');
   }
 
   viewCoQCerts(row: any) {
-    this.router.navigateByUrl(`/company/mycertificates/${row.id}/coqs`);
+    this.router.navigateByUrl(`/company/approvals/${row.id}/coqs`);
   }
 
   viewDebitNotes(row: any) {
-    this.router.navigateByUrl(`/company/mycertificates/${row.id}/debit-notes`);
+    this.router.navigateByUrl(`/company/approvals/${row.id}/debit-notes`);
   }
 }

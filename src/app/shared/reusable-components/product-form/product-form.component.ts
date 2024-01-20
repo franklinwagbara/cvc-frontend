@@ -33,7 +33,7 @@ export class ProductFormComponent implements OnInit {
   public productTypes: IApplicationType[];
   public product: any;
   public isSubmitted = false;
-  public isLoading = false
+  public isLoading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -57,7 +57,7 @@ export class ProductFormComponent implements OnInit {
   }
   ngOnInit(): void {
     if (this.data.data.action === 'EDIT') {
-      this.getProduct();
+      // this.getProduct();
       this.form.get('name').setValue(this.product.name);
       this.form.get('productType').setValue(this.product.productType);
     }
@@ -67,33 +67,33 @@ export class ProductFormComponent implements OnInit {
     return this.form.controls;
   }
 
-  getProduct() {
-    this.adminService.getproductsById(this.data.data.product.id).subscribe({
-      next: (res) => {
-        this.product = res.data;
-        this.form.get('name').setValue(this.product.name);
-        this.form.get('productType').setValue(this.product.productType);
+  // getProduct() {
+  //   this.adminService.getproductsById(this.data.data.product.id).subscribe({
+  //     next: (res) => {
+  //       this.product = res.data;
+  //       this.form.get('name').setValue(this.product.name);
+  //       this.form.get('productType').setValue(this.product.productType);
 
-        this.cd.markForCheck();
-      },
-      error: (err) => {
-        this.snackBar.open(err?.message, null, {
-          panelClass: ['error'],
-        });
-        this.progressBar.close();
-      },
-    });
-  }
+  //       this.cd.markForCheck();
+  //     },
+  //     error: (err) => {
+  //       this.snackBar.open(err?.message, null, {
+  //         panelClass: ['error'],
+  //       });
+  //       this.progressBar.close();
+  //     },
+  //   });
+  // }
 
   createProduct() {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     // this.progressBar.open();
-    this.isLoading = true
+    this.isLoading = true;
     this.adminService.addproducts(this.form.value).subscribe({
       next: (res) => {
         // this.progressBar.close();
-        this.isLoading = false
+        this.isLoading = false;
         this.snackBar.open('Product was created successfully!', null, {
           panelClass: ['success'],
         });
@@ -104,7 +104,7 @@ export class ProductFormComponent implements OnInit {
           panelClass: ['error'],
         });
         // this.progressBar.close();
-        this.isLoading = false
+        this.isLoading = false;
       },
     });
   }
@@ -113,13 +113,13 @@ export class ProductFormComponent implements OnInit {
     this.isSubmitted = true;
     if (this.form.invalid) return;
     // this.progressBar.open();
-    this.isLoading = true
+    this.isLoading = true;
     let formData = this.form.value;
     formData.id = this.data.data.product.id;
     this.adminService.editproducts(formData).subscribe({
       next: (res) => {
         // this.progressBar.close();
-        this.isLoading = false
+        this.isLoading = false;
         this.snackBar.open('Product was modified successfully!', null, {
           panelClass: ['success'],
         });
@@ -127,13 +127,11 @@ export class ProductFormComponent implements OnInit {
       },
       error: (err) => {
         // this.progressBar.close();
-        this.isLoading = false
+        this.isLoading = false;
         this.snackBar.open(err?.message, null, {
           panelClass: ['error'],
         });
       },
     });
   }
-
-  
 }

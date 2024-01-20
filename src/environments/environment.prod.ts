@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  basePath: 'https://cvcdemo.azurewebsites.net',
+  basePath: 'https://cvcdemo.azurewebsites.net/api',
   apiUrl: 'https://cvcdemo.azurewebsites.net/api',
   // elpsBase: 'https://elpsdemo.dpr.gov.ng',
   // elpsBase: 'https://elpsdemo.nuprc.gov.ng',

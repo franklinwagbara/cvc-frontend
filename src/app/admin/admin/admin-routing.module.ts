@@ -137,7 +137,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'view-coq-application/:id',
+    path: 'desk/view-coq-application/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
   },
@@ -206,7 +206,6 @@ const routes: Routes = [
     path: 'coq-and-plant/noa-applications-by-depot/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    canActivate: [CoqGuard],
   },
   {
     path: 'coq-and-plant/coq-applications-by-depot',

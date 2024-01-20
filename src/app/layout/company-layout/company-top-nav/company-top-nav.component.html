@@ -16,7 +16,7 @@
       </app-dropdown>
       <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">
       </app-dropdown>
-      <app-dropdown title="MY CERTIFICATES" path="company/mycertificates">
+      <app-dropdown class="mr-4" title="MY APPROVALS" path="company/approvals">
       </app-dropdown>
     </div>
 
@@ -121,12 +121,12 @@
           </div>
         </button>
       </mat-menu>
-      <button mat-menu-item routerLink="/company/mycertificates">
+      <button mat-menu-item routerLink="/company/approvals">
         <div class="menu-item-content">
           <ng-container 
             *ngTemplateOutlet="iconTemp; context: iconContexts.certificates">
           </ng-container>
-          <span>My Certificates</span>
+          <span>My Approvals</span>
         </div>
       </button>
       <hr class="w-full"/>

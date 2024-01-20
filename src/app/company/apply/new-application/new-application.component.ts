@@ -41,6 +41,10 @@ export class NewApplicationComponent implements OnInit {
   // public tankForm: FormGroup;
   public appDepotForm: FormGroup;
 
+  dateValidation = {
+    min: new Date()
+  }
+
   constructor(
     private libraryService: LibaryService,
     private popUp: PopupService,
@@ -60,6 +64,7 @@ export class NewApplicationComponent implements OnInit {
       motherVessel: ['', Validators.required],
       marketerName: ['', Validators.required],
       productId: ['', Validators.required],
+      eta: ['', Validators.required],
       vesselTypeId: ['', Validators.required],
       imoNumber: ['', Validators.required],
     });
@@ -123,7 +128,8 @@ export class NewApplicationComponent implements OnInit {
       this.vesselForm.controls['jetty'].valid &&
       this.vesselForm.controls['motherVessel'].valid &&
       this.vesselForm.controls['vesselTypeId'].valid &&
-      this.vesselForm.controls['imoNumber'].valid
+      this.vesselForm.controls['imoNumber'].valid &&
+      this.vesselForm.controls['eta'].valid
     );
   }
 
@@ -148,7 +154,7 @@ export class NewApplicationComponent implements OnInit {
       imoNumber: (this.vesselForm.value.imoNumber as number).toString(),
       jetty: this.vesselForm.value.jetty,
       motherVessel: this.vesselForm.value.motherVessel,
-
+      eta: new Date(this.vesselForm.value.eta).toISOString(),
       applicationTypeId: this.applicationTypeId,
       depotList: this.selectedAppDepots,
 
@@ -485,6 +491,7 @@ export interface IApplicationFormDTO {
   imoNumber: string;
   motherVessel: string;
   jetty: string;
+  eta: string;
 
   applicationTypeId: number;
   facilityName: string;

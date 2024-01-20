@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog, } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
 import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
@@ -17,6 +17,9 @@ import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
+import { UserRole } from 'src/app/shared/constants/userRole';
+import { PaymentService } from 'src/app/shared/services/payment.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -33,6 +36,8 @@ export class CoqApplicationViewComponent implements OnInit {
   public coqId: number;
   public documents: any;
   public tanksList: any[];
+  appLoaded = false;
+  isLoading = true;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -44,7 +49,10 @@ export class CoqApplicationViewComponent implements OnInit {
     public route: ActivatedRoute,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
-    public location: Location
+    public location: Location,
+    private paymentService: PaymentService,
+    private popUp: PopupService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -63,24 +71,51 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
+    return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
+  }
+
+  public get isFAD() {
+    return (this.currentUser as any).userRoles === UserRole.FAD;
   }
 
   public get isCOQProcessor() {
-    return (
-      (this.currentUser as any).userRoles === 'FAD' ||
-      (this.currentUser as any).userRoles === 'Controller' ||
-      this.currentUser.location == LOCATION.FO
-    );
+    return (this.currentUser as any).userRoles === UserRole.CONTROLLER;
   }
 
   public get isFO() {
-    return this.currentUser.location == LOCATION.FO;
+    return this.currentUser.userRoles === LOCATION.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {
     const currentUser = this.auth.currentUser;
     return currentUser.userId == scheduleBy;
+  }
+
+  previewDebitNote() {
+    window.location.assign('#');
+  }
+
+  generateDebitNote() {
+    this.isLoading = true;
+    this.spinner.show('Generating Debit Note...');
+
+    this.paymentService.generateDebitNote(this.coqId).subscribe({
+      next: (res: any) => {
+        if (res?.success) {
+          this.popUp.open('Debit Note generated successfully', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/admin/desk']);
+          }, 3000)
+        }
+        this.isLoading = false;
+        this.spinner.close();
+      }, 
+      error: (error: unknown) => {
+        console.log(error);
+        this.popUp.open('Something went wrong while generating Debit Note', 'error');
+        this.spinner.close();
+      }
+    });
   }
 
   getApplication() {
@@ -90,6 +125,7 @@ export class CoqApplicationViewComponent implements OnInit {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
+          this.appLoaded = true;
         }
 
         this.progressBar.close();
@@ -118,7 +154,6 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
-    this.application.reference = this.application.Reference;
     const operationConfiguration = {
       approve: {
         data: {
@@ -155,18 +190,13 @@ export class CoqApplicationViewComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
   }
 
   previewDetails(): void {

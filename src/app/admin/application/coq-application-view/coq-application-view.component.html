@@ -8,16 +8,17 @@
   </button>
   <div class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
-      APPLICATION REFERENCE : {{ application?.Reference }}
+      APPLICATION REFERENCE : {{ application?.reference }}
     </h2>
 
     <div mat-dialog-content class="content !overflow-x-auto">
-      <div class="application-view min-w-[500px]">
+      <div class="application-view flex-1">
         <app-coq-application-view-table
           [application]="application"
-          [appId]="appId"
+          [appId]="coqId"
           [appSource]="appSource"
           [tankList]="tanksList"
+          [isCoqProcessor]="isCOQProcessor"
         ></app-coq-application-view-table>
       </div>
       <div class="application-controls">
@@ -67,19 +68,41 @@
           </div>
         </mat-expansion-panel>
       </div>
-      <div class="application-controls" *ngIf="isStaffDesk">
+
+      <ng-container *ngIf="appLoaded">
+        <div class="application-controls" *ngIf="isStaffDesk && !isFAD">
+          <div class="actions">
+            <button
+              mat-raised-button
+              class="bg-green-500 text-white"
+              (click)="action('approve')"
+            >
+              Approve
+            </button>
+            <button mat-raised-button color="warn" (click)="action('sendBack')">
+              Send Back
+            </button>
+  
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="application-controls" *ngIf="isStaffDesk && isFAD">
         <div class="actions">
+          <button 
+            mat-raised-button 
+            class="bg-yellow-500 text-white" 
+            (click)="previewDebitNote()"
+          >
+            Preview Debit Note
+          </button>
           <button
             mat-raised-button
             class="bg-green-500 text-white"
-            (click)="action('approve')"
+            (click)="generateDebitNote()"
           >
-            Approve
+            Generate Debit Note
           </button>
-          <button mat-raised-button color="warn" (click)="action('sendBack')">
-            Send Back
-          </button>
-
         </div>
       </div>
     </div>

@@ -35,4 +35,14 @@ export class Util {
       return !evaluatorFn(control.value) ? { [errorKey]: { value: control.value } } : null;
     }
   }
+
+  public static blockSpecialNonNumerics(evt: KeyboardEvent): void {
+    if (
+      ['e', 'E', '+', '-'].includes(evt.key) &&
+      (evt.target as HTMLElement).tagName.toLowerCase() === 'input' &&
+      (evt.target as HTMLInputElement).type !== 'text'
+    ) {
+      evt.preventDefault();
+    }
+  }
 }

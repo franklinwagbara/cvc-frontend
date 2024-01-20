@@ -4,6 +4,7 @@ import { ApplicationService } from '../../shared/services/application.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { PopupService } from '../../shared/services/popup.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     private spinner: SpinnerService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private popUp: PopupService
+    private popUp: PopupService,
+    private progressBar: ProgressBarService
   ) {}
 
   ngOnInit(): void {
@@ -46,18 +48,29 @@ export class NoaApplicationsByDepotComponent implements OnInit {
 
   public fetchAllData() {
     this.spinner.show('Loading applications...');
+    this.getApplicationByDepot();
+  }
 
+  getApplicationByDepot() {
     this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
-        this.applications = res?.data;
+        // get apps and add allowDischarge prop to each one
+        this.applications = res?.data
+        // .map((el) => ({...el, allowDischarge: false }));
         this.applications = this.applications
           .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
+          .filter((app) => app.status !== 'Completed')
+          .reverse();
         this.spinner.close();
+        this.progressBar.close();
+        this.cdr.markForCheck();
       },
       error: (error: unknown) => {
         console.log(error);
         this.popUp.open('Something went wrong while retrieving data', 'error');
         this.spinner.close();
+        this.progressBar.close();
+        this.cdr.markForCheck();
       }
     })
   }
@@ -69,6 +82,13 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   public get isFieldOfficer(): boolean {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     return currentUser && currentUser?.userRoles.includes('Field_Officer');
+  }
+
+  onAllowDischarge(value: boolean) {
+    if (value) {
+      this.progressBar.open();
+      this.getApplicationByDepot();
+    }
   }
 
   initiateCoQ(event: any) {

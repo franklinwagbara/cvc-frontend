@@ -52,7 +52,6 @@ export class AllStaffComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBar.open();
     this.spinner.open();
 
     forkJoin([
@@ -61,7 +60,6 @@ export class AllStaffComponent implements OnInit {
       this.adminHttpService.getRoles(),
       this.libService.getAllLocations(),
       this.libService.getAllOffices(),
-      // this.adminHttpService.getBranches(),
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
@@ -75,7 +73,7 @@ export class AllStaffComponent implements OnInit {
         if (res[3].success) this.locations = res[3].data;
 
         if (res[4].success) this.offices = res[4].data;
-        
+
         this.spinner.close();
       },
       error: (error: unknown) => {
@@ -112,15 +110,18 @@ export class AllStaffComponent implements OnInit {
       data: {
         data: operationConfiguration[type].data,
       },
+
+      panelClass: 'userPannelClass',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
         this.progressBar.open();
-  
+
         this.adminHttpService.getAllStaff().subscribe((res) => {
           this.users = res.data;
-  
+
           this.progressBar.close();
         });
       }
@@ -187,7 +188,7 @@ export class AllStaffComponent implements OnInit {
             error: (error: unknown) => {
               console.log(error);
               this.progressBar.close();
-            }
+            },
           });
         }
 
@@ -256,6 +257,8 @@ export class AllStaffComponent implements OnInit {
       data: {
         data: operationConfiguration[type].data,
       },
+      panelClass: 'userPannelClass',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((res) => {
@@ -285,9 +288,10 @@ export class Staff {
   officeId: any;
   userType: string;
   elpsId: string;
-  signatureImage: any;
+  signatureFile: any;
   id: any;
   name?: string;
+  signature?: any;
 
   constructor(item: Staff) {
     this.firstName = item.firstName;
@@ -306,7 +310,8 @@ export class Staff {
     this.officeId = item.officeId;
     this.userType = item.userType;
     this.elpsId = item.elpsId;
-    this.signatureImage = item.signatureImage;
+    this.signatureFile = item.signatureFile;
+    this.signature = item.signature;
   }
 }
 

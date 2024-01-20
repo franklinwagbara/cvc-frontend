@@ -96,6 +96,16 @@ button:disabled {
   padding: 0px !important; /* Set padding to 0 or adjust as needed */
 }
 
+@media only screen and (max-width: 768px) {
+  .view-message-content {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 98% !important;
+    max-width: 96% !important;
+    overflow-x: auto !important;
+  }
+}
+
 .pannelClass {
   padding: 0px !important;
   margin: 0px !important;
@@ -106,6 +116,21 @@ button:disabled {
 
 @media only screen and (max-width: 768px) {
   .pannelClass {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+.userPannelClass {
+  padding: 0px !important;
+  margin: 0px !important;
+  min-width: 40%;
+}
+
+@media only screen and (max-width: 768px) {
+  .userPannelClass {
     width: 100% !important;
     height: 100% !important;
     max-height: 100% !important;
