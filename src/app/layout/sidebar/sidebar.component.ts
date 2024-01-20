@@ -67,7 +67,24 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 3,
+    title: 'VESSEL CLEARANCE',
+    iconName: '',
+    iconId: '',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+
+    subRoutes: [
+      {
+        id: 1,
+        title: 'VESSEL CLEARANCE',
+        url: '/admin/vessel-clearance/noa-applications'
+      }
+    ]
+  },
+  {
+    id: 5,
     title: 'APPLICATIONS',
     iconName: 'apps',
     iconId: 'apps',
@@ -89,7 +106,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     title: 'ALL APPROVALS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -111,7 +128,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -128,7 +145,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -155,7 +172,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -268,27 +285,19 @@ export class SidebarComponent implements OnInit, OnChanges {
       let coqSubRoutes = [
         {
           id: 1,
-          title: 'NoA Applications',
-          url: '/admin/coq-and-plant/noa-applications-by-depot',
-        },
-        {
-          id: 2,
           title: 'CoQ Applications',
           url: '/admin/coq-and-plant/coq-applications-by-depot',
         },
-      ];
-
-      if (currentUser.userRoles === UserRole.FIELDOFFICER) {
-        coqSubRoutes.push({
-          id: 3,
+        {
+          id: 2,
           title: 'Processing Plant',
           url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        });
-      }
+        }
+      ];
 
-      this.menuItems = this.menuItems.slice(0, 2).concat(
+      this.menuItems = this.menuItems.slice(0, 3).concat(
         {
-          id: 3,
+          id: 4,
           title: 'CoQ And Plant',
           iconName: 'carbon',
           iconId: 'carbon',
@@ -301,10 +310,17 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
+    // Show Vessel Clearance only to field officers
+    if (currentUser.userRoles !== UserRole.FIELDOFFICER) {
+      this.menuItems = this.menuItems.filter(
+        (item) => item.title !== 'VESSEL CLEARANCE'
+      );
+    }
+
     // Show NOA Applications and All Applications only to Admins and HQ staffs
     if (
       !Util.adminRoles.includes(currentUser?.userRoles) &&
-      currentUser?.location !== 'HQ'
+      currentUser?.location !== LOCATION.HQ
     ) {
       this.menuItems = this.menuItems.filter(
         (item) =>
@@ -313,7 +329,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show settings only SuperAdmin
-    if (!Util.adminRoles.includes(currentUser?.userRoles)) {
+    if (currentUser?.userRoles === UserRole.SUPERADMIN) {
       this.menuItems = this.menuItems.filter(
         (item) => item.title !== 'SETTINGS'
       );

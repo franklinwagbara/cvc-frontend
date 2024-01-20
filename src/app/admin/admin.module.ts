@@ -55,7 +55,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CoqApplicationsByDepotComponent } from './coq-applications-by-depot/coq-applications-by-depot.component';
-import { FieldOfficerSettingComponent } from './settings/field-officer-setting/field-officer-setting.component';
+import { FieldOfficerDepotSettingComponent } from './settings/field-officer-depot-setting/field-officer-depot-setting.component';
 import { AppFeeComponent } from './settings/app-fee/app-fee.component';
 import { AppDepotComponent } from './settings/app-depot/app-depot.component';
 import { PaymentComponent } from './payment/payment.component';
@@ -80,6 +80,8 @@ import { CoqApplicationPreviewComponent } from './coq-application-form/coq-appli
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailConfigComponent } from './settings/email-config/email-config.component';
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
+import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
+import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
 
 @NgModule({
   declarations: [
@@ -122,7 +124,7 @@ import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-appl
     CoqApplicationFormComponent,
     NoaApplicationsByDepotComponent,
     CoqApplicationsByDepotComponent,
-    FieldOfficerSettingComponent,
+    FieldOfficerDepotSettingComponent,
     JettySettingComponent,
     NominatedSurveyorSettingComponent,
     EditCoqFormComponent,
@@ -138,6 +140,8 @@ import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-appl
     CoqApplicationPreviewComponent,
     EmailConfigComponent,
     AllCoqApplicationsComponent,
+    FieldOfficerJettySettingComponent,
+    NoaVesselClearanceComponent,
   ],
 
   imports: [

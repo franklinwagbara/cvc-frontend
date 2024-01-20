@@ -24,7 +24,7 @@ import { ViewApplicationInFullComponent } from '../../../../src/app/shared/reusa
 import { CoqApplicationFormComponent } from '../coq-application-form/coq-application-form.component';
 import { NoaApplicationsByDepotComponent } from '../noa-applications-by-depot/noa-applications-by-depot.component';
 import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/coq-applications-by-depot.component';
-import { FieldOfficerSettingComponent } from '../settings/field-officer-setting/field-officer-setting.component';
+import { FieldOfficerDepotSettingComponent } from '../settings/field-officer-depot-setting/field-officer-depot-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { CoqGuard } from '../../../../src/app/shared/guards/coq.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
@@ -38,6 +38,7 @@ import { AllCoqCertificatesComponent } from '../all-coq-certificates/all-coq-cer
 import { AllNoaClearancesComponent } from '../all-noa-clearances/all-noa-clearances.component';
 import { AdminGuard } from 'src/app/shared/guards/admin.guard';
 import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-applications.component';
+import { NoaVesselClearanceComponent } from '../noa-vessel-clearance/noa-vessel-clearance.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -117,7 +118,7 @@ const routes: Routes = [
   },
   {
     path: 'settings/field-officer',
-    component: FieldOfficerSettingComponent,
+    component: FieldOfficerDepotSettingComponent,
     pathMatch: 'full',
   },
   {
@@ -140,6 +141,21 @@ const routes: Routes = [
     path: 'desk/view-coq-application/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
+  },
+  {
+    path: 'vessel-clearance',
+    redirectTo: 'vessel-clearance/noa-applications',
+    pathMatch: 'full'
+  },
+  {
+    path: 'vessel-clearance/noa-applications',
+    component: NoaVesselClearanceComponent,
+    pathMatch: 'full'
+  },
+  {
+    path: 'vessel-clearance/noa-applications/:id',
+    component: ViewApplicationComponent,
+    pathMatch: 'full'
   },
   {
     path: 'view-application-in-full/:id',
@@ -194,17 +210,7 @@ const routes: Routes = [
   { path: 'settings/email-config', component: EmailConfigComponent },
   {
     path: 'coq-and-plant',
-    redirectTo: 'coq-and-plant/noa-applications-by-depot',
-    pathMatch: 'full',
-  },
-  {
-    path: 'coq-and-plant/noa-applications-by-depot',
-    component: NoaApplicationsByDepotComponent,
-    pathMatch: 'full',
-  },
-  {
-    path: 'coq-and-plant/noa-applications-by-depot/:id',
-    component: ViewApplicationComponent,
+    redirectTo: 'coq-and-plant/coq-applications-by-depot',
     pathMatch: 'full',
   },
   {
