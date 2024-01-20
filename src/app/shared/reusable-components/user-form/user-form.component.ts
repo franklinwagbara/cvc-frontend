@@ -46,6 +46,7 @@ export class UserFormComponent implements OnInit {
   public closeDropdownSelection = false;
   public selectedRole: any;
   public isLoading = false;
+  public directorates: any;
 
   public requiredSignatureRoles = [
     UserRole.APPROVER,
@@ -65,13 +66,15 @@ export class UserFormComponent implements OnInit {
     public dialog: MatDialog,
     private progressBar: ProgressBarService
   ) {
-    this.usersFromCvc = data.data.users;
-    this.offices = data.data.offices;
+    this.usersFromCvc = data.data?.users;
+    this.offices = data.data?.offices;
     // this.branches = data.data.branches;
-    this.roles = data.data.roles;
-    this.locations = data.data.locations;
-    this.usersFromElps = data.data.staffList;
+    this.roles = data.data?.roles;
+    this.locations = data.data?.locations;
+    this.usersFromElps = data.data?.staffList;
     this.currentValue = data.data?.currentValue;
+    this.directorates = data.data?.directorate;
+    console.log(data.data);
     let currentUserId: string;
 
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
@@ -127,6 +130,7 @@ export class UserFormComponent implements OnInit {
       locationId: [this.currentValue ? this.currentValue.locationId : ''],
 
       officeId: [this.currentValue ? this.currentValue.officeId : ''],
+      directorate: [this.currentValue ? this.currentValue.directorate : ''],
 
       // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
@@ -174,6 +178,7 @@ export class UserFormComponent implements OnInit {
     formDataToSubmit.append('officeId', this.form.get('officeId').value);
     formDataToSubmit.append('isActive', this.form.get('isActive').value);
     formDataToSubmit.append('signatureFile', this.file);
+    formDataToSubmit.append('directorate', this.form.get('directorate').value);
 
     this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {
@@ -214,6 +219,7 @@ export class UserFormComponent implements OnInit {
       'phone',
       'userType',
       'isActive',
+      'directorate',
     ];
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);

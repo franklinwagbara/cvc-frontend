@@ -103,6 +103,19 @@
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Directorate</label>
+      <select
+        name="directorate"
+        formControlName="directorate"
+        class="form-control"
+      >
+        <option *ngFor="let dir of directorates" [ngValue]="dir.value">
+          {{ dir.value }}
+        </option>
+      </select>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
       <label>
         <input name="isActive" formControlName="isActive" type="checkbox" />
         Active?

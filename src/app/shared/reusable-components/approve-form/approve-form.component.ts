@@ -19,7 +19,6 @@ import { UserRole } from '../../constants/userRole';
 import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
 import { CoqApplicationPreviewComponent } from 'src/app/admin/coq-application-form/coq-application-preview/coq-application-preview.component';
 
-
 @Component({
   selector: 'app-approve-form',
   templateUrl: './approve-form.component.html',
@@ -45,16 +44,15 @@ export class ApproveFormComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private router: Router,
     private coqService: CoqService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {
     this.application = data?.data?.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
     this.isCOQProcessor = data.data.isCOQProcessor;
   }
-  
+
   ngOnInit(): void {
-  
     this.form = this.formBuilder.group({
       comment: ['', Validators.required],
     });
@@ -136,22 +134,22 @@ export class ApproveFormComponent implements OnInit {
 
   preview(): void {
     if (this.isCOQProcessor) {
-      this.dialog.open(
-        CoqApplicationPreviewComponent, 
-        { 
-          data: { 
-            vesselDischargeData: this.application, 
-            remark: this.form.controls['comment'].value, 
-            previewSource: 'submitted-coq-view',
-            isGasProduct: this.application?.productType === 'Gas'
-          } 
-        } 
-      )
+      this.dialog.open(CoqApplicationPreviewComponent, {
+        data: {
+          vesselDischargeData: this.application,
+          remark: this.form.controls['comment'].value,
+          previewSource: 'submitted-coq-view',
+          isGasProduct: this.application?.productType === 'Gas',
+        },
+      });
     } else {
-      this.dialog.open(
-        NoaApplicationPreviewComponent, 
-        { data: { application: this.application, remark: this.form.controls['comment'].value } } 
-      )
+      this.dialog.open(NoaApplicationPreviewComponent, {
+        data: {
+          application: this.application,
+          remark: this.form.controls['comment'].value,
+        },
+        panelClass: 'applicaion-preview',
+      });
     }
   }
 
