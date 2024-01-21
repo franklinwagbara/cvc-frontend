@@ -41,6 +41,7 @@ import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-app
 import { NoaVesselClearanceComponent } from '../noa-vessel-clearance/noa-vessel-clearance.component';
 import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
+import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -127,8 +128,14 @@ const routes: Routes = [
     canActivate: [SuperadminGuard]
   },
   {
-    path: 'settings/field-officer',
+    path: 'settings/field-officer-depot',
     component: FieldOfficerDepotSettingComponent,
+    pathMatch: 'full',
+    canActivate: [SuperadminGuard]
+  },
+  {
+    path: 'settings/field-officer-jetty',
+    component: FieldOfficerJettySettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard]
   },

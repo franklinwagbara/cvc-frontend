@@ -76,17 +76,18 @@
 
             <div class="flex flex-col">
               <span class="input-label"> Jetty </span>
-              <input
+              <select 
+                name="jetty" 
+                formControlName="jetty"
                 [ngClass]="{
                   '!border-b border-2 !border !border-red-500':
                     vesselFormControl['jetty'].touched &&
                     vesselFormControl['jetty'].invalid
                 }"
-                type="text"
-                class="rounded-r p-2"
-                placeholder="Discharge Port"
-                formControlName="jetty"
-              />
+              >
+                <option value="" [selected]="true">-- Select Jetty --</option>
+                <option [value]="jetty?.id" *ngFor="let jetty of jetties">{{ jetty?.name }}</option>
+              </select>
             </div>
 
             <div class="flex flex-col">
