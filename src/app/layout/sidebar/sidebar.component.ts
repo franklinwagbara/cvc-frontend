@@ -13,6 +13,8 @@ import { PageManagerService } from '../../../../src/app/shared/services/page-man
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
 import { UserRole } from 'src/app/shared/constants/userRole';
+import { LoginModel } from 'src/app/shared/models/login-model';
+import { AuthenticationService } from 'src/app/shared/services';
 
 export interface SubRouteInfo {
   id: number;
@@ -67,7 +69,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 5,
     title: 'APPLICATIONS',
     iconName: 'apps',
     iconId: 'apps',
@@ -89,7 +91,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 5,
+    id: 6,
     title: 'ALL APPROVALS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -111,7 +113,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -128,7 +130,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 7,
+    id: 8,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -155,7 +157,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 9,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -249,6 +251,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
+  currentUser: any;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -256,39 +259,54 @@ export class SidebarComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthenticationService,
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
+    this.currentUser = this.auth.currentUser as LoginModel;
 
-    const currentUser = decodeFullUserInfo();
-    // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (
-      currentUser.userRoles === UserRole.FIELDOFFICER
-    ) {
-      let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'NoA Applications',
-          url: '/admin/coq-and-plant/noa-applications-by-depot',
-        },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
-      if (currentUser.userRoles === UserRole.FIELDOFFICER) {
-        coqSubRoutes.push({
-          id: 3,
-          title: 'Processing Plant',
-          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        });
-      }
-
+    if (this.currentUser.userRoles === UserRole.FIELDOFFICER) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         {
           id: 3,
+          title: 'VESSEL CLEARANCE',
+          iconName: 'approval',
+          iconId: 'approval',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+      
+          subRoutes: [
+            {
+              id: 1,
+              title: 'VESSEL CLEARANCE',
+              url: '/admin/vessel-clearance/noa-applications'
+            }
+          ]
+        },
+        this.menuItems.slice(2)
+      )
+    }
+
+
+    // Show CoQ And Plant tab only to Staffs in Field Offices and Field Officers
+    if (this.auth.isFieldOfficer || this.auth.isFO) {
+      let coqSubRoutes = [
+        {
+          id: 1,
+          title: 'CoQ Applications',
+          url: '/admin/coq-and-plant/coq-applications-by-depot',
+        },
+        {
+          id: 2,
+          title: 'Processing Plant',
+          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
+        }
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 3).concat(
+        {
+          id: 4,
           title: 'CoQ And Plant',
           iconName: 'carbon',
           iconId: 'carbon',
@@ -297,14 +315,14 @@ export class SidebarComponent implements OnInit, OnChanges {
           subMenuActive: false,
           subRoutes: coqSubRoutes,
         },
-        this.menuItems.slice(2)
+        this.menuItems.slice(3)
       );
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
     if (
-      !Util.adminRoles.includes(currentUser?.userRoles) &&
-      currentUser?.location !== 'HQ'
+      !Util.adminRoles.includes(this.currentUser?.userRoles) &&
+      this.currentUser?.location !== LOCATION.HQ
     ) {
       this.menuItems = this.menuItems.filter(
         (item) =>
@@ -313,7 +331,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show settings only SuperAdmin
-    if (!Util.adminRoles.includes(currentUser?.userRoles)) {
+    if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {
       this.menuItems = this.menuItems.filter(
         (item) => item.title !== 'SETTINGS'
       );
