@@ -137,3 +137,19 @@ button:disabled {
     max-width: 100% !important;
   }
 }
+
+.applicaion-preview {
+  padding: 0px !important;
+  margin: 0px !important;
+  min-width: 40%;
+  height: 100% !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .applicaion-preview {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
+}

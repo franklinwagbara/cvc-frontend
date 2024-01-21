@@ -10,6 +10,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PopupService } from '../../services/popup.service';
 import { DischargeClearanceService } from '../../services/discharge-clearance.service';
 import { Util } from '../../lib/Util';
+import { AdminService } from '../../services/admin.service';
+import { IProduct } from '../../interfaces/IProduct';
+import { error } from 'console';
 
 @Component({
   selector: 'app-discharge-clearance-form',
@@ -23,19 +26,22 @@ export class DischargeClearanceFormComponent implements OnInit {
   public roles: any;
   submitting = false;
   errorMessage = '';
+  public products: IProduct[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { productTypes: any[], noaApp: any, allowDischarge: boolean },
+    @Inject(MAT_DIALOG_DATA)
+    public data: { productTypes: any[]; noaApp: any; allowDischarge: boolean },
     public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
     private popUp: PopupService,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
-    private dischargeClearance: DischargeClearanceService
+    private dischargeClearance: DischargeClearanceService,
+    private adminService: AdminService
   ) {
     this.noaApp = this.data.noaApp;
     this.allowDischarge = this.data.allowDischarge;
   }
-  
+
   ngOnInit(): void {
     if (this.allowDischarge) {
       this.form = this.formBuilder.group({
@@ -52,15 +58,17 @@ export class DischargeClearanceFormComponent implements OnInit {
         others: ['', Validators.required],
         comment: ['', Validators.required],
       });
-      
+
       ['vesselName', 'vesselPort'].forEach((field) => {
         this.form.controls[field].disable();
-      })
+      });
     } else {
       this.form = this.formBuilder.group({
         comment: ['', Validators.required],
-      })
+      });
     }
+    // this.getProduct();
+    // this.filterProducts();
   }
 
   @HostListener('keydown', ['$event'])
@@ -68,18 +76,38 @@ export class DischargeClearanceFormComponent implements OnInit {
     Util.blockSpecialNonNumerics(evt);
   }
 
+  // getProduct() {
+  //   this.adminService.getproducts().subscribe({
+  //     next: (res) => {
+  //       this.products = res.data;
+  //       this.cd.markForCheck();
+  //     },
+  //     error: (error) => {},
+  //   });
+  // }
+
+  // filterProducts() {
+  //   this.form.get('product').valueChanges.subscribe((res) => {
+  //     console.log(res);
+  //     this.products = this.products.filter((a) => a.productType == res);
+  //     console.log(this.products);
+  //   });
+  //   this.cd.markForCheck();
+  // }
+
   submit() {
     this.submitting = true;
     this.errorMessage = '';
-    const formData = { 
+    const formData = {
       ...this.form.getRawValue(),
-      appId: this.noaApp.id, 
+      appId: this.noaApp.id,
       dischargeId: this.noaApp?.dischargeId || 0,
-      depotId: 0
+      depotId: 0,
     };
 
     if (this.allowDischarge) {
-      this.dischargeClearance.createVesselDischargeClearance(formData)
+      this.dischargeClearance
+        .createVesselDischargeClearance(formData)
         .subscribe({
           next: (res: any) => {
             this.submitting = false;
@@ -94,7 +122,8 @@ export class DischargeClearanceFormComponent implements OnInit {
           error: (error: any) => {
             console.log(error);
             this.submitting = false;
-            this.errorMessage = 'Something went wrong while submitting clearance';
+            this.errorMessage =
+              'Something went wrong while submitting clearance';
             this.cd.markForCheck();
           },
         });
@@ -102,8 +131,11 @@ export class DischargeClearanceFormComponent implements OnInit {
       setTimeout(() => {
         this.submitting = false;
         this.dialogRef.close({ submitted: true });
-        this.popUp.open('A notification has been sent to Supervisor(s)', 'success');
-      }, 3000)
+        this.popUp.open(
+          'A notification has been sent to Supervisor(s)',
+          'success'
+        );
+      }, 3000);
     }
   }
 }

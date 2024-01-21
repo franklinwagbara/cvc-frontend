@@ -164,7 +164,7 @@ export class ViewApplicationInFullComponent implements OnInit {
       },
       applicationDocs: {
         data: {
-          applicationDocs: this.application.applicationDocs,
+          applicationDocs: this.application.documents,
         },
       },
     };
