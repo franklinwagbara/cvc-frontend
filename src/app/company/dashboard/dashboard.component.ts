@@ -34,6 +34,12 @@ export class DashboardComponent implements OnInit {
   public dataSource = new MatTableDataSource<any>();
   public messagesCopy: IMessage[];
 
+  public NavigatePath = {
+    applications: 'myapplication',
+    processing: 'processing',
+    approvals: 'approvals',
+  };
+
   msgColumns = [
     {
       columnDef: 'isRead',
@@ -138,6 +144,14 @@ export class DashboardComponent implements OnInit {
   logout() {
     this.auth.logout();
     this.router.navigate(['/' + this.generic.home]);
+  }
+
+  public navigateTo(path: string) {
+    if (path == this.NavigatePath.processing)
+      this.router.navigate([`company`, this.NavigatePath.applications], {
+        queryParams: { processing: true },
+      });
+    this.router.navigate([`company`, path]);
   }
 }
 
