@@ -10,5 +10,5 @@ export enum UserRole {
   CONTROLLER = 'Controller',
   FAD = 'FAD',
   APPROVER = 'Approver',
-
+  SUPERADMIN = 'SuperAdmin'
 }

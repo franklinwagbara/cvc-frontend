@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IPlant } from '../../../shared/interfaces/IPlant';
-import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
-import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
-import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
+import { IPlant } from 'src/app/shared/interfaces/IPlant';
+import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { AdminService } from 'src/app/shared/services/admin.service';
+import { DepotOfficerService } from 'src/app/shared/services/depot-officer/depot-officer.service';
 import { Staff } from '../all-staff/all-staff.component';
-import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
-import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { PopupService } from '../../../../../src/app/shared/services/popup.service';
-import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
-import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
-import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { IRole } from 'src/app/shared/interfaces/IRole';
+import { LibaryService } from 'src/app/shared/services/libary.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 @Component({
-  selector: 'app-field-officer-setting',
-  templateUrl: './field-officer-setting.component.html',
-  styleUrls: ['./field-officer-setting.component.css'],
+  selector: 'app-field-officer-jetty-setting',
+  templateUrl: './field-officer-jetty-setting.component.html',
+  styleUrls: ['./field-officer-jetty-setting.component.css']
 })
-export class FieldOfficerSettingComponent implements OnInit {
+export class FieldOfficerJettySettingComponent implements OnInit {
+
   depotOfficers: IDepotOfficer[];
   depots: IPlant[];
   allUsers: Staff[];
@@ -92,7 +93,7 @@ export class FieldOfficerSettingComponent implements OnInit {
       const listOfDataToDelete = selected.filter((s) => {
         if (s.appCount > 0) {
           this.popUp.open(
-            'Cannot delete a field officer with an assigned depot',
+            'Cannot delete a field officer with an assigned jetty',
             'error'
           );
         }
@@ -146,14 +147,6 @@ export class FieldOfficerSettingComponent implements OnInit {
       }
     });
   }
-}
 
-// interface FieldOfficer {
-//   name: string;
-//   email: string;
-//   phoneNumber: string;
-//   role: string;
-//   office: string;
-//   location: string;
-//   status: string;
-// }
+
+}
