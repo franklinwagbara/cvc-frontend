@@ -18,7 +18,6 @@ export class ViewCoqTankComponent implements OnInit {
   ngOnInit(): void {
     this.tanks = this.data.tanks;
     this.productType = this.data.productType;
-    console.log(this.tanks);
   }
 
   public tableTitles = {

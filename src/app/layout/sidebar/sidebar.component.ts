@@ -12,7 +12,7 @@ import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
-import { UserRole } from 'src/app/shared/constants/userRole';
+import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 
 export interface SubRouteInfo {
   id: number;
@@ -249,6 +249,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
+  public Directorate = Directorate;
+  public directorate: string;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -261,10 +263,10 @@ export class SidebarComponent implements OnInit, OnChanges {
     this.menuItems = [...ROUTES];
 
     const currentUser = decodeFullUserInfo();
+    this.directorate = currentUser.directorate;
+
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (
-      currentUser.userRoles === UserRole.FIELDOFFICER
-    ) {
+    if (currentUser.userRoles === UserRole.FIELDOFFICER) {
       let coqSubRoutes = [
         {
           id: 1,
@@ -300,6 +302,35 @@ export class SidebarComponent implements OnInit, OnChanges {
         this.menuItems.slice(2)
       );
     }
+    // else {
+    //   let coqSubRoutes = [
+    //     {
+    //       id: 3,
+    //       title: 'Processing Plant',
+    //       url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
+
+    //     },
+    //     {
+    //       id: 2,
+    //       title: 'CoQ Applications',
+    //       url: '/admin/coq-and-plant/coq-applications-by-depot',
+    //     },
+    //   ];
+
+    //   this.menuItems = this.menuItems.slice(0, 2).concat(
+    //     {
+    //       id: 3,
+    //       title: 'CoQ And Plant',
+    //       iconName: 'carbon',
+    //       iconId: 'carbon',
+    //       iconColor: 'white',
+    //       active: false,
+    //       subMenuActive: false,
+    //       subRoutes: coqSubRoutes,
+    //     },
+    //     this.menuItems.slice(2)
+    //   );
+    // }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
     if (

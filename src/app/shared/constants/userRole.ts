@@ -10,5 +10,9 @@ export enum UserRole {
   CONTROLLER = 'Controller',
   FAD = 'FAD',
   APPROVER = 'Approver',
+}
 
+export enum Directorate {
+  DSSRI = 'DSSRI',
+  HPPITI = 'HPPITI',
 }
