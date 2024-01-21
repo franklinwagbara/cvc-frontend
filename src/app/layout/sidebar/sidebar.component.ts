@@ -13,6 +13,8 @@ import { PageManagerService } from '../../../../src/app/shared/services/page-man
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
 import { UserRole } from 'src/app/shared/constants/userRole';
+import { LoginModel } from 'src/app/shared/models/login-model';
+import { AuthenticationService } from 'src/app/shared/services';
 
 export interface SubRouteInfo {
   id: number;
@@ -65,23 +67,6 @@ const ROUTES: RouteInfo[] = [
         url: '/admin/desk',
       },
     ],
-  },
-  {
-    id: 3,
-    title: 'VESSEL CLEARANCE',
-    iconName: '',
-    iconId: '',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
-
-    subRoutes: [
-      {
-        id: 1,
-        title: 'VESSEL CLEARANCE',
-        url: '/admin/vessel-clearance/noa-applications'
-      }
-    ]
   },
   {
     id: 5,
@@ -266,6 +251,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
+  currentUser: any;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -273,15 +259,38 @@ export class SidebarComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthenticationService,
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
+    this.currentUser = this.auth.currentUser as LoginModel;
 
-    const currentUser = decodeFullUserInfo();
-    // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (
-      currentUser.userRoles === UserRole.FIELDOFFICER
-    ) {
+    if (this.currentUser.userRoles === UserRole.FIELDOFFICER) {
+      this.menuItems = this.menuItems.slice(0, 2).concat(
+        {
+          id: 3,
+          title: 'VESSEL CLEARANCE',
+          iconName: 'approval',
+          iconId: 'approval',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+      
+          subRoutes: [
+            {
+              id: 1,
+              title: 'VESSEL CLEARANCE',
+              url: '/admin/vessel-clearance/noa-applications'
+            }
+          ]
+        },
+        this.menuItems.slice(2)
+      )
+    }
+
+
+    // Show CoQ And Plant tab only to Staffs in Field Offices and Field Officers
+    if (this.auth.isFieldOfficer || this.auth.isFO) {
       let coqSubRoutes = [
         {
           id: 1,
@@ -306,21 +315,14 @@ export class SidebarComponent implements OnInit, OnChanges {
           subMenuActive: false,
           subRoutes: coqSubRoutes,
         },
-        this.menuItems.slice(2)
-      );
-    }
-
-    // Show Vessel Clearance only to field officers
-    if (currentUser.userRoles !== UserRole.FIELDOFFICER) {
-      this.menuItems = this.menuItems.filter(
-        (item) => item.title !== 'VESSEL CLEARANCE'
+        this.menuItems.slice(3)
       );
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
     if (
-      !Util.adminRoles.includes(currentUser?.userRoles) &&
-      currentUser?.location !== LOCATION.HQ
+      !Util.adminRoles.includes(this.currentUser?.userRoles) &&
+      this.currentUser?.location !== LOCATION.HQ
     ) {
       this.menuItems = this.menuItems.filter(
         (item) =>
@@ -329,7 +331,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show settings only SuperAdmin
-    if (currentUser?.userRoles === UserRole.SUPERADMIN) {
+    if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {
       this.menuItems = this.menuItems.filter(
         (item) => item.title !== 'SETTINGS'
       );

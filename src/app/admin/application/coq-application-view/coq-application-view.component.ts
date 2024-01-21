@@ -36,8 +36,14 @@ export class CoqApplicationViewComponent implements OnInit {
   public coqId: number;
   public documents: any;
   public tanksList: any[];
+
   appLoaded = false;
   isLoading = true;
+  isFAD: boolean;
+  isSupervisor: boolean;
+  isCOQProcessor: boolean;
+  isFO: boolean;
+  isProcessingPlant: boolean;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -56,6 +62,11 @@ export class CoqApplicationViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isFAD = this.auth.isFAD;
+    this.isSupervisor = this.auth.isSupervisor;
+    this.isCOQProcessor = this.auth.isCOQProcessor;
+    this.isFO = this.auth.isFO;
+
     this.route.params.subscribe((param) => {
       this.appId = parseInt(param['id']);
       this.coqId = parseInt(param['id']);
@@ -68,22 +79,6 @@ export class CoqApplicationViewComponent implements OnInit {
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
-  }
-
-  public get isSupervisor() {
-    return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
-  }
-
-  public get isFAD() {
-    return (this.currentUser as any).userRoles === UserRole.FAD;
-  }
-
-  public get isCOQProcessor() {
-    return (this.currentUser as any).userRoles === UserRole.CONTROLLER;
-  }
-
-  public get isFO() {
-    return this.currentUser.userRoles === LOCATION.FO;
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -126,6 +121,7 @@ export class CoqApplicationViewComponent implements OnInit {
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
           this.appLoaded = true;
+          this.isProcessingPlant = !this.application.appId;
         }
 
         this.progressBar.close();

@@ -147,7 +147,7 @@
               <button
                 mat-flat-button
                 color="accent"
-                class="view-button"
+                style="background-color: blueviolet; color: white;"
                 *ngIf="column.cell(row) === 'initiate_coq_control' 
                   && row?.status?.toLowerCase() === 'completed' && row?.hasCleared"
                 (click)="initiateCoQ(row)"
