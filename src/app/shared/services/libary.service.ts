@@ -76,4 +76,8 @@ export class LibaryService {
   public getAllDepotByNoaAppId(id: number): Observable<any> {
     return this.http.get<any>(`${api}/all-depot-by-appid?appid=${id}`);
   }
+
+  public getAllJetty() {
+    return this.http.get<any>(`${api}/all-jetty`);
+  }
 }
