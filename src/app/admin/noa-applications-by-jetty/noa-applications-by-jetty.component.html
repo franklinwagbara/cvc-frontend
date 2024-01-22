@@ -1,0 +1,24 @@
+<div class="setting-desk">
+  <h2 class="page-title">NoA APPLICATIONS BY DEPOT</h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="tableTitles.applications"
+          [title-color]="'green'"
+          [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+          [table_content]="applications"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          [EnableViewControl]="true"
+          [EnableDischargeClearanceControls]="isFieldOfficer"
+          (onViewData)="viewApplication($event)"
+          (onInitiateCoQ)="initiateCoQ($event)"
+          (allowDischarge)="onAllowDischarge($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,6 +13,8 @@ import { Util } from '../../lib/Util';
 import { AdminService } from '../../services/admin.service';
 import { IProduct } from '../../interfaces/IProduct';
 import { error } from 'console';
+import { LibaryService } from '../../services/libary.service';
+import { SpinnerService } from '../../services/spinner.service';
 
 @Component({
   selector: 'app-discharge-clearance-form',
@@ -27,6 +29,7 @@ export class DischargeClearanceFormComponent implements OnInit {
   submitting = false;
   errorMessage = '';
   public products: IProduct[];
+  // public depots: any[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -36,7 +39,9 @@ export class DischargeClearanceFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private dischargeClearance: DischargeClearanceService,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private libService: LibaryService,
+    private spinner: SpinnerService
   ) {
     this.noaApp = this.data.noaApp;
     this.allowDischarge = this.data.allowDischarge;
@@ -57,6 +62,7 @@ export class DischargeClearanceFormComponent implements OnInit {
         oxygenate: ['', Validators.required],
         others: ['', Validators.required],
         comment: ['', Validators.required],
+        // depotId: ['', Validators.required],
       });
 
       ['vesselName', 'vesselPort'].forEach((field) => {
@@ -69,7 +75,24 @@ export class DischargeClearanceFormComponent implements OnInit {
     }
     // this.getProduct();
     // this.filterProducts();
+    // this.getAppDepots();
   }
+
+  // public getAppDepots() {
+  //   this.spinner.open();
+  //   this.libService.getAllDepotByNoaAppId(this.noaApp.id).subscribe({
+  //     next: (res) => {
+  //       this.depots = res.data;
+  //       this.spinner.close();
+  //       this.cd.markForCheck();
+  //     },
+  //     error: (e) => {
+  //       this.popUp.open(e.message, 'error');
+  //       this.spinner.close();
+  //       this.cd.markForCheck();
+  //     },
+  //   });
+  // }
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
@@ -101,8 +124,9 @@ export class DischargeClearanceFormComponent implements OnInit {
     const formData = {
       ...this.form.getRawValue(),
       appId: this.noaApp.id,
-      dischargeId: this.noaApp?.dischargeId || 0,
-      depotId: 0,
+      dischargeId: ((this.noaApp?.dischargeId || 0) as number).toString(),
+      id: 0,
+      isAllowed: true,
     };
 
     if (this.allowDischarge) {

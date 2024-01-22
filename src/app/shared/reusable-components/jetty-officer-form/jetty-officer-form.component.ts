@@ -1,4 +1,4 @@
-import { Category } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
+import { Category } from '../../../admin/settings/modules-setting/modules-setting.component';
 
 import { Component, Inject } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,31 +10,31 @@ import {
 import { AdminService } from '../../services/admin.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { PopupService } from '../../services/popup.service';
-import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
-import { DepotOfficerService } from '../../services/depot-officer/depot-officer.service';
+import { Staff } from '../../../admin/settings/all-staff/all-staff.component';
 import { IPlant } from '../../interfaces/IPlant';
+import { JettyOfficerService } from '../../services/jetty-officer/jetty-officer.service';
 
 @Component({
-  selector: 'app-depot-officer-form',
-  templateUrl: './depot-officer-form.component.html',
-  styleUrls: ['./depot-officer-form.component.css'],
+  selector: 'app-jetty-officer-form',
+  templateUrl: './jetty-officer-form.component.html',
+  styleUrls: ['./jetty-officer-form.component.css'],
 })
-export class DepotOfficerFormComponent {
+export class JettyOfficerFormComponent {
   public form: FormGroup;
-  public depots: IPlant[];
+  public jettys: IPlant[];
   public staffList: Staff[];
 
   constructor(
-    public dialogRef: MatDialogRef<DepotOfficerFormComponent>,
+    public dialogRef: MatDialogRef<JettyOfficerFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private adminHttpService: AdminService,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     private spinner: SpinnerService,
     private popUp: PopupService,
-    private depotOfficer: DepotOfficerService
+    private jettyOfficer: JettyOfficerService
   ) {
-    this.depots = data.data.depots;
+    this.jettys = data.data.jettys;
     this.staffList = data.data.staffList;
 
     this.staffList = this.staffList.filter(
@@ -42,7 +42,7 @@ export class DepotOfficerFormComponent {
     );
 
     this.form = this.formBuilder.group({
-      depotID: ['', Validators.required],
+      jettyID: ['', Validators.required],
       userID: ['', Validators.required],
     });
   }
@@ -55,7 +55,7 @@ export class DepotOfficerFormComponent {
     this.onClose();
     this.spinner.open();
 
-    this.depotOfficer.createMapping(this.form.value).subscribe({
+    this.jettyOfficer.createMapping(this.form.value).subscribe({
       next: (res) => {
         if (res.success) {
           this.popUp.open('Configuration was created successfully!', 'success');

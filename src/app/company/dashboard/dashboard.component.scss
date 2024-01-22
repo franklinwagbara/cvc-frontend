@@ -7,6 +7,7 @@
   );
   box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
   min-width: 15rem;
+  cursor: pointer;
   @apply h-40 p-2 flex flex-1 justify-center;
 }
 
@@ -77,6 +78,22 @@
     #f93f3f 0%,
     rgba(255, 176, 180, 0.94) 100%
   );
+}
+
+.yellow-card-2 {
+  background: linear-gradient(
+    270deg,
+    #916c0e 0%,
+    rgba(255, 242, 207, 0.94) 100%
+  );
+}
+
+.yellow-card-3 {
+  background: linear-gradient(270deg, #fdb601 0%, rgb(255, 242, 207) 100%);
+}
+
+.yellow-card-4 {
+  background: linear-gradient(270deg, #cf980e 0%, rgb(207, 180, 105) 100%);
 }
 
 .green-card {

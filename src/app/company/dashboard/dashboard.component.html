@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   <div class="dashboard-wrapper">
-    <div class="card">
+    <div class="card" (click)="navigateTo(NavigatePath.applications)">
       <div>
         <h1>
           {{
@@ -14,7 +14,10 @@
       <p>Application(s)</p>
     </div>
 
-    <div class="card blue-card">
+    <div
+      class="card yellow-card-2"
+      (click)="navigateTo(NavigatePath.processing)"
+    >
       <div>
         <h1>
           {{
@@ -28,7 +31,10 @@
       <p>Processing</p>
     </div>
 
-    <div class="card green-card">
+    <div
+      class="card yellow-card-3"
+      (click)="navigateTo(NavigatePath.approvals)"
+    >
       <div>
         <h1>
           {{
@@ -42,7 +48,7 @@
       <p>Approval(s)</p>
     </div>
 
-    <div class="card orange-card">
+    <div class="card yellow-card-4">
       <div>
         <h1>
           {{
@@ -112,7 +118,7 @@
                 }}</span>
               </td>
               <!-- <td (click)="viewMessage(i)" class="cursor-pointer">
-               
+
               </td> -->
             </tr>
           </tbody>

@@ -144,6 +144,7 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
     AllCoqApplicationsComponent,
     FieldOfficerJettySettingComponent,
     NoaVesselClearanceComponent,
+    NoaApplicationsByJettyComponent,
   ],
 
   imports: [
