@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- dev
+- master
 
 pool:
   vmImage: ubuntu-latest
@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm install -g @angular/cli
-    npm install --legacy-peer-deps
+    npm install
     ng build --configuration production --aot
   displayName: 'npm install and build'
   workingDirectory: '$(Build.SourcesDirectory)'
