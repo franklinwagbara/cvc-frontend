@@ -49,7 +49,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 import { Location } from '@angular/common';
 import { Util } from 'src/app/shared/lib/Util';
-import * as moment from 'moment';
 
 @Component({
   selector: 'app-coq-application-form',
