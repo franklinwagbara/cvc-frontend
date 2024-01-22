@@ -1,10 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-noa-application-preview',
   templateUrl: './noa-application-preview.component.html',
-  styleUrls: ['./noa-application-preview.component.css']
+  styleUrls: ['./noa-application-preview.component.css'],
 })
 export class NoaApplicationPreviewComponent implements OnInit {
   noaInfo: any;
@@ -12,6 +12,7 @@ export class NoaApplicationPreviewComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogRef: MatDialogRef<NoaApplicationPreviewComponent>
   ) {}
 
   ngOnInit(): void {
@@ -22,12 +23,20 @@ export class NoaApplicationPreviewComponent implements OnInit {
 
   print() {
     // remove unwanted elements from print preview
-    (document.querySelector('#coq-preview-print-wrapper') as HTMLElement).style.display = 'none';
+    (
+      document.querySelector('#coq-preview-print-wrapper') as HTMLElement
+    ).style.display = 'none';
     setTimeout(() => {
-      (document.querySelector('#coq-preview-print-wrapper') as HTMLElement).style.display = 'block';
+      (
+        document.querySelector('#coq-preview-print-wrapper') as HTMLElement
+      ).style.display = 'block';
     }, 2000);
     const printContents = document.querySelector('#noa-application-preview');
-    const windowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+    const windowPrt = window.open(
+      '',
+      '',
+      'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0'
+    );
     windowPrt.document.write(printContents.innerHTML);
     windowPrt.document.close();
     windowPrt.focus();
@@ -38,5 +47,8 @@ export class NoaApplicationPreviewComponent implements OnInit {
   trackByFn(index: number) {
     return index;
   }
-  
+
+  public close() {
+    this.dialogRef.close();
+  }
 }

@@ -52,15 +52,19 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
   }
 
+  viewApplicationByJetty(): Observable<any> {
+    return this.http.get<any>(`${API}/view-application-By-Jetty-Officer`, {});
+  }
+
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {
     return this.http.get<any>(`${API}/view-application-by-depot-officer`, {
       params: { id: officerId },
     });
   }
 
-  public getVesselDetails(appId: number) {
+  public getVesselDetails(appId: number, depotId: number) {
     return this.http.get<any>(`${API}/get-app-vessel-info`, {
-      params: { id: appId },
+      params: { id: appId, depotId },
     });
   }
 

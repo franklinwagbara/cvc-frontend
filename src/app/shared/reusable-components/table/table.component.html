@@ -38,301 +38,301 @@
         </button>
       </div>
     </div>
-    <div class="table-container">
-      <table mat-table [dataSource]="dataSource" class="no-shadow" matSort>
+
+    <table mat-table [dataSource]="dataSource" class="no-shadow" matSort>
+      <ng-container
+        *ngFor="let column of columns"
+        [matColumnDef]="column.columnDef"
+      >
         <ng-container
-          *ngFor="let column of columns"
-          [matColumnDef]="column.columnDef"
+          *ngIf="
+            column.columnDef === 'select' && !noCheckControls;
+            else notSelect
+          "
         >
-          <ng-container
-            *ngIf="
-              column.columnDef === 'select' && !noCheckControls;
-              else notSelect
-            "
-          >
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-checkbox
-                (change)="$event ? toggleAllRows() : null; onSelectChange()"
-                [checked]="selection.hasValue() && isAllSelected()"
-                [indeterminate]="selection.hasValue() && !isAllSelected()"
-                [aria-label]="checkboxLabel()"
-                class="margin-left"
-              >
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-              <mat-checkbox
-                (click)="$event.stopPropagation()"
-                (change)="
-                  $event ? selection.toggle(row) : null; onSelectChange()
-                "
-                [checked]="selection.isSelected(row)"
-                [aria-label]="checkboxLabel(row)"
-                class="margin-left"
-              >
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-          <ng-template #notSelect>
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{ column.header }}
-            </th>
-            <td mat-cell *matCellDef="let row">
-              {{
-                column.cell(row) === "undefined" ||
-                column.cell(row) === "edit_control" ||
-                column.cell(row) === "initiate_coq_control" ||
-                column.cell(row) === "view_control" ||
-                column.cell(row) === "view_coq_certs_control" ||
-                column.cell(row) === "discharge_onspec_control" ||
-                column.cell(row) === "discharge_offspec_control" ||
-                column.cell(row) === "view_debit_notes_control" ||
-                column.cell(row) === "view_clearance_control" ||
-                column.cell(row) === "view_coq_cert_control" ||
-                column.cell(row) === "view_debit_note_control" ||
-                column.cell(row) === "view_certificate_control" ||
-                column.cell(row) === "view_schedule_control" ||
-                column.cell(row) === "rrr_control" ||
-                column.cell(row) === "uploadDocument_control" ||
-                column.cell(row) === "confirmPayment_control" ||
-                column.cell(row) === "moveApplication_control" ||
-                column.header === "Source" ||
-                column.header === "Tanks"
-                  ? ""
-                  : column.cell(row) !== "null"
-                  ? column.cell(row)
-                  : ""
-              }}
-
-              <div
-                *ngIf="column.header === 'Source'"
-                [innerHTML]="column.cell(row)"
-              >
-                {{ column.cell(row) }}
-              </div>
-              <div *ngIf="enableViewTank && column.header === 'Tanks'">
-                <button
-                  mat-stroked-button
-                  class="!pr-6 !bg-gray-300"
-                  (click)="viewTank(row)"
-                >
-                  View
-                  <span
-                    class="text-red-600 p-[2px] items-center flex border-1 border-red-600 rounded rounded-[50px] h-[15px] right-[3%] !top-[3%] text-[10px] absolute"
-                    >{{ row.tanks.length }}</span
-                  >
-                </button>
-              </div>
-              <div>
-                <button
-                  mat-stroked-button
-                  color="accent"
-                  *ngIf="column.cell(row) === 'edit_control'"
-                  (click)="editData(row)"
-                >
-                  Edit
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_control'"
-                  (click)="viewData(row)"
-                >
-                  View Application
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  *ngIf="
-                    column.cell(row) === 'initiate_coq_control' &&
-                    row?.status?.toLowerCase() === 'completed' &&
-                    row?.allowDischarge
-                  "
-                  (click)="initiateCoQ(row)"
-                >
-                  Initiate CoQ
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  style="background-color: #3c8d5a"
-                  *ngIf="
-                    column.cell(row) === 'discharge_onspec_control' &&
-                    row?.status?.toLowerCase() === 'completed' &&
-                    !row?.allowDischarge
-                  "
-                  (click)="onDischargeClearance(row, true)"
-                >
-                  Allow Discharge
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  style="background-color: #b51c29"
-                  *ngIf="
-                    column.cell(row) === 'discharge_offspec_control' &&
-                    row?.status?.toLowerCase() === 'completed'
-                  "
-                  (click)="onDischargeClearance(row, false)"
-                >
-                  Discharge Not Ok
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_certificate_control'"
-                  (click)="viewData(row)"
-                >
-                  View Certificate
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_clearance_control'"
-                  (click)="viewData(row)"
-                >
-                  View Clearance
-                </button>
-
-                <button
-                  mat-flat-button
-                  style="background-color: blueviolet; color: white"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_coq_certs_control'"
-                  (click)="viewCoQCerts(row)"
-                >
-                  View CoQ Certificates
-                </button>
-
-                <button
-                  mat-flat-button
-                  style="background-color: rgb(129, 42, 139); color: white"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_debit_notes_control'"
-                  (click)="viewDebitNotes(row)"
-                >
-                  View Debit Notes
-                </button>
-
-                <button
-                  mat-flat-button
-                  style="background-color: blueviolet; color: white"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_coq_cert_control'"
-                  (click)="viewCoQCerts(row)"
-                >
-                  View Certificate
-                </button>
-
-                <button
-                  mat-flat-button
-                  style="background-color: rgb(129, 42, 139); color: white"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_debit_note_control'"
-                  (click)="viewDebitNotes(row)"
-                >
-                  View Debit Note
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="accent"
-                  class="view-button"
-                  *ngIf="column.cell(row) === 'view_schedule_control'"
-                  (click)="viewData(row)"
-                >
-                  View Schedule
-                </button>
-
-                <button
-                  mat-flat-button
-                  style="background-color: orchid; color: white"
-                  class="view-button"
-                  *ngIf="
-                    column.header === 'Action Controls' &&
-                    column.cell(row) === 'rrr_control'
-                  "
-                  (click)="generateRRR(row)"
-                >
-                  Generate RRR
-                </button>
-
-                <!-- {{ column.header | json }}
-            {{ column.cell(row) | json }} -->
-
-                <button
-                  mat-flat-button
-                  style="background-color: teal; color: white"
-                  class="view-button"
-                  *ngIf="
-                    column.header === 'Action Controls' &&
-                    column.cell(row) === 'confirmPayment_control'
-                  "
-                  (click)="confirmPayment(row)"
-                >
-                  Confirm Payment
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="view-button"
-                  *ngIf="
-                    column.header === 'Action Controls' &&
-                    column.cell(row) === 'uploadDocument_control'
-                  "
-                  (click)="uploadDocument(row)"
-                >
-                  Upload Document
-                </button>
-
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="view-button"
-                  *ngIf="
-                    column.header === 'Application Control' &&
-                    column.cell(row) === 'moveApplication_control'
-                  "
-                  (click)="moveApplication(row)"
-                >
-                  Move Application
-                </button>
-
-                <input
-                  *ngIf="column.header === 'ACTION'"
-                  type="file"
-                  accept=".pdf, .doc, .docx"
-                  (change)="fileUpload($event, row)"
-                />
-              </div>
-            </td>
-          </ng-template>
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              (change)="$event ? toggleAllRows() : null; onSelectChange()"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()"
+              [aria-label]="checkboxLabel()"
+              class="margin-left"
+            >
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null; onSelectChange()"
+              [checked]="selection.isSelected(row)"
+              [aria-label]="checkboxLabel(row)"
+              class="margin-left"
+            >
+            </mat-checkbox>
+          </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
-            No data matching the filter "{{ input.value }}"
-          </td>
-        </tr>
-      </table>
-    </div>
+        <ng-template #notSelect>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            {{ column.header }}
+          </th>
+          <td mat-cell *matCellDef="let row">
+            {{
+              column.cell(row) === "undefined" ||
+              column.cell(row) === "edit_control" ||
+              
+              column.cell(row) === "initiate_coq_control" ||
+              column.cell(row) === "view_control" ||
+              column.cell(row) === "view_coq_certs_control" ||
+              column.cell(row) === "discharge_onspec_control" ||
+              column.cell(row) === "discharge_offspec_control" ||
+              column.cell(row) === "view_debit_notes_control" ||
+              column.cell(row) === "generate_debit_note_control" ||
+              column.cell(row) === "view_clearance_control" ||
+              column.cell(row) === "view_coq_cert_control" ||
+              column.cell(row) === "view_debit_note_control" ||
+              column.cell(row) === "view_certificate_control" ||
+              column.cell(row) === "view_schedule_control" ||
+              column.cell(row) === "rrr_control" ||
+              column.cell(row) === "uploadDocument_control" ||
+              column.cell(row) === "confirmPayment_control" ||
+              column.cell(row) === "moveApplication_control" ||
+              column.header === "Source" ||
+              column.header === "Tanks"
+                ? ""
+                : column.cell(row) !== "null"
+                ? column.cell(row)
+                : ""
+            }}
 
+            <div
+              *ngIf="column.header === 'Source'"
+              [innerHTML]="column.cell(row)"
+            >
+              {{ column.cell(row) }}
+            </div>
+            <div *ngIf="enableViewTank && column.header === 'Tanks'">
+              <button
+                mat-stroked-button
+                class="!pr-6 !bg-gray-300"
+                (click)="viewTank(row)"
+              >
+                View
+                <span
+                  class="text-red-600 p-[2px] items-center flex border-1 border-red-600 rounded rounded-[50px] h-[15px] right-[3%] !top-[3%] text-[10px] absolute"
+                  >{{ row.tanks.length }}</span
+                >
+              </button>
+            </div>
+            <div>
+              <button
+                mat-stroked-button
+                color="accent"
+                *ngIf="column.cell(row) === 'edit_control'"
+                (click)="editData(row)"
+              >
+                Edit
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_control'"
+                (click)="viewData(row)"
+              >
+                View Application
+              </button> 
+
+              <button
+                mat-flat-button
+                color="accent"
+                style="background-color: blueviolet; color: white;"
+                *ngIf="column.cell(row) === 'initiate_coq_control' 
+                  && row?.status?.toLowerCase() === 'completed' && row?.hasCleared"
+                (click)="initiateCoQ(row)"
+              >
+                Initiate CoQ
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                style="background-color: #3c8d5a;"
+                *ngIf="column.cell(row) === 'discharge_onspec_control' 
+                  && row?.status === 'Completed' && !row?.hasCleared"
+                (click)="onDischargeClearance(row, true)"
+              >
+                Allow Discharge
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                style="background-color: #b51c29;"
+                *ngIf="column.cell(row) === 'discharge_offspec_control' 
+                  && row?.status === 'Completed' && !row?.hasCleared"
+                (click)="onDischargeClearance(row, false)"
+              >
+                Discharge Not Ok
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_certificate_control'"
+                (click)="viewData(row)"
+              >
+                View Certificate
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_clearance_control'"
+                (click)="viewData(row)"
+              >
+                View Clearance
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: blueviolet; color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_coq_certs_control'"
+                (click)="viewCoQCerts(row)"
+              >
+                View CoQ Certificates
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: blueviolet; color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_coq_cert_control'"
+                (click)="viewCoQCert(row)"
+              >
+                View CoQ Certificate
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_debit_notes_control'"
+                (click)="viewDebitNotes(row)"
+              >
+                View Debit Notes
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_debit_note_control'"
+                (click)="viewDebitNotes(row)"
+              >
+                View Debit Note
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: rgb(129, 42, 139); color: white"
+                class="view-button"
+                *ngIf="column.cell(row) === 'generate_debit_note_control'"
+                (click)="genDebitNote(row)"
+              >
+                Generate Debit Note
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_schedule_control'"
+                (click)="viewData(row)"
+              >
+                View Schedule
+              </button>
+
+              <button
+                mat-flat-button
+                style="background-color: orchid; color: white"
+                class="view-button"
+                *ngIf="
+                  column.header === 'Action Controls' &&
+                  column.cell(row) === 'rrr_control'
+                "
+                (click)="generateRRR(row)"
+              >
+                Generate RRR
+              </button>
+
+              <!-- {{ column.header | json }}
+              {{ column.cell(row) | json }} -->
+
+              <button
+                mat-flat-button
+                style="background-color: teal; color: white"
+                class="view-button"
+                *ngIf="
+                  column.header === 'Action Controls' &&
+                  column.cell(row) === 'confirmPayment_control'
+                "
+                (click)="confirmPayment(row)"
+              >
+                Confirm Payment
+              </button>
+
+              <button
+                mat-flat-button
+                color="primary"
+                class="view-button"
+                *ngIf="
+                  column.header === 'Action Controls' &&
+                  column.cell(row) === 'uploadDocument_control'
+                "
+                (click)="uploadDocument(row)"
+              >
+                Upload Document
+              </button>
+
+              <button
+                mat-flat-button
+                color="primary"
+                class="view-button"
+                *ngIf="
+                  column.header === 'Application Control' &&
+                  column.cell(row) === 'moveApplication_control'
+                "
+                (click)="moveApplication(row)"
+              >
+                Move Application
+              </button>
+
+              <input
+                *ngIf="column.header === 'ACTION'"
+                type="file"
+                accept=".pdf, .doc, .docx"
+                (change)="fileUpload($event, row)"
+              />
+            </div>
+          </td>
+        </ng-template>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">
+          No data matching the filter "{{ input.value }}"
+        </td>
+      </tr>
+    </table>
     <mat-paginator
       [length]="length"
       [pageSize]="pageSize"

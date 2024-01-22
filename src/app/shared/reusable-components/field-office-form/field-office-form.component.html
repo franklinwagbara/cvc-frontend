@@ -13,9 +13,9 @@
     </div>
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>State</label>
-      <select name="stateId" formControlName="stateId" class="form-control">
+      <select formControlName="stateId" class="form-control">
         <option *ngFor="let st of stateList" [ngValue]="st.id">
-          {{ st.stateName }}
+          {{ st.name }}
         </option>
       </select>
       <div
@@ -26,11 +26,11 @@
       </div>
     </div>
 
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <!-- <div class="fomr-group" style="margin-bottom: 10px">
       <label>Office</label>
       <select name="office" formControlName="office" class="form-control">
-        <option *ngFor="let office of offices" [ngValue]="office">
-          {{ office }}
+        <option *ngFor="let l of location" [ngValue]="l">
+          {{ l }}
         </option>
       </select>
       <div
@@ -50,12 +50,16 @@
       >
         Address is required!
       </div>
-    </div>
+    </div> -->
   </form>
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
-  <button mat-raised-button (click)="createOffice()" [disabled]="form.invalid">
-    Create
+  <button
+    mat-raised-button
+    (click)="data.data.action === 'EDIT' ? editOffice() : createOffice()"
+    [disabled]="form.invalid"
+  >
+    Save
   </button>
 </div>

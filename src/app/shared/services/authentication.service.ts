@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
 import { map, retry } from 'rxjs/operators';
 
 import { environment } from '../../../../src/environments/environment';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
 import { UserRole } from '../constants/userRole';
+import { LOCATION } from '../constants/location';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -68,9 +68,43 @@ export class AuthenticationService {
     else return false;
   }
 
+  public get isSupervisor() {
+    return (this.currentUser as LoginModel).userRoles === UserRole.SUPERVISOR;
+  }
+  
+  public get isSuperAdmin() {
+    return (this.currentUser as LoginModel).userRoles === UserRole.SUPERADMIN;
+  }
+
+  public get isFAD() {
+    return (this.currentUser as LoginModel).userRoles === UserRole.FAD;
+  }
+
+  public get isCOQProcessor() {
+    return (this.currentUser as LoginModel).userRoles === UserRole.CONTROLLER;
+  }
+
+  public get isFO() {
+    return (this.currentUser as LoginModel).userRoles === LOCATION.FO;
+  }
+
+  public get isApprover() {
+    return (this.currentUser as LoginModel).userRoles === UserRole.APPROVER;
+  }
+
+  public get isFieldOfficer() {
+    return (this.currentUser as LoginModel).userRoles == UserRole.FIELDOFFICER;
+  }
+
   public get isStaff() {
     const user = this.currentUser as LoginModel;
     if (user.userRoles != UserRole.COMPANY) return true;
+    else return false;
+  }
+
+  public get isFOLocation() {
+    const user = this.currentUser as LoginModel;
+    if (user.location == LOCATION.FO) return true;
     else return false;
   }
 

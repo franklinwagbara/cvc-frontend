@@ -21,7 +21,7 @@ export class ViewCoqTankComponent implements OnInit {
   }
 
   public tableTitles = {
-    branches: 'TANKS',
+    branches: 'TANKS READINGS',
   };
 
   public liquidTankKeysMappedToHeaders = {

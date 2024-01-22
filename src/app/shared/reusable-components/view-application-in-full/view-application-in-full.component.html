@@ -1,9 +1,5 @@
 <div class="container">
-  <button
-    (click)="location.back()"
-    class="my-4 text-lg"
-    mat-button
-  >
+  <button (click)="location.back()" class="my-4 text-lg" mat-button>
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Go Back
   </button>
   <div class="application-details">
@@ -92,9 +88,7 @@
           <div>
             <h5>Jetty</h5>
             <hr />
-            <ng-container
-              *ngIf="application?.jetty; else noData"
-            >
+            <ng-container *ngIf="application?.jetty; else noData">
               <span>{{ application?.jetty }}</span>
             </ng-container>
           </div>
@@ -183,6 +177,12 @@
       <ng-template #noData>
         <span class="empty bg-transparent">Null</span>
       </ng-template>
+
+      <hr />
+
+      <app-view-depots
+        [depots]="application.applicationDepots"
+      ></app-view-depots>
     </div>
 
     <div class="application-controls">
@@ -231,7 +231,7 @@
             <div class="item-title">Expiry Date</div>
             <div class="item-content">{{ schedule.expiryDate }}</div>
           </div>
-          
+
           <div class="card-item">
             <div class="item-title">Approval Remark</div>
             <div class="item-content">{{ schedule.approvalMessage }}</div>

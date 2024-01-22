@@ -1,9 +1,5 @@
 <div class="view-application-container">
-  <button
-    (click)="location.back()"
-    class="my-4 text-lg"
-    mat-button
-  >
+  <button (click)="location.back()" class="my-4 text-lg" mat-button>
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
   </button>
 
@@ -20,7 +16,6 @@
           [appSource]="appSource"
         ></app-application-view-table>
       </div>
-      
 
       <div class="application-controls">
         <mat-expansion-panel>
@@ -75,29 +70,34 @@
           </p>
         </mat-expansion-panel>
       </div>
-      <div class="application-controls" *ngIf="isStaffDesk">
-        <div class="actions">
-          <button
-            mat-raised-button
-            class="bg-green-500 text-white"
-            (click)="action('approve')"
-          >
-            Approve
-          </button>
-          <button mat-raised-button color="warn" (click)="action('sendBack')">
-            Send Back
-          </button>
 
-          <!-- <button
-            mat-stroked-button
-            color="primary"
-            (click)="action('assignApplication')"
-          >
-            Delegate Application
-          </button> -->
+      <ng-container *ngIf="!loading">
+        <div
+          class="application-controls"
+          *ngIf="isStaffDesk && !isFieldOfficer"
+        >
+          <div class="actions">
+            <button
+              mat-raised-button
+              class="bg-green-500 text-white"
+              (click)="action('approve')"
+            >
+              {{ !isApprover ? "Pass For Approval" : "Approved" }}
+            </button>
+            <button mat-raised-button color="warn" (click)="action('sendBack')">
+              Send Back
+            </button>
+
+            <!-- <button
+              mat-stroked-button
+              color="primary"
+              (click)="action('assignApplication')"
+            >
+              Delegate Application
+            </button> -->
+          </div>
         </div>
-      </div>
-     
+      </ng-container>
     </div>
   </div>
 </div>

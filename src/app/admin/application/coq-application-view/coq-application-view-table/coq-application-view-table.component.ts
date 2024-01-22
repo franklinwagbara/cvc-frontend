@@ -13,6 +13,8 @@ export class CoqApplicationViewTableComponent implements OnInit {
   @Input() tankList: any;
   @Input() appId: number;
   @Input() appSource: string;
+  @Input() isCoqProcessor: boolean;
+  @Input() isProcessingPlant: boolean;
 
   public depotId?: number;
   public coqId?: number;
@@ -39,7 +41,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
   viewTanks() {
     const operationConfiguration = {
       tanks: this.tankList,
-      productType: this.application.ProductType,
+      productType: this.application.productType,
       form: ViewCoqTankComponent,
     };
 

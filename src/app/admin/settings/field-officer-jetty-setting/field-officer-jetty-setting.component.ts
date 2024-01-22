@@ -1,26 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
-import { IPlant } from '../../../shared/interfaces/IPlant';
-import { IDepotOfficer } from '../../../../../src/app/shared/interfaces/IDepotOfficer';
-import { IRole } from '../../../../../src/app/shared/interfaces/IRole';
-import { AdminService } from '../../../../../src/app/shared/services/admin.service';
+import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
+import { IPlant } from 'src/app/shared/interfaces/IPlant';
+import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
+import { AdminService } from 'src/app/shared/services/admin.service';
 import { Staff } from '../all-staff/all-staff.component';
-import { DepotOfficerService } from '../../../../../src/app/shared/services/depot-officer/depot-officer.service';
-import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { PopupService } from '../../../../../src/app/shared/services/popup.service';
-import { DepotOfficerFormComponent } from '../../../../../src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
-import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
-import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { IRole } from 'src/app/shared/interfaces/IRole';
+import { LibaryService } from 'src/app/shared/services/libary.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { JettyOfficerService } from 'src/app/shared/services/jetty-officer/jetty-officer.service';
+import { JettyOfficerFormComponent } from 'src/app/shared/reusable-components/jetty-officer-form/jetty-officer-form.component';
+import { JettyService } from 'src/app/shared/services/jetty.service';
 
 @Component({
-  selector: 'app-field-officer-setting',
-  templateUrl: './field-officer-setting.component.html',
-  styleUrls: ['./field-officer-setting.component.css'],
+  selector: 'app-field-officer-jetty-setting',
+  templateUrl: './field-officer-jetty-setting.component.html',
+  styleUrls: ['./field-officer-jetty-setting.component.css'],
 })
-export class FieldOfficerSettingComponent implements OnInit {
+export class FieldOfficerJettySettingComponent implements OnInit {
   depotOfficers: IDepotOfficer[];
-  depots: IPlant[];
+  jettys: IPlant[];
   allUsers: Staff[];
   elpsUsers: any[];
   roles: IRole[];
@@ -30,13 +32,14 @@ export class FieldOfficerSettingComponent implements OnInit {
 
   officerKeysMappedToHeaders: any = {
     officerName: 'Officer Name',
-    depotName: 'Depot',
+    jettyName: 'Jetty Name',
   };
 
   constructor(
     private dialog: MatDialog,
     private adminService: AdminService,
-    private depotOfficerService: DepotOfficerService,
+    private jettyOfficerService: JettyOfficerService,
+    private jettyService: JettyService,
     private libraryService: LibaryService,
     private spinner: SpinnerService,
     private progressBar: ProgressBarService,
@@ -50,15 +53,15 @@ export class FieldOfficerSettingComponent implements OnInit {
 
   public fetchAllData() {
     forkJoin([
-      this.depotOfficerService.getAllMappings(),
-      this.libraryService.getAppDepots(),
+      this.jettyOfficerService.getAllMappings(),
+      this.jettyService.getAllJetty(),
       this.adminService.getAllStaff(),
       this.adminService.getElpsStaffList(),
       this.adminService.getRoles(),
     ]).subscribe({
       next: (res: any[]) => {
         this.depotOfficers = res[0].data;
-        this.depots = res[1].data;
+        this.jettys = res[1].data;
         this.staffList = res[2].data;
         this.elpsUsers = res[3].data;
         this.roles = res[4].data;
@@ -79,12 +82,12 @@ export class FieldOfficerSettingComponent implements OnInit {
       data: {
         users: this.elpsUsers,
         staffList: this.staffList,
-        depots: this.depots,
+        jettys: this.jettys,
         roles: this.roles,
         offices: this.offices,
       },
     };
-    this.dialog.open(DepotOfficerFormComponent, { data });
+    this.dialog.open(JettyOfficerFormComponent, { data });
   }
 
   deleteData(selected: any[]) {
@@ -92,19 +95,19 @@ export class FieldOfficerSettingComponent implements OnInit {
       const listOfDataToDelete = selected.filter((s) => {
         if (s.appCount > 0) {
           this.popUp.open(
-            'Cannot delete a field officer with an assigned depot',
+            'Cannot delete a field officer with an assigned jetty',
             'error'
           );
         }
         return s.appCount === 0;
       });
-  
+
       const requests = (listOfDataToDelete as any[]).map((req) => {
         return this.adminService.deleteStaff(req.id);
       });
-  
+
       this.progressBar.open();
-  
+
       forkJoin(requests).subscribe({
         next: (res) => {
           if (res && res.length > 0) {
@@ -116,10 +119,10 @@ export class FieldOfficerSettingComponent implements OnInit {
             const responses = res
               .map((r) => r.data.data)
               .sort((a, b) => a.length - b.length);
-  
+
             this.allUsers = responses[0];
           }
-          this.fetchAllData()
+          this.fetchAllData();
         },
         error: (error: unknown) => {
           console.log(error);
@@ -147,13 +150,3 @@ export class FieldOfficerSettingComponent implements OnInit {
     });
   }
 }
-
-// interface FieldOfficer {
-//   name: string;
-//   email: string;
-//   phoneNumber: string;
-//   role: string;
-//   office: string;
-//   location: string;
-//   status: string;
-// }

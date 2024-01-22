@@ -1,7 +1,9 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   HostListener,
   OnDestroy,
@@ -46,6 +48,7 @@ import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 import { Location } from '@angular/common';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -626,25 +629,25 @@ export class CoqApplicationFormComponent
 
   preview() {
     const vesselData = {
-      dateOfArrival: this.isGasProduct 
+      dateOfArrival: this.isGasProduct
         ? new Date(this.vesselGasInfoForm.controls['vesselArrivalDate'].value).toLocaleDateString()
         : new Date(this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value).toLocaleDateString(),
       dateOfUllage: this.isGasProduct
         ? new Date(this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value).toLocaleDateString()
         : new Date(this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value).toLocaleDateString(),
-      dateOfShoreTank: this.isGasProduct 
+      dateOfShoreTank: this.isGasProduct
         ? new Date(this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value).toLocaleDateString()
         : new Date(this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value).toLocaleDateString(),
-      depotPrice: this.isGasProduct 
-        ? this.vesselGasInfoForm.controls['depotPrice'].value 
+      depotPrice: this.isGasProduct
+        ? this.vesselGasInfoForm.controls['depotPrice'].value
         : this.vesselLiqInfoForm.controls['depotPrice'].value,
       documents: this.documents,
       productName: this.requirement.productName
     }
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
-        tankData: this.isGasProduct 
-          ? this.coqFormService.gasProductReviewData 
+        tankData: this.isGasProduct
+          ? this.coqFormService.gasProductReviewData
           : this.coqFormService.liquidProductReviewData,
         isGasProduct: this.isGasProduct,
         vesselDischargeData: this.isGasProduct ? {
@@ -664,7 +667,7 @@ export class CoqApplicationFormComponent
     const payload = this.constructPayload();
     this.isSubmitting = true;
     this.spinner.show('Submitting CoQ Application...');
-    
+
     (this.isGasProduct
       ? this.coqService.createGasProductCoq(payload)
       : this.coqService.createLiqProductCoq(payload)
@@ -674,7 +677,7 @@ export class CoqApplicationFormComponent
         this.isSubmitted = true;
         this.spinner.close();
         if (res?.success) {
-          this.snackBar.open('CoQ Application Created Successfully. Redirecting...', 
+          this.snackBar.open('CoQ Application Created Successfully. Redirecting...',
             null, { panelClass: ['success'], duration: 2500 }
           );
           localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
@@ -943,13 +946,7 @@ export class CoqApplicationFormComponent
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
-    if (
-      ['e', 'E', '+', '-'].includes(evt.key) &&
-      (evt.target as HTMLElement).tagName.toLowerCase() === 'input' &&
-      (evt.target as HTMLInputElement).type !== 'text'
-    ) {
-      evt.preventDefault();
-    }
+    Util.blockSpecialNonNumerics(evt);
   }
 }
 

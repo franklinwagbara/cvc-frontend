@@ -30,6 +30,6 @@ export class AdminGuard implements CanActivate {
 
     this.router.navigate(['/access-denied']);
 
-    return true;
+    return false;
   }
 }

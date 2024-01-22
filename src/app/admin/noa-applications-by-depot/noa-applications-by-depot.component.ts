@@ -4,6 +4,9 @@ import { ApplicationService } from '../../shared/services/application.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { PopupService } from '../../shared/services/popup.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AuthenticationService } from 'src/app/shared/services';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 
 @Component({
@@ -14,6 +17,7 @@ import { PopupService } from '../../shared/services/popup.service';
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
   products: any[];
+  currentUser: any;
 
   public tableTitles = {
     applications: 'NOA Applications',
@@ -37,28 +41,41 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     private spinner: SpinnerService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private popUp: PopupService
+    private popUp: PopupService,
+    private auth: AuthenticationService,
+    private progressBar: ProgressBarService
   ) {}
 
   ngOnInit(): void {
+    this.currentUser = this.auth.currentUser;
     this.fetchAllData();
   }
 
   public fetchAllData() {
     this.spinner.show('Loading applications...');
+    this.getApplicationByDepot();
+  }
 
+  getApplicationByDepot() {
     this.applicationService.viewApplicationByDepot().subscribe({
       next: (res: any) => {
         // get apps and add allowDischarge prop to each one
-        this.applications = res?.data?.map((el) => ({...el, allowDischarge: false }));
+        this.applications = res?.data
+        // .map((el) => ({...el, allowDischarge: false }));
         this.applications = this.applications
           .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
+          .filter((app) => app.status !== 'Completed')
+          .reverse();
         this.spinner.close();
+        this.progressBar.close();
+        this.cdr.markForCheck();
       },
       error: (error: unknown) => {
         console.log(error);
         this.popUp.open('Something went wrong while retrieving data', 'error');
         this.spinner.close();
+        this.progressBar.close();
+        this.cdr.markForCheck();
       }
     })
   }
@@ -68,8 +85,14 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   public get isFieldOfficer(): boolean {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser && currentUser?.userRoles.includes('Field_Officer');
+    return this.currentUser && this.currentUser?.userRoles === UserRole.FIELDOFFICER;
+  }
+
+  onAllowDischarge(value: boolean) {
+    if (value) {
+      this.progressBar.open();
+      this.getApplicationByDepot();
+    }
   }
 
   initiateCoQ(event: any) {

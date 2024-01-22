@@ -32,6 +32,10 @@ export class CoqService {
     return this.http.get<any>(`${API}/view_license`);
   }
 
+  viewCoQCert(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/view_CoQ_cert`, { params: { id }});
+  }
+
   getCOQById(id: number): Observable<any> {
     return this.http.get<any>(`${API}/coq_by_id/${id}`);
   }
@@ -44,12 +48,12 @@ export class CoqService {
     return this.http.get<any>(`${API}/all-coq-cert`);
   }
 
-  getAllDebitNotes(appId: number): Observable<any> {
-    return of([]);
-  }
-
   getDebitNoteById(id: number): Observable<any> {
     return this.http.get<any>(`${API}/debit-note/${id}`);
+  }
+
+  getCoqsByAppId(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/coq_by_appId/${id}`);
   }
 
   createGasProductCoq(payload: any): Observable<any> {

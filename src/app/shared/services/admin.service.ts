@@ -336,15 +336,19 @@ export class AdminService {
 
   createOffice(model) {
     return this.http
-      .post<any>(`${environment.apiUrl}/configuration/add-field-office`, model)
+      .post<any>(`${environment.apiUrl}/Location/create-office`, model)
+      .pipe(retry(this.num));
+  }
+
+  editOffice(model) {
+    return this.http
+      .post<any>(`${environment.apiUrl}/Location/edit-office`, model)
       .pipe(retry(this.num));
   }
 
   deleteOffice(id: number) {
     return this.http
-      .delete<any>(
-        `${environment.apiUrl}/configuration/delete-field-office?id=${id}`
-      )
+      .delete<any>(`${environment.apiUrl}/Location/delete-office?id=${id}`)
       .pipe(retry(this.num));
   }
 
@@ -357,6 +361,12 @@ export class AdminService {
   getBranches() {
     return this.http
       .get<any>(`${environment.apiUrl}/Library/All-Locations`)
+      .pipe(retry(this.num));
+  }
+
+  getDirectorate() {
+    return this.http
+      .get<any>(`${environment.apiUrl}/Staff/getdirectorate`)
       .pipe(retry(this.num));
   }
 
@@ -495,13 +505,13 @@ export class AdminService {
 
   public getproductsById(id: IAppFee) {
     return this.http
-      .get<any>(`${environment.apiUrl}/AppFee/get-product-byId?id=${id}`)
+      .get<any>(`${environment.apiUrl}/Product/Product/${id}`)
       .pipe(retry(this.num));
   }
 
-  public deleteproducts(id: IAppFee) {
+  public deleteproduct(id: IAppFee) {
     return this.http
-      .delete<any>(`${environment.apiUrl}/AppFee/delete-fee?id=${id}`)
+      .delete<any>(`${environment.apiUrl}/Product/${id}`)
       .pipe(retry(this.num));
   }
 }

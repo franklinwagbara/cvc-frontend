@@ -8,6 +8,7 @@ export class SpinnerService {
   public message: string;
 
   public open(): void {
+    this.message = '';
     this.openState = true;
   }
 

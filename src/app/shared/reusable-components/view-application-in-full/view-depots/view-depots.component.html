@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <div class="container">
+    <div class="title">
+      <h2>Destination Depot(s)</h2>
+    </div>
+    <div class="heading">
+      <div class="item-width">Name</div>
+      <div class="item-width">Volume</div>
+      <div class="item-width">Product</div>
+    </div>
+    <div class="items-list">
+      <div class="items" *ngFor="let depot of depots">
+        <div class="item-width">
+          {{ depot.name }}
+        </div>
+        <div class="item-width">{{ depot.volume }}</div>
+        <div class="item-width">{{ depot.productName }}</div>
+      </div>
+    </div>
+  </div>
+</div>

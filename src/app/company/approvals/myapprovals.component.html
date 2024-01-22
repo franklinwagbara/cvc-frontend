@@ -1,15 +1,15 @@
 <div class="setting-desk">
-  <h2 class="page-title bg-yellow-500 text-yellow-800">MY CERTIFICATES</h2>
+  <h2 class="page-title bg-yellow-500 text-yellow-800">MY APPROVALS</h2>
   <div>
     <!-- <mat-tab-group> -->
     <!-- <mat-tab *ngFor="let cat of categories" [label]="cat.name"> -->
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
-          [table_title]="tableTitles.permits"
+          [table_title]="tableTitles.approvals"
           [title-color]="'yellow'"
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
-          [table_content]="permits"
+          [table_content]="approvals"
           [EnableViewClearanceControl]="true"
           [EnableViewCoQCertsControl]="true"
           [EnableViewDebitNotesControl]="true"
@@ -40,7 +40,7 @@
             <div class="row" id="BackImage">
 
                 <br>
-                <h3 class="DashCompanyName">My Permits </h3>
+                <h3 class="DashCompanyName">My approvals </h3>
                 <hr>
             </div>
 
@@ -112,9 +112,9 @@
 
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a class="btn btn-primary btn-sm" href="/Permits/ViewPermit/TWc9PQ==/_view"
+                                        <a class="btn btn-primary btn-sm" href="/approvals/ViewPermit/TWc9PQ==/_view"
                                             target="_blank"> <i class="fa fa-eye"> </i> View </a>
-                                        <a class="btn btn-success btn-sm" href="/Permits/ViewPermit/TWc9PQ==/_download"
+                                        <a class="btn btn-success btn-sm" href="/approvals/ViewPermit/TWc9PQ==/_download"
                                             target="_blank"> <i class="fa fa-file-download"> </i> Download </a>
                                     </div>
                                 </td>

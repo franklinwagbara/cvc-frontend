@@ -139,15 +139,13 @@ export class AppProcessComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.progressBarService.open();
-  
-        this.processFlow.getApplicationProcesses().subscribe((res) => {
-          this.applicationProcesses = res.data;
-          this.progressBarService.close();
-          this.cd.markForCheck();
-        });
-      }
+      this.progressBarService.open();
+
+      this.processFlow.getApplicationProcesses().subscribe((res) => {
+        this.applicationProcesses = res.data;
+        this.progressBarService.close();
+        this.cd.markForCheck();
+      });
     });
   }
 

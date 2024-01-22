@@ -1,32 +1,23 @@
 <div class="setting-desk">
   <h2 class="page-title bg-red-500 text-red-800">MY DESK</h2>
   <div>
-    <!-- <mat-tab-group>
-      <mat-tab *ngFor="let cat of categories" [label]="cat.name"> -->
     <div class="table-group">
       <div class="table-wrapper">
-        <!-- todo: display button only if role is HMUR -->
-        <!-- <div class="flex justify-end mr-4">
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="onAssignApplication()"
-          >
-            Assign Application
-          </button>
-        </div> -->
         <generic-table
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
-          [EnableViewControl]="true"
+          [EnableViewControl]="!isFAD"
+          [EnableViewCoQCertControl]="isFAD"
           [EnableInitiateCoQControl]="isFieldOfficer"
+          [EnableGenDebitNoteControl]="isFAD"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
           [noTitle]="true"
           (onViewData)="onViewData($event, 'applications')"
-          (onInitiateCoQ)="initiateCoq($event)"
-          
+          (onViewCoQCert)="onViewCoqCert($event)"
+          (onGenDebitNote)="genDebitNote($event)"
+          (onInitiateCoQ)="onInitiateCoQ($event)"
         >
         </generic-table>
       </div>

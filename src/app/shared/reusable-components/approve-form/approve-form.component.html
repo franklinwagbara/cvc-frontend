@@ -13,14 +13,10 @@
       <div class="item-title">Vessel Type</div>
       <div class="item-content">{{ application?.vessel?.vesselType }}</div>
     </div>
-    <!-- <div class="card-item">
-      <div class="item-title">Stage</div>
-      <div class="item-content">{{ application.permitType }}</div>
-    </div> -->
   </div>
 
   <form [formGroup]="form" (ngSubmit)="approve()">
-    <div class="fomr-group" style="margin-bottom: 10px">
+    <div class="fomr-group" style="margin-bottom: 10px" *ngIf="!isApprover">
       <label>Remark</label>
       <textarea
         formControlName="comment"
@@ -30,25 +26,25 @@
       ></textarea>
       <div
         *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger my-2"
       >
-        Remark is required!
+        Comment is required!
       </div>
     </div>
   </form>
 </div>
-<div class="flex">
+<div class="flex mt-4">
   <div class="items-center flex w-full">
     <button mat-button mat-dialog-close>Close</button>
     <div class="flex">
       <button
         mat-raised-button
-        class="bg-green-500 "
+        class="bg-green-500"
         (click)="approve()"
         [disabled]="form.invalid"
         *ngIf="!isLoading"
       >
-        Approve
+        {{ !isCOQProcessor && !isApprover ? "Pass For Approval" : "Approve" }}
       </button>
       <a
         *ngIf="isLoading"

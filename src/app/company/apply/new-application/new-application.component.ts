@@ -25,6 +25,7 @@ export class NewApplicationComponent implements OnInit {
   public appDepots: IAppDepot[];
   public products: IProduct[];
   public depots: IDepot[];
+  public jetties: any[];
   // public selectedTanks: ITankDTO[] = [];
   public selectedAppDepots: IAppDepot[] = [];
   public isMobile = false;
@@ -93,12 +94,34 @@ export class NewApplicationComponent implements OnInit {
 
     this.segmentState = 1;
     // this.validateImo();
+    this.fetchAllData();
+  }
+
+  getAllJetty() {
+    this.spinner.open();
+    this.libraryService.getAllJetty().subscribe({
+      next: (res: any) => {
+        this.jetties = res?.data;
+        this.spinner.close();
+        this.cd.markForCheck();
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.spinner.close();
+        this.popUp.open('Something went wrong while fetching jetties', 'error');
+        this.cd.markForCheck();
+      }
+    })
+  }
+
+  fetchAllData() {
     this.getFacilityTypes();
     this.getApplicationTypes();
     this.getStates();
     this.getProducts();
     this.getVesselTypes();
     this.getDepots();
+    this.getAllJetty();
   }
 
   public get vesselFormControl() {
@@ -283,8 +306,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res?.data.sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase ? -1 :
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();
@@ -302,8 +328,11 @@ export class NewApplicationComponent implements OnInit {
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
         this.depots = (res?.data || []).sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase() ? -1 : 
-            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0
+          return a?.name.toLowerCase() < b?.name.toLowerCase()
+            ? -1
+            : a?.name.toLowerCase() > b?.name.toLowerCase()
+            ? 1
+            : 0;
         });
         this.spinner.close();
         this.cd.markForCheck();
