@@ -283,6 +283,11 @@ export class SidebarComponent implements OnInit, OnChanges {
       let coqSubRoutes = [
         {
           id: 1,
+          title: 'NoA Applications',
+          url: '/admin/coq-and-plant/noa-applications-by-depot',
+        },
+        {
+          id: 2,
           title: 'CoQ Applications',
           url: '/admin/coq-and-plant/coq-applications-by-depot',
         },
@@ -320,7 +325,7 @@ export class SidebarComponent implements OnInit, OnChanges {
 
       this.menuItems = this.menuItems.slice(0, 3).concat(
         {
-          id: 4,
+          id: 3,
           title: 'CoQ And Plant',
           iconName: 'carbon',
           iconId: 'carbon',
