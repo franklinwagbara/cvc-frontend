@@ -5,6 +5,8 @@ import { SpinnerService } from '../../shared/services/spinner.service';
 import { Router } from '@angular/router';
 import { PopupService } from '../../shared/services/popup.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { AuthenticationService } from 'src/app/shared/services';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
   products: any[];
+  currentUser: any;
 
   public tableTitles = {
     applications: 'NOA Applications',
@@ -39,10 +42,12 @@ export class NoaApplicationsByDepotComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private popUp: PopupService,
+    private auth: AuthenticationService,
     private progressBar: ProgressBarService
   ) {}
 
   ngOnInit(): void {
+    this.currentUser = this.auth.currentUser;
     this.fetchAllData();
   }
 
@@ -80,8 +85,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   public get isFieldOfficer(): boolean {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    return currentUser && currentUser?.userRoles.includes('Field_Officer');
+    return this.currentUser && this.currentUser?.userRoles === UserRole.FIELDOFFICER;
   }
 
   onAllowDischarge(value: boolean) {

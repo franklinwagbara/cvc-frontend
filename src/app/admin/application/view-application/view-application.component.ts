@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -16,9 +16,7 @@ import { ApplicationService } from '../../../../../src/app/shared/services/appli
 import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { LOCATION } from '../../../../../src/app/shared/constants/location';
-import { UserRole } from 'src/app/shared/constants/userRole';
+
 
 @Component({
   selector: 'app-view-coq-application',
@@ -31,9 +29,13 @@ export class ViewApplicationComponent implements OnInit {
   public appId: number;
   public appSource: AppSource;
   public licence: any;
-  public currentUser: LoginModel;
   public coqId: number;
+
   public loading: boolean;
+  isApprover: boolean;
+  isFieldOfficer: boolean;
+  isFO: boolean;
+  isSupervisor: boolean;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -71,24 +73,10 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.auth.currentUser as LoginModel;
-  }
-
-  public get isApprover() {
-    const currentUser = this.auth.currentUser as LoginModel;
-    return (currentUser as any).userRoles === UserRole.APPROVER;
-  }
-
-  public get isSupervisor() {
-    return (this.currentUser as any).userRoles === UserRole.SUPERVISOR;
-  }
-
-  public get isFO() {
-    return this.currentUser.location == LOCATION.FO;
-  }
-
-  public get isFieldOfficer() {
-    return this.currentUser.userRoles == UserRole.FIELDOFFICER;
+    this.isFO = this.auth.isFO;
+    this.isSupervisor = this.auth.isSupervisor;
+    this.isFieldOfficer = this.auth.isFieldOfficer;
+    this.isApprover = this.auth.isApprover;
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -194,16 +182,10 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(operationConfiguration[type].form, {
+    this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
     });
   }
 

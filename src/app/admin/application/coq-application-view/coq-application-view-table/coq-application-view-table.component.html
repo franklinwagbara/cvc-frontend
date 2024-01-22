@@ -6,7 +6,7 @@
     </tr>
 
     <ng-container *ngIf="isCoqProcessor">
-      <tr>
+      <tr *ngIf="isProcessingPlant">
         <th>Plant Name</th>
         <td>{{ application?.plant }}</td>
       </tr>
@@ -14,26 +14,30 @@
         <th>Product Type</th>
         <td>{{ application?.productType }}</td>
       </tr>
-      <tr *ngIf="application?.vessel?.name">
-        <th>Vessel Name</th>
-        <td>{{ application?.vessel?.name }}</td>
-      </tr>
-      <tr *ngIf="application?.marketerName">
-        <th>Marketer Name</th>
-        <td>{{ application?.marketerName }}</td>
-      </tr>
-      <tr *ngIf="application?.motherVessel">
-        <th>Mother Vessel</th>
-        <td>{{ application?.motherVessel }}</td>
-      </tr>
-      <tr *ngIf="application?.loadingPort">
-        <th>Loading Port</th>
-        <td>{{ application?.loadingPort }}</td>
-      </tr>
-      <tr *ngIf="application?.jetty">
-        <th>Jetty</th>
-        <td>{{ application?.jetty }}</td>
-      </tr>
+
+      <ng-container *ngIf="!isProcessingPlant">
+        <tr *ngIf="application?.vessel?.name">
+          <th>Vessel Name</th>
+          <td>{{ application?.vessel?.name }}</td>
+        </tr>
+        <tr *ngIf="application?.marketerName">
+          <th>Marketer Name</th>
+          <td>{{ application?.marketerName }}</td>
+        </tr>
+        <tr *ngIf="application?.motherVessel">
+          <th>Mother Vessel</th>
+          <td>{{ application?.motherVessel }}</td>
+        </tr>
+        <tr *ngIf="application?.loadingPort">
+          <th>Loading Port</th>
+          <td>{{ application?.loadingPort }}</td>
+        </tr>
+        <tr *ngIf="application?.jetty">
+          <th>Jetty</th>
+          <td>{{ application?.jetty }}</td>
+        </tr>
+      </ng-container>
+
       <tr *ngIf="application?.quauntityReflectedOnBill">
         <th>Quantity Reflected On Bill</th>
         <td>{{ application?.quauntityReflectedOnBill }}</td>
@@ -47,7 +51,7 @@
         <td>{{ application?.dischargeShipFigure }}</td>
       </tr>
       <tr *ngIf="application?.depotPrice">
-        <th>Depot Price</th>
+        <th>{{ isProcessingPlant ? 'Plant' : 'Depot' }} Price</th>
         <td>{{ application?.depotPrice | currency:'NGN' }}</td>
       </tr>
   
@@ -75,6 +79,7 @@
         <th>Nominated Surveyor</th>
         <td>{{ application?.nominatedSurveyor }}</td>
       </tr>
+      
       <tr>
         <th>Application Type</th>
         <td>COQ</td>

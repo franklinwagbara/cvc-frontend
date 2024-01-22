@@ -8,11 +8,11 @@
 }
 
 .nav-item-active {
-  width: 300px;
+  width: 280px;
   @apply bg-slate-50  rounded-tl-full rounded-bl-full text-black fill-black;
 
   & .arrow {
-    @apply absolute right-0 mr-8;
+    @apply absolute right-0 mr-6;
   }
 }
 

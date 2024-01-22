@@ -53,7 +53,7 @@ export class ApproveFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.isApprover)
+    if (!this.isApprover && !this.isCOQProcessor)
       this.form = this.formBuilder.group({
         comment: ['', Validators.required],
       });

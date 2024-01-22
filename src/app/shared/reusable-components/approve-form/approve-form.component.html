@@ -26,9 +26,9 @@
       ></textarea>
       <div
         *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger my-2"
       >
-        Remark is required!
+        Comment is required!
       </div>
     </div>
   </form>
@@ -44,7 +44,7 @@
         [disabled]="form.invalid"
         *ngIf="!isLoading"
       >
-        {{ !isApprover ? "Pass For Approval" : "Approved" }}
+        {{ !isCOQProcessor && !isApprover ? "Pass For Approval" : "Approve" }}
       </button>
       <a
         *ngIf="isLoading"

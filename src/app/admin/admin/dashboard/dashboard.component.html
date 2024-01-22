@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-10">
   <div class="card-area">
-    <div class="card">
+    <div class="card" style="cursor: pointer" routerLink="/admin/desk">
       <div class="card-data">
         <span>{{ dashboardInfo?.deskCount ? (dashboardInfo?.deskCount | abbreviatevalue) : '0' }}</span>
         <svg

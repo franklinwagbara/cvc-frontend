@@ -14,6 +14,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
   @Input() appId: number;
   @Input() appSource: string;
   @Input() isCoqProcessor: boolean;
+  @Input() isProcessingPlant: boolean;
 
   public depotId?: number;
   public coqId?: number;
