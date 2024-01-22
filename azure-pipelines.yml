@@ -17,7 +17,7 @@ steps:
 
 - script: |
     npm install -g @angular/cli
-    npm install --force
+    npm install --legacy-peer-deps
     ng build --configuration production --aot
   displayName: 'npm install and build'
   workingDirectory: '$(Build.SourcesDirectory)'
