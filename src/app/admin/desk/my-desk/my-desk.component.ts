@@ -274,8 +274,4 @@ export class MyDeskComponent implements OnInit {
       });
     });
   }
-
-  public onInitiateCoQ(event: any) {
-    this.initiateCoq(event);
-  }
 }
