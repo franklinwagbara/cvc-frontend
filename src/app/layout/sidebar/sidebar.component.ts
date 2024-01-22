@@ -274,23 +274,6 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
           {
-            id: 5,
-            title: 'DISCHARGE CLEARANCE',
-            iconName: 'apps',
-            iconId: 'apps',
-            iconColor: 'white',
-            active: false,
-            subMenuActive: false,
-
-            subRoutes: [
-              {
-                id: 1,
-                title: 'NoA APPLICATIONS',
-                url: '/admin/noa-application-by-jetty-officer',
-              },
-            ],
-          },
-          {
             id: 3,
             title: 'VESSEL CLEARANCE',
             iconName: 'approval',
@@ -302,8 +285,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             subRoutes: [
               {
                 id: 1,
-                title: 'VESSEL CLEARANCE',
-                url: '/admin/vessel-clearance/noa-applications',
+                title: 'DISCHARGE CLEARANCE',
+                url: '/admin/vessel-clearance/noa-applications-by-jetty-officer',
               },
             ],
           },

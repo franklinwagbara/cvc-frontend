@@ -32,13 +32,11 @@ import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-a
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
-import { ViewNoaApplicationComponent } from '../noa-applications-by-depot/view-noa-application/view-noa-application.component';
 import { EmailConfigComponent } from '../settings/email-config/email-config.component';
 import { AllCoqCertificatesComponent } from '../all-coq-certificates/all-coq-certificates.component';
 import { AllNoaClearancesComponent } from '../all-noa-clearances/all-noa-clearances.component';
 import { AdminGuard } from 'src/app/shared/guards/admin.guard';
 import { AllCoqApplicationsComponent } from '../all-coq-applications/all-coq-applications.component';
-import { NoaVesselClearanceComponent } from '../noa-vessel-clearance/noa-vessel-clearance.component';
 import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
@@ -164,17 +162,17 @@ const routes: Routes = [
   },
   {
     path: 'vessel-clearance',
-    redirectTo: 'vessel-clearance/noa-applications',
+    redirectTo: 'vessel-clearance/noa-applications-by-jetty-officer',
     pathMatch: 'full',
   },
   {
-    path: 'vessel-clearance/noa-applications',
-    component: NoaVesselClearanceComponent,
+    path: 'vessel-clearance/noa-applications-by-jetty-officer',
+    component: NoaApplicationsByJettyComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
   },
   {
-    path: 'vessel-clearance/noa-applications/:id',
+    path: 'vessel-clearance/noa-applications-by-jetty-officer/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
@@ -276,12 +274,6 @@ const routes: Routes = [
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
     data: {},
-  },
-  {
-    path: 'noa-application-by-jetty-officer',
-    component: NoaApplicationsByJettyComponent,
-    pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
   },
   {
     path: 'all-approvals',
