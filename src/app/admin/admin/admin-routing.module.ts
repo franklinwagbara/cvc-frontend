@@ -264,6 +264,12 @@ const routes: Routes = [
     canActivate: [FieldOfficerOrOfficeGuard]
   },
   {
+    path: 'coq-and-plant/noa-applications-by-depot',
+    component: ViewApplicationComponent,
+    pathMatch: 'full',
+    canActivate: [FieldOfficerOrOfficeGuard]
+  },
+  {
     path: 'coq-and-plant/noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     pathMatch: 'full',

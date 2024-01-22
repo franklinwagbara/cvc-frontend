@@ -225,8 +225,8 @@ export class MyDeskComponent implements OnInit {
   initiateCoq(event: any) {
     this.router.navigate([
       'admin', 
-      'my-desk', 
-      'noa-applications',
+      'coq-and-plant', 
+      'noa-applications-by-depot',
       event.id, 
       'certificate-of-quantity', 
       'new-application'
