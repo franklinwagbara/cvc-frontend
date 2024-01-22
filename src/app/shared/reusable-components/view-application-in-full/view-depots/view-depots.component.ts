@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-view-depots',
@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./view-depots.component.css'],
 })
 export class ViewDepotsComponent {
+  @Input() depots: any[] = [];
   // constructor(private )
 }

@@ -272,27 +272,45 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     if (this.currentUser.userRoles === UserRole.FIELDOFFICER) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
-        {
-          id: 3,
-          title: 'VESSEL CLEARANCE',
-          iconName: 'approval',
-          iconId: 'approval',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-      
-          subRoutes: [
-            {
-              id: 1,
-              title: 'VESSEL CLEARANCE',
-              url: '/admin/vessel-clearance/noa-applications'
-            }
-          ]
-        },
-        this.menuItems.slice(2)
-      )
-    }
+        [
+          {
+            id: 5,
+            title: 'DISCHARGE CLEARANCE',
+            iconName: 'apps',
+            iconId: 'apps',
+            iconColor: 'white',
+            active: false,
+            subMenuActive: false,
 
+            subRoutes: [
+              {
+                id: 1,
+                title: 'NoA APPLICATIONS',
+                url: '/admin/noa-application-by-jetty-officer',
+              },
+            ],
+          },
+          {
+            id: 3,
+            title: 'VESSEL CLEARANCE',
+            iconName: 'approval',
+            iconId: 'approval',
+            iconColor: 'white',
+            active: false,
+            subMenuActive: false,
+
+            subRoutes: [
+              {
+                id: 1,
+                title: 'VESSEL CLEARANCE',
+                url: '/admin/vessel-clearance/noa-applications',
+              },
+            ],
+          },
+        ],
+        this.menuItems.slice(2)
+      );
+    }
 
     // Show CoQ And Plant tab only to Staffs in Field Offices and Field Officers
     if (this.auth.isFieldOfficer || this.auth.isFO) {
@@ -306,7 +324,7 @@ export class SidebarComponent implements OnInit, OnChanges {
           id: 2,
           title: 'Processing Plant',
           url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        }
+        },
       ];
 
       this.menuItems = this.menuItems.slice(0, 3).concat(

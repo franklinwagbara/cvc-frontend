@@ -42,6 +42,7 @@ import { NoaVesselClearanceComponent } from '../noa-vessel-clearance/noa-vessel-
 import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
+import { NoaApplicationsByJettyComponent } from '../noa-applications-by-jetty/noa-applications-by-jetty.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -83,67 +84,67 @@ const routes: Routes = [
     path: 'settings/all-staff',
     component: AllStaffComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/modules',
     component: ModulesSettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/application-stage-docs',
     component: AppStageDocsComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/field-zone-office',
     component: FieldZonalOfficeComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/branches',
     component: BranchSettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/jetty',
     component: JettySettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/phasedocuments',
     component: PhasedocumentsComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/application-process',
     component: AppProcessComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/field-officer-depot',
     component: FieldOfficerDepotSettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/field-officer-jetty',
     component: FieldOfficerJettySettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/nominated-surveyors',
     component: NominatedSurveyorSettingComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   { path: 'desk', component: MyDeskComponent, pathMatch: 'full' },
   {
@@ -164,19 +165,19 @@ const routes: Routes = [
   {
     path: 'vessel-clearance',
     redirectTo: 'vessel-clearance/noa-applications',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'vessel-clearance/noa-applications',
     component: NoaVesselClearanceComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard]
+    canActivate: [FieldOfficerGuard],
   },
   {
     path: 'vessel-clearance/noa-applications/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard]
+    canActivate: [FieldOfficerGuard],
   },
   {
     path: 'view-application-in-full/:id',
@@ -209,17 +210,17 @@ const routes: Routes = [
     component: ScheduleComponent,
     pathMatch: 'full',
   },
-  { 
-    path: 'settings/app-fees', 
-    component: AppFeeComponent, 
+  {
+    path: 'settings/app-fees',
+    component: AppFeeComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/app-depots',
     component: AppDepotComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   { path: 'payments', redirectTo: 'payments/all-payments', pathMatch: 'full' },
   {
@@ -228,23 +229,23 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'payment/:id', component: ViewPaymentComponent, pathMatch: 'full' },
-  { 
-    path: 'settings/roles', 
-    component: RolesComponent, 
+  {
+    path: 'settings/roles',
+    component: RolesComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'settings/products',
     component: ProductsComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
-  { 
-    path: 'settings/email-config', 
+  {
+    path: 'settings/email-config',
     component: EmailConfigComponent,
     pathMatch: 'full',
-    canActivate: [SuperadminGuard]
+    canActivate: [SuperadminGuard],
   },
   {
     path: 'coq-and-plant',
@@ -261,7 +262,7 @@ const routes: Routes = [
     path: 'coq-and-plant/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerOrOfficeGuard]
+    canActivate: [FieldOfficerOrOfficeGuard],
   },
   {
     path: 'coq-and-plant/noa-applications-by-depot/:id/certificate-of-quantity/new-application',
@@ -269,6 +270,12 @@ const routes: Routes = [
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
     data: {},
+  },
+  {
+    path: 'noa-application-by-jetty-officer',
+    component: NoaApplicationsByJettyComponent,
+    pathMatch: 'full',
+    canActivate: [FieldOfficerGuard],
   },
   {
     path: 'all-approvals',

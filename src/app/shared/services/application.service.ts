@@ -52,6 +52,10 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
   }
 
+  viewApplicationByJetty(): Observable<any> {
+    return this.http.get<any>(`${API}/view-application-By-Jetty-Officer`, {});
+  }
+
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {
     return this.http.get<any>(`${API}/view-application-by-depot-officer`, {
       params: { id: officerId },

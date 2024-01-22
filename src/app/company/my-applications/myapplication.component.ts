@@ -80,7 +80,7 @@ export class MyApplicationComponent implements OnInit {
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
-          if (this.queryParamValue == 'processing')
+          if (this.queryParamValue)
             res.data = (res.data as Application[]).filter(
               (x) => x.status.toLowerCase() == 'processing'
             );
@@ -246,6 +246,8 @@ export interface Application {
   vessel: Vessel;
   appHistories: any[];
   documents?: any[];
+
+  applicationDepots: any[];
 }
 
 export interface Vessel {

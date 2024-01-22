@@ -147,10 +147,12 @@ export class DashboardComponent implements OnInit {
   }
 
   public navigateTo(path: string) {
-    if (path == this.NavigatePath.processing)
+    if (path == this.NavigatePath.processing) {
       this.router.navigate([`company`, this.NavigatePath.applications], {
         queryParams: { processing: true },
       });
+      return;
+    }
     this.router.navigate([`company`, path]);
   }
 }

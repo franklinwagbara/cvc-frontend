@@ -82,6 +82,7 @@ import { EmailConfigComponent } from './settings/email-config/email-config.compo
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
+import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
 
 @NgModule({
   declarations: [
@@ -142,6 +143,7 @@ import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-c
     AllCoqApplicationsComponent,
     FieldOfficerJettySettingComponent,
     NoaVesselClearanceComponent,
+    NoaApplicationsByJettyComponent,
   ],
 
   imports: [
