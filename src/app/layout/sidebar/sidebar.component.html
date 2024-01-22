@@ -22,6 +22,15 @@
     >
       PROCESSING PLANT
     </h4>
+    <h4
+      *ngIf="
+        !isCollapsed &&
+        directorate !== Directorate.HPPITI && directorate !== Directorate.DSSRI
+      "
+      class="text-black font-bold"
+    >
+      PROCESSING PLANT
+    </h4>
   </div>
 
   <div class="nav-items">

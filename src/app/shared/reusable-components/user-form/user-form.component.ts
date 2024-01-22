@@ -162,7 +162,7 @@ export class UserFormComponent implements OnInit {
 
   createUser() {
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
-    this.progressBar.open();
+    //this.progressBar.open();
     this.isLoading = true;
     const formDataToSubmit = new FormData();
 
@@ -199,13 +199,13 @@ export class UserFormComponent implements OnInit {
           }
         );
         this.isLoading = false;
-        this.progressBar.close();
+        // this.progressBar.close();
       },
     });
   }
 
   updateUser() {
-    this.progressBar.open();
+    //this.progressBar.open();
     this.isLoading = true;
     this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
 
@@ -246,7 +246,7 @@ export class UserFormComponent implements OnInit {
           }
         );
         this.isLoading = false;
-        this.progressBar.close();
+        //this.progressBar.close();
       },
     });
   }
