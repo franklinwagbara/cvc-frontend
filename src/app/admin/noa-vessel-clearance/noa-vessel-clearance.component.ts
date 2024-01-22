@@ -12,7 +12,7 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 })
 export class NoaVesselClearanceComponent implements OnInit {
   applications: IApplication[];
-  currentUser: any;
+  isFieldOfficer: boolean;
 
   public applicationKeysMappedToHeaders = {
     reference: 'Reference',
@@ -35,16 +35,13 @@ export class NoaVesselClearanceComponent implements OnInit {
   ) {}
   
   ngOnInit(): void {
-    this.currentUser = this.auth.currentUser;
+    this.isFieldOfficer = this.auth.isFieldOfficer;
   }
 
-  getApplicationByJetty(): void {
-
-  }
+  getApplicationsByJetty(): void {
     
-  public get isFieldOfficer(): boolean {
-    return this.currentUser && this.currentUser?.userRoles === UserRole.FIELDOFFICER;
   }
+  
 
   viewApplication(event: any) {
     this.router.navigate(['admin', 'vessel-clearance', 'noa-applications', event.id]);
@@ -53,7 +50,7 @@ export class NoaVesselClearanceComponent implements OnInit {
   onAllowDischarge(value: boolean) {
     if (value) {
       this.progressBar.open();
-      this.getApplicationByJetty();
+      this.getApplicationsByJetty();
     }
   }
 

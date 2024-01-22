@@ -235,12 +235,12 @@ export class MyDeskComponent implements OnInit {
 
   initiateCoq(event: any) {
     this.router.navigate([
-      'admin',
-      'coq-and-plant',
+      'admin', 
+      'coq-and-plant', 
       'noa-applications-by-depot',
-      event.id,
-      'certificate-of-quantity',
-      'new-application',
+      event.id, 
+      'certificate-of-quantity', 
+      'new-application'
     ]);
   }
 
@@ -273,9 +273,5 @@ export class MyDeskComponent implements OnInit {
         this.progressBar.close();
       });
     });
-  }
-
-  public onInitiateCoQ(event: any) {
-    this.initiateCoq(event);
   }
 }

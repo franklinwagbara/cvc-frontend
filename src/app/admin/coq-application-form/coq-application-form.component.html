@@ -787,15 +787,21 @@
                     <input
                       matInput
                       formControlName="dateOfVesselArrival"
-                      [matDatepicker]="arrivalDatePicker"
+                      [ngxMatDatetimePicker]="arrivalDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="arrivalDatePicker"
+                      matSuffix
+                      [for]="$any(arrivalDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #arrivalDatePicker></mat-datepicker>
+                    <ngx-mat-datetime-picker #arrivalDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
 
@@ -809,15 +815,21 @@
                     <input
                       matInput
                       formControlName="dateOfVesselUllage"
-                      [matDatepicker]="ullageDatePicker"
+                      [ngxMatDatetimePicker]="ullageDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="ullageDatePicker"
+                      matSuffix
+                      [for]="$any(ullageDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #ullageDatePicker></mat-datepicker>
+                    <ngx-mat-datetime-picker #ullageDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
 
@@ -830,15 +842,21 @@
                     <input
                       matInput
                       formControlName="dateOfSTAfterDischarge"
-                      [matDatepicker]="shoreTankDatePicker"
+                      [ngxMatDatetimePicker]="shoreTankDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
-                      [for]="shoreTankDatePicker"
+                      [for]="$any(shoreTankDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #shoreTankDatePicker></mat-datepicker>
+                    <ngx-mat-datetime-picker #shoreTankDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
               </div>
@@ -884,15 +902,21 @@
                       matInput
                       name="vesselArrivalDate"
                       formControlName="vesselArrivalDate"
-                      [matDatepicker]="arrivalDatePicker"
+                      [ngxMatDatetimePicker]="arrivalDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="arrivalDatePicker"
+                      matSuffix
+                      [for]="$any(arrivalDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker #arrivalDatePicker></mat-datepicker>
+                    <ngx-mat-datetime-picker #arrivalDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
                 <mat-form-field class="md:col-span-6">
@@ -904,17 +928,21 @@
                       matInput
                       name="prodDischargeCommenceDate"
                       formControlName="prodDischargeCommenceDate"
-                      [matDatepicker]="prodDischargeCommenceDatePicker"
+                      [ngxMatDatetimePicker]="prodDischargeCommenceDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="prodDischargeCommenceDatePicker"
+                      matSuffix
+                      [for]="$any(prodDischargeCommenceDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker
-                      #prodDischargeCommenceDatePicker
-                    ></mat-datepicker>
+                    <ngx-mat-datetime-picker #prodDischargeCommenceDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
                 <mat-form-field class="md:col-span-6">
@@ -924,17 +952,21 @@
                       matInput
                       name="prodDischargeCompletionDate"
                       formControlName="prodDischargeCompletionDate"
-                      [matDatepicker]="prodDischargeCompletionDatePicker"
+                      [ngxMatDatetimePicker]="prodDischargeCompletionDatePicker"
                       [min]="dateValidation.min"
                       [max]="dateValidation.max"
                     />
                     <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="prodDischargeCompletionDatePicker"
+                      matSuffix
+                      [for]="$any(prodDischargeCompletionDatePicker)"
                     ></mat-datepicker-toggle>
-                    <mat-datepicker
-                      #prodDischargeCompletionDatePicker
-                    ></mat-datepicker>
+                    <ngx-mat-datetime-picker #prodDischargeCompletionDatePicker 
+                      [showSpinners]="true" 
+                      [showSeconds]="true"
+                      [stepHour]="1" [stepMinute]="1" 
+                      [stepSecond]="1"
+                      [touchUi]="true"
+                    ></ngx-mat-datetime-picker>
                   </div>
                 </mat-form-field>
               </div>

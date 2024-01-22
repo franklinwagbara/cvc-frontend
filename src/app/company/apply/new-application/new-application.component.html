@@ -119,14 +119,20 @@
                   <input
                     matInput
                     formControlName="eta"
-                    [matDatepicker]="etaDatePicker"
+                    [ngxMatDatetimePicker]="etaDatePicker"
                     [min]="dateValidation.min"
                   />
                   <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="etaDatePicker"
+                    matSuffix
+                    [for]="$any(etaDatePicker)"
                   ></mat-datepicker-toggle>
-                  <mat-datepicker #etaDatePicker></mat-datepicker>
+                  <ngx-mat-datetime-picker #etaDatePicker 
+                    [showSpinners]="true" 
+                    [showSeconds]="true"
+                    [stepHour]="1" [stepMinute]="1" 
+                    [stepSecond]="1"
+                    [touchUi]="true"
+                  ></ngx-mat-datetime-picker>
                 </div>
               </mat-form-field>
             </div>
