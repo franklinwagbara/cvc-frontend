@@ -1,10 +1,8 @@
 <div class="setting-desk">
   <h2 class="page-title bg-red-500 text-red-800">MY DESK</h2>
   <div>
-    
     <div class="table-group">
       <div class="table-wrapper">
-       
         <generic-table
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
@@ -19,6 +17,7 @@
           (onViewData)="onViewData($event, 'applications')"
           (onViewCoQCert)="onViewCoqCert($event)"
           (onGenDebitNote)="genDebitNote($event)"
+          (onInitiateCoQ)="onInitiateCoQ($event)"
         >
         </generic-table>
       </div>

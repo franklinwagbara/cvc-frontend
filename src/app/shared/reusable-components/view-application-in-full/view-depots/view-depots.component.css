@@ -23,7 +23,6 @@
 .items {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
   @apply bg-[#3e4e508f] text-white p-2;
 }
 
@@ -33,4 +32,8 @@
 
 .items:hover {
   opacity: 0.9;
+}
+
+.item-width {
+  width: 33.33%;
 }
