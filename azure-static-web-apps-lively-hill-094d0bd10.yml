@@ -29,4 +29,8 @@ jobs:
       api_location: "" # Api source code path - optional
       output_location: "www" # Built app content directory - optional
 ###### End of Repository/Build Configurations ######
+  - script: |
+      npm install --force
+      npm run build
+    displayName: 'npm install and build'
 
