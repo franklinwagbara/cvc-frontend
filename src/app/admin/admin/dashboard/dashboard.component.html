@@ -2,7 +2,11 @@
   <div class="card-area">
     <div class="card" style="cursor: pointer" routerLink="/admin/desk">
       <div class="card-data">
-        <span>{{ dashboardInfo?.deskCount ? (dashboardInfo?.deskCount | abbreviatevalue) : '0' }}</span>
+        <span>{{
+          dashboardInfo?.deskCount
+            ? (dashboardInfo?.deskCount | abbreviatevalue)
+            : "0"
+        }}</span>
         <svg
           class="fill-blue-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -19,10 +23,14 @@
       </div>
       <div class="card-title">MY DESK</div>
     </div>
-  
+
     <div class="card card-green">
       <div class="card-data">
-        <span>{{ dashboardInfo?.tApproved ? (dashboardInfo?.tApproved | abbreviatevalue) : '0' }}</span>
+        <span>{{
+          dashboardInfo?.tApproved
+            ? (dashboardInfo?.tApproved | abbreviatevalue)
+            : "0"
+        }}</span>
         <svg
           class="fill-green-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -35,15 +43,21 @@
           <path
             d="M9.667,17.787a2.36,2.36,0,0,0,1.679-.7l8.715-8.715L17.939,6.256,9.667,14.528,6.061,10.923,3.939,13.044l4.048,4.048A2.362,2.362,0,0,0,9.667,17.787Z"
           />
-          <path d="M21,0H3A3,3,0,0,0,0,3V24H24V3A3,3,0,0,0,21,0Zm0,21H3V3H21Z" />
+          <path
+            d="M21,0H3A3,3,0,0,0,0,3V24H24V3A3,3,0,0,0,21,0Zm0,21H3V3H21Z"
+          />
         </svg>
       </div>
       <div class="card-title">TOTAL APPLICATIONS APPROVED</div>
     </div>
-  
+
     <div class="card card-blue">
       <div class="card-data">
-        <span>{{ dashboardInfo?.tProcessing ? (dashboardInfo?.tProcessing | abbreviatevalue) : '0' }}</span>
+        <span>{{
+          dashboardInfo?.tProcessing
+            ? (dashboardInfo?.tProcessing | abbreviatevalue)
+            : "0"
+        }}</span>
         <svg
           class="fill-purple-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +76,11 @@
     </div>
     <div class="card card-red">
       <div class="card-data">
-        <span>{{ dashboardInfo?.tRejected ? (dashboardInfo?.tRejected | abbreviatevalue) : '0'}}</span>
+        <span>{{
+          dashboardInfo?.tRejected
+            ? (dashboardInfo?.tRejected | abbreviatevalue)
+            : "0"
+        }}</span>
         <svg
           class="fill-red-800"
           xmlns="http://www.w3.org/2000/svg"
@@ -73,7 +91,9 @@
           <g id="_01_align_center" data-name="01 align center">
             <path d="M0,3v8H11V0H3A3,3,0,0,0,0,3ZM9,9H2V3A1,1,0,0,1,3,2H9Z" />
             <path d="M0,21a3,3,0,0,0,3,3h8V13H0Zm2-6H9v7H3a1,1,0,0,1-1-1Z" />
-            <path d="M13,13V24h8a3,3,0,0,0,3-3V13Zm9,8a1,1,0,0,1-1,1H15V15h7Z" />
+            <path
+              d="M13,13V24h8a3,3,0,0,0,3-3V13Zm9,8a1,1,0,0,1-1,1H15V15h7Z"
+            />
             <rect x="13" y="5" width="10" height="2" />
           </g>
         </svg>
@@ -104,7 +124,7 @@
           </generic-table>
         </div>
       </div>
-  
+
       <div class="table-group mt-10 w-full xl:w-[55%]">
         <div class="table-wrapper px-0">
           <div class="chart-title mb-4">

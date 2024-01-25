@@ -1,6 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { GenericService, AuthenticationService } from '../../../../../src/app/shared/services';
+import {
+  GenericService,
+  AuthenticationService,
+} from '../../../../../src/app/shared/services';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { environment } from '../../../../../src/environments/environment';
 
@@ -31,7 +34,13 @@ export class DashboardComponent implements OnInit {
     doc: 'Document',
   };
 
-  onStaffDeskForFiveDayMappedToHeaders = {};
+  onStaffDeskForFiveDayMappedToHeaders = {
+    id: 'Application ID',
+    categoryId: 'Category ID',
+    // phaseStage: 'Phase Stage',
+    location: 'Location',
+    doc: 'Document',
+  };
   // displapAppFiveDays = true;
 
   constructor(
@@ -51,7 +60,8 @@ export class DashboardComponent implements OnInit {
           this.dashboardInfo = result.data;
           this.processingForThreeWeeks =
             this.dashboardInfo.inProcessingForThreeWeeks;
-          this.onStaffDeskForFiveDays = this.dashboardInfo.onStaffDeskForFiveDays;
+          this.onStaffDeskForFiveDays =
+            this.dashboardInfo.onStaffDeskForFiveDays;
 
           this.spinner.close();
           this.cd.markForCheck();
@@ -59,8 +69,10 @@ export class DashboardComponent implements OnInit {
       },
       error: (error: any) => {
         this.spinner.close();
-        this.snackBar.open('Could not get dashboard', null, { panelClass: ['error']});
-      }
+        this.snackBar.open('Could not get dashboard', null, {
+          panelClass: ['error'],
+        });
+      },
     });
   }
 
