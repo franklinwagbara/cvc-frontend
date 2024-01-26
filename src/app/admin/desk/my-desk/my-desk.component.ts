@@ -58,7 +58,7 @@ export class MyDeskComponent implements OnInit {
     applicationType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-     capacity: 'Capacity',
+    // capacity: 'Capacity',
     paymentStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
@@ -235,12 +235,12 @@ export class MyDeskComponent implements OnInit {
 
   initiateCoq(event: any) {
     this.router.navigate([
-      'admin', 
-      'coq-and-plant', 
+      'admin',
+      'coq-and-plant',
       'noa-applications-by-depot',
-      event.id, 
-      'certificate-of-quantity', 
-      'new-application'
+      event.id,
+      'certificate-of-quantity',
+      'new-application',
     ]);
   }
 

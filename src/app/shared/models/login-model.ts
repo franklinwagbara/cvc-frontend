@@ -19,7 +19,7 @@ export class LoginModel {
   signatureImage: string;
   token: string;
   returnedUrl: string;
-
+  directorate: string;
   office: string;
   location: string;
 }
