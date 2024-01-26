@@ -1,9 +1,10 @@
 <div class="setting-desk">
-  <h2 class="page-title">APPROVED NoA APPLICATIONS</h2>
+  <h2 class="page-title">APPROVED NoA APPLICATIONS BY JETTY</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
+          [table_title]="tableTitles.applications"
           [title-color]="'green'"
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="applications"
@@ -12,9 +13,8 @@
           [noEditControl]="true"
           [EnableViewControl]="true"
           [EnableDischargeClearanceControls]="isFieldOfficer"
-          [EnableInitiateCoQControl]="isFieldOfficer"
-          [noTitle]="true"
           (onViewData)="viewApplication($event)"
+          (onInitiateCoQ)="initiateCoQ($event)"
           (allowDischarge)="onAllowDischarge($event)"
         >
         </generic-table>

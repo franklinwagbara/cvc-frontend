@@ -45,7 +45,7 @@ export class MyDeskComponent implements OnInit {
   public offices: FieldOffice[];
   public branches: IBranch[];
   isLoading = true;
-  currentUser: LoginModel
+  currentUser: LoginModel;
 
   public tableTitles = {
     applications: 'All Applications',
@@ -58,7 +58,7 @@ export class MyDeskComponent implements OnInit {
     applicationType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    capacity: 'Capacity',
+     capacity: 'Capacity',
     paymentStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
@@ -71,11 +71,11 @@ export class MyDeskComponent implements OnInit {
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     jetty: 'Jetty',
-    capacity: 'Capacity',
+    // capacity: 'Capacity',
     status: 'Status',
-    rrr: 'RRR',
+    // rrr: 'RRR',
     createdDate: 'Initiated Date',
-  }
+  };
 
   public coqKeysMappedToHeaders = {
     companyEmail: 'Company Email',
@@ -95,8 +95,8 @@ export class MyDeskComponent implements OnInit {
     depotName: 'Depot Name',
     depotPrice: 'Depot Price',
     gsv: 'GSV',
-    debitNote: 'Debit Note'
-  }
+    debitNote: 'Debit Note',
+  };
 
   constructor(
     private adminService: AdminService,
@@ -109,7 +109,7 @@ export class MyDeskComponent implements OnInit {
     private router: Router,
     private auth: AuthenticationService,
     private paymentService: PaymentService,
-    private popUp: PopupService,
+    private popUp: PopupService
   ) {
     this.categories$.subscribe((data) => {
       this.categories = [...data];
@@ -124,8 +124,9 @@ export class MyDeskComponent implements OnInit {
     this.spinner.open();
 
     forkJoin([
-      this.isFieldOfficer ? this.applicationService.viewApplicationByDepot() 
-        : this.applicationService.getApplicationsOnDesk()
+      this.isFieldOfficer
+        ? this.applicationService.viewApplicationByDepot()
+        : this.applicationService.getApplicationsOnDesk(),
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
@@ -175,7 +176,10 @@ export class MyDeskComponent implements OnInit {
           coqId: event.id,
         },
       });
-    } else if (this.isFieldOfficer || this.appType$.getValue() === AppType.NOA) {
+    } else if (
+      this.isFieldOfficer ||
+      this.appType$.getValue() === AppType.NOA
+    ) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
@@ -184,7 +188,10 @@ export class MyDeskComponent implements OnInit {
 
   onViewCoqCert(event: any) {
     if (this.isFAD) {
-      window.open(`${environment.apiUrl}/CoQ/view_CoQ_cert?${event.id}`, '_blank');
+      window.open(
+        `${environment.apiUrl}/CoQ/view_CoQ_cert?${event.id}`,
+        '_blank'
+      );
     }
   }
 
@@ -199,22 +206,26 @@ export class MyDeskComponent implements OnInit {
             this.popUp.open('Debit Note generated successfully', 'success');
             setTimeout(() => {
               this.router.navigate(['/admin/desk']);
-            }, 3000)
+            }, 3000);
           }
           this.isLoading = false;
           this.spinner.close();
-        }, 
+        },
         error: (error: unknown) => {
           console.log(error);
-          this.popUp.open('Something went wrong while generating Debit Note', 'error');
+          this.popUp.open(
+            'Something went wrong while generating Debit Note',
+            'error'
+          );
           this.spinner.close();
-        }
+        },
       });
     }
   }
 
   public get getColumnHeaders() {
-    return this.isFieldOfficer ? this.fieldOfficerNoaKeysMappedToHeaders
+    return this.isFieldOfficer
+      ? this.fieldOfficerNoaKeysMappedToHeaders
       : this.appType$.getValue() == AppType.NOA
       ? this.applicationKeysMappedToHeaders
       : this.appType$.getValue() == AppType.COQ
@@ -225,8 +236,8 @@ export class MyDeskComponent implements OnInit {
   initiateCoq(event: any) {
     this.router.navigate([
       'admin', 
-      'my-desk', 
-      'noa-applications',
+      'coq-and-plant', 
+      'noa-applications-by-depot',
       event.id, 
       'certificate-of-quantity', 
       'new-application'

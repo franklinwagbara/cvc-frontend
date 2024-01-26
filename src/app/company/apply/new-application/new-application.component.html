@@ -112,21 +112,27 @@
               </select>
             </div>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col mt-1">
               <mat-form-field>
                 <mat-label>Estimated Time of Arrival (ETA) </mat-label>
                 <div class="flex">
                   <input
                     matInput
                     formControlName="eta"
-                    [matDatepicker]="etaDatePicker"
+                    [ngxMatDatetimePicker]="etaDatePicker"
                     [min]="dateValidation.min"
                   />
                   <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="etaDatePicker"
+                    matSuffix
+                    [for]="$any(etaDatePicker)"
                   ></mat-datepicker-toggle>
-                  <mat-datepicker #etaDatePicker></mat-datepicker>
+                  <ngx-mat-datetime-picker #etaDatePicker 
+                    [showSpinners]="true" 
+                    [showSeconds]="true"
+                    [stepHour]="1" [stepMinute]="1" 
+                    [stepSecond]="1"
+                    [touchUi]="true"
+                  ></ngx-mat-datetime-picker>
                 </div>
               </mat-form-field>
             </div>

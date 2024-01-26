@@ -81,7 +81,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailConfigComponent } from './settings/email-config/email-config.component';
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
-import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
 
 @NgModule({
   declarations: [
@@ -141,7 +146,7 @@ import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-c
     EmailConfigComponent,
     AllCoqApplicationsComponent,
     FieldOfficerJettySettingComponent,
-    NoaVesselClearanceComponent,
+    NoaApplicationsByJettyComponent,
   ],
 
   imports: [
@@ -168,6 +173,9 @@ import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-c
     MatProgressBarModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
   ],
   exports: [],
   providers: [

@@ -8,13 +8,13 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
-import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
 import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
 export interface SubRouteInfo {
   id: number;
@@ -90,28 +90,7 @@ const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  {
-    id: 6,
-    title: 'ALL APPROVALS',
-    iconName: 'licence-outline',
-    iconId: 'licence_outline',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
 
-    subRoutes: [
-      {
-        id: 1,
-        title: 'CoQ CERTIFICATES',
-        url: '/admin/all-approvals/coq-certificates',
-      },
-      {
-        id: 2,
-        title: 'NoA CLEARANCES',
-        url: '/admin/all-approvals/noa-clearances',
-      },
-    ],
-  },
   {
     id: 7,
     title: 'PAYMENTS',
@@ -281,11 +260,11 @@ export class SidebarComponent implements OnInit, OnChanges {
       currentUser.directorate === Directorate.DSSRI
     ) {
       let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'NoA Applications',
-          url: '/admin/coq-and-plant/noa-applications-by-depot',
-        },
+        // {
+        //   id: 1,
+        //   title: 'NoA Applications',
+        //   url: '/admin/applications/noa-applications-by-depot',
+        // },
         {
           id: 2,
           title: 'CoQ Applications',
@@ -293,10 +272,11 @@ export class SidebarComponent implements OnInit, OnChanges {
         },
       ];
 
-      this.menuItems = this.menuItems.slice(0, 2).concat(
+      this.menuItems = this.menuItems.slice(0, 3).concat(
         {
           id: 3,
-          title: 'CoQ And NOA',
+          title: 'CoQ',
+          // title: 'CoQ And NOA',
           iconName: 'carbon',
           iconId: 'carbon',
           iconColor: 'white',
@@ -304,7 +284,7 @@ export class SidebarComponent implements OnInit, OnChanges {
           subMenuActive: false,
           subRoutes: coqSubRoutes,
         },
-        this.menuItems.slice(2)
+        this.menuItems.slice(3)
       );
     } else if (
       currentUser.userRoles === UserRole.FIELDOFFICER &&
@@ -335,6 +315,68 @@ export class SidebarComponent implements OnInit, OnChanges {
           subRoutes: coqSubRoutes,
         },
         this.menuItems.slice(3)
+      );
+    }
+
+    if (
+      currentUser.directorate === Directorate.DSSRI ||
+      currentUser.userRoles === UserRole.SUPERADMIN
+    ) {
+      let subRoutes = [
+        {
+          id: 1,
+          title: 'CoQ CERTIFICATES',
+          url: '/admin/all-approvals/coq-certificates',
+        },
+        {
+          id: 2,
+          title: 'NoA CLEARANCES',
+          url: '/admin/all-approvals/noa-clearances',
+        },
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 4).concat(
+        {
+          id: 4,
+          title: 'ALL APPROVALS',
+          iconName: 'licence-outline',
+          iconId: 'licence_outline',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+          subRoutes: subRoutes,
+        },
+        this.menuItems.slice(4)
+      );
+    } else if (
+      currentUser.directorate === Directorate.HPPITI ||
+      currentUser.userRoles === UserRole.SUPERADMIN
+    ) {
+      let subRoutes = [
+        {
+          id: 1,
+          title: 'CoQ CERTIFICATES',
+          url: '/admin/all-approvals/coq-certificates',
+        },
+        // {
+        //   id: 2,
+        //   title: 'NoA CLEARANCES',
+        //   url: '/admin/all-approvals/noa-clearances',
+        // },
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 4).concat(
+        {
+          id: 4,
+          title: 'ALL APPROVALS',
+          iconName: 'licence-outline',
+          iconId: 'licence_outline',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+          subRoutes: subRoutes,
+        },
+        this.menuItems.slice(4)
       );
     }
 

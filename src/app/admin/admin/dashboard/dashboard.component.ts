@@ -24,7 +24,12 @@ export class DashboardComponent implements OnInit {
     onStaffDeskForFiveDays: 'Applcations on My Desk in the Last Five Days',
   };
 
-  messageKeysMappedToHeaders = {};
+  messageKeysMappedToHeaders = {
+    subject: 'Subject',
+    isRead: 'Seen',
+    content: 'Content',
+    date: 'Date',
+  };
 
   processingForThreeWeekKeysMappedToHeaders = {
     id: 'Application ID',
