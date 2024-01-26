@@ -407,10 +407,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (
-      !Util.adminRoles.includes(this.currentUser?.userRoles) &&
-      this.currentUser?.location !== LOCATION.HQ
-    ) {
+    if (!Util.adminRoles.includes(this.currentUser?.userRoles)) {
       this.menuItems = this.menuItems.filter(
         (item) =>
           item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS'

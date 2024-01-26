@@ -6,31 +6,18 @@
   }"
 >
   <div
-    [ngClass]="{ 'flex flex-col': directorate === Directorate.HPPITI }"
+    [ngClass]="{
+      'flex flex-col': currentUser.directorate === Directorate.HPPITI
+    }"
     class="logo-title justify-center"
   >
     <img src="../../../assets/img/brand/logo.png" alt="NUPRC" />
-    <h3
-      *ngIf="!isCollapsed && directorate === Directorate.DSSRI"
-      class="text-black font-bold"
-    >
-      CVC
-    </h3>
-    <h4
-      *ngIf="!isCollapsed && directorate === Directorate.HPPITI"
-      class="text-black font-bold"
-    >
-      PROCESSING PLANT
-    </h4>
-    <h4
-      *ngIf="
-        !isCollapsed &&
-        directorate !== Directorate.HPPITI &&
-        directorate !== Directorate.DSSRI
-      "
-      class="text-black font-bold"
-    >
-      CVC
+    <h4 *ngIf="!isCollapsed" class="text-black font-bold">
+      {{
+        currentUser.directorate === Directorate.HPPITI
+          ? "PROCESSING PLANT"
+          : "CVC"
+      }}
     </h4>
   </div>
 
