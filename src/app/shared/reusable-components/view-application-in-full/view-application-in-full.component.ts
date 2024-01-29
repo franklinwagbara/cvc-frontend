@@ -48,18 +48,18 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show('Loading application details...');
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
       window.scrollTo(0, 0);
     });
-    this.getApplication();
     this.currentUser = this.auth.currentUser;
+    this.getApplication();
   }
 
   getApplication() {
-    this.spinner.show('Loading application details');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
