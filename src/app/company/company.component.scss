@@ -1,3 +1,10 @@
+.apply-container {
+  position: relative;
+  margin: auto;
+  padding: 2rem;
+  @apply flex flex-col justify-center items-center;
+}
+
 .Accord {
   padding-left: 0px !important;
   padding-right: 0px !important;

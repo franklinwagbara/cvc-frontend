@@ -10,6 +10,7 @@ export class PopupService {
   public open(message: string, type: 'error' | 'success') {
     this.snackBar.open(message, null, {
       panelClass: [type],
+      duration: 4000
     });
   }
 }

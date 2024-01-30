@@ -20,6 +20,7 @@ import { ViewApplicationInFullComponent } from '../shared/reusable-components/vi
 import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
+import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
@@ -36,8 +37,16 @@ const routes: Routes = [
   { path: 'previewapp/:id', component: PreviewAppComponent },
   { path: 'paymentsum/:id', component: PaymentSumComponent },
   { path: 'upload-document/:id', component: DocumentUploadComponent },
-  { path: 'new', component: NewApplicationComponent },
-  { path: 'renew', component: RenewApplicationComponent },
+  { 
+    path: 'application/new-clearance',
+    component: NewApplicationComponent,
+    pathMatch: 'full'
+  },
+  { 
+    path: 'application/ship-to-ship', 
+    component: StsApplicationComponent,
+    pathMatch: 'full' 
+  },
   { path: 'view-application/:id', component: ViewApplicationComponent },
   { path: 'approvals/:id/coqs', component: ViewCoqCertsComponent },
   {

@@ -9,8 +9,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { PermitStage } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 import {
   IApplicationType,
-  IFacilityType,
-  IVessel,
 } from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { IAction } from '../../interfaces/IAction';
 import { IApplicationProcess } from '../../interfaces/IApplicationProcess';
@@ -24,6 +22,8 @@ import { ApplicationProcessesService } from '../../services/application-processe
 import { LibaryService } from '../../services/libary.service';
 import { PopupService } from '../../services/popup.service';
 import { ILocation } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
+import { IFacilityType } from '../../interfaces/IFacility';
+import { IVessel } from '../../interfaces/IVessel';
 
 const RATES = [
   '0%',

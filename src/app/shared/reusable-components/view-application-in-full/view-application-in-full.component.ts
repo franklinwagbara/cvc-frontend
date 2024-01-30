@@ -48,7 +48,6 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.spinner.show('Loading application details...');
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
@@ -57,9 +56,11 @@ export class ViewApplicationInFullComponent implements OnInit {
     });
     this.currentUser = this.auth.currentUser;
     this.getApplication();
+    this.cd.markForCheck();
   }
 
   getApplication() {
+    this.spinner.show('Loading application details...');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {

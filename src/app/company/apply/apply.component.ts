@@ -17,7 +17,7 @@ export class ApplyComponent {
     this.genk = gen;
   }
 
-  public onSelect(type: 'new' | 'renew') {
-    this.router.navigate(['company', type]);
+  public onSelect(type: 'new-clearance' | 'ship-to-ship') {
+    this.router.navigate(['company', 'application', type]);
   }
 }

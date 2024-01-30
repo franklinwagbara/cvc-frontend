@@ -1,6 +1,6 @@
 <div class="apply-container">
   <div class="apply-wrapper">
-    <h1>NEW CVC CLEARANCE</h1>
+    <h1>NEW SHIP-TO-SHIP APPLICATION</h1>
     <div class="form-wrapper">
       <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
         <form [formGroup]="vesselForm" class="main-form">
@@ -19,7 +19,7 @@
                 class="rounded-r p-2"
                 placeholder="IMO Number"
                 formControlName="imoNumber"
-                (blur)="validateImo()"
+                (blur)="validateImo('source')"
               />
             </div>
             <div class="flex flex-col">
@@ -75,20 +75,18 @@
             </div>
 
             <div class="flex flex-col">
-              <span class="input-label"> Jetty </span>
-              <select 
-                name="jetty" 
-                formControlName="jetty"
+              <span class="input-label"> Total Volume (Litres) </span>
+              <input
+                type="number"
+                name="totalVolume" 
+                formControlName="totalVolume"
                 class="p-2 rounded-r"
                 [ngClass]="{
                   '!border-b border-2 !border !border-red-500':
-                    vesselFormControl['jetty'].touched &&
-                    vesselFormControl['jetty'].invalid
+                    vesselFormControl['totalVolume'].touched &&
+                    vesselFormControl['totalVolume'].invalid
                 }"
-              >
-                <option value="" [selected]="true">-- Select Jetty --</option>
-                <option [value]="jetty?.id" *ngFor="let jetty of jetties">{{ jetty?.name }}</option>
-              </select>
+              />
             </div>
 
             <div class="flex flex-col">
@@ -113,31 +111,6 @@
               </select>
             </div>
 
-            <div class="flex flex-col">
-              <mat-form-field>
-                <span class="input-label">Estimated Time of Arrival (ETA) </span>
-                <div class="flex">
-                  <input
-                    matInput
-                    formControlName="eta"
-                    [ngxMatDatetimePicker]="etaDatePicker"
-                    [min]="dateValidation.min"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="$any(etaDatePicker)"
-                  ></mat-datepicker-toggle>
-                  <ngx-mat-datetime-picker #etaDatePicker 
-                    [showSpinners]="true" 
-                    [showSeconds]="true"
-                    [stepHour]="1" [stepMinute]="1" 
-                    [stepSecond]="1"
-                    [touchUi]="true"
-                  ></ngx-mat-datetime-picker>
-                </div>
-              </mat-form-field>
-            </div>
-
             <button
               *ngIf="isNext"
               class="btn-next"
@@ -151,31 +124,56 @@
       </div>
 
       <div class="second-segment" *ngIf="activateSecondSegment">
-        <div class="appDepotForm">
-          <form class="appDepotForm depot-form" [formGroup]="appDepotForm">
-            <h5 class="w-full">Add Destination Depot(s)</h5>
+        <div>
+          <form class="destination-vessel-form" [formGroup]="destinationVesselForm">
+            <h5 class="w-full">Destination Vessel(s)</h5>
+
             <div class="flex flex-col">
-              <span class="input-label"> Depot Name </span>
-              <select
+              <span class="input-label"> IMO Number </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    destVesselFormControl['imoNumber'].touched &&
+                    destVesselFormControl['imoNumber'].invalid
+                }"
+                autofocus
                 type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="depotId"
-              >
-                <option value="" [selected]="true">-- Select Depot --</option>
-                <option *ngFor="let d of depots" [ngValue]="d.id">
-                  {{ d.name }}
-                </option>
-              </select>
+                class="rounded-r p-2"
+                placeholder="Destination Vessel IMO"
+                formControlName="imoNumber"
+                (blur)="validateImo('destination')"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="flex justify-between w-full input-label">
+                <span class=""> Vessel Name </span>
+                <span *ngIf="vesselInfo" class="text-green-600">
+                  Vessel found
+                </span>
+              </div>
+              <input
+                type="text"
+                [readOnly]="vesselInfo"
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    destVesselFormControl['name'].touched &&
+                    destVesselFormControl['name'].invalid
+                }"
+                class="rounded-r p-2"
+                placeholder="Vessel Name"
+                formControlName="name"
+              />
             </div>
 
             <div class="flex flex-col">
-              <span class="input-label"> Volume to Discharge </span>
+              <span class="input-label"> Volume to Transfer </span>
               <input
                 type="number"
                 min="0"
                 class="border border-t border-b rounded-r p-2"
-                placeholder="Volume"
-                formControlName="volume"
+                placeholder="Volume To Transfer"
+                formControlName="transferVolume"
               />
             </div>
 
@@ -197,30 +195,32 @@
               mat-stroked-button
               color="primary"
               class="m-4"
-              [disabled]="appDepotForm.invalid ? true : null"
-              (click)="addAppDepot()"
+              [disabled]="destinationVesselForm.invalid ? true : null"
+              (click)="addDestinationVessel()"
             >
-              Add Depot
+              Add Vessel
             </button>
 
-            <div *ngIf="selectedAppDepots?.length > 0">
+            <div *ngIf="selectedDestVessels?.length > 0">
               <table class="table table-auto data-table">
                 <thead>
                   <tr>
-                    <th>Depot Name</th>
-                    <th>Volumne</th>
+                    <th>Vessel Name</th>
+                    <th>Imo Number</th>
+                    <th>Volume</th>
                     <th>Product Name</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let t of selectedAppDepots">
+                  <tr *ngFor="let t of selectedDestVessels">
                     <td>{{ t.name }}</td>
-                    <td>{{ t.volume }}</td>
-                    <td>{{ t.product }}</td>
+                    <td>{{ t.imoNumber }}</td>
+                    <td>{{ t.transferVolume }}</td>
+                    <td>{{ t.productName }}</td>
                     <td>
                       <button
-                        (click)="removeDepot(t)"
+                        (click)="removeVessel(t)"
                         mat-flat-button
                         color="accent"
                       >
@@ -241,16 +241,85 @@
               </button>
 
               <button
-                *ngIf="selectedAppDepots.length > 0"
+                *ngIf="selectedDestVessels.length > 0"
                 mat-raised-button
                 color="primary"
                 class="primary"
-                (click)="submit()"
+                (click)="updateState(3)"
               >
                 Continue
               </button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <div *ngIf="activateThirdSegment">
+        <h4 class="text-center">Preview</h4>
+        <div>
+          <h5>Source Vessel</h5>
+          <table class="table table-striped font-medium">
+            <tbody>
+              <tr>
+                <th 
+                  scope="col" 
+                  *ngFor="let key of ['Imo Number', 'Vessel Name', 'Mother Vessel', 'Loading Port', 'Total Volume']"
+                >{{ key }}</th>
+              </tr>
+              <tr>
+                <td *ngFor="let field of ['imoNumber', 'vesselName', 'motherVessel', 'loadingPort', 'totalVolume']"
+              >{{ vesselFormControl[field].value }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
+
+          <h5>Destination Vessel(s)</h5>
+          <table class="table table-striped font-medium">
+            <tbody>
+              <tr>
+                <th 
+                  scope="col" 
+                  *ngFor="let key of ['Vessel Name', 'Imo Number', 'Volume to Transfer', 'Product Name']"
+                >{{ key }}</th>
+              </tr>
+              <tr *ngFor="let data of selectedDestVessels">
+                <td *ngFor="let field of ['name', 'imoNumber', 'transferVolume', 'productName']"
+              >{{ data[field] }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="flex justify-between">
+            <button
+              *ngIf="!submitted"
+              class="btn-back"
+              mat-raised-button
+              (click)="updateState(2)"
+            >
+              Back
+            </button>
+            
+            <button
+              *ngIf="!submitting && !submitted"
+              mat-raised-button
+              color="primary"
+              class="primary"
+              [disabled]="submitting"
+              (click)="submit()"
+            >
+              Submit
+            </button>
+
+            <button
+              *ngIf="submitting"
+              class="!flex !justify-center !items-center"
+              mat-mini-fab
+              color="disabled"
+            >
+              <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -11,10 +11,10 @@ import { AppSource } from '../../../../src/app/shared/constants/appSource';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
-  IFacility,
   ITankDTO,
 } from '../apply/new-application/new-application.component';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { IFacility } from 'src/app/shared/interfaces/IFacility';
 
 @Component({
   templateUrl: 'myapplication.component.html',
