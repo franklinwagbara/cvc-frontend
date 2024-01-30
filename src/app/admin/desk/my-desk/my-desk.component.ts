@@ -187,6 +187,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewCoqCert(event: any) {
+    debugger;
     if (this.isFAD) {
       window.open(
         `${environment.apiUrl}/CoQ/view_CoQ_cert?${event.id}`,
