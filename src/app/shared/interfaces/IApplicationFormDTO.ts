@@ -19,5 +19,6 @@ export interface IApplicationFormDTO {
 
   facilitySources?: IFacility[];
   depotList?: IAppDepot[];
+  transferDate?: string;
   destinationVessels?: IVessel[];
 }

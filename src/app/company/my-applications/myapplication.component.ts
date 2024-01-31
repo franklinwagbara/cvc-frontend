@@ -84,13 +84,7 @@ export class MyApplicationComponent implements OnInit {
             res.data = (res.data as Application[]).filter(
               (x) => x.status.toLowerCase() == 'processing'
             );
-          this.applications = res.data.sort((a, b) => {
-            return new Date(a.createdDate) > new Date(b.createdDate)
-              ? -1
-              : new Date(a.createdDate) < new Date(b.createdDate)
-              ? 1
-              : 0;
-          });
+          this.applications = res.data.reverse();
           this.applications$.next(res.data);
 
           //todo: display success dialog
@@ -167,29 +161,6 @@ export class MyApplicationComponent implements OnInit {
   uploadDocument(app: Application) {
     this.router.navigate([`/company/upload-document/${app.id}`]);
   }
-
-  // viewApplication(event: Event, type: string) {
-  //   const operationConfiguration = {
-  //     applications: {
-  //       data: {
-  //         application: event,
-  //       },
-  //       view: ViewApplicationComponent,
-  //     },
-  //   };
-
-  //   let dialogRef = this.dialog.open(operationConfiguration[type].view, {
-  //     data: {
-  //       data: operationConfiguration[type].data,
-  //     },
-  //     minHeight: '99vh',
-  //     minWidth: '94vw',
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((res) => {
-  //     //The need to Refetch data not apparent at the moment
-  //   });
-  // }
 
   viewApplication(event: any, type: string) {
     this.router.navigate([`/company/view-application/${event.id}`], {

@@ -51,7 +51,7 @@
   @apply border border-gray-400 p-5 flex flex-col gap-10 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
 }
 
-.destination-vessel-form {
+.recipient-vessel-form {
   min-width: 400px;
   @apply border border-gray-400 flex flex-col p-5 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
 }
