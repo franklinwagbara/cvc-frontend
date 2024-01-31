@@ -85,8 +85,8 @@ export class NoaApplicationsByJettyComponent implements OnInit {
   viewApplication(event: any): void {
     this.router.navigate([
       'admin',
-      'coq-and-plant',
-      'noa-applications-by-jetty',
+      'vessel-clearance',
+      'noa-applications-by-jetty-officer',
       event.id,
     ]);
   }

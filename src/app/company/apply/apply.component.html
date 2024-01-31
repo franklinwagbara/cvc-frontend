@@ -1,18 +1,18 @@
 <div class="apply-container">
   <div class="apply-wrapper">
-    <h1>NEW CVC APPLICATION</h1>
+    <h1>NEW APPLICATION</h1>
     <div class="option-wrapper">
       <div class="option">
         <h3>New Clearance</h3>
-        <p>Apply for a new clearance</p>
-        <button (click)="onSelect('new')">Start Application</button>
+        <p>Apply for new clearance</p>
+        <button mat-button (click)="onSelect('new-clearance')">Start Application</button>
       </div>
 
-      <!-- <div class="option">
-        <h3>Renewal Licence</h3>
-        <p>Apply for a renewal licence</p>
-        <button (click)="onSelect('renew')">Select</button>
-      </div> -->
+      <div class="option">
+        <h3>Ship-to-Ship Application</h3>
+        <p>Apply for ship-to-ship transfer</p>
+        <button mat-button (click)="onSelect('ship-to-ship')">Start Application</button>
+      </div>
     </div>
   </div>
 </div>
