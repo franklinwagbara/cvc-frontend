@@ -43,6 +43,7 @@ import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaApplicationsByJettyComponent } from '../noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { CoqApplicationPPFormComponent } from '../processing-plant/coq-application-form/coq-application-pp-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -297,6 +298,15 @@ const routes: Routes = [
   {
     path: 'coq-and-plant/processing-plant/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
+    pathMatch: 'full',
+    canActivate: [FieldOfficerOrOfficeGuard],
+    data: {
+      type: ApplicationTerm.PROCESSINGPLANT,
+    },
+  },
+  {
+    path: 'coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+    component: CoqApplicationPPFormComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerOrOfficeGuard],
     data: {

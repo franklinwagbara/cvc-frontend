@@ -83,6 +83,17 @@ import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-appl
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
 import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { CoqApplicationPPFormComponent } from './processing-plant/coq-application-form/coq-application-pp-form.component';
+import { CoqFormReviewPPComponent } from './processing-plant/coq-application-form/coq-form-review/coq-form-review-pp.component';
+import { EditCoqFormPPComponent } from './processing-plant/coq-application-form/edit-coq-form/edit-coq-form-pp.component';
+import { CoqApplicationPreviewPPComponent } from './processing-plant/coq-application-form/coq-application-preview/coq-application-preview-pp.component';
+import { GasDataEntryComponent } from './processing-plant/coq-application-form/gas-data-entry/gas-data-entry.component';
+import { LiquidDataDynamicEntryComponent } from './processing-plant/coq-application-form/liquid-data-dynamic-entry/liquid-data-dynamic-entry.component';
+import { LiquidDataStaticEntryComponent } from './processing-plant/coq-application-form/liquid-data-static-entry/liquid-data-static-entry.component';
+import { GasDataDynamicEntryComponent } from './processing-plant/coq-application-form/gas-data-dynamic-entry/gas-data-dynamic-entry.component';
+import { GasDataStaticEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/gas-data-static-entry.component';
+import { DataEntryFormComponent } from './processing-plant/coq-application-form/data-entry-form/data-entry-form.component';
+import { PageTitleComponent } from './processing-plant/coq-application-form/page-title/page-title.component';
 
 @NgModule({
   declarations: [
@@ -144,6 +155,17 @@ import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa
     FieldOfficerJettySettingComponent,
     NoaVesselClearanceComponent,
     NoaApplicationsByJettyComponent,
+    CoqApplicationPPFormComponent,
+    CoqFormReviewPPComponent,
+    EditCoqFormPPComponent,
+    CoqApplicationPreviewPPComponent,
+    GasDataEntryComponent,
+    LiquidDataDynamicEntryComponent,
+    LiquidDataStaticEntryComponent,
+    GasDataDynamicEntryComponent,
+    GasDataStaticEntryComponent,
+    DataEntryFormComponent,
+    PageTitleComponent,
   ],
 
   imports: [

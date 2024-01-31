@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
-import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
@@ -31,6 +30,8 @@ export interface RouteInfo {
   iconId: string;
   iconColor: string;
   subRoutes: SubRouteInfo[];
+  directorate: 'HPPITI' | 'DSSRI' | 'BOTH';
+  userRole: UserRole[];
 }
 
 const ROUTES: RouteInfo[] = [
@@ -42,6 +43,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -59,6 +62,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -76,6 +81,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'DSSRI',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -98,6 +105,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -113,6 +122,31 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
+    id: 4,
+    title: 'Processing Plant',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
+    subRoutes: [
+      {
+        id: 2,
+        title: 'CoQ Form',
+        url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+
+      },
+      {
+        id: 1,
+        title: 'CoQ Applications',
+        url: '/admin/coq-and-plant/coq-applications-by-depot',
+      },
+    ],
+  },
+
+  {
     id: 7,
     title: 'PAYMENTS',
     iconName: 'payment',
@@ -120,6 +154,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -137,6 +173,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -164,6 +202,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -281,6 +321,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             iconColor: 'white',
             active: false,
             subMenuActive: false,
+            directorate: 'BOTH',
+            userRole: [UserRole.ALL],
 
             subRoutes: [
               {
@@ -298,6 +340,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             iconColor: 'white',
             active: false,
             subMenuActive: false,
+            directorate: 'BOTH',
+            userRole: [UserRole.ALL],
 
             subRoutes: [
               {
@@ -337,6 +381,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: coqSubRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(3)
       );
