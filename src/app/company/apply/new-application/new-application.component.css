@@ -16,13 +16,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(
-    16,
-    13,
-    13,
-    0.9
-  ); /* Adjust the alpha value for the desired transparency */
+  background-color: rgba(16, 13, 13, 0.9); /* Adjust the alpha value for the desired transparency */
   z-index: 2; /* Ensure the backdrop is behind the progress bar */
+}
+
+.input-label {
+  @apply text-left py-2 font-medium text-slate-600;
 }
 
 .form {

@@ -1,0 +1,126 @@
+.form-wrapper {
+  @apply flex gap-5;
+}
+
+.form-wrapper h3 {
+  font-size: large;
+}
+
+.apply-container {
+  position: relative;
+  margin: auto;
+  padding: 2rem;
+  @apply flex flex-col justify-center items-center;
+}
+
+.apply-wrapper {
+  @apply flex flex-col gap-5 border-[1px] border-slate-200 p-10 pb-16;
+}
+
+.apply-wrapper h1 {
+  font-size: larger;
+  text-align: center;
+  font-weight: bolder;
+}
+
+.input-label {
+  @apply text-left my-2 font-medium text-slate-600;
+}
+
+.progress-bar-container {
+  position: relative;
+}
+
+.progress-bar-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    16,
+    13,
+    13,
+    0.9
+  ); /* Adjust the alpha value for the desired transparency */
+  z-index: 2; /* Ensure the backdrop is behind the progress bar */
+}
+
+.form {
+  min-width: 400px;
+  @apply border border-gray-400 p-5 flex flex-col gap-10 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
+}
+
+.destination-vessel-form {
+  min-width: 400px;
+  @apply border border-gray-400 flex flex-col p-5 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
+}
+
+.form h3 {
+  @apply bg-slate-200 p-3;
+}
+
+.form button {
+  @apply bg-blue-200 p-2 border;
+}
+
+.data-table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table td,
+.data-table th {
+  border: 1px solid #aae3d6;
+  padding: 8px;
+}
+
+.data-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.data-table tr:hover {
+  background-color: #aae3d6;
+}
+
+.data-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #2d748a;
+  color: white;
+}
+
+.green-icon {
+  color: green;
+}
+
+.red-icon {
+  color: red;
+}
+
+button {
+  @apply mt-5 mx-3;
+}
+
+.licences {
+  @apply relative border border-gray-400 py-4 px-3 my-4;
+}
+
+.licenses h5 {
+  background: rgb(75, 4, 91);
+  background: linear-gradient(
+    90deg,
+    rgba(75, 4, 91, 1) 0%,
+    rgba(212, 3, 193, 1) 100%
+  );
+  width: fit-content;
+  font-size: small;
+  color: white;
+  @apply relative -mt-7 px-3 py-1;
+}
+
+.hide {
+  display: none;
+}

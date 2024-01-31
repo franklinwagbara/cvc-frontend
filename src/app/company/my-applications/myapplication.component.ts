@@ -11,10 +11,10 @@ import { AppSource } from '../../../../src/app/shared/constants/appSource';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
-  IFacility,
   ITankDTO,
 } from '../apply/new-application/new-application.component';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
+import { IFacility } from 'src/app/shared/interfaces/IFacility';
 
 @Component({
   templateUrl: 'myapplication.component.html',
@@ -28,6 +28,7 @@ export class MyApplicationComponent implements OnInit {
   public applicationStatus$ = new Subject<string>();
   private rrr: string;
   public applications$ = new Subject<Application[]>();
+  private queryParamValue: string = null;
 
   applications: Application[];
 
@@ -48,6 +49,7 @@ export class MyApplicationComponent implements OnInit {
   constructor(
     private gen: GenericService,
     private router: Router,
+    private route: ActivatedRoute,
     public dialog: MatDialog,
     private progressbar: ProgressBarService,
     private applicationServer: ApplyService,
@@ -61,6 +63,11 @@ export class MyApplicationComponent implements OnInit {
     this.rrr$.subscribe((data) => {
       this.rrr = data;
     });
+
+    this.route.queryParamMap.subscribe((q) => {
+      this.queryParamValue = q.get('processing');
+      this.cd.markForCheck();
+    });
   }
 
   ngOnInit(): void {
@@ -73,11 +80,18 @@ export class MyApplicationComponent implements OnInit {
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
+          if (this.queryParamValue)
+            res.data = (res.data as Application[]).filter(
+              (x) => x.status.toLowerCase() == 'processing'
+            );
           this.applications = res.data.sort((a, b) => {
-            return new Date(a.createdDate) > new Date(b.createdDate) ? -1 :
-              new Date(a.createdDate) < new Date(b.createdDate) ? 1 : 0;
+            return new Date(a.createdDate) > new Date(b.createdDate)
+              ? -1
+              : new Date(a.createdDate) < new Date(b.createdDate)
+              ? 1
+              : 0;
           });
-          this.applications$.next(res.data)
+          this.applications$.next(res.data);
 
           //todo: display success dialog
           this.progressbar.close();
@@ -232,6 +246,8 @@ export interface Application {
   vessel: Vessel;
   appHistories: any[];
   documents?: any[];
+
+  applicationDepots: any[];
 }
 
 export interface Vessel {

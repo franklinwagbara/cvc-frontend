@@ -7,6 +7,10 @@ import { ApplicationService } from '../../../../../src/app/shared/services/appli
 import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { IAppDepot } from 'src/app/shared/interfaces/IAppDepot';
+import { IFacility, IFacilityType } from 'src/app/shared/interfaces/IFacility';
+import { IApplicationFormDTO } from 'src/app/shared/interfaces/IApplicationFormDTO';
+import { IVessel } from 'src/app/shared/interfaces/IVessel';
 
 @Component({
   selector: 'app-new-application',
@@ -220,10 +224,12 @@ export class NewApplicationComponent implements OnInit {
 
     const isExist = this.selectedAppDepots.find((x) => x.name == newDepot.name);
 
-    this.appDepotForm.reset();
-
-    if (!isExist) this.selectedAppDepots.push(newDepot);
+    if (!isExist) {
+      this.selectedAppDepots.push(newDepot);
+      this.appDepotForm.reset();
+    }
     else this.popUp.open('This depot has been added before!', 'error');
+
     this.cd.markForCheck();
   }
 
@@ -421,22 +427,6 @@ export class NewApplicationComponent implements OnInit {
   }
 }
 
-export interface IFacilityType {
-  id: number;
-  name: string;
-  code: string;
-}
-
-export interface IFacility {
-  sourceOfProducts: string;
-  facilityName: string;
-  name?: string;
-  address: string;
-  licenseNumber: string;
-  stateId: string;
-  lgaId: string;
-}
-
 export interface IState {
   id: number;
   name: string;
@@ -455,16 +445,6 @@ export interface ITank {
   name: string;
   capacity: number;
   product: string;
-}
-
-export interface IAppDepot {
-  id: number;
-  depotId: number;
-  // appId: number;
-  name: string;
-  productId: number;
-  volume: number;
-  product?: string;
 }
 
 export interface ITankDTO {
@@ -504,45 +484,4 @@ export interface IDepot {
   capacity: number;
   state: IState;
   stateName: string;
-}
-
-export interface IApplicationFormDTO {
-  vesselName: string;
-  loadingPort: string;
-  marketerName: string;
-  vesselTypeId: number;
-  imoNumber: string;
-  motherVessel: string;
-  jetty: string;
-  eta: string;
-
-  applicationTypeId: number;
-  facilityName: string;
-
-  facilitySources: IFacility[];
-  depotList: IAppDepot[];
-  // productId: string;
-  // dischargePort: string;
-  // capacity: number;
-  // operator: string;
-  // callSIgn: string;
-  // flag: string;
-  // placeOfBuild: string;
-  // yearOfBuild: string;
-  // deadWeight: number;
-}
-
-export interface IVessel {
-  id?: number;
-  vesselName: string;
-  name?: string;
-  capacity: number;
-  operator: string;
-  vesselTypeId: string;
-  vesselType?: string;
-  placeOfBuild: string;
-  yearOfBuild: number;
-  flag: string;
-  callSIgn: string;
-  imoNumber: string;
 }

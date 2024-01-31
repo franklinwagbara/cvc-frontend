@@ -13,10 +13,10 @@ import { ApplicationProcessesService } from '../../../../../src/app/shared/servi
 import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
   IApplicationType,
-  IFacilityType,
 } from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { PermitStage } from '../modules-setting/modules-setting.component';
 import { ILocation } from '../all-staff/all-staff.component';
+import { IFacilityType } from 'src/app/shared/interfaces/IFacility';
 
 @Component({
   selector: 'app-app-process',

@@ -60,7 +60,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableDischargeClearanceControls')
   enableDischargeClearanceControls?: boolean = false;
-  @Input('EnableViewCertificateControl') enableViewCertificateControl?: boolean = false;
+  @Input('EnableViewCertificateControl')
+  enableViewCertificateControl?: boolean = false;
   @Input('EnableViewScheduleControl') enableViewScheduleControl?: boolean =
     false;
   @Input('EnableViewCoQCertsControl') enableViewCoQCertsControl?: boolean =

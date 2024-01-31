@@ -1,8 +1,8 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../src/environments/environment';
-import { IApplicationFormDTO } from '../../../../src/app/company/apply/new-application/new-application.component';
 import { Observable } from 'rxjs';
+import { IApplicationFormDTO } from '../interfaces/IApplicationFormDTO';
 
 const API = `${environment.apiUrl}/application`;
 
@@ -50,6 +50,10 @@ export class ApplicationService {
 
   viewApplicationByDepot(): Observable<any> {
     return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
+  }
+
+  viewApplicationByJetty(): Observable<any> {
+    return this.http.get<any>(`${API}/view-application-By-Jetty-Officer`, {});
   }
 
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {

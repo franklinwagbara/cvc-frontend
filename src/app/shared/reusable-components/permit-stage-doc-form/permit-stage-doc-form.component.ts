@@ -26,7 +26,6 @@ import {
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
 import {
   IApplicationType,
-  IFacilityType,
 } from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { AppException } from '../../exceptions/AppException';
 import { AdminService } from '../../services/admin.service';

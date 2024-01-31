@@ -62,6 +62,7 @@ import { DischargeClearanceFormComponent } from './reusable-components/discharge
 import { EmailConfigFormComponent } from './reusable-components/email-config-form/email-config-form.component';
 import { NoaApplicationPreviewComponent } from './reusable-components/noa-application-preview/noa-application-preview.component';
 import { ViewDepotsComponent } from './reusable-components/view-application-in-full/view-depots/view-depots.component';
+import { JettyOfficerFormComponent } from './reusable-components/jetty-officer-form/jetty-officer-form.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import { ViewDepotsComponent } from './reusable-components/view-application-in-f
     EmailConfigFormComponent,
     NoaApplicationPreviewComponent,
     ViewDepotsComponent,
+    JettyOfficerFormComponent,
   ],
   imports: [
     CommonModule,

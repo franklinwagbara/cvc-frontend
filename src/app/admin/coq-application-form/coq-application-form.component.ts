@@ -1,9 +1,7 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  DoCheck,
   ElementRef,
   HostListener,
   OnDestroy,
@@ -26,7 +24,7 @@ import { FileuploadWithProgressService } from '../../shared/services/fileupload-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { ActivatedRoute, Navigation, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ICOQ } from '../../../../src/app/shared/interfaces/ICoQApplication';
 import { environment } from '../../../../src/environments/environment';
 import {

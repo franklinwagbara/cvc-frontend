@@ -1,0 +1,328 @@
+<div class="apply-container">
+  <div class="apply-wrapper">
+    <h1>NEW SHIP-TO-SHIP APPLICATION</h1>
+    <div class="form-wrapper">
+      <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
+        <form [formGroup]="vesselForm" class="main-form">
+          <div class="first-segment" *ngIf="activateFirstSegment">
+            <h5 class="w-full">Vessel Information</h5>
+            <div class="flex flex-col">
+              <span class="input-label"> IMO Number </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['imoNumber'].touched &&
+                    vesselFormControl['imoNumber'].invalid
+                }"
+                autofocus
+                type="text"
+                class="rounded-r p-2"
+                placeholder="IMO Number"
+                formControlName="imoNumber"
+                (blur)="validateImo('source')"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="input-label">
+                <span> Vessel Name </span>
+                <span *ngIf="vesselInfo" class="text-green-600">
+                  Vessel found
+                </span>
+              </div>
+              <input
+                type="text"
+                [readOnly]="vesselInfo"
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselName'].touched &&
+                    vesselFormControl['vesselName'].invalid
+                }"
+                class="rounded-r p-2"
+                placeholder="Vessel Name"
+                formControlName="vesselName"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Mother Vessel </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['motherVessel'].touched &&
+                    vesselFormControl['motherVessel'].invalid
+                }"
+                type="text"
+                class="rounded-r p-2"
+                placeholder="Mother Vessel Name"
+                formControlName="motherVessel"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Loading Port </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['loadingPort'].touched &&
+                    vesselFormControl['loadingPort'].invalid
+                }"
+                type="text"
+                class="rounded-r p-2"
+                placeholder="Loading Port"
+                formControlName="loadingPort"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Total Volume (Litres) </span>
+              <input
+                type="number"
+                name="totalVolume" 
+                formControlName="totalVolume"
+                placeholder="Total Volume to Discharge"
+                class="p-2 rounded-r"
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    vesselFormControl['totalVolume'].touched &&
+                    vesselFormControl['totalVolume'].invalid
+                }"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Vessel Type </span>
+              <select
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    vesselFormControl['vesselTypeId'].touched &&
+                    vesselFormControl['vesselTypeId'].invalid
+                }"
+                type="text"
+                class="rounded-r p-2"
+                formControlName="vesselTypeId"
+              >
+                <option value="" [selected]="true">
+                  -- Select Vessel Type --
+                </option>
+                <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
+                  {{ vt.name }}
+                </option>
+              </select>
+            </div>
+
+            <button
+              *ngIf="isNext"
+              class="btn-next"
+              mat-raised-button
+              (click)="updateState(2)"
+            >
+              Next
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="second-segment" *ngIf="activateSecondSegment">
+        <div>
+          <form class="destination-vessel-form" [formGroup]="destinationVesselForm">
+            <h5 class="w-full">Destination Vessel(s)</h5>
+
+            <div class="flex flex-col">
+              <span class="input-label"> IMO Number </span>
+              <input
+                [ngClass]="{
+                  '!border-b border-2 !border !border-red-500':
+                    destVesselFormControl['imoNumber'].touched &&
+                    destVesselFormControl['imoNumber'].invalid
+                }"
+                autofocus
+                type="text"
+                class="rounded-r p-2"
+                placeholder="Destination Vessel IMO"
+                formControlName="imoNumber"
+                (blur)="validateImo('destination')"
+              />
+            </div>
+            <div class="flex flex-col">
+              <div class="flex justify-between w-full input-label">
+                <span class=""> Vessel Name </span>
+                <span *ngIf="vesselInfo" class="text-green-600">
+                  Vessel found
+                </span>
+              </div>
+              <input
+                type="text"
+                [readOnly]="vesselInfo"
+                [ngClass]="{
+                  'bg-gray-100 cursor-not-allowed ': vesselInfo,
+                  ' !border-b border-2 !border !border-red-500':
+                    destVesselFormControl['name'].touched &&
+                    destVesselFormControl['name'].invalid
+                }"
+                class="rounded-r p-2"
+                placeholder="Vessel Name"
+                formControlName="name"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Volume to Transfer </span>
+              <input
+                type="number"
+                min="0"
+                class="border border-t border-b rounded-r p-2"
+                placeholder="Volume To Transfer"
+                formControlName="transferVolume"
+              />
+            </div>
+
+            <div class="flex flex-col">
+              <span class="input-label"> Product </span>
+              <select
+                type="text"
+                class="border border-t border-b rounded-r p-2"
+                formControlName="productId"
+              >
+                <option value="" [selected]="true">-- Select Product --</option>
+                <option *ngFor="let p of products" [ngValue]="p.id">
+                  {{ p.name }}
+                </option>
+              </select>
+            </div>
+
+            <button
+              mat-stroked-button
+              color="primary"
+              class="m-4"
+              [disabled]="destinationVesselForm.invalid ? true : null"
+              (click)="addDestinationVessel()"
+            >
+              Add Vessel
+            </button>
+
+            <div *ngIf="selectedDestVessels?.length > 0">
+              <table class="table table-auto data-table">
+                <thead>
+                  <tr>
+                    <th>Vessel Name</th>
+                    <th>Imo Number</th>
+                    <th>Volume</th>
+                    <th>Product Name</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let t of selectedDestVessels">
+                    <td>{{ t.name }}</td>
+                    <td>{{ t.imoNumber }}</td>
+                    <td>{{ t.transferVolume }}</td>
+                    <td>{{ t.productName }}</td>
+                    <td>
+                      <button
+                        (click)="removeVessel(t)"
+                        mat-flat-button
+                        color="accent"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div>
+              <button
+                class="btn-back"
+                mat-raised-button
+                (click)="updateState(1)"
+              >
+                Back
+              </button>
+
+              <button
+                *ngIf="selectedDestVessels.length > 0"
+                mat-raised-button
+                color="primary"
+                class="primary"
+                (click)="updateState(3)"
+              >
+                Continue
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div *ngIf="activateThirdSegment">
+        <h4 class="text-center">Preview</h4>
+        <div>
+          <h5>Source Vessel</h5>
+          <table class="table table-striped font-medium">
+            <tbody>
+              <tr>
+                <th 
+                  scope="col" 
+                  *ngFor="let key of ['Imo Number', 'Vessel Name', 'Mother Vessel', 'Loading Port', 'Total Volume']"
+                >{{ key }}</th>
+              </tr>
+              <tr>
+                <td *ngFor="let field of ['imoNumber', 'vesselName', 'motherVessel', 'loadingPort', 'totalVolume']"
+              >{{ vesselFormControl[field].value }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
+
+          <h5>Destination Vessel(s)</h5>
+          <table class="table table-striped font-medium">
+            <tbody>
+              <tr>
+                <th 
+                  scope="col" 
+                  *ngFor="let key of ['Vessel Name', 'Imo Number', 'Volume to Transfer', 'Product Name']"
+                >{{ key }}</th>
+              </tr>
+              <tr *ngFor="let data of selectedDestVessels">
+                <td *ngFor="let field of ['name', 'imoNumber', 'transferVolume', 'productName']"
+              >{{ data[field] }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="flex justify-between">
+            <button
+              *ngIf="!submitted"
+              class="btn-back"
+              mat-raised-button
+              (click)="updateState(2)"
+            >
+              Back
+            </button>
+            
+            <button
+              *ngIf="!submitting && !submitted"
+              mat-raised-button
+              color="primary"
+              class="primary"
+              [disabled]="submitting"
+              (click)="submit()"
+            >
+              Submit
+            </button>
+
+            <button
+              *ngIf="submitting"
+              class="!flex !justify-center !items-center"
+              mat-mini-fab
+              color="disabled"
+            >
+              <mat-spinner class="" diameter="35" strokeWidth="7"></mat-spinner>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

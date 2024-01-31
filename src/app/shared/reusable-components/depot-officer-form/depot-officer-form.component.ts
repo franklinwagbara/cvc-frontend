@@ -68,7 +68,6 @@ export class DepotOfficerFormComponent {
       },
 
       error: (error: unknown) => {
-        console.log(error);
         this.popUp.open(
           'Operation failed! Could not create the Branch!',
           'error'

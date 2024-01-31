@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
-import { decodeFullUserInfo } from '../../../../src/app/helpers/tokenUtils';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
@@ -272,27 +271,28 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     if (this.currentUser.userRoles === UserRole.FIELDOFFICER) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
-        {
-          id: 3,
-          title: 'VESSEL CLEARANCE',
-          iconName: 'approval',
-          iconId: 'approval',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-      
-          subRoutes: [
-            {
-              id: 1,
-              title: 'VESSEL CLEARANCE',
-              url: '/admin/vessel-clearance/noa-applications'
-            }
-          ]
-        },
-        this.menuItems.slice(2)
-      )
-    }
+        [
+          {
+            id: 3,
+            title: 'VESSEL CLEARANCE',
+            iconName: 'approval',
+            iconId: 'approval',
+            iconColor: 'white',
+            active: false,
+            subMenuActive: false,
 
+            subRoutes: [
+              {
+                id: 1,
+                title: 'DISCHARGE CLEARANCE',
+                url: '/admin/vessel-clearance/noa-applications-by-jetty-officer',
+              },
+            ],
+          },
+        ],
+        this.menuItems.slice(2)
+      );
+    }
 
     // Show CoQ And Plant tab only to Staffs in Field Offices and Field Officers
     if (this.auth.isFieldOfficer || this.auth.isFO) {
@@ -306,7 +306,7 @@ export class SidebarComponent implements OnInit, OnChanges {
           id: 2,
           title: 'Processing Plant',
           url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        }
+        },
       ];
 
       this.menuItems = this.menuItems.slice(0, 3).concat(

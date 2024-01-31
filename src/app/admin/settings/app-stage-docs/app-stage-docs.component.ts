@@ -14,13 +14,13 @@ import { AppStageDocumentService } from '../../../../../src/app/shared/services/
 import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
   IApplicationType,
-  IFacilityType,
 } from '../../../../../src/app/company/apply/new-application/new-application.component';
 import {
   Category,
   PermitStage,
   Phase,
 } from '../modules-setting/modules-setting.component';
+import { IFacilityType } from 'src/app/shared/interfaces/IFacility';
 
 @Component({
   selector: 'app-app-stage-docs',

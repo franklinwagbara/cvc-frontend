@@ -54,12 +54,13 @@ export class ViewApplicationInFullComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
-    this.getApplication();
     this.currentUser = this.auth.currentUser;
+    this.getApplication();
+    this.cd.markForCheck();
   }
 
   getApplication() {
-    this.spinner.show('Loading application details');
+    this.spinner.show('Loading application details...');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
         if (res.success) {
