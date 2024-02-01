@@ -25,7 +25,7 @@ export class CompanyService {
     );
   }
 
-  public saveCompanyProfile(data) {
+  public updateCompanyProfile(data) {
     return this.http.post<any>(
       `${environment.apiUrl}/Company/update-profile`,
       data
@@ -131,5 +131,9 @@ export class CompanyService {
 
   public getMessagesById(id: number) {
     return this.http.get<any>(`${API}/Get-Message-ById?id=${id}`);
+  }
+
+  public getOperatingFacilities() {
+    return this.http.get<any>(`${API}/OperatingFacilities`);
   }
 }

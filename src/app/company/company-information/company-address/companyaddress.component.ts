@@ -6,6 +6,7 @@ import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { CompanyService } from '../../../../../src/app/shared/services/company.service';
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   templateUrl: 'companyaddress.component.html',
@@ -26,7 +27,8 @@ export class CompanyAddressComponent implements OnInit {
     private companyService: CompanyService,
     private popupService: PopupService,
     private auth: AuthenticationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private spinner: SpinnerService
   ) {
     this.cd = cdr;
     this.currentUsername = this.auth.currentUser;
@@ -57,13 +59,18 @@ export class CompanyAddressComponent implements OnInit {
   }
 
   getCompanyProfile(email) {
+    //this.spinner.show('Loading company address');
     this.companyService.getCompanyProfile(email).subscribe({
       next: (res) => {
+        this.spinner.close();
         this.address = res.data.registeredAddress;
         this.countries = res.data.nations;
-        this.addressForm.get('countryName').setValue(this.address.countryName);
+        this.addressForm.get('countryName').setValue(this.address?.countryName);
         console.log(res);
         this.cd.markForCheck();
+      },
+      error: (error) => {
+        this.spinner.close();
       },
     });
   }
@@ -92,14 +99,17 @@ export class CompanyAddressComponent implements OnInit {
   save() {
     //this.isSubmitted = true;
     //if (this.addressForm.invalid) return;
+    this.spinner.show('Saving profile information');
     const userData = this.addressForm.value;
-    userData.countryName = this.address.countryName;
+    userData.countryName = this.address?.countryName;
     console.log(userData);
-    this.companyService.saveCompanyProfile(userData).subscribe({
+    this.companyService.updateCompanyProfile(userData).subscribe({
       next: (res) => {
+        this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
       },
       error: (error: any) => {
+        this.spinner.close();
         console.log(error);
         this.popupService.open(error?.error, 'error');
       },

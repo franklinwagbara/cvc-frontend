@@ -253,8 +253,8 @@ export class SidebarComponent implements OnInit, OnChanges {
     this.currentUser = this.auth.currentUser as LoginModel;
 
     if (
-      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser.directorate === Directorate.DSSRI
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.DSSRI
     ) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
@@ -282,8 +282,8 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     // Show CoQ nav only to Staffs in Field Offices and Field Officers
     if (
-      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser.directorate === Directorate.DSSRI
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.DSSRI
     ) {
       let coqSubRoutes = [
         // {
@@ -313,8 +313,8 @@ export class SidebarComponent implements OnInit, OnChanges {
         this.menuItems.slice(3)
       );
     } else if (
-      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser.directorate === Directorate.HPPITI
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.HPPITI
     ) {
       let coqSubRoutes = [
         {
@@ -345,8 +345,8 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     if (
-      this.currentUser.directorate === Directorate.DSSRI ||
-      this.currentUser.userRoles === UserRole.SUPERADMIN
+      this.currentUser?.directorate === Directorate.DSSRI ||
+      this.currentUser?.userRoles === UserRole.SUPERADMIN
     ) {
       let subRoutes = [
         {
@@ -375,8 +375,8 @@ export class SidebarComponent implements OnInit, OnChanges {
         this.menuItems.slice(4)
       );
     } else if (
-      this.currentUser.directorate === Directorate.HPPITI ||
-      this.currentUser.userRoles === UserRole.SUPERADMIN
+      this.currentUser?.directorate === Directorate.HPPITI ||
+      this.currentUser?.userRoles === UserRole.SUPERADMIN
     ) {
       let subRoutes = [
         {
@@ -386,7 +386,7 @@ export class SidebarComponent implements OnInit, OnChanges {
         },
         // {
         //   id: 2,
-        //   title: 'NoA CLEARANCES',
+        //   title: 'NoA CLEAR ANCES',
         //   url: '/admin/all-approvals/noa-clearances',
         // },
       ];
