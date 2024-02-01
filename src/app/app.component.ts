@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
+import { Util } from './shared/lib/Util';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +13,8 @@ export class AppComponent {
   constructor(private router: Router) {
     this.router.events.subscribe((obs) => {
       if (obs instanceof NavigationEnd) {
-        this.scrollToTop();
+        Util.scrollToTop();
       }
     })
-  }
-
-  scrollToTop(): void {
-    if (document.documentElement) {
-      document.documentElement.scroll({behavior: 'smooth', top: 0});
-    } else {
-      document.body.scroll({behavior: 'smooth', top: 0})
-    }
   }
 }

@@ -21,6 +21,7 @@ import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
 import { AuthCompleteProfileGuard } from '../shared/guards/company.guard';
+import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
 
 const routes: Routes = [
   {
@@ -85,16 +86,7 @@ const routes: Routes = [
     // canActivate: [AuthCompleteProfileGuard],
     component: DocumentUploadComponent,
   },
-  {
-    path: 'new',
-    // canActivate: [AuthCompleteProfileGuard],
-    component: NewApplicationComponent,
-  },
-  {
-    path: 'renew',
-    //canActivate: [AuthCompleteProfileGuard],
-    component: RenewApplicationComponent,
-  },
+
   {
     path: 'view-application/:id',
     canActivate: [AuthCompleteProfileGuard],
@@ -105,6 +97,22 @@ const routes: Routes = [
     //canActivate: [AuthCompleteProfileGuard],
     component: ViewCoqCertsComponent,
   },
+  { path: 'upload', component: UploadComponent },
+  { path: 'previewapp/:id', component: PreviewAppComponent },
+  { path: 'paymentsum/:id', component: PaymentSumComponent },
+  { path: 'upload-document/:id', component: DocumentUploadComponent },
+  {
+    path: 'application/new-clearance',
+    component: NewApplicationComponent,
+    pathMatch: 'full',
+  },
+  {
+    path: 'application/ship-to-ship',
+    component: StsApplicationComponent,
+    pathMatch: 'full',
+  },
+  { path: 'view-application/:id', component: ViewApplicationComponent },
+  { path: 'approvals/:id/coqs', component: ViewCoqCertsComponent },
   {
     path: 'approvals/:id/debit-notes',
     component: ViewDebitNotesComponent,
