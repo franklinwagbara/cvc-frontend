@@ -98,3 +98,9 @@ export class CompanyComponent implements OnInit {
 function showMyApplication() {
   throw new Error('Function not implemented.');
 }
+
+export enum OperatingFacility {
+  ProcessingPlant = 'Processing Plant',
+  CVC = 'CVC',
+  Both = 'Both',
+}

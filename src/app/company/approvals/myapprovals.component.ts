@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -13,6 +9,9 @@ import { LicenceService } from '../../shared/services/licence.service';
 import { PopupService } from '../../shared/services/popup.service';
 import { environment } from '../../../environments/environment';
 import { IPermit } from '../../shared/interfaces/IPermit';
+import { LoginModel } from 'src/app/shared/models/login-model';
+import { OperatingFacility } from '../company.component';
+import { AuthenticationService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-my-permits',
@@ -21,6 +20,8 @@ import { IPermit } from '../../shared/interfaces/IPermit';
 })
 export class MyapprovalsComponent implements OnInit {
   public approvals: IPermit[];
+  currentUser: LoginModel;
+  OperatingFacility = OperatingFacility;
 
   public tableTitles = {
     approvals: 'MY CERTIFICATES',
@@ -45,8 +46,11 @@ export class MyapprovalsComponent implements OnInit {
     private licenseService: LicenceService,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
-    private popup: PopupService
-  ) {}
+    private popup: PopupService,
+    public auth: AuthenticationService
+  ) {
+    this.currentUser = this.auth.currentUser;
+  }
 
   ngOnInit(): void {
     this.spinner.open();
@@ -68,7 +72,10 @@ export class MyapprovalsComponent implements OnInit {
   }
 
   onViewData(event: any) {
-    window.open(`${environment.apiUrl}/licenses/view_license?id=${event.id}`, '_blank');
+    window.open(
+      `${environment.apiUrl}/licenses/view_license?id=${event.id}`,
+      '_blank'
+    );
   }
 
   viewCoQCerts(row: any) {

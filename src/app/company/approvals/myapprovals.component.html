@@ -10,7 +10,11 @@
           [title-color]="'yellow'"
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="approvals"
-          [EnableViewClearanceControl]="true"
+          [EnableViewClearanceControl]="
+            currentUser.operatingFacility === OperatingFacility.ProcessingPlant
+              ? false
+              : true
+          "
           [EnableViewCoQCertsControl]="true"
           [EnableViewDebitNotesControl]="true"
           [noAddOrDeleteButton]="true"

@@ -12,3 +12,8 @@ export enum UserRole {
   APPROVER = 'Approver',
   SUPERADMIN = 'SuperAdmin'
 }
+
+export enum Directorate {
+  DSSRI = 'DSSRI',
+  HPPITI = 'HPPITI',
+}

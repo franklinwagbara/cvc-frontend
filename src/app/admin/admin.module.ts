@@ -81,7 +81,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailConfigComponent } from './settings/email-config/email-config.component';
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
-import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
 
@@ -172,7 +175,7 @@ import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa
     MatProgressSpinnerModule,
     NgxMatTimepickerModule,
     NgxMatDatetimePickerModule,
-    NgxMatMomentModule
+    NgxMatMomentModule,
   ],
   exports: [],
   providers: [

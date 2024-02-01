@@ -26,7 +26,7 @@ export class ViewCoqTankComponent implements OnInit {
 
   public liquidTankKeysMappedToHeaders = {
     measurementType: 'MEASUREMENT TYPE',
-    tankName: 'TANK NAME',
+    // tankName: 'TANK NAME',
     dip: 'DIP',
     waterDIP: 'WATER DIP',
     tov: 'TOV',
@@ -40,7 +40,7 @@ export class ViewCoqTankComponent implements OnInit {
 
   gasTankKeysMappedToHeaders = {
     measurementType: 'MEASUREMENT TYPE',
-    tankName: 'TANK NAME',
+    // tankName: 'TANK NAME',
     liquidDensityVac: 'LIQUID DENSITY VAC',
     observedSounding: 'OBSERVED SOUNDING',
     tapeCorrection: 'TAPE CORRECTION',
