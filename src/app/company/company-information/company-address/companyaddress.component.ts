@@ -44,18 +44,15 @@ export class CompanyAddressComponent implements OnInit {
   }
 
   createForm() {
-    this.addressForm = new FormGroup(
-      {
-        type: new FormControl(''),
-        address_1: new FormControl('', [Validators.required]),
-        address_2: new FormControl(''),
-        city: new FormControl('', [Validators.required]),
-        stateName: new FormControl('', [Validators.required]),
-        postal_code: new FormControl('', [Validators.required]),
-        countryName: new FormControl('', [Validators.required]),
-      },
-      {}
-    );
+    this.addressForm = new FormGroup({
+      // type: new FormControl(''),
+      address_1: new FormControl('', [Validators.required]),
+      address_2: new FormControl(''),
+      city: new FormControl('', [Validators.required]),
+      stateId: new FormControl('', [Validators.required]),
+      postal_code: new FormControl('', [Validators.required]),
+      country_Id: new FormControl('', [Validators.required]),
+    });
   }
 
   getCompanyProfile(email) {
@@ -65,8 +62,7 @@ export class CompanyAddressComponent implements OnInit {
         this.spinner.close();
         this.address = res.data.registeredAddress;
         this.countries = res.data.nations;
-        this.addressForm.get('countryName').setValue(this.address?.countryName);
-        console.log(res);
+        //this.addressForm.get('stateId').setValue(this.address?.countryName);
         this.cd.markForCheck();
       },
       error: (error) => {
@@ -84,7 +80,7 @@ export class CompanyAddressComponent implements OnInit {
     this.companyService.getStates().subscribe({
       next: (res) => {
         this.allStates = res.data;
-        this.addressForm.get('stateName').setValue(this.address.stateName);
+        // this.addressForm.get('stateId').setValue(this.allStates.id);
         // this.addressForm.get('countryName').valueChanges.subscribe({
         //   next: (value) => {
         //     this.states = res.data.filter((a) => a.countryID == value);
@@ -101,9 +97,7 @@ export class CompanyAddressComponent implements OnInit {
     //if (this.addressForm.invalid) return;
     this.spinner.show('Saving profile information');
     const userData = this.addressForm.value;
-    userData.countryName = this.address?.countryName;
-    console.log(userData);
-    this.companyService.updateCompanyProfile(userData).subscribe({
+    this.companyService.updateCompanyAddress(userData).subscribe({
       next: (res) => {
         this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
@@ -111,7 +105,7 @@ export class CompanyAddressComponent implements OnInit {
       error: (error: any) => {
         this.spinner.close();
         console.log(error);
-        this.popupService.open(error?.error, 'error');
+        this.popupService.open('Unable to update profile', 'error');
       },
     });
   }

@@ -20,35 +20,106 @@ import { ViewApplicationInFullComponent } from '../shared/reusable-components/vi
 import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
+import { AuthCompleteProfileGuard } from '../shared/guards/company.guard';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'messages', component: MessagesComponent },
-  { path: 'myschedule', component: MyScheduleComponent },
-  { path: 'changepassword', component: ChangePasswordComponent },
+  {
+    path: '',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: DashboardComponent,
+  },
+  {
+    path: 'dashboard',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: DashboardComponent,
+  },
+  {
+    path: 'messages',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: MessagesComponent,
+  },
+  {
+    path: 'myschedule',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: MyScheduleComponent,
+  },
+  {
+    path: 'changepassword',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: ChangePasswordComponent,
+  },
   // { path: 'mypermits', component: MypermitsComponent },
-  { path: 'apply', component: ApplyComponent },
-  { path: 'myapplication', component: MyApplicationComponent },
-  { path: 'processing-plant', component: ProcessingPlantComponent },
+  {
+    path: 'apply',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: ApplyComponent,
+  },
+  {
+    path: 'myapplication',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: MyApplicationComponent,
+  },
+  {
+    path: 'processing-plant',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: ProcessingPlantComponent,
+  },
   { path: 'registerdirector', component: RegisterDirectorComponent },
-  { path: 'upload', component: UploadComponent },
-  { path: 'previewapp/:id', component: PreviewAppComponent },
-  { path: 'paymentsum/:id', component: PaymentSumComponent },
-  { path: 'upload-document/:id', component: DocumentUploadComponent },
-  { path: 'new', component: NewApplicationComponent },
-  { path: 'renew', component: RenewApplicationComponent },
-  { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'approvals/:id/coqs', component: ViewCoqCertsComponent },
+  {
+    path: 'upload',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: UploadComponent,
+  },
+  {
+    path: 'previewapp/:id',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: PreviewAppComponent,
+  },
+  {
+    path: 'paymentsum/:id',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: PaymentSumComponent,
+  },
+  {
+    path: 'upload-document/:id',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: DocumentUploadComponent,
+  },
+  {
+    path: 'new',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: NewApplicationComponent,
+  },
+  {
+    path: 'renew',
+    //canActivate: [AuthCompleteProfileGuard],
+    component: RenewApplicationComponent,
+  },
+  {
+    path: 'view-application/:id',
+    canActivate: [AuthCompleteProfileGuard],
+    component: ViewApplicationComponent,
+  },
+  {
+    path: 'approvals/:id/coqs',
+    //canActivate: [AuthCompleteProfileGuard],
+    component: ViewCoqCertsComponent,
+  },
   {
     path: 'approvals/:id/debit-notes',
     component: ViewDebitNotesComponent,
+    // canActivate: [AuthCompleteProfileGuard],
   },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
+    // canActivate: [AuthCompleteProfileGuard],
   },
-  { path: 'approvals', component: MyapprovalsComponent },
+  {
+    path: 'approvals',
+    // canActivate: [AuthCompleteProfileGuard],
+    component: MyapprovalsComponent,
+  },
   {
     path: 'companyinformation',
     component: CompanyInformationComponent,
