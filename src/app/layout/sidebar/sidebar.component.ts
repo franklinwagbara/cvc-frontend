@@ -122,7 +122,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 4,
+    id: 16,
     title: 'Processing Plant',
     iconName: 'carbon',
     iconId: 'carbon',
@@ -136,7 +136,6 @@ const ROUTES: RouteInfo[] = [
         id: 2,
         title: 'CoQ Form',
         url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
-
       },
       {
         id: 1,
@@ -280,6 +279,16 @@ const ROUTES: RouteInfo[] = [
         id: 15,
         title: 'EMAIL CONFIGURATION',
         url: '/admin/settings/email-config',
+      },
+      {
+        id: 17,
+        title: 'METER TYPE CONFIGURATION',
+        url: '/admin/settings/meter-types',
+      },
+      {
+        id: 18,
+        title: 'DIP METHOD CONFIGURATION',
+        url: '/admin/settings/dip-method',
       },
     ],
   },

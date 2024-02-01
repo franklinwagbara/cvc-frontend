@@ -1,19 +1,37 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MeasurementType } from '../coq-application-pp-form.component';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { getForm } from '../forms';
+import { ITank } from 'src/app/shared/interfaces/ITank';
 
 @Component({
   selector: 'app-gas-data-dynamic-entry',
   templateUrl: './gas-data-dynamic-entry.component.html',
   styleUrls: ['./gas-data-dynamic-entry.component.css'],
 })
-export class GasDataDynamicEntryComponent implements OnInit {
-  @Input() form: FormGroup;
+export class GasDataDynamicEntryComponent implements OnInit, OnChanges {
+  @Input() tank: ITank;
   @Input() isBefore: boolean = true;
 
-  constructor() {}
+  public form: FormGroup;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.initForm();
+  }
 
   ngOnInit(): void {
-    debugger;
+    this.initForm();
+  }
+
+  private initForm() {
+    this.form = getForm('Gas', 'Dynamic', this.isBefore ? 'before' : 'after');
+
+    this.form.controls['id'].setValue(this.tank?.plantTankId);
+    this.form.controls['tank'].setValue(this.tank?.tankName);
   }
 }

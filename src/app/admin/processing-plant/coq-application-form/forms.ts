@@ -6,7 +6,6 @@ export const getForm = (
   measurementType: MeasurementType,
   status: 'before' | 'after'
 ) => {
-  console.log('prod', productType, measurementType, status);
   const mappings = {
     Liquid: {
       Dynamic: LIQUID_DYNAMIC_FORM(status),
@@ -19,6 +18,15 @@ export const getForm = (
   };
 
   return mappings[productType][measurementType];
+};
+
+export const getDetailsForm = (productType: 'Liquid' | 'Gas') => {
+  const mappings = {
+    Liquid: PROCESSING_DETAILS_LIQUID_FORM,
+    Gas: PROCESSING_DETAILS_GAS_FORM,
+  };
+
+  return mappings[productType];
 };
 
 let fb = new FormBuilder();
@@ -44,15 +52,15 @@ const LIQUID_STATIC_FORM = (status: 'before' | 'after') =>
     id: ['', [Validators.required]],
     tank: ['', [Validators.required]],
     status: [status || '', [Validators.required]],
-    dip: ['', [Validators.required]],
-    waterDIP: ['', [Validators.required]],
-    tov: ['', [Validators.required]],
-    waterVolume: ['', [Validators.required]],
-    floatRoofCorr: ['', [Validators.required]],
-    gov: ['', [Validators.required]],
+    measurementType: ['static', [Validators.required]],
+    readingM: ['', [Validators.required]],
     temperature: ['', [Validators.required]],
     density: ['', [Validators.required]],
-    vcf: ['', [Validators.required]],
+    specificGravityObs: ['', [Validators.required]],
+    gov: ['', [Validators.required]],
+    barrelsAtTankTables: ['', [Validators.required]],
+    volumeCorrectionFactor: ['', [Validators.required]],
+    wtAir: ['', [Validators.required]],
   });
 
 const GAS_DYNAMIC_FORM = (status: 'before' | 'after') =>
@@ -92,3 +100,29 @@ const GAS_STATIC_FORM = (status: 'before' | 'after') =>
     molecularWeight: ['', [Validators.required]],
     vapourFactor: ['', [Validators.required]],
   });
+
+const PROCESSING_DETAILS_LIQUID_FORM = fb.group({
+  startTime: ['', [Validators.required, Validators.max]],
+  endTime: ['', [Validators.required]],
+  plantPrice: ['', [Validators.required]],
+  consignorName: ['', [Validators.required]],
+  consignee: ['', [Validators.required]],
+  shipFigure: ['', [Validators.required]],
+  shoreFigure: ['', [Validators.required]],
+  shipmentNo: ['', [Validators.required]],
+  destination: ['', [Validators.required]],
+  terminal: ['', [Validators.required]],
+  tankerName: ['', [Validators.required]], //todo: add from backend
+  averageDensity: ['', [Validators.required]], //todo: add from backend
+});
+
+const PROCESSING_DETAILS_GAS_FORM = fb.group({
+  vesselArrivalDate: ['', [Validators.required]],
+  prodDischargeCommenceDate: ['', [Validators.required]],
+  prodDischargeCompletionDate: ['', [Validators.required]],
+  qtyBillLadingMtAir: ['', [Validators.required]],
+  arrivalShipMtAir: ['', [Validators.required]],
+  shipDischargedMtAir: ['', [Validators.required]],
+  nameConsignee: ['', [Validators.required]],
+  depotPrice: ['', [Validators.required]],
+});

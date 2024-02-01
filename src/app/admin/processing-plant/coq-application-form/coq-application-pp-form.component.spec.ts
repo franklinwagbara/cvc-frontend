@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CoqApplicationPPFormComponent } from './coq-application-pp-form.component';
+import { CoqApplicationPPFormComponent } from './CoqApplicationPPFormComponent';
 
 describe('CoqApplicationPPFormComponent', () => {
   let component: CoqApplicationPPFormComponent;

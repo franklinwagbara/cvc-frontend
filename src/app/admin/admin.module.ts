@@ -83,7 +83,6 @@ import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-appl
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
 import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
-import { CoqApplicationPPFormComponent } from './processing-plant/coq-application-form/coq-application-pp-form.component';
 import { CoqFormReviewPPComponent } from './processing-plant/coq-application-form/coq-form-review/coq-form-review-pp.component';
 import { EditCoqFormPPComponent } from './processing-plant/coq-application-form/edit-coq-form/edit-coq-form-pp.component';
 import { CoqApplicationPreviewPPComponent } from './processing-plant/coq-application-form/coq-application-preview/coq-application-preview-pp.component';
@@ -94,6 +93,12 @@ import { GasDataDynamicEntryComponent } from './processing-plant/coq-application
 import { GasDataStaticEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/gas-data-static-entry.component';
 import { DataEntryFormComponent } from './processing-plant/coq-application-form/data-entry-form/data-entry-form.component';
 import { PageTitleComponent } from './processing-plant/coq-application-form/page-title/page-title.component';
+import { MeterTypeSettingComponent } from './settings/meter-type-setting/meter-type-setting.component';
+import { DipMethodSettingComponent } from './settings/dip-method-setting/dip-method-setting.component';
+import { ProcessingDetailsLiquidComponent } from './processing-plant/coq-application-form/processing-details-liquid/processing-details-liquid.component';
+import { ProcessingDetailsGasComponent } from './processing-plant/coq-application-form/processing-details-gas/processing-details-gas.component';
+import { CoqApplicationPPFormComponent } from './processing-plant/coq-application-form/coq-application-pp-form.component';
+import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [
@@ -155,7 +160,6 @@ import { PageTitleComponent } from './processing-plant/coq-application-form/page
     FieldOfficerJettySettingComponent,
     NoaVesselClearanceComponent,
     NoaApplicationsByJettyComponent,
-    CoqApplicationPPFormComponent,
     CoqFormReviewPPComponent,
     EditCoqFormPPComponent,
     CoqApplicationPreviewPPComponent,
@@ -166,6 +170,11 @@ import { PageTitleComponent } from './processing-plant/coq-application-form/page
     GasDataStaticEntryComponent,
     DataEntryFormComponent,
     PageTitleComponent,
+    MeterTypeSettingComponent,
+    DipMethodSettingComponent,
+    ProcessingDetailsLiquidComponent,
+    ProcessingDetailsGasComponent,
+    CoqApplicationPPFormComponent,
   ],
 
   imports: [
@@ -192,6 +201,7 @@ import { PageTitleComponent } from './processing-plant/coq-application-form/page
     MatProgressBarModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
   ],
   exports: [],
   providers: [

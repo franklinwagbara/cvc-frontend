@@ -43,6 +43,8 @@ import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaApplicationsByJettyComponent } from '../noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { MeterTypeSettingComponent } from '../settings/meter-type-setting/meter-type-setting.component';
+import { DipMethodSettingComponent } from '../settings/dip-method-setting/dip-method-setting.component';
 import { CoqApplicationPPFormComponent } from '../processing-plant/coq-application-form/coq-application-pp-form.component';
 
 const routes: Routes = [
@@ -245,6 +247,18 @@ const routes: Routes = [
   {
     path: 'settings/email-config',
     component: EmailConfigComponent,
+    pathMatch: 'full',
+    canActivate: [SuperadminGuard],
+  },
+  {
+    path: 'settings/meter-types',
+    component: MeterTypeSettingComponent,
+    pathMatch: 'full',
+    canActivate: [SuperadminGuard],
+  },
+  {
+    path: 'settings/dip-method',
+    component: DipMethodSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
   },
