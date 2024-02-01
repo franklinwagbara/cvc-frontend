@@ -5,9 +5,20 @@
     'uncollapse-sidenav': !isCollapsed
   }"
 >
-  <div class="logo-title">
+  <div
+    [ngClass]="{
+      'flex flex-col': currentUser.directorate === Directorate.HPPITI
+    }"
+    class="logo-title justify-center"
+  >
     <img src="../../../assets/img/brand/logo.png" alt="NUPRC" />
-    <h3 *ngIf="!isCollapsed" class="text-black font-bold">CVC</h3>
+    <h4 *ngIf="!isCollapsed" class="text-black font-bold">
+      {{
+        currentUser.directorate === Directorate.HPPITI
+          ? "PROCESSING PLANT"
+          : "CVC"
+      }}
+    </h4>
   </div>
 
   <div class="nav-items">
@@ -24,7 +35,6 @@
       (onActive)="setActiveNavItem(menu.title)"
     ></app-nav-item>
   </div>
-
   <br />
   <br />
 </div>

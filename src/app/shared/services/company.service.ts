@@ -25,9 +25,16 @@ export class CompanyService {
     );
   }
 
-  public saveCompanyProfile(data) {
+  public updateCompanyProfile(data) {
     return this.http.post<any>(
-      `${environment.apiUrl}/Company/update-profile`,
+      `${environment.apiUrl}/Company/profile-update`,
+      data
+    );
+  }
+
+  public updateCompanyAddress(data) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/Company/address-update`,
       data
     );
   }
@@ -131,5 +138,23 @@ export class CompanyService {
 
   public getMessagesById(id: number) {
     return this.http.get<any>(`${API}/Get-Message-ById?id=${id}`);
+  }
+
+  public getOperatingFacilities() {
+    return this.http.get<any>(
+      `${environment.apiUrl}/OperatingFacility/all-operating-facilities`
+    );
+  }
+  public createOperatingFacilities(data: any) {
+    return this.http.post<any>(
+      `${environment.apiUrl}/OperatingFacility/create-operating-facility`,
+      data
+    );
+  }
+  public updateOperatingFacilities(data: any) {
+    return this.http.get<any>(
+      `${environment.apiUrl}/OperatingFacility/edit-operating-facility`,
+      data
+    );
   }
 }

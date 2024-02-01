@@ -71,7 +71,7 @@ export class AuthenticationService {
   public get isSupervisor() {
     return (this.currentUser as LoginModel).userRoles === UserRole.SUPERVISOR;
   }
-  
+
   public get isSuperAdmin() {
     return (this.currentUser as LoginModel).userRoles === UserRole.SUPERADMIN;
   }
@@ -98,7 +98,7 @@ export class AuthenticationService {
 
   public get isStaff() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles != UserRole.COMPANY) return true;
+    if (user?.userRoles != UserRole.COMPANY) return true;
     else return false;
   }
 

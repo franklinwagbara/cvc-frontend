@@ -1,5 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { companyProfile } from '../../../../../src/app/shared/models/apply.model';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
@@ -55,7 +60,7 @@ export class CompanyDirectorComponent implements OnInit {
       type: ['', [Validators.required]],
       countryName: ['', [Validators.required]],
       stateName: ['', [Validators.required]],
-    })
+    });
   }
 
   getCompanyProfile(email) {
@@ -95,7 +100,7 @@ export class CompanyDirectorComponent implements OnInit {
     const userData = this.directorForm.value;
     userData.countryName = this.companyDirector.countryName;
     console.log(userData);
-    this.companyService.saveCompanyProfile(userData).subscribe({
+    this.companyService.updateCompanyProfile(userData).subscribe({
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },

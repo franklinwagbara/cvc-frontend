@@ -45,4 +45,12 @@ export class Util {
       evt.preventDefault();
     }
   }
+
+  public static scrollToTop(): void {
+    if (document.documentElement) {
+      document.documentElement.scroll({behavior: 'smooth', top: 0});
+    } else {
+      document.body.scroll({behavior: 'smooth', top: 0})
+    }
+  }
 }

@@ -61,7 +61,7 @@ export class AllStaffComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.spinner.open();
+    this.spinner.show('Loading users');
 
     forkJoin([
       this.adminHttpService.getAllStaff(),
@@ -85,7 +85,6 @@ export class AllStaffComponent implements OnInit {
         if (res[4].success) this.offices = res[4].data;
 
         if (res[5]) this.directorate = res[5];
-        console.log(this.directorate);
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -132,12 +131,12 @@ export class AllStaffComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((res) => {
       if (res) {
-        this.progressBar.open();
+        this.spinner.show('Loading users');
 
         this.adminHttpService.getAllStaff().subscribe((res) => {
           this.users = res.data;
 
-          this.progressBar.close();
+          this.spinner.close();
         });
       }
     });
@@ -175,7 +174,7 @@ export class AllStaffComponent implements OnInit {
         );
     });
 
-    this.progressBar.open();
+    this.spinner.show('Loading users');
 
     forkJoin(requests).subscribe({
       next: (res) => {
@@ -193,23 +192,23 @@ export class AllStaffComponent implements OnInit {
             .sort((a, b) => a.length - b.length);
 
           if (type === 'users') this.users = responses[0];
-          this.progressBar.open();
+          this.spinner.show('Loading users');
 
           this.adminHttpService.getAllStaff().subscribe({
             next: (res: any) => {
               this.users = res.data;
-              this.progressBar.close();
+              this.spinner.close();
               this.cd.markForCheck();
             },
             error: (error: unknown) => {
               console.log(error);
-              this.progressBar.close();
+              this.spinner.close();
               this.cd.markForCheck();
             },
           });
         }
 
-        this.progressBar.close();
+        this.spinner.close();
       },
       error: (error: unknown) => {
         console.log(error);
@@ -217,7 +216,7 @@ export class AllStaffComponent implements OnInit {
           panelClass: ['error'],
         });
 
-        this.progressBar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       },
     });
@@ -245,12 +244,12 @@ export class AllStaffComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
+      this.spinner.show('Loading users');
 
       this.adminHttpService.getAllStaff().subscribe((res) => {
         this.users = res.data;
 
-        this.progressBar.close();
+        this.spinner.close();
         this.cd.markForCheck();
       });
     });
@@ -282,12 +281,11 @@ export class AllStaffComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
+      this.spinner.show('Loading users');
       this.adminHttpService.getAllStaff().subscribe((res) => {
         this.users = res.data;
 
-        this.progressBar.close();
+        this.spinner.close();
       });
     });
   }

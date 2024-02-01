@@ -11,9 +11,10 @@ import { BehaviorSubject, filter } from 'rxjs';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
 import { LOCATION } from 'src/app/shared/constants/location';
-import { UserRole } from 'src/app/shared/constants/userRole';
+import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
+import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
 
 export interface SubRouteInfo {
   id: number;
@@ -306,6 +307,8 @@ export class SidebarComponent implements OnInit, OnChanges {
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
   currentUser: any;
+  public Directorate = Directorate;
+  public directorate: string;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -317,9 +320,13 @@ export class SidebarComponent implements OnInit, OnChanges {
     private pageManagerService: PageManagerService
   ) {
     this.menuItems = [...ROUTES];
+
     this.currentUser = this.auth.currentUser as LoginModel;
 
-    if (this.currentUser.userRoles === UserRole.FIELDOFFICER) {
+    if (
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.DSSRI
+    ) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
           {
@@ -355,8 +362,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             subRoutes: [
               {
                 id: 1,
-                title: 'VESSEL CLEARANCE',
-                url: '/admin/vessel-clearance/noa-applications',
+                title: 'DISCHARGE CLEARANCE',
+                url: '/admin/vessel-clearance/noa-applications-by-jetty-officer',
               },
             ],
           },
@@ -365,24 +372,58 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show CoQ And Plant tab only to Staffs in Field Offices and Field Officers
-    if (this.auth.isFieldOfficer || this.auth.isFO) {
+    // Show CoQ nav only to Staffs in Field Offices and Field Officers
+    if (
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.DSSRI
+    ) {
       let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
+        // {
+        //   id: 1,
+        //   title: 'NoA Applications',
+        //   url: '/admin/applications/noa-applications-by-depot',
+        // },
         {
           id: 2,
-          title: 'Processing Plant',
-          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
+          title: 'CoQ Applications',
+          url: '/admin/coq-and-plant/coq-applications-by-depot',
         },
       ];
 
       this.menuItems = this.menuItems.slice(0, 3).concat(
         {
-          id: 4,
+          id: 3,
+          title: 'CoQ',
+          // title: 'CoQ And NOA',
+          iconName: 'carbon',
+          iconId: 'carbon',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+          subRoutes: coqSubRoutes,
+        },
+        this.menuItems.slice(3)
+      );
+    } else if (
+      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser?.directorate === Directorate.HPPITI
+    ) {
+      let coqSubRoutes = [
+        {
+          id: 1,
+          title: 'Processing Plant',
+          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
+        },
+        {
+          id: 2,
+          title: 'CoQ Applications',
+          url: '/admin/coq-and-plant/coq-applications-by-depot',
+        },
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 3).concat(
+        {
+          id: 3,
           title: 'CoQ And Plant',
           iconName: 'carbon',
           iconId: 'carbon',
@@ -397,11 +438,70 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show NOA Applications and All Applications only to Admins and HQ staffs
     if (
-      !Util.adminRoles.includes(this.currentUser?.userRoles) &&
-      this.currentUser?.location !== LOCATION.HQ
+      this.currentUser?.directorate === Directorate.DSSRI ||
+      this.currentUser?.userRoles === UserRole.SUPERADMIN
     ) {
+      let subRoutes = [
+        {
+          id: 1,
+          title: 'CoQ CERTIFICATES',
+          url: '/admin/all-approvals/coq-certificates',
+        },
+        {
+          id: 2,
+          title: 'NoA CLEARANCES',
+          url: '/admin/all-approvals/noa-clearances',
+        },
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 4).concat(
+        {
+          id: 4,
+          title: 'ALL APPROVALS',
+          iconName: 'licence-outline',
+          iconId: 'licence_outline',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+          subRoutes: subRoutes,
+        },
+        this.menuItems.slice(4)
+      );
+    } else if (
+      this.currentUser?.directorate === Directorate.HPPITI ||
+      this.currentUser?.userRoles === UserRole.SUPERADMIN
+    ) {
+      let subRoutes = [
+        {
+          id: 1,
+          title: 'CoQ CERTIFICATES',
+          url: '/admin/all-approvals/coq-certificates',
+        },
+        // {
+        //   id: 2,
+        //   title: 'NoA CLEAR ANCES',
+        //   url: '/admin/all-approvals/noa-clearances',
+        // },
+      ];
+
+      this.menuItems = this.menuItems.slice(0, 4).concat(
+        {
+          id: 4,
+          title: 'ALL APPROVALS',
+          iconName: 'licence-outline',
+          iconId: 'licence_outline',
+          iconColor: 'white',
+          active: false,
+          subMenuActive: false,
+          subRoutes: subRoutes,
+        },
+        this.menuItems.slice(4)
+      );
+    }
+
+    // Show NOA Applications and All Applications only to Admins and HQ staffs
+    if (!Util.adminRoles.includes(this.currentUser?.userRoles)) {
       this.menuItems = this.menuItems.filter(
         (item) =>
           item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS'

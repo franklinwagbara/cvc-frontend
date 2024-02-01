@@ -13,3 +13,8 @@ export enum UserRole {
   SUPERADMIN = 'SuperAdmin',
   ALL = 'ALL',
 }
+
+export enum Directorate {
+  DSSRI = 'DSSRI',
+  HPPITI = 'HPPITI',
+}

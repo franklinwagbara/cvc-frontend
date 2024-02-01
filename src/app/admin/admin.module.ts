@@ -81,7 +81,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { EmailConfigComponent } from './settings/email-config/email-config.component';
 import { AllCoqApplicationsComponent } from './all-coq-applications/all-coq-applications.component';
 import { FieldOfficerJettySettingComponent } from './settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
-import { NoaVesselClearanceComponent } from './noa-vessel-clearance/noa-vessel-clearance.component';
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+} from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
 import { CoqFormReviewPPComponent } from './processing-plant/coq-application-form/coq-form-review/coq-form-review-pp.component';
 import { EditCoqFormPPComponent } from './processing-plant/coq-application-form/edit-coq-form/edit-coq-form-pp.component';
@@ -158,7 +162,6 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     EmailConfigComponent,
     AllCoqApplicationsComponent,
     FieldOfficerJettySettingComponent,
-    NoaVesselClearanceComponent,
     NoaApplicationsByJettyComponent,
     CoqFormReviewPPComponent,
     EditCoqFormPPComponent,
@@ -201,7 +204,9 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     MatProgressBarModule,
     MatStepperModule,
     MatProgressSpinnerModule,
+    NgxMatTimepickerModule,
     NgxMatDatetimePickerModule,
+    NgxMatMomentModule,
   ],
   exports: [],
   providers: [

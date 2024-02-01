@@ -15,7 +15,7 @@ import { Staff } from '../../settings/all-staff/all-staff.component';
 import { FieldOffice } from '../../settings/field-zonal-office/field-zonal-office.component';
 import { Category } from '../../settings/modules-setting/modules-setting.component';
 import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
-import { UserRole } from 'src/app/shared/constants/userRole';
+import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { AppType } from 'src/app/shared/constants/appType';
 import { AuthenticationService } from 'src/app/shared/services';
 import { environment } from 'src/environments/environment';
@@ -58,7 +58,7 @@ export class MyDeskComponent implements OnInit {
     applicationType: 'Application Type',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    capacity: 'Capacity',
+    // capacity: 'Capacity',
     paymentStatus: 'Payment Status',
     status: 'Status',
     createdDate: 'Initiation Date',
@@ -71,9 +71,9 @@ export class MyDeskComponent implements OnInit {
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     jetty: 'Jetty',
-    capacity: 'Capacity',
+    // capacity: 'Capacity',
     status: 'Status',
-    rrr: 'RRR',
+    // rrr: 'RRR',
     createdDate: 'Initiated Date',
   };
 
@@ -124,14 +124,14 @@ export class MyDeskComponent implements OnInit {
     this.spinner.open();
 
     forkJoin([
-      this.isFieldOfficer
+      this.isDssriFieldOfficer
         ? this.applicationService.viewApplicationByDepot()
         : this.applicationService.getApplicationsOnDesk(),
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
           this.applications = res[0].data;
-          if (this.isFieldOfficer) {
+          if (this.isDssriFieldOfficer) {
             this.applications = this.applications
               .filter((app) => app.status === 'Completed')
               .reverse();
@@ -158,8 +158,14 @@ export class MyDeskComponent implements OnInit {
     });
   }
 
-  get isFieldOfficer(): boolean {
-    return this.currentUser.userRoles === UserRole.FIELDOFFICER;
+  get isDssriFieldOfficer(): boolean {
+    return this.currentUser.userRoles === UserRole.FIELDOFFICER 
+      && this.currentUser.directorate === Directorate.DSSRI;
+  }
+
+  get isHppitiFieldOfficer(): boolean {
+    return this.currentUser.userRoles === UserRole.FIELDOFFICER 
+      && this.currentUser.directorate === Directorate.HPPITI;
   }
 
   get isFAD() {
@@ -177,7 +183,7 @@ export class MyDeskComponent implements OnInit {
         },
       });
     } else if (
-      this.isFieldOfficer ||
+      this.isDssriFieldOfficer ||
       this.appType$.getValue() === AppType.NOA
     ) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
@@ -225,7 +231,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   public get getColumnHeaders() {
-    return this.isFieldOfficer
+    return this.isDssriFieldOfficer
       ? this.fieldOfficerNoaKeysMappedToHeaders
       : this.appType$.getValue() == AppType.NOA
       ? this.applicationKeysMappedToHeaders
@@ -274,9 +280,5 @@ export class MyDeskComponent implements OnInit {
         this.progressBar.close();
       });
     });
-  }
-
-  public onInitiateCoQ(event: any) {
-    this.initiateCoq(event);
   }
 }
