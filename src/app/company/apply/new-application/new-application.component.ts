@@ -45,6 +45,8 @@ export class NewApplicationComponent implements OnInit {
   public vesselForm: FormGroup;
   // public tankForm: FormGroup;
   public appDepotForm: FormGroup;
+  submitting = false;
+  submitted = false;
 
   dateValidation = {
     min: new Date()
@@ -66,6 +68,7 @@ export class NewApplicationComponent implements OnInit {
       vesselName: ['', Validators.required],
       loadingPort: ['', Validators.required],
       jetty: ['', Validators.required],
+      jettyName: '',
       motherVessel: ['', Validators.required],
       marketerName: ['', Validators.required],
       productId: ['', Validators.required],
@@ -95,6 +98,16 @@ export class NewApplicationComponent implements OnInit {
       if (!value) return;
       this.getLGAByStateId(value);
     });
+
+    this.vesselForm.controls['jetty'].valueChanges.subscribe((val) => {
+      console.log('Vessel Form Jetty changes ============== ', val);
+      if (val) {
+        this.vesselForm.controls['jettyName'].setValue(
+          this.jetties.find((el) => el.id === parseInt(val))?.name
+        )
+      }
+      console.log(this.vesselForm.controls['jettyName'].value);
+    })
 
     this.segmentState = 1;
     // this.validateImo();
@@ -141,7 +154,7 @@ export class NewApplicationComponent implements OnInit {
   }
 
   public get activateThirdSegment() {
-    return this.segmentState == 3;
+    return this.segmentState === 3;
   }
 
   public get stateControl() {
@@ -191,9 +204,12 @@ export class NewApplicationComponent implements OnInit {
     };
 
     this.spinner.show('Saving vessel details');
+    this.submitting = true;
     this.appService.apply(payload).subscribe({
       next: (res) => {
         const appId = res.data.appId;
+        this.submitted = true;
+        this.submitting = false;
         this.spinner.close();
         this.cd.markForCheck();
         this.popUp.open(
@@ -205,6 +221,7 @@ export class NewApplicationComponent implements OnInit {
         this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {
+        this.submitting = false;
         this.popUp.open(error.message, 'error');
         this.spinner.close();
       },

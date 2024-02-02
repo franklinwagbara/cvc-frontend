@@ -1,23 +1,6 @@
 .footer {
-  position: relative;
   background-color: #091b29;
-  height: 200px;
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 120px;
   line-height: 2;
-  justify-self: end;
-  margin-top: auto;
-}
-
-.footer-title {
-  list-style: none;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.footer-copyright {
-  text-align: center;
-  color: gray;
+  @apply text-slate-300 flex flex-col justify-center w-full;
 }
