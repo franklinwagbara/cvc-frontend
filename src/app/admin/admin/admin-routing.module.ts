@@ -62,6 +62,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'applications/noa-applications-by-depot',
+    component: NoaApplicationsByDepotComponent,
+    pathMatch: 'full',
+  },
+  {
     path: 'applications/coq-applications',
     component: AllCoqApplicationsComponent,
     pathMatch: 'full',
@@ -266,7 +271,7 @@ const routes: Routes = [
     path: 'coq-and-plant/noa-applications-by-depot',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerOrOfficeGuard]
+    canActivate: [FieldOfficerOrOfficeGuard],
   },
   {
     path: 'coq-and-plant/noa-applications-by-depot/:id/certificate-of-quantity/new-application',

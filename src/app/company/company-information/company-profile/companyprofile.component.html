@@ -1,7 +1,9 @@
 <div class="max-w-screen-lg mx-auto mt-8">
   <div>
-    <h2 class="font-semibold text-xl text-gray-600">Company Profile</h2>
-    <p class="text-gray-500 mb-6">Complete the company profile information.</p>
+    <h2 class="font-semibold ml-4 text-xl text-gray-600">Company Profile</h2>
+    <p class="text-gray-500 ml-4 mb-6">
+      Complete the company profile information.
+    </p>
 
     <div
       [formGroup]="profileForm"
@@ -54,7 +56,26 @@
               />
             </div>
           </div>
-          <div class="md:col-span-4">
+
+          <div class="md:col-span-2">
+            <label for="address_1">Operating Facility</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <select
+                formControlName="operatingFacilityId"
+                [(ngModel)]="companyProfile.operatingFacilityId"
+                id="operatingFacilityId"
+                class="w-full h-full"
+                style="background: none"
+              >
+                <option *ngFor="let a of OperatingFacility" [value]="a.value">
+                  {{ a.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="md:col-span-3">
             <label for="address_1">Contact Person's First Name</label>
             <div
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
@@ -69,7 +90,22 @@
             </div>
           </div>
 
-          <div class="md:col-span-3">
+          <div class="md:col-span-2">
+            <label for="address_1">Contact Person's Last Name</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <input
+                formControlName="contact_LastName"
+                [(ngModel)]="companyProfile.contact_LastName"
+                id="contact_FirstName"
+                placeholder=""
+                class="px-2 appearance-none outline-none text-gray-800 w-full bg-transparent"
+              />
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
             <label for="state">Contact Person's Telephone</label>
             <div
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
@@ -116,7 +152,7 @@
               placeholder=""
             />
           </div>
-          <div class="md:col-span-2">
+          <!-- <div class="md:col-span-2">
             <label for="country">Country</label>
             <div
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
@@ -138,6 +174,28 @@
                   {{ country.text }}
                 </option>
                 >
+              </select>
+            </div>
+          </div> -->
+
+          <div class="md:col-span-2">
+            <label for="address_1">Country</label>
+            <div
+              class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
+            >
+              <select
+                formControlName="nationality"
+                [(ngModel)]="companyProfile.nationality"
+                id="nationality"
+                class="w-full h-full"
+                style="background: none"
+              >
+                <option
+                  *ngFor="let country of countries"
+                  [value]="country.value"
+                >
+                  {{ country.text }}
+                </option>
               </select>
             </div>
           </div>

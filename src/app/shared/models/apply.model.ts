@@ -55,6 +55,7 @@ export class companyProfile {
   business_Type?: string;
   contact_FirstName?: string;
   contact_LastName?: string;
+  operatingFacilityId?: any;
   contact_Phone?: string;
   date?: string;
   elps_Id?: string;

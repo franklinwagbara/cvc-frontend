@@ -5,12 +5,15 @@ import {
   Category,
   Phase,
 } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
-import { IMenuItem, ISubmenu } from '../../../../../src/app/shared/interfaces/menuItem';
+import {
+  IMenuItem,
+  ISubmenu,
+} from '../../../../../src/app/shared/interfaces/menuItem';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-
+import { OperatingFacility } from 'src/app/company/company.component';
 
 @Component({
   selector: 'app-company-top-nav',
@@ -23,6 +26,9 @@ export class CompanyTopNavComponent implements OnInit {
   public categories: Category[];
   public permitTypes: Phase[];
   public currentUsername: LoginModel;
+  currentUser: LoginModel;
+
+  public OperatingFacility = OperatingFacility;
 
   currWindowWidth: number;
 
@@ -51,11 +57,7 @@ export class CompanyTopNavComponent implements OnInit {
       url: 'company/changepassword',
       subMenu: null,
     },
-    {
-      name: 'Processing Plants',
-      url: 'company/processing-plant',
-      subMenu: null,
-    },
+
     {
       name: 'Messages',
       url: 'company/messages',
@@ -86,8 +88,19 @@ export class CompanyTopNavComponent implements OnInit {
     private applyService: ApplyService,
     private spinner: SpinnerService,
     private snackBar: MatSnackBar,
-    public auth: AuthenticationService,
+    public auth: AuthenticationService
   ) {
+    this.currentUser = this.auth.currentUser;
+
+    if (
+      this.currentUser.operatingFacility === OperatingFacility.ProcessingPlant
+    ) {
+      this.myAccountMenuItems.push({
+        name: 'Processing Plants',
+        url: 'company/processing-plant',
+        subMenu: null,
+      });
+    }
   }
 
   iconContexts = {
@@ -98,11 +111,11 @@ export class CompanyTopNavComponent implements OnInit {
     schedules: { iconName: 'schedules' },
     changepass: { iconName: 'password' },
     profile: { iconName: 'group' },
-    procplant: { iconName: 'fueltank'},
+    procplant: { iconName: 'fueltank' },
     messages: { iconName: 'message' },
     apply: { iconName: 'right' },
-    myapps: { iconName: 'apps' }
-  }
+    myapps: { iconName: 'apps' },
+  };
 
   ngOnInit(): void {
     this.currWindowWidth = window.innerWidth;

@@ -9,6 +9,7 @@ import { environment as envr } from '../../../src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { AuthenticationService, GenericService } from '../shared/services';
 import { UserType } from '../shared/constants/userType';
+import { PopupService } from '../shared/services/popup.service';
 
 @Component({
   selector: 'app-root',
@@ -32,7 +33,8 @@ export class homeComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private gen: GenericService,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private popupService: PopupService
   ) {
     this.genk = gen;
     this.elpsbase = envr.elpsBase;
@@ -47,7 +49,7 @@ export class homeComponent implements OnInit {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
-      if (user.userRoles.includes(UserType.Company)) {
+      if (user?.userRoles.includes(UserType.Company)) {
         this.router.navigate([returnUrl || '/company/dashboard']);
       } else this.router.navigate([returnUrl || '/admin']);
       return;
@@ -70,7 +72,21 @@ export class homeComponent implements OnInit {
               const returnUrl =
                 this.route.snapshot.queryParamMap.get('returnUrl');
               if (user.userRoles === UserType.Company) {
-                this.router.navigate([returnUrl || '/company/dashboard']);
+                if (user.profileComplete && user?.OperatingFacility !== null) {
+                  this.router.navigate([returnUrl || '/company/dashboard']);
+                } else {
+                  if (
+                    user.profileComplete &&
+                    user?.OperatingFacility === null
+                  ) {
+                    this.router.navigate([
+                      '/company/companyinformation/operatingfaclicity',
+                    ]);
+                  } else {
+                    this.router.navigate(['/company/companyinformation']);
+                    this.popupService.open('Complete your profile', 'success');
+                  }
+                }
               } else {
                 this.router.navigate([returnUrl || '/admin']);
               }

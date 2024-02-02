@@ -169,7 +169,10 @@
       [color]="!currentValue ? 'secondary' : 'primary'"
       (click)="!currentValue ? createUser() : updateUser()"
       [disabled]="
-        form.invalid || (!form.get('signatureFile').value && onRoleChanges())
+        form.invalid ||
+        (!form.get('signatureFile').value &&
+          !currentValue?.signature &&
+          onRoleChanges())
       "
       *ngIf="!isLoading"
     >
