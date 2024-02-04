@@ -24,6 +24,14 @@
         [menu-items]="applicationsMenuItems"
       >
       </app-dropdown>
+      <app-dropdown
+        *ngIf="
+          currentUser?.operatingFacility === OperatingFacility.ProcessingPlant
+        "
+        [menu-items]="processingPlantMenuItems"
+        title="PROCESSING PLANT"
+      >
+      </app-dropdown>
       <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">
       </app-dropdown>
       <app-dropdown class="mr-4" title="MY APPROVALS" path="company/approvals">

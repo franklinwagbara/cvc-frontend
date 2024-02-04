@@ -84,6 +84,14 @@ export class CompanyTopNavComponent implements OnInit {
     },
   ];
 
+  public processingPlantMenuItems = [
+    {
+      name: 'Processing Plants',
+      url: 'company/processing-plant',
+      subMenu: null,
+    },
+  ];
+
   constructor(
     private applyService: ApplyService,
     private spinner: SpinnerService,
@@ -91,16 +99,6 @@ export class CompanyTopNavComponent implements OnInit {
     public auth: AuthenticationService
   ) {
     this.currentUser = this.auth.currentUser;
-
-    if (
-      this.currentUser.operatingFacility === OperatingFacility.ProcessingPlant
-    ) {
-      this.myAccountMenuItems.push({
-        name: 'Processing Plants',
-        url: 'company/processing-plant',
-        subMenu: null,
-      });
-    }
   }
 
   iconContexts = {
