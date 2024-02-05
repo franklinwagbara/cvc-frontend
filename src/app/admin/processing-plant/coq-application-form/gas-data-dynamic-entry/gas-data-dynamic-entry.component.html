@@ -1,0 +1,31 @@
+<mat-vertical-stepper class="pl-3 pr-2" linear #coqstepper>
+  <mat-step [completed]="isInitialCompleted" [label]="'Initial Measurements'">
+    <app-before-gas-dynamic-data-entry (onCompleted)="onCompleted($event)" />
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!isInitialCompleted"
+      >
+        Continue
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step [completed]="isFinalCompleted" [label]="'Final Measurements'">
+    <app-after-gas-dynamic-data-entry (onCompleted)="onCompleted($event)" />
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!isFinalCompleted"
+      >
+        Continue
+      </button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>

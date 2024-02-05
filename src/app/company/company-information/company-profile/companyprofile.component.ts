@@ -18,6 +18,7 @@ import { PopupService } from '../../../../../src/app/shared/services/popup.servi
 import { companyProfile } from '../../../../../src/app/shared/models/apply.model';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { OperatingFacility } from '../../company.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   templateUrl: 'companyprofile.component.html',
@@ -28,16 +29,19 @@ export class CompanyProfileComponent implements OnInit {
   profileForm: FormGroup;
   public currentUsername: LoginModel;
   private email = '';
-  public OperatingFacility = [
-    { name: OperatingFacility.CVC, value: 0 },
-    { name: OperatingFacility.ProcessingPlant, value: 1 },
-    { name: OperatingFacility.Both, value: 2 },
+
+  public OperatingFacilities = [
+    { name: 'CVC', value: 0 },
+    { name: 'ProcessingPlant', value: 1 },
+    { name: 'Both', value: 2 },
   ];
 
   countries: any;
   currentValue: any;
   companyProfile: companyProfile = new companyProfile();
-  operatingFacility: any;
+  operatingFacility: any = { name: 'None' };
+
+  pepp = 'CVC';
 
   constructor(
     private companyService: CompanyService,
@@ -89,17 +93,57 @@ export class CompanyProfileComponent implements OnInit {
       date: [''],
       isCompleted: [''],
       elps_Id: [''],
-      oldemail: ['mymail@gmail.com'],
+      // oldemail: ['mymail@gmail.com'],
       // id: [''],
     });
   }
 
   getOperatingFacility() {
-    this.companyService.getOperatingFacilities().subscribe({
+    this.companyService.getOperatingFacility(this.email).subscribe({
       next: (res) => {
         this.operatingFacility = res.data;
+
+        var tag = document.getElementById('operatingFacilityId');
+
+        var selectedOF = this.OperatingFacilities.find(
+          (x) => x.name == this.operatingFacility.name
+        );
+
+        this.OperatingFacilities.forEach((o) => {
+          if (
+            (tag as HTMLSelectElement).options.item(o.value).value ==
+            selectedOF.name
+          )
+            (tag as HTMLSelectElement).options.item(o.value).selected = true;
+        });
       },
     });
+  }
+
+  onChangeOperatingFacility(event) {
+    this.createOperationFacility(event.target.value);
+  }
+  createOperationFacility(value) {
+    this.spinner.open();
+    this.companyService
+      .createOperatingFacilities({
+        id: 0,
+        companyEmail: this.email,
+        name: value,
+      })
+      .subscribe({
+        next: (res) => {
+          this.operatingFacility = res.data;
+          this.spinner.close();
+          this.popupService.open('Record updated successfully', 'success');
+          this.cd.markForCheck();
+        },
+        error: (error: any) => {
+          this.spinner.close();
+          this.popupService.open('Unable to update profile', 'error');
+          this.cd.markForCheck();
+        },
+      });
   }
 
   getCompanyProfile(email) {
@@ -109,7 +153,6 @@ export class CompanyProfileComponent implements OnInit {
         this.spinner.close();
         this.companyProfile = res.data.company;
         this.countries = res.data.nations;
-        console.log(this.companyProfile);
         this.cd.markForCheck();
         this.countries.filter((res) => {
           if (res.text == this.companyProfile.nationality) {
@@ -129,16 +172,25 @@ export class CompanyProfileComponent implements OnInit {
     //this.isSubmitted = true;
     //if (this.profileForm.invalid) return;
     this.spinner.show('Saving company profile');
-    const userData = this.profileForm.value;
-    console.log(userData);
-    this.companyService.updateCompanyProfile(userData).subscribe({
+    const userData = {
+      ...this.profileForm.value,
+      operatingFacilityId: this.operatingFacility?.id,
+    };
+
+    forkJoin([
+      this.companyService.updateCompanyProfile(userData, this.email),
+      this.companyService.createOperatingFacilities({
+        id: 0,
+        companyEmail: this.email,
+        name: this.operatingFacility.name,
+      }),
+    ]).subscribe({
       next: (res) => {
         this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
         this.cd.markForCheck();
       },
       error: (error: any) => {
-        console.log(error);
         this.spinner.close();
         this.popupService.open('Unable to update profile', 'error');
         this.cd.markForCheck();

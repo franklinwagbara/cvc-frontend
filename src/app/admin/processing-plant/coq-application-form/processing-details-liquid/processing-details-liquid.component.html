@@ -1,0 +1,307 @@
+<form
+  [formGroup]="form"
+  class="grid gap-4 gap-y-2 text-sm grid-cols-1 grid-rows-1 md:grid-cols-2 mb-4"
+>
+  <div
+    id="marketing-info"
+    class="grid gap-4 gap-y-2 grid-cols-1 grid-rows-3 md:grid-cols-2 mb-4"
+  >
+    <div class="col-span-2 flex justify-center items-center">
+      <div
+        class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+      >
+        <h5 class="text-sm">MARKETING INFORMATION</h5>
+      </div>
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-tankerName"
+        >NAME OF TANKER<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="tankerName"
+        formControlName="tankerName"
+        id="coq-liquid-product-tankerName"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['tankerName'].touched &&
+            form.controls['tankerName'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-1">
+      <label for="coq-liquid-product-consignorName"
+        >NAME OF CONSIGNOR<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="consignorName"
+        formControlName="consignorName"
+        id="coq-liquid-product-consignorName"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['consignorName'].touched &&
+            form.controls['consignorName'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-1">
+      <label for="coq-liquid-product-consignee"
+        >NAME OF CONSIGNEE<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="consignee"
+        formControlName="consignee"
+        id="coq-liquid-product-consignee"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['consignee'].touched &&
+            form.controls['consignee'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-shipmentNo"
+        >SHIPMENT NUMBER<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="shipmentNo"
+        formControlName="shipmentNo"
+        id="coq-liquid-product-shipmentNo"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['shipmentNo'].touched &&
+            form.controls['shipmentNo'].invalid
+        }"
+      />
+    </div>
+  </div>
+  <div
+    id="shipment-info"
+    class="grid gap-4 gap-y-2 grid-cols-1 grid-rows-4 md:grid-cols-2 mb-4"
+  >
+    <div class="col-span-2 flex justify-center items-center">
+      <div
+        class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+      >
+        <h5 class="text-sm">SHIPMENT INFORMATION</h5>
+      </div>
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-terminal"
+        >TERMINAL<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="terminal"
+        formControlName="terminal"
+        id="coq-liquid-product-terminal"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['terminal'].touched &&
+            form.controls['terminal'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-destination"
+        >DESTINATION<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="destination"
+        formControlName="destination"
+        id="coq-liquid-product-destination"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['destination'].touched &&
+            form.controls['destination'].invalid
+        }"
+      />
+    </div>
+  </div>
+  <div
+    id="timing-info"
+    class="grid gap-4 gap-y-2 grid-cols-1 grid-rows-4 md:grid-cols-2 mb-4"
+  >
+    <div class="col-span-2 flex justify-center items-center">
+      <div
+        class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+      >
+        <h5 class="text-sm">TIMING/PRICE INFORMATION</h5>
+      </div>
+    </div>
+    <div class="md:col-span-1 flex">
+      <mat-form-field class="flex-1">
+        <mat-label
+          >COMMENCED LOADING(DATE/TIME)<sup class="text-red-700"
+            >*</sup
+          ></mat-label
+        >
+        <input
+          matInput
+          [ngxMatDatetimePicker]="picker"
+          placeholder="Choose a date and time"
+          formControlName="startTime"
+          [min]="dateValidation.min"
+          [max]="dateValidation.max"
+          [disabled]="null"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="$any(picker)"
+        ></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker
+          #picker
+          [showSpinners]="dateTimeConfig.showSpinners"
+          [showSeconds]="dateTimeConfig.showSeconds"
+          [stepHour]="dateTimeConfig.stepHour"
+          [stepMinute]="dateTimeConfig.stepMinute"
+          [stepSecond]="dateTimeConfig.stepSecond"
+          [touchUi]="dateTimeConfig.touchUi"
+          [color]="dateTimeConfig.color"
+          [enableMeridian]="dateTimeConfig.enableMeridian"
+          [disableMinute]="dateTimeConfig.disableMinute"
+          [hideTime]="dateTimeConfig.hideTime"
+        >
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+
+    <div class="md:col-span-1 flex">
+      <mat-form-field class="flex-1">
+        <mat-label
+          >COMMENCED LOADING(DATE/TIME)<sup class="text-red-700"
+            >*</sup
+          ></mat-label
+        >
+        <input
+          matInput
+          [ngxMatDatetimePicker]="picker2"
+          placeholder="Choose a date and time"
+          formControlName="endTime"
+          [min]="dateValidation.min"
+          [max]="dateValidation.max"
+          [disabled]="null"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="$any(picker2)"
+        ></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker
+          #picker2
+          [showSpinners]="dateTimeConfig.showSpinners"
+          [showSeconds]="dateTimeConfig.showSeconds"
+          [stepHour]="dateTimeConfig.stepHour"
+          [stepMinute]="dateTimeConfig.stepMinute"
+          [stepSecond]="dateTimeConfig.stepSecond"
+          [touchUi]="dateTimeConfig.touchUi"
+          [color]="dateTimeConfig.color"
+          [enableMeridian]="dateTimeConfig.enableMeridian"
+          [disableMinute]="dateTimeConfig.disableMinute"
+          [hideTime]="dateTimeConfig.hideTime"
+        >
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-averageDensity">
+        AVERAGE DENSITY<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="averageDensity"
+        formControlName="averageDensity"
+        id="coq-liquid-product-averageDensity"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['averageDensity'].touched &&
+            form.controls['averageDensity'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-plantPrice">
+        PLANT PRICE<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="plantPrice"
+        formControlName="plantPrice"
+        id="coq-liquid-product-plantPrice"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['plantPrice'].touched &&
+            form.controls['plantPrice'].invalid
+        }"
+      />
+    </div>
+  </div>
+  <div
+    id="ullage-info"
+    class="grid gap-4 gap-y-2 grid-cols-1 grid-rows-3 md:grid-cols-2 mb-4"
+  >
+    <div class="col-span-2 flex justify-center items-center">
+      <div
+        class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+      >
+        <h5 class="text-sm">ULLAGE INFORMATION</h5>
+      </div>
+    </div>
+    <div class="md:col-span-2">
+      <label for="coq-liquid-product-shoreFigure"
+        >SHORE FIGURE<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="shoreFigure"
+        formControlName="shoreFigure"
+        id="coq-liquid-product-shoreFigure"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['shoreFigure'].touched &&
+            form.controls['shoreFigure'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-1">
+      <label for="coq-liquid-product-shipFigure"
+        >SHIP FIGURE<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="shipFigure"
+        formControlName="shipFigure"
+        id="coq-liquid-product-shipFigure"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['shipFigure'].touched &&
+            form.controls['shipFigure'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-1">
+      <label>SHIP/SHORE DIFF.<sup class="text-red-700">*</sup></label>
+      <input disabled class="form-field form-control" />
+    </div>
+    <div class="md:col-span-2">
+      <label>%DIFF.<sup class="text-red-700">*</sup></label>
+      <input disabled class="form-field form-control" />
+    </div>
+  </div>
+</form>

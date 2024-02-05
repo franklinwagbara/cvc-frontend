@@ -1,0 +1,187 @@
+<mat-stepper #dataEntryStepper linear>
+  <mat-step
+    #batchStepper
+    [stepControl]="batchSelectionForm"
+    label="Select Batch"
+  >
+    <mat-form-field>
+      <mat-label>Select Batch</mat-label>
+      <mat-select [formControl]="batchSelectionForm">
+        <mat-option *ngFor="let batch of batches" [value]="batch.batchId">
+          {{ batch.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!batchSelectionForm?.valid"
+      >
+        Continue
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step
+    *ngIf="selectedMeasurementSystem == 'Static'"
+    [stepControl]="tankForm"
+    label="Select Tank"
+  >
+    <form [formGroup]="tankForm">
+      <mat-form-field>
+        <mat-label>Tank Name</mat-label>
+        <mat-select formControlName="id">
+          <mat-option
+            *ngFor="let tank of ppContext.configuredTanksObs | async"
+            [value]="tank.plantTankId"
+          >
+            {{ tank.tankName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="
+          ((ppContext.configuredTanksObs | async) !== null &&
+            !(ppContext.configuredTanksObs | async)?.length) ||
+          !tankForm?.valid
+        "
+        class="mb-2 mt-0"
+      >
+        {{
+          (ppContext.configuredTanksObs | async) !== null &&
+          !(ppContext.configuredTanksObs | async)?.length
+            ? "No configuredTanks configured for the selected " +
+              "plant" +
+              " and you may not proceed"
+            : !!tankForm?.controls["id"].hasError("duplicate")
+            ? "Tank readings already exist"
+            : ""
+        }}
+      </mat-error>
+    </form>
+
+    <app-capsule-card
+      *ngIf="this.ppContext.selectedTankObs | async"
+      [data]="this.ppContext.selectedTankObs | async"
+      [colMappings]="tankColMappings"
+    ></app-capsule-card>
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        (click)="setUpDataEntry()"
+        [disabled]="!tankForm?.valid"
+      >
+        Create Batch
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step
+    *ngIf="selectedMeasurementSystem == 'Dynamic'"
+    [stepControl]="meterForm"
+    label="Select Meter"
+  >
+    <form [formGroup]="meterForm">
+      <mat-form-field>
+        <mat-label>Meter Name</mat-label>
+        <mat-select formControlName="id">
+          <mat-option
+            *ngFor="let meter of ppContext.configuredMetersObs | async"
+            [value]="meter.id"
+          >
+            {{ meter.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="
+          ((ppContext.configuredMetersObs | async) !== null &&
+            !(ppContext.configuredMetersObs | async)?.length) ||
+          !meterForm?.valid
+        "
+        class="mb-2 mt-0"
+      >
+        {{
+          (ppContext.configuredMetersObs | async) !== null &&
+          !(ppContext.configuredMetersObs | async)?.length
+            ? "No configuredTanks configured for the selected " +
+              "plant" +
+              " and you may not proceed"
+            : !!meterForm?.controls["id"].hasError("duplicate")
+            ? "Tank readings already exist"
+            : ""
+        }}
+      </mat-error>
+    </form>
+
+    <app-capsule-card
+      *ngIf="ppContext.selectedMeterObs | async"
+      [data]="ppContext.selectedMeterObs | async"
+      [colMappings]="meterColMappings"
+    ></app-capsule-card>
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        (click)="setUpDataEntry()"
+        [disabled]="!meterForm?.valid"
+      >
+        Create Batch
+      </button>
+    </div>
+  </mat-step>
+
+  <div #dataEntryForms></div>
+</mat-stepper>
+
+<!-- <div class="mt-4 overflow-x-auto">
+    <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
+    <hr />
+    <ng-container *ngIf="!isGasProduct">
+      <div
+        *ngIf="coqFormService?.liquidProductReviewData.length; else noReview"
+      >
+        <app-coq-form-review
+          [isGasProduct]="isGasProduct"
+        ></app-coq-form-review>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isGasProduct">
+      <div *ngIf="coqFormService?.gasProductReviewData.length; else noReview">
+        <app-coq-form-review
+          [isGasProduct]="isGasProduct"
+        ></app-coq-form-review>
+      </div>
+    </ng-container>
+
+    <div class="text-right">
+      <button
+        class="mt-4"
+        mat-raised-button
+        color="primary"
+        matStepperNext
+        [disabled]="
+          !isGasProduct
+            ? !coqFormService?.liquidProductReviewData.length
+            : !coqFormService.gasProductReviewData.length
+        "
+      >
+        Proceed
+      </button>
+    </div>
+
+    <ng-template #noReview>
+      <p class="text-slate-600 text-center">
+        No Certificate of Quantity Data pending submission
+      </p>
+    </ng-template>
+  </div> -->

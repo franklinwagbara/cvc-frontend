@@ -99,8 +99,7 @@ export class CompanyDirectorComponent implements OnInit {
     //if (this.directorForm.invalid) return;
     const userData = this.directorForm.value;
     userData.countryName = this.companyDirector.countryName;
-    console.log(userData);
-    this.companyService.updateCompanyProfile(userData).subscribe({
+    this.companyService.updateCompanyProfile(userData, this.email).subscribe({
       next: (res) => {
         this.popupService.open('Record updated successfully', 'success');
       },

@@ -16,7 +16,11 @@ import { ErrorInterceptor, JwtInterceptor } from './helpers';
 import { LayoutModule } from './layout/layout.module';
 import { ProgressBarService } from './shared/services/progress-bar.service';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
-
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatTimepickerModule,
+  NgxMatNativeDateModule,
+} from '@angular-material-components/datetime-picker';
 
 @NgModule({
   declarations: [AppComponent, AccessDeniedComponent],
@@ -34,6 +38,9 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     LayoutModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   exports: [RouterModule],
   providers: [

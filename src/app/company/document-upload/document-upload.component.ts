@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ApplicationService } from '../../../../src/app/shared/services/application.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
   selector: 'app-document-upload',
@@ -38,7 +39,8 @@ export class DocumentUploadComponent implements OnInit {
     public appService: ApplicationService,
     private popUp: PopupService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private spinner: SpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +56,7 @@ export class DocumentUploadComponent implements OnInit {
 
   getUploadDocuments() {
     this.progressBar.open();
+    this.spinner.open();
 
     this.appService.getUploadDocuments(this.application_id).subscribe({
       next: (res) => {
@@ -70,6 +73,7 @@ export class DocumentUploadComponent implements OnInit {
         this.documents$.next(this.documents);
         this.documentConfig = res.data.apiData;
 
+        this.spinner.close();
         this.progressBar.close();
         this.cd.markForCheck();
       },
@@ -77,6 +81,7 @@ export class DocumentUploadComponent implements OnInit {
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
+        this.spinner.close();
         this.progressBar.close();
         this.cd.markForCheck();
       },
@@ -85,6 +90,7 @@ export class DocumentUploadComponent implements OnInit {
 
   uploadFile(data) {
     this.progressBar.open();
+    this.spinner.open();
 
     const fileEvent = data.file;
     const doc: DocumentInfo = data.doc;
@@ -108,7 +114,8 @@ export class DocumentUploadComponent implements OnInit {
         doc.docType,
         '',
         formdata,
-        action
+        action,
+        doc.fileId
       )
       .subscribe({
         next: (res) => {
@@ -130,6 +137,7 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File was uploaded successfully!', null, {
             panelClass: ['success'],
           });
+          this.spinner.close();
           this.cd.markForCheck();
         },
         error: (error: unknown) => {
@@ -137,6 +145,7 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
           });
+          this.spinner.close();
           this.cd.markForCheck();
         },
       });
@@ -144,6 +153,7 @@ export class DocumentUploadComponent implements OnInit {
 
   uploadAdditionalFile(data) {
     this.progressBar.open();
+    this.spinner.open();
 
     const fileEvent = data.file;
     const doc: DocumentInfo = data.doc;
@@ -156,6 +166,8 @@ export class DocumentUploadComponent implements OnInit {
     const formdata = new FormData();
     formdata.append('file', file);
 
+    debugger;
+
     this.applicationService
       .uploadCompanyFileToElps(
         doc.docId,
@@ -167,7 +179,7 @@ export class DocumentUploadComponent implements OnInit {
         doc.docType,
         '',
         formdata,
-        action
+        action,
       )
       .subscribe({
         next: (res) => {
@@ -189,12 +201,16 @@ export class DocumentUploadComponent implements OnInit {
           this.snackBar.open('File was uploaded successfully!', null, {
             panelClass: ['success'],
           });
+          this.spinner.close();
+          this.cd.markForCheck();
         },
         error: (error: unknown) => {
+          this.spinner.close();
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
             panelClass: ['error'],
           });
+          this.cd.markForCheck();
         },
       });
   }
@@ -230,6 +246,7 @@ export class DocumentUploadComponent implements OnInit {
 
   submitApplication() {
     this.progressBar.open();
+    this.spinner.open();
 
     const payload = {
       appId: Number(this.application_id),
@@ -238,15 +255,19 @@ export class DocumentUploadComponent implements OnInit {
 
     this.applicationService.submitApplication(payload).subscribe({
       next: (res) => {
+        this.spinner.close();
         this.progressBar.close();
         // this.popUp.open('Document(s) upload was successfull.', 'success');
         this.popUp.open('Application was submitted successfully', 'success');
         this.router.navigate(['/company/dashboard']);
+        this.cd.markForCheck();
       },
       error: (res: unknown) => {
+        this.spinner.close();
         this.progressBar.close();
         // this.popUp.open('Document(s) upload failed!', 'error');
         this.popUp.open('Application submission failed!', 'error');
+        this.cd.markForCheck();
       },
     });
   }
@@ -276,7 +297,7 @@ export class DocumentInfo {
   fileSizeInKb?: any;
   percentProgress?: any;
   fileName?: string;
-  docIndex?: number
+  docIndex?: number;
 }
 
 export interface IUploadDocInfo {
