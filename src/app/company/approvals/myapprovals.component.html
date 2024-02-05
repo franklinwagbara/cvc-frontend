@@ -11,9 +11,10 @@
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="approvals"
           [EnableViewClearanceControl]="
-            currentUser.operatingFacility === OperatingFacility.ProcessingPlant
-              ? false
-              : true
+            currentUser?.operatingFacility === OperatingFacility.CVC ||
+            currentUser?.operatingFacility === OperatingFacility.Both
+              ? true
+              : false
           "
           [EnableViewCoQCertsControl]="true"
           [EnableViewDebitNotesControl]="true"
