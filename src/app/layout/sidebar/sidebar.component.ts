@@ -98,53 +98,30 @@ const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  {
-    id: 6,
-    title: 'ALL APPROVALS',
-    iconName: 'licence-outline',
-    iconId: 'licence_outline',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
-    directorate: 'BOTH',
-    userRole: [UserRole.ALL],
+  // {
+  //   id: 6,
+  //   title: 'ALL APPROVALS',
+  //   iconName: 'licence-outline',
+  //   iconId: 'licence_outline',
+  //   iconColor: 'white',
+  //   active: false,
+  //   subMenuActive: false,
+  //   directorate: 'BOTH',
+  //   userRole: [UserRole.ALL],
 
-    subRoutes: [
-      {
-        id: 1,
-        title: 'CoQ CERTIFICATES',
-        url: '/admin/all-approvals/coq-certificates',
-      },
-      {
-        id: 2,
-        title: 'NoA CLEARANCES',
-        url: '/admin/all-approvals/noa-clearances',
-      },
-    ],
-  },
-  {
-    id: 16,
-    title: 'Processing Plant',
-    iconName: 'carbon',
-    iconId: 'carbon',
-    iconColor: 'white',
-    active: false,
-    subMenuActive: false,
-    directorate: 'BOTH',
-    userRole: [UserRole.ALL],
-    subRoutes: [
-      {
-        id: 2,
-        title: 'CoQ Form',
-        url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
-      },
-      {
-        id: 1,
-        title: 'CoQ Applications',
-        url: '/admin/coq-and-plant/coq-applications-by-depot',
-      },
-    ],
-  },
+  //   subRoutes: [
+  //     {
+  //       id: 1,
+  //       title: 'CoQ CERTIFICATES',
+  //       url: '/admin/all-approvals/coq-certificates',
+  //     },
+  //     {
+  //       id: 2,
+  //       title: 'NoA CLEARANCES',
+  //       url: '/admin/all-approvals/noa-clearances',
+  //     },
+  //   ],
+  // },
 
   {
     id: 7,
@@ -372,7 +349,7 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show CoQ nav only to Staffs in Field Offices and Field Officers
+    // Show CoQ nav only to Staffs in Field Offices and Field Officers DSSRI
     if (
       this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
       this.currentUser?.directorate === Directorate.DSSRI
@@ -410,35 +387,66 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
       this.currentUser?.directorate === Directorate.HPPITI
     ) {
-      let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'Processing Plant',
-          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
       this.menuItems = this.menuItems.slice(0, 3).concat(
         {
-          id: 3,
-          title: 'CoQ And Plant',
+          id: 16,
+          title: 'PROCESSING PLANT',
           iconName: 'carbon',
           iconId: 'carbon',
           iconColor: 'white',
           active: false,
           subMenuActive: false,
-          subRoutes: coqSubRoutes,
           directorate: 'BOTH',
           userRole: [UserRole.ALL],
+          subRoutes: [
+            {
+              id: 2,
+              title: 'CoQ FORM',
+              url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+            },
+            {
+              id: 1,
+              title: 'CoQ APPLICATIONS',
+              url: '/admin/coq-and-plant/coq-applications-by-depot',
+            },
+          ],
         },
         this.menuItems.slice(3)
       );
     }
+    //else if (
+    //   this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
+    //   this.currentUser?.directorate === Directorate.HPPITI
+    // ) {
+    //   let coqSubRoutes = [
+    //     {
+    //       id: 1,
+    //       title: 'Processing Plant',
+    //       url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
+    //     },
+    //     {
+    //       id: 2,
+    //       title: 'CoQ Applications',
+    //       url: '/admin/coq-and-plant/coq-applications-by-depot',
+    //     },
+    //   ];
+
+    //   this.menuItems = this.menuItems.slice(0, 3).concat(
+    //     {
+    //       id: 3,
+    //       title: 'CoQ And Plant',
+    //       iconName: 'carbon',
+    //       iconId: 'carbon',
+    //       iconColor: 'white',
+    //       active: false,
+    //       subMenuActive: false,
+    //       subRoutes: coqSubRoutes,
+    //       directorate: 'BOTH',
+    //       userRole: [UserRole.ALL],
+    //     },
+    //     this.menuItems.slice(3)
+    //   );
+    // }
 
     if (
       this.currentUser?.directorate === Directorate.DSSRI ||
