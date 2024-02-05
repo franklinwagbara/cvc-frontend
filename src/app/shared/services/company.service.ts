@@ -25,10 +25,12 @@ export class CompanyService {
     );
   }
 
-  public updateCompanyProfile(data) {
+  public updateCompanyProfile(data, oldemail) {
+    debugger;
     return this.http.post<any>(
       `${environment.apiUrl}/Company/profile-update`,
-      data
+      data,
+      { params: { oldemail } }
     );
   }
 
@@ -140,9 +142,10 @@ export class CompanyService {
     return this.http.get<any>(`${API}/Get-Message-ById?id=${id}`);
   }
 
-  public getOperatingFacilities() {
+  public getOperatingFacility(email: string) {
     return this.http.get<any>(
-      `${environment.apiUrl}/OperatingFacility/all-operating-facilities`
+      `${environment.apiUrl}/OperatingFacility/get-operating-facility`,
+      { params: { email } }
     );
   }
   public createOperatingFacilities(data: any) {

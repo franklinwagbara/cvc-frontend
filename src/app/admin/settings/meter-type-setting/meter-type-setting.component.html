@@ -1,0 +1,22 @@
+<div class="setting-desk">
+  <h2 class="page-title bg-blue-500 text-blue-800">
+    METER TYPES CONFIGURATION
+  </h2>
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'Meter Types'"
+          [title-color]="'yellow'"
+          [table_keysMappedToHeaders]="meterTypeKeysMappedToHeaders"
+          [table_content]="meterTypes"
+          [noTitle]="true"
+          [table_controls_horizontal]="true"
+          (onAddData)="addData()"
+          (onDeleteData)="deleteData($event)"
+          (onEditData)="editData($event)"
+        ></generic-table>
+      </div>
+    </div>
+  </div>
+</div>

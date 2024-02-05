@@ -1,0 +1,130 @@
+<form [formGroup]="form">
+  <div class="col-span-2 flex justify-center items-center my-6">
+    <div
+      class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+    >
+      <h5 class="text-sm">LIQUID DYNAMIC DATA ENTRY (INITIAL MEASUREMENTS)</h5>
+    </div>
+  </div>
+
+  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+    <div class="md:col-span-3 form-group">
+      <label for="coq-liquid-product-readingM"
+        >READING(m) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="readingM"
+        formControlName="readingM"
+        id="coq-liquid-product-readingM"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['readingM'].touched &&
+            form?.controls['readingM'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-liquid-product-temperature"
+        >TANK TEMP (<sup class="text-red-700">o</sup>C)
+        <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="temperature"
+        formControlName="temperature"
+        id="coq-liquid-product-temperature"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['temperature'].touched &&
+            form?.controls['temperature'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-liquid-product-density"
+        >DENSITY(Kg/m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="density"
+        formControlName="density"
+        id="coq-liquid-product-density"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['density'].touched &&
+            form?.controls['density'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-3">
+      <label for="coq-liquidproduct-meterFactor"
+        >METER FACTOR<sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="meterFactor"
+        formControlName="meterFactor"
+        id="coq-liquidproduct-meterFactor"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['meterFactor'].touched &&
+            form?.controls['meterFactor'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-liquid-product-ctl"
+        >CTL <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        formControlName="ctl"
+        id="coq-liquid-product-ctl"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['ctl'].touched && form?.controls['ctl'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-liquid-product-cpl"
+        >CPL <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="cpl"
+        formControlName="cpl"
+        id="coq-liquid-product-cpl"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['cpl'].touched && form?.controls['cpl'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-3">
+      <label for="coq-liquid-product-wtAir"
+        >WTAIR <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="wtAir"
+        formControlName="wtAir"
+        id="coq-liquid-product-wtAir"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['wtAir'].touched && form?.controls['wtAir'].invalid
+        }"
+      />
+    </div>
+  </div>
+</form>

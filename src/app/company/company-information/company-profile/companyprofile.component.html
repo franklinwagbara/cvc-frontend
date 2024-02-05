@@ -63,13 +63,17 @@
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
             >
               <select
-                formControlName="operatingFacilityId"
-                [(ngModel)]="companyProfile.operatingFacilityId"
+                [value]="pepp"
                 id="operatingFacilityId"
                 class="w-full h-full"
                 style="background: none"
+                (change)="onChangeOperatingFacility($event)"
               >
-                <option *ngFor="let a of OperatingFacility" [value]="a.value">
+                <option
+                  *ngFor="let a of OperatingFacilities"
+                  [selected]="a.name == pepp"
+                  [value]="a.name"
+                >
                   {{ a.name }}
                 </option>
               </select>

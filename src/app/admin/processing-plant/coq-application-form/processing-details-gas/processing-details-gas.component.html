@@ -1,0 +1,151 @@
+<form [formGroup]="form">
+  <div
+    class="w-[90%] grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-12 mb-4"
+  >
+    <div class="md:col-span-12 flex flex-col lg:flex-row gap-4 pr-2">
+      <mat-form-field class="md:col-span-6">
+        <mat-label>Date of Truck Arrival</mat-label>
+        <div class="flex">
+          <input
+            matInput
+            name="vesselArrivalDate"
+            formControlName="vesselArrivalDate"
+            [matDatepicker]="arrivalDatePicker"
+            [min]="dateValidation.min"
+            [max]="dateValidation.max"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="arrivalDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #arrivalDatePicker></mat-datepicker>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="md:col-span-6">
+        <mat-label>Date of Commencement of Product Discharge</mat-label>
+        <div class="flex">
+          <input
+            matInput
+            name="prodDischargeCommenceDate"
+            formControlName="prodDischargeCommenceDate"
+            [matDatepicker]="prodDischargeCommenceDatePicker"
+            [min]="dateValidation.min"
+            [max]="dateValidation.max"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="prodDischargeCommenceDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #prodDischargeCommenceDatePicker></mat-datepicker>
+        </div>
+      </mat-form-field>
+      <mat-form-field class="md:col-span-6">
+        <mat-label>Date of Completion of Product Discharge</mat-label>
+        <div class="flex">
+          <input
+            matInput
+            name="prodDischargeCompletionDate"
+            formControlName="prodDischargeCompletionDate"
+            [matDatepicker]="prodDischargeCompletionDatePicker"
+            [min]="dateValidation.min"
+            [max]="dateValidation.max"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="prodDischargeCompletionDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #prodDischargeCompletionDatePicker></mat-datepicker>
+        </div>
+      </mat-form-field>
+    </div>
+    <div class="md:col-span-6">
+      <label for="coq-gas-product-gov"
+        >Qty Reflected on Bill of Lading (MT Air)
+        <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="qtyBillLadingMtAir"
+        formControlName="qtyBillLadingMtAir"
+        id="coq-gas-product-qtyBillLadingMtAir"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['qtyBillLadingMtAir'].touched &&
+            form.controls['qtyBillLadingMtAir'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-6">
+      <label for="coq-gas-product-arrivalShipMtAir"
+        >Arrival SHIP Figure (MT Air) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="arrivalShipMtAir"
+        formControlName="arrivalShipMtAir"
+        id="coq-gas-product-arrivalShipMtAir"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['arrivalShipMtAir'].touched &&
+            form.controls['arrivalShipMtAir'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-6">
+      <label for="coq-gas-product-shipDischargedMtAir"
+        >SHIP Figure (DISCHARGED) (MT Air)
+        <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="shipDischargedMtAir"
+        formControlName="shipDischargedMtAir"
+        id="coq-gas-product-shipDischargedMtAir"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['shipDischargedMtAir'].touched &&
+            form.controls['shipDischargedMtAir'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-6">
+      <label for="coq-gas-product-depotPrice"
+        >Depot Price <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="depotPrice"
+        formControlName="depotPrice"
+        id="coq-gas-product-depotPrice"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['depotPrice'].touched &&
+            form.controls['depotPrice'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-6">
+      <label for="coq-gas-product-nameConsignee"
+        >Name of Consignor/Consignee <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="text"
+        name="nameConsignee"
+        formControlName="nameConsignee"
+        id="coq-gas-product-nameConsignee"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form.controls['nameConsignee'].touched &&
+            form.controls['nameConsignee'].invalid
+        }"
+      />
+    </div>
+  </div>
+</form>

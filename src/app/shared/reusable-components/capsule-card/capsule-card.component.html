@@ -1,0 +1,12 @@
+<div class="wrapper">
+  <div class="left-list-wrapper">
+    <div class="list-item" *ngFor="let map of colMappings | keyvalue">
+      {{ map.value }}
+    </div>
+  </div>
+  <div class="right-list-wrapper">
+    <div class="list-item" *ngFor="let map of colMappings | keyvalue">
+      {{ data[map.key] }}
+    </div>
+  </div>
+</div>

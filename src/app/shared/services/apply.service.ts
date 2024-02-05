@@ -184,26 +184,39 @@ export class ApplyService {
     docType,
     uniqueid,
     file,
-    action: string
+    action: string,
+    fileId: any = null
   ) {
-    if (!action || (action === 'create' && docType === 'company')) {
+    if (
+      !action ||
+      (action === 'create' && (docType as string).toLowerCase() === 'company')
+    ) {
       return this.http.post<any>(
         `${environment.elpsBase}/api/UploadCompanyDoc/${docTypeId}/${compId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`,
         file
       );
-    } else if (action === 'update' && docType === 'company') {
+    } else if (
+      action === 'update' &&
+      (docType as string).toLowerCase() === 'company'
+    ) {
       return this.http.post<any>(
-        `${environment.elpsBase}/api/CompanyDocument/UpdateFile/${docTypeId}/${compId}/company?docid=${docTypeId}`,
+        `${environment.elpsBase}/api/CompanyDocument/UpdateFile/${docTypeId}/${compId}/company?docid=${fileId}`,
         file
       );
-    } else if (!action || (action === 'create' && docType === 'facility')) {
+    } else if (
+      !action ||
+      (action === 'create' && (docType as string).toLowerCase() === 'facility')
+    ) {
       return this.http.post<any>(
         `${environment.elpsBase}/api/Facility/UploadFile/${docTypeId}/${compId}/${facilityId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`,
         file
       );
-    } else if (action === 'update' && docType === 'facility') {
+    } else if (
+      action === 'update' &&
+      (docType as string).toLowerCase() === 'facility'
+    ) {
       return this.http.post<any>(
-        `${environment.elpsBase}/api/FacilityDocument/UpdateFile/${docTypeId}/${facilityId}?docid=${docTypeId}`,
+        `${environment.elpsBase}/api/FacilityDocument/UpdateFile/${docTypeId}/${facilityId}?docid=${fileId}`,
         file
       );
     } else

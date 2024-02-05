@@ -10,7 +10,8 @@ export enum UserRole {
   CONTROLLER = 'Controller',
   FAD = 'FAD',
   APPROVER = 'Approver',
-  SUPERADMIN = 'SuperAdmin'
+  SUPERADMIN = 'SuperAdmin',
+  ALL = 'ALL',
 }
 
 export enum Directorate {
