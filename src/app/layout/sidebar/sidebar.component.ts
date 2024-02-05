@@ -401,6 +401,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: coqSubRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(3)
       );
@@ -465,6 +467,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: subRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(4)
       );
@@ -495,6 +499,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: subRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(4)
       );

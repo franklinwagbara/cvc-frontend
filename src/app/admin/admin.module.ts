@@ -102,7 +102,14 @@ import { DipMethodSettingComponent } from './settings/dip-method-setting/dip-met
 import { ProcessingDetailsLiquidComponent } from './processing-plant/coq-application-form/processing-details-liquid/processing-details-liquid.component';
 import { ProcessingDetailsGasComponent } from './processing-plant/coq-application-form/processing-details-gas/processing-details-gas.component';
 import { CoqApplicationPPFormComponent } from './processing-plant/coq-application-form/coq-application-pp-form.component';
-import { NgxMatDatetimePickerModule } from '@angular-material-components/datetime-picker';
+import { BeforeLiquidDynamicDataEntryComponent } from './processing-plant/coq-application-form/liquid-data-dynamic-entry/before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { AfterLiquidDynamicDataEntryComponent } from './processing-plant/coq-application-form/liquid-data-dynamic-entry/after-liquid-dynamic-data-entry/after-liquid-dynamic-data-entry.component';
+import { AfterLiquidStaticDataEntryComponent } from './processing-plant/coq-application-form/liquid-data-static-entry/after-liquid-static-data-entry/after-liquid-static-data-entry.component';
+import { BeforeLiquidStaticDataEntryComponent } from './processing-plant/coq-application-form/liquid-data-static-entry/before-liquid-static-data-entry/before-liquid-static-data-entry.component';
+import { BeforeGasDynamicDataEntryComponent } from './processing-plant/coq-application-form/gas-data-dynamic-entry/before-gas-dynamic-data-entry/before-gas-dynamic-data-entry.component';
+import { AfterGasDynamicDataEntryComponent } from './processing-plant/coq-application-form/gas-data-dynamic-entry/after-gas-dynamic-data-entry/after-gas-dynamic-data-entry.component';
+import { AfterGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/after-gas-static-data-entry/after-gas-static-data-entry.component';
+import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/before-gas-static-data-entry/before-gas-static-data-entry.component';
 
 @NgModule({
   declarations: [
@@ -178,6 +185,14 @@ import { NgxMatDatetimePickerModule } from '@angular-material-components/datetim
     ProcessingDetailsLiquidComponent,
     ProcessingDetailsGasComponent,
     CoqApplicationPPFormComponent,
+    BeforeLiquidDynamicDataEntryComponent,
+    AfterLiquidDynamicDataEntryComponent,
+    AfterLiquidStaticDataEntryComponent,
+    BeforeLiquidStaticDataEntryComponent,
+    BeforeGasDynamicDataEntryComponent,
+    AfterGasDynamicDataEntryComponent,
+    AfterGasStaticDataEntryComponent,
+    BeforeGasStaticDataEntryComponent,
   ],
 
   imports: [

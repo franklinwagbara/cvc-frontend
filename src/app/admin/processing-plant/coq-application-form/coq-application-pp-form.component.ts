@@ -11,12 +11,9 @@ import {
   ViewChildren,
 } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
-  ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,7 +29,7 @@ import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { Location } from '@angular/common';
 import { Util } from 'src/app/shared/lib/Util';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStep, MatStepper } from '@angular/material/stepper';
 import {
   DocumentConfig,
   DocumentInfo,
@@ -40,7 +37,6 @@ import {
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
 import { ICOQ } from 'src/app/shared/interfaces/ICoQApplication';
 import { ICoqRequirement } from 'src/app/shared/interfaces/ICoqRequirement';
-import { ApplicationService } from 'src/app/shared/services/application.service';
 import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { LibaryService } from 'src/app/shared/services/libary.service';
@@ -49,11 +45,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { environment } from 'src/environments/environment';
 import { CoqApplicationPreviewPPComponent } from './coq-application-preview/coq-application-preview-pp.component';
-import {
-  PLANT_COL_MAPPINGS,
-  PRODUCT_COL_MAPPINGS,
-  TANK_COL_MAPPINGS,
-} from '../colMappings';
+import { PLANT_COL_MAPPINGS, PRODUCT_COL_MAPPINGS } from '../colMappings';
 import { getDetailsForm, getForm } from './forms';
 import { LiquidDataDynamicEntryComponent } from './liquid-data-dynamic-entry/liquid-data-dynamic-entry.component';
 import { GasDataDynamicEntryComponent } from './gas-data-dynamic-entry/gas-data-dynamic-entry.component';
@@ -65,6 +57,8 @@ import { LiquidDataStaticEntryComponent } from './liquid-data-static-entry/liqui
 import { GasDataStaticEntryComponent } from './gas-data-static-entry/gas-data-static-entry.component';
 import { ExtractPayload } from './helpers/ExtractPayload';
 import { ProcessingPlantCOQService } from 'src/app/shared/services/processing-plant-coq/processing-plant-coq.service';
+import { IPayloadParams, ISubmitDocument } from './helpers/Types';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-coq-application-pp-form',
@@ -114,12 +108,6 @@ export class CoqApplicationPPFormComponent
 
   plantColMappings = PLANT_COL_MAPPINGS;
   productColMappings = PRODUCT_COL_MAPPINGS;
-  tankColMappings = TANK_COL_MAPPINGS;
-
-  configuredTank = this.fb.group({
-    id: ['', [Validators.required, this.isUniqueTank()]],
-    name: ['', [Validators.required]],
-  });
 
   activeBeforeTankForm: FormGroup;
   activeAfterTankForm: FormGroup;
@@ -163,6 +151,7 @@ export class CoqApplicationPPFormComponent
 
   @ViewChild('coqstepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
+  @ViewChild('dataEntryWrapper') dataEntryWrapper: MatStep;
 
   @ViewChildren(LiquidDataDynamicEntryComponent)
   LiquidDataDynamicViews: QueryList<LiquidDataDynamicEntryComponent>;
@@ -201,11 +190,11 @@ export class CoqApplicationPPFormComponent
     public coqFormService: CoqAppFormService,
     private popUp: PopupService,
     private dialog: MatDialog,
-    private applicationService: ApplicationService,
     private location: Location,
     private meterTypeService: MeterTypeService,
     private dipMethodService: DipMethodService,
-    private procPlantCoQService: ProcessingPlantCOQService
+    private procPlantCoQService: ProcessingPlantCOQService,
+    public ppContext: ProcessingPlantContextService
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
@@ -254,7 +243,7 @@ export class CoqApplicationPPFormComponent
   }
 
   public setUpSubscriptions() {
-    this.subscribeTankSelection();
+    // this.subscribeTankSelection();
     this.subscribeDepotSelection();
     this.subscribeProductSelection();
     this.subscribePlantSelection();
@@ -264,6 +253,11 @@ export class CoqApplicationPPFormComponent
     this.subscribeDipMethodTypeSelection();
     this.subscribeMeterTypeSelection();
 
+    this.cd.markForCheck();
+  }
+
+  public onStepFromMeterType() {
+    this.dataEntryWrapper.select();
     this.cd.markForCheck();
   }
 
@@ -286,7 +280,11 @@ export class CoqApplicationPPFormComponent
         this.selectedPlant = this.processingPlants.find(
           (x) => x.id == parseInt(val)
         );
-        this.noTankConfigured = !this.plantTanks.length;
+        this.ppContext.selectedProcessingPlant$.next(this.selectedPlant);
+        this.ppContext.configuredTanks$.next(this.selectedPlant.tanks);
+        this.ppContext.configuredMeters$.next(this.selectedPlant.meters);
+
+        // this.noTankConfigured = !this.plantTanks.length;
         this.fetchRequirement(parseInt(val));
       })
     );
@@ -330,19 +328,6 @@ export class CoqApplicationPPFormComponent
     );
   }
 
-  subscribeTankSelection(): void {
-    this.allSubscriptions.add(
-      this.configuredTank.controls['id'].valueChanges.subscribe((val) => {
-        // Populate tankName control
-        this.selectedTank = this.plantTanks?.find(
-          (t) => t?.plantTankId === parseInt(val)
-        );
-        const tankName = this.selectedTank?.tankName;
-        this.configuredTank.controls['name'].setValue(tankName ?? '');
-      })
-    );
-  }
-
   subscribeUploadResponses(): void {
     this.allSubscriptions.add(
       this.fileUpload.uploadResponses$.subscribe((val) => {
@@ -374,7 +359,7 @@ export class CoqApplicationPPFormComponent
     this.allSubscriptions.add(
       this.coqFormService.formDataEvent.subscribe((val) => {
         if (val === 'removed') {
-          this.configuredTank.reset();
+          // this.configuredTank.reset();
           this.cd.markForCheck();
         }
       })
@@ -392,6 +377,7 @@ export class CoqApplicationPPFormComponent
       next: (res: any[]) => {
         this.products = res[0]?.data;
         this.processingPlants = res[1]?.data;
+
         this.meterTypes = res[2]?.data;
         this.dipMethods = res[3]?.data;
 
@@ -683,79 +669,38 @@ export class CoqApplicationPPFormComponent
     debugger;
     let payload: any;
 
-    //todo: revisit this gas product payload
-    if (this.isGasProduct) {
-      payload = {
-        plantId: this.plantSelection.value,
-        productId: this.productSelection.value,
-        quauntityReflectedOnBill:
-          this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
-        arrivalShipFigure:
-          this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
-        dischargeShipFigure:
-          this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
-        dateOfVesselArrival: new Date(
-          this.vesselGasInfoForm.controls['vesselArrivalDate'].value
-        ).toISOString(),
-        dateOfVesselUllage: new Date(
-          this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value
-        ).toISOString(),
-        dateOfSTAfterDischarge: new Date(
-          this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value
-        ).toISOString(),
-        depotPrice: this.vesselGasInfoForm.controls['depotPrice'].value,
-        nameConsignee: this.vesselGasInfoForm.controls['nameConsignee'].value,
-        tankBeforeReadings: [],
-        tankAfterReadings: [],
-        submitDocuments: [],
-      };
-
-      payload = this.extractTankReadings(payload);
-    } else {
-      payload = {
-        plantId: this.plantSelection.value,
-        productId: this.productSelection.value,
-        measurementSystem: this.selectedMeasurement,
-        meterTypeId: this.selectedMeterType?.id ?? 0,
-        dipMethodId: this.selectedDipMethod?.id ?? 0,
-        startTime:
-          this.activeProcessingDetailsForm.controls[
-            'startTime'
-          ].value.toISOString(),
-        endTime:
-          this.activeProcessingDetailsForm.controls[
-            'endTime'
-          ].value.toISOString(),
-        consignorName:
-          this.activeProcessingDetailsForm.controls['consignorName'].value,
-        consignee: this.activeProcessingDetailsForm.controls['consignee'].value,
-        terminal: this.activeProcessingDetailsForm.controls['terminal'].value,
-        destination:
-          this.activeProcessingDetailsForm.controls['destination'].value,
-        shipmentNo:
-          this.activeProcessingDetailsForm.controls['shipmentNo'].value,
-        shoreFigure:
-          this.activeProcessingDetailsForm.controls['shoreFigure'].value,
-        shipFigure:
-          this.activeProcessingDetailsForm.controls['shipFigure'].value,
-        tankBeforeReadings: [],
-        tankAfterReadings: [],
-        submitDocuments: [],
-      };
-
-      payload = this.extractTankReadings(payload);
-    }
+    const submitDocuments: ISubmitDocument[] = [];
 
     this.documents.forEach((doc) => {
-      payload.submitDocuments.push({
-        fileId: doc.fileId,
+      submitDocuments.push({
+        fileId: +doc.fileId,
         docType: doc.docType,
         docName: doc.docName,
         docSource: doc.docSource,
       });
     });
 
-    return payload;
+    //todo: revisit this gas product payload
+    if (this.isGasProduct) {
+    } else {
+      const payloadParams: IPayloadParams = {
+        identifiers: {
+          isGas: this.isGasProduct,
+          plantId: this.selectedPlant?.id ?? 0,
+          productId: this.selectedProduct?.id ?? 0,
+          measurementSystem: this.selectedMeasurement,
+          meterTypeId: this.selectedMeterType?.id ?? 0,
+          dipMethodId: this.selectedDipMethod?.id ?? 0,
+        },
+        processingDetails: this.activeProcessingDetailsForm.value,
+        documents: submitDocuments,
+        readings: this.ppContext.LSBatchReadings$.value,
+      };
+
+      return new ExtractPayload(payloadParams).extract();
+    }
+
+    return null;
   }
 
   restoreReviewData(): void {
@@ -771,33 +716,33 @@ export class CoqApplicationPPFormComponent
     }
   }
 
-  isUniqueTank(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const tank = (
-        (this.isProcessingPlant ? this.plantTanks : this.requirement?.tanks) ||
-        []
-      ).find(
-        (t) =>
-          (this.isProcessingPlant ? t.plantTankId : t.id) ===
-          parseInt(control.value)
-      );
-      const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
-      if (this.isGasProduct !== null && !this.isGasProduct) {
-        return !this.coqFormService.liquidProductReviewData.some(
-          (val) => val.before.tank === tankName
-        )
-          ? null
-          : { duplicate: control.value };
-      } else if (this.isGasProduct !== null && this.isGasProduct) {
-        return !this.coqFormService.gasProductReviewData.some(
-          (val) => val.before.tank === tankName
-        )
-          ? null
-          : { duplicate: control.value };
-      }
-      return null;
-    };
-  }
+  // isUniqueTank(): ValidatorFn {
+  //   return (control: AbstractControl): ValidationErrors | null => {
+  //     const tank = (
+  //       (this.isProcessingPlant ? this.plantTanks : this.requirement?.tanks) ||
+  //       []
+  //     ).find(
+  //       (t) =>
+  //         (this.isProcessingPlant ? t.plantTankId : t.id) ===
+  //         parseInt(control.value)
+  //     );
+  //     const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
+  //     if (this.isGasProduct !== null && !this.isGasProduct) {
+  //       return !this.coqFormService.liquidProductReviewData.some(
+  //         (val) => val.before.tank === tankName
+  //       )
+  //         ? null
+  //         : { duplicate: control.value };
+  //     } else if (this.isGasProduct !== null && this.isGasProduct) {
+  //       return !this.coqFormService.gasProductReviewData.some(
+  //         (val) => val.before.tank === tankName
+  //       )
+  //         ? null
+  //         : { duplicate: control.value };
+  //     }
+  //     return null;
+  //   };
+  // }
 
   saveToReview(): void {
     debugger;
@@ -832,48 +777,9 @@ export class CoqApplicationPPFormComponent
       JSON.stringify(coqFormDataArr)
     );
 
-    this.configuredTank.reset();
+    // this.configuredTank.reset();
     this.tankInfoStepper.selectedIndex = 0;
     this.cd.markForCheck();
-  }
-
-  private extractTankReadings(payload) {
-    if (this.isGasProduct)
-      this.coqFormService.liquidProductReviewData.forEach((el) => {
-        payload.tankBeforeReadings.push(
-          new ExtractPayload(el.before).extract('Gas', this.selectedMeasurement)
-        );
-        payload.tankAfterReadings.push(
-          new ExtractPayload(el.after).extract('Gas', this.selectedMeasurement)
-        );
-      });
-    else
-      this.coqFormService.liquidProductReviewData.forEach((el) => {
-        payload.tankBeforeReadings.push(
-          new ExtractPayload(el.before).extract(
-            'Liquid',
-            this.selectedMeasurement
-          )
-        );
-        payload.tankAfterReadings.push(
-          new ExtractPayload(el.after).extract(
-            'Liquid',
-            this.selectedMeasurement
-          )
-        );
-      });
-
-    return payload;
-  }
-
-  public getActiveForm(status: 'before' | 'after') {
-    if (status == 'before')
-      this.activeBeforeTankForm = this.getViewChildForms(true);
-    else this.activeAfterTankForm = this.getViewChildForms(false);
-
-    return status == 'before'
-      ? this.activeBeforeTankForm
-      : this.activeAfterTankForm;
   }
 
   public get getActiveProcDetailsForm() {
@@ -884,15 +790,6 @@ export class CoqApplicationPPFormComponent
   public getProcViewChildForms() {
     return (this.ProcessingDetailsGasView ?? this.ProcessingDetailsLiquidView)
       ?.form;
-  }
-
-  public getViewChildForms(isBefore: boolean) {
-    return (
-      this.LiquidDataDynamicViews?.find((x) => x.isBefore == isBefore) ??
-      this.LiquidDataStaticViews?.find((x) => x.isBefore == isBefore) ??
-      this.GasDataDynamicViews?.find((x) => x.isBefore == isBefore) ??
-      this.GasDataStaticViews?.find((x) => x.isBefore == isBefore)
-    )?.form;
   }
 
   public get isDynamicSystem() {

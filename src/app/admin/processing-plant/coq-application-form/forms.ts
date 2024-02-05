@@ -33,24 +33,23 @@ let fb = new FormBuilder();
 
 const LIQUID_DYNAMIC_FORM = (status: 'before' | 'after') =>
   fb.group({
-    id: ['', [Validators.required]],
-    tank: ['', [Validators.required]],
+    id: [''],
+    tank: [''],
     status: [status || '', [Validators.required]],
-    dip: ['', [Validators.required]],
-    waterDIP: ['', [Validators.required]],
-    tov: ['', [Validators.required]],
-    waterVolume: ['', [Validators.required]],
-    floatRoofCorr: ['', [Validators.required]],
-    gov: ['', [Validators.required]],
+    batch: [''],
+    readingM: ['', [Validators.required]],
     temperature: ['', [Validators.required]],
     density: ['', [Validators.required]],
-    vcf: ['', [Validators.required]],
+    meterFactor: ['', [Validators.required]],
+    ctl: ['', [Validators.required]],
+    cpl: ['', [Validators.required]],
+    wtAir: ['', [Validators.required]],
   });
 
 const LIQUID_STATIC_FORM = (status: 'before' | 'after') =>
   fb.group({
-    id: ['', [Validators.required]],
-    tank: ['', [Validators.required]],
+    id: [''],
+    tank: [''],
     status: [status || '', [Validators.required]],
     measurementType: ['static', [Validators.required]],
     readingM: ['', [Validators.required]],
@@ -65,8 +64,8 @@ const LIQUID_STATIC_FORM = (status: 'before' | 'after') =>
 
 const GAS_DYNAMIC_FORM = (status: 'before' | 'after') =>
   fb.group({
-    id: ['', [Validators.required]],
-    tank: ['', [Validators.required]],
+    id: [''],
+    tank: [''],
     status: [status || '', [Validators.required]],
     liquidDensityVac: ['', [Validators.required]],
     observedSounding: ['', [Validators.required]],
@@ -84,8 +83,8 @@ const GAS_DYNAMIC_FORM = (status: 'before' | 'after') =>
 
 const GAS_STATIC_FORM = (status: 'before' | 'after') =>
   fb.group({
-    id: ['', [Validators.required]],
-    tank: ['', [Validators.required]],
+    id: [''],
+    tank: [''],
     status: [status || '', [Validators.required]],
     liquidDensityVac: ['', [Validators.required]],
     observedSounding: ['', [Validators.required]],

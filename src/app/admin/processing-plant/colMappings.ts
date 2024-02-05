@@ -16,3 +16,7 @@ export const TANK_COL_MAPPINGS = {
   capacity: 'Capacity',
   position: 'Position',
 };
+
+export const METER_COL_MAPPINGS = {
+  name: 'Name',
+};

@@ -1,42 +1,38 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { getForm } from '../forms';
-import { ITank } from 'src/app/shared/interfaces/ITank';
+import { Component, Input } from '@angular/core';
+import { IDataEntryResult } from './before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { MatStep } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-liquid-data-dynamic-entry',
   templateUrl: './liquid-data-dynamic-entry.component.html',
   styleUrls: ['./liquid-data-dynamic-entry.component.css'],
 })
-export class LiquidDataDynamicEntryComponent implements OnInit, OnChanges {
-  @Input() isBefore: boolean = true;
-  @Input() tank: ITank = null;
+export class LiquidDataDynamicEntryComponent {
+  @Input() batchStepper: MatStep;
+  public isInitialCompleted: boolean = false;
+  public isFinalCompleted: boolean = false;
 
-  public form: FormGroup;
+  public isShow = true;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    this.initForm();
+  constructor(private ppContext: ProcessingPlantContextService) {
+    this.ppContext.isCompletedDataEntry$.next(false);
   }
 
-  ngOnInit(): void {
-    this.initForm();
-  }
-
-  private initForm() {
+  public onCompleted(output: IDataEntryResult) {
     debugger;
-    this.form = getForm(
-      'Liquid',
-      'Dynamic',
-      this.isBefore ? 'before' : 'after'
-    );
+    if (output.state == 'initial') {
+      this.isInitialCompleted = true;
+      this.ppContext.addLiquidDynamicBatchReading(output.formValue, true);
+    } else {
+      this.isFinalCompleted = true;
+      this.ppContext.addLiquidDynamicBatchReading(output.formValue, false);
+    }
+  }
 
-    this.form.controls['id'].setValue(this.tank?.plantTankId);
-    this.form.controls['tank'].setValue(this.tank?.tankName);
+  public onCompleteEntry() {
+    this.batchStepper?.select();
+    this.ppContext.isCompletedDataEntry$.next(true);
+    this.isShow = false;
   }
 }

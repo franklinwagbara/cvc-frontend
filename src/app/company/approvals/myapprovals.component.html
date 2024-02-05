@@ -11,7 +11,7 @@
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="approvals"
           [EnableViewClearanceControl]="
-            currentUser.operatingFacility === OperatingFacility.ProcessingPlant
+            currentUser.operationFacility === OperatingFacility.ProcessingPlant
               ? false
               : true
           "

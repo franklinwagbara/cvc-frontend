@@ -1,154 +1,187 @@
-<form [formGroup]="form">
-  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-dip"
-        >DIP(m) <sup class="text-red-700">*</sup></label
+<mat-stepper #dataEntryStepper linear>
+  <mat-step
+    #batchStepper
+    [stepControl]="batchSelectionForm"
+    label="Select Batch"
+  >
+    <mat-form-field>
+      <mat-label>Select Batch</mat-label>
+      <mat-select [formControl]="batchSelectionForm">
+        <mat-option *ngFor="let batch of batches" [value]="batch.batchId">
+          {{ batch.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!batchSelectionForm?.valid"
       >
-      <input
-        type="number"
-        name="dip"
-        formControlName="dip"
-        id="coq-liquid-product-dip"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['dip'].touched && form?.controls['dip'].invalid
-        }"
-      />
+        Continue
+      </button>
     </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-waterdip"
-        >WATER DIP <sup class="text-red-700">*</sup></label
+  </mat-step>
+
+  <mat-step
+    *ngIf="selectedMeasurementSystem == 'Static'"
+    [stepControl]="tankForm"
+    label="Select Tank"
+  >
+    <form [formGroup]="tankForm">
+      <mat-form-field>
+        <mat-label>Tank Name</mat-label>
+        <mat-select formControlName="id">
+          <mat-option
+            *ngFor="let tank of ppContext.configuredTanksObs | async"
+            [value]="tank.plantTankId"
+          >
+            {{ tank.tankName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="
+          ((ppContext.configuredTanksObs | async) !== null &&
+            !(ppContext.configuredTanksObs | async)?.length) ||
+          !tankForm?.valid
+        "
+        class="mb-2 mt-0"
       >
-      <input
-        type="number"
-        name="waterDIP"
-        formControlName="waterDIP"
-        id="coq-liquid-product-waterdip"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['waterDIP'].touched &&
-            form?.controls['waterDIP'].invalid
-        }"
-      />
+        {{
+          (ppContext.configuredTanksObs | async) !== null &&
+          !(ppContext.configuredTanksObs | async)?.length
+            ? "No configuredTanks configured for the selected " +
+              "plant" +
+              " and you may not proceed"
+            : !!tankForm?.controls["id"].hasError("duplicate")
+            ? "Tank readings already exist"
+            : ""
+        }}
+      </mat-error>
+    </form>
+
+    <app-capsule-card
+      *ngIf="this.ppContext.selectedTankObs | async"
+      [data]="this.ppContext.selectedTankObs | async"
+      [colMappings]="tankColMappings"
+    ></app-capsule-card>
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        (click)="setUpDataEntry()"
+        [disabled]="!tankForm?.valid"
+      >
+        Create Batch
+      </button>
     </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-tov"
-        >TOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+  </mat-step>
+
+  <mat-step
+    *ngIf="selectedMeasurementSystem == 'Dynamic'"
+    [stepControl]="meterForm"
+    label="Select Meter"
+  >
+    <form [formGroup]="meterForm">
+      <mat-form-field>
+        <mat-label>Meter Name</mat-label>
+        <mat-select formControlName="id">
+          <mat-option
+            *ngFor="let meter of ppContext.configuredMetersObs | async"
+            [value]="meter.id"
+          >
+            {{ meter.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="
+          ((ppContext.configuredMetersObs | async) !== null &&
+            !(ppContext.configuredMetersObs | async)?.length) ||
+          !meterForm?.valid
+        "
+        class="mb-2 mt-0"
       >
-      <input
-        type="number"
-        name="tov"
-        formControlName="tov"
-        id="coq-liquid-product-tov"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['tov'].touched && form?.controls['tov'].invalid
-        }"
-      />
+        {{
+          (ppContext.configuredMetersObs | async) !== null &&
+          !(ppContext.configuredMetersObs | async)?.length
+            ? "No configuredTanks configured for the selected " +
+              "plant" +
+              " and you may not proceed"
+            : !!meterForm?.controls["id"].hasError("duplicate")
+            ? "Tank readings already exist"
+            : ""
+        }}
+      </mat-error>
+    </form>
+
+    <app-capsule-card
+      *ngIf="ppContext.selectedMeterObs | async"
+      [data]="ppContext.selectedMeterObs | async"
+      [colMappings]="meterColMappings"
+    ></app-capsule-card>
+
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        (click)="setUpDataEntry()"
+        [disabled]="!meterForm?.valid"
+      >
+        Create Batch
+      </button>
+    </div>
+  </mat-step>
+
+  <div #dataEntryForms></div>
+</mat-stepper>
+
+<!-- <div class="mt-4 overflow-x-auto">
+    <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
+    <hr />
+    <ng-container *ngIf="!isGasProduct">
+      <div
+        *ngIf="coqFormService?.liquidProductReviewData.length; else noReview"
+      >
+        <app-coq-form-review
+          [isGasProduct]="isGasProduct"
+        ></app-coq-form-review>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isGasProduct">
+      <div *ngIf="coqFormService?.gasProductReviewData.length; else noReview">
+        <app-coq-form-review
+          [isGasProduct]="isGasProduct"
+        ></app-coq-form-review>
+      </div>
+    </ng-container>
+
+    <div class="text-right">
+      <button
+        class="mt-4"
+        mat-raised-button
+        color="primary"
+        matStepperNext
+        [disabled]="
+          !isGasProduct
+            ? !coqFormService?.liquidProductReviewData.length
+            : !coqFormService.gasProductReviewData.length
+        "
+      >
+        Proceed
+      </button>
     </div>
 
-    <div class="md:col-span-3">
-      <label for="coq-liquidproduct-waterVolume"
-        >WATER VOLUME <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="waterVolume"
-        formControlName="waterVolume"
-        id="coq-liquidproduct-waterVolume"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['waterVolume'].touched &&
-            form?.controls['waterVolume'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-floatRoofCorr"
-        >FLOAT ROOF CORR(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="floatRoofCorr"
-        formControlName="floatRoofCorr"
-        id="coq-liquid-product-floatRoofCorr"
-        class="form-field"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['floatRoofCorr'].touched &&
-            form?.controls['floatRoofCorr'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-gov"
-        >GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        formControlName="gov"
-        id="coq-liquid-product-gov"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['gov'].touched && form?.controls['gov'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-temperature"
-        >TEMP(<sup>0</sup>C) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="temperature"
-        formControlName="temperature"
-        id="coq-liquid-product-temperature"
-        class="form-field"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['temperature'].touched &&
-            form?.controls['temperature'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-density"
-        >DENSITY <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="density"
-        formControlName="density"
-        id="coq-liquid-product-density"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['density'].touched &&
-            form?.controls['density'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-liquid-product-vcf"
-        >VCF <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="vcf"
-        formControlName="vcf"
-        id="coq-liquid-product-vcf"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['vcf'].touched && form?.controls['vcf'].invalid
-        }"
-      />
-    </div>
-  </div>
-</form>
+    <ng-template #noReview>
+      <p class="text-slate-600 text-center">
+        No Certificate of Quantity Data pending submission
+      </p>
+    </ng-template>
+  </div> -->

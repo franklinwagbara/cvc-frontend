@@ -1,224 +1,31 @@
-<form [formGroup]="form">
-  <h1>gd</h1>
+<mat-vertical-stepper class="pl-3 pr-2" linear #coqstepper>
+  <mat-step [completed]="isInitialCompleted" [label]="'Initial Measurements'">
+    <app-before-gas-dynamic-data-entry (onCompleted)="onCompleted($event)" />
 
-  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-liquidDensityVac"
-        >Liquid Density at 15<sup>0</sup>C(Kg/l), Vac
-        <sup class="text-red-700">*</sup></label
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!isInitialCompleted"
       >
-      <input
-        type="number"
-        name="liquidDensityVac"
-        formControlName="liquidDensityVac"
-        id="coq-liquid-product-liquidDensityVac"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['liquidDensityVac'].touched &&
-            form?.controls['liquidDensityVac'].invalid
-        }"
-      />
+        Continue
+      </button>
     </div>
+  </mat-step>
 
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-observedSounding"
-        >Observed Sounding (m) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="observedSounding"
-        formControlName="observedSounding"
-        id="coq-liquid-product-observedSounding"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['observedSounding'].touched &&
-            form?.controls['observedSounding'].invalid
-        }"
-      />
-    </div>
+  <mat-step [completed]="isFinalCompleted" [label]="'Final Measurements'">
+    <app-after-gas-dynamic-data-entry (onCompleted)="onCompleted($event)" />
 
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-tapeCorrection"
-        >Tape Correction (m) <sup class="text-red-700">*</sup></label
+    <div class="text-right">
+      <button
+        mat-raised-button
+        matStepperNext
+        color="primary"
+        [disabled]="!isFinalCompleted"
       >
-      <input
-        type="number"
-        name="tapeCorrection"
-        formControlName="tapeCorrection"
-        id="coq-liquid-product-tapeCorrection"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['tapeCorrection'].touched &&
-            form?.controls['tapeCorrection'].invalid
-        }"
-      />
+        Continue
+      </button>
     </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-liquidTemperature"
-        >Liquid Temperature (<sup>0</sup>C)
-        <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="liquidTemperature"
-        formControlName="liquidTemperature"
-        id="coq-liquid-product-liquidTemperature"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['liquidTemperature'].touched &&
-            form?.controls['liquidTemperature'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-observedLiquidVolume"
-        >Observed Liquid Volume (m<sup>3</sup>)
-        <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="observedLiquidVolume"
-        formControlName="observedLiquidVolume"
-        id="coq-liquid-product-observedLiquidVolume"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['observedLiquidVolume'].touched &&
-            form?.controls['observedLiquidVolume'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-shrinkageFactor"
-        >Shrinkage Factor <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="shrinkageFactor"
-        formControlName="shrinkageFactor"
-        id="coq-liquid-product-shrinkageFactor"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['shrinkageFactor'].touched &&
-            form?.controls['shrinkageFactor'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-vcf"
-        >VCF (ASTM Table 54) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="vcf"
-        formControlName="vcf"
-        id="coq-liquid-product-vcf"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['vcf'].touched && form?.controls['vcf'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-tankVolume"
-        >100% Tank Volume <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="tankVolume"
-        formControlName="tankVolume"
-        id="coq-liquid-product-tankVolume"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['tankVolume'].touched &&
-            form?.controls['tankVolume'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-vapourTemperature"
-        >Vapor Temperature (<sup>0</sup>C)
-        <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="vapourTemperature"
-        formControlName="vapourTemperature"
-        id="coq-liquid-product-vapourTemperature"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['vapourTemperature'].touched &&
-            form?.controls['vapourTemperature'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-vapourPressure"
-        >Vapour Pressure (Bar) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="vapourPressure"
-        formControlName="vapourPressure"
-        id="coq-liquid-product-vapourPressure"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['vapourPressure'].touched &&
-            form?.controls['vapourPressure'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-molecularWeight"
-        >Molecular Weight <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="molecularWeight"
-        formControlName="molecularWeight"
-        id="coq-liquid-product-molecularWeight"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['molecularWeight'].touched &&
-            form?.controls['molecularWeight'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-vapourFactor"
-        >Vapor Factor <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="vapourFactor"
-        formControlName="vapourFactor"
-        id="coq-liquid-product-vapourFactor"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['vapourFactor'].touched &&
-            form?.controls['vapourFactor'].invalid
-        }"
-      />
-    </div>
-  </div>
-</form>
+  </mat-step>
+</mat-vertical-stepper>

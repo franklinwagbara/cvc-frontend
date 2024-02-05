@@ -87,82 +87,34 @@
           </div>
         </mat-step>
 
-        <mat-step label="Tank(s) BEFORE & AFTER Data Entry">
-          <mat-stepper #tankInfoStepper linear>
-            <mat-step [stepControl]="configuredTank" label="Select Tank">
-              <form [formGroup]="configuredTank">
-                <mat-form-field>
-                  <mat-label>Tank Name</mat-label>
-                  <mat-select formControlName="id">
-                    <mat-option
-                      *ngFor="let tank of plantTanks || []"
-                      [value]="tank?.plantTankId"
-                    >
-                      {{ tank?.tankName }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-error
-                  *ngIf="
-                    (noTankConfigured !== null && noTankConfigured) ||
-                    !configuredTank?.valid
-                  "
-                  class="mb-2 mt-0"
-                >
-                  {{
-                    noTankConfigured !== null && noTankConfigured
-                      ? "No tanks configured for the selected " +
-                        "plant" +
-                        " and you may not proceed"
-                      : !!configuredTank?.controls["id"].hasError("duplicate")
-                      ? "Tank readings already exist"
-                      : ""
-                  }}
-                </mat-error>
-              </form>
+        <mat-step
+          [stepControl]="measurementSelection"
+          label="Select Measurement System"
+        >
+          <mat-form-field appearance="fill" style="min-width: fit-content">
+            <mat-label>Measurement System</mat-label>
 
-              <app-capsule-card
-                *ngIf="selectedTank"
-                [data]="selectedTank"
-                [colMappings]="tankColMappings"
-              ></app-capsule-card>
+            <mat-select [formControl]="measurementSelection">
+              <mat-option *ngFor="let mt of measurementTypes" [value]="mt">
+                {{ mt }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-              <div class="text-right">
-                <button
-                  mat-raised-button
-                  matStepperNext
-                  color="primary"
-                  [disabled]="!configuredTank?.valid"
-                >
-                  Continue
-                </button>
-              </div>
-            </mat-step>
-
-            <mat-step
-              [stepControl]="measurementSelection"
-              label="Select Measurement System"
+          <div class="text-right">
+            <button
+              mat-raised-button
+              matStepperNext
+              color="primary"
+              [disabled]="!measurementSelection?.valid"
             >
-              <mat-form-field>
-                <mat-label>Measurement System</mat-label>
-                <mat-select [formControl]="measurementSelection">
-                  <mat-option *ngFor="let mt of measurementTypes" [value]="mt">
-                    {{ mt }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <div class="text-right">
-                <button
-                  mat-raised-button
-                  matStepperNext
-                  color="primary"
-                  [disabled]="!measurementSelection?.valid"
-                >
-                  Continue
-                </button>
-              </div>
-            </mat-step>
+              Continue
+            </button>
+          </div>
+        </mat-step>
 
+        <mat-step label="Tank / Meter Type / Dip Method Selection">
+          <mat-stepper #tankInfoStepper linear>
             <mat-step
               [stepControl]="getMeterTypeDipForm"
               label="{{
@@ -185,145 +137,43 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+
               <div class="text-right">
                 <button
                   mat-raised-button
                   matStepperNext
                   color="primary"
-                  [disabled]="!measurementSelection?.valid"
+                  (click)="onStepFromMeterType()"
+                  [disabled]="!getMeterTypeDipForm?.valid"
                 >
                   Continue
-                </button>
-              </div>
-            </mat-step>
-
-            <mat-step
-              [stepControl]="getActiveForm('before')"
-              label="Enter BEFORE data"
-            >
-              <app-liquid-data-dynamic-entry
-                *ngIf="!isGasProduct && getForm('before') && isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="true"
-              />
-              <app-gas-data-dynamic-entry
-                *ngIf="isGasProduct && getForm('before') && isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="true"
-              />
-
-              <app-liquid-data-static-entry
-                *ngIf="!isGasProduct && getForm('before') && !isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="true"
-              />
-              <app-gas-data-static-entry
-                *ngIf="isGasProduct && getForm('before') && !isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="true"
-              />
-              <div class="mt-4 text-right">
-                <button
-                  mat-raised-button
-                  matStepperNext
-                  color="primary"
-                  [disabled]="activeBeforeTankForm?.invalid"
-                >
-                  Continue
-                </button>
-              </div>
-            </mat-step>
-
-            <mat-step
-              [stepControl]="getActiveForm('after')"
-              label="Enter AFTER data"
-            >
-              <app-liquid-data-dynamic-entry
-                *ngIf="!isGasProduct && getForm('after') && isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="false"
-              />
-              <app-gas-data-dynamic-entry
-                *ngIf="isGasProduct && getForm('after') && isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="false"
-              />
-
-              <app-liquid-data-static-entry
-                *ngIf="!isGasProduct && getForm('after') && !isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="false"
-              />
-              <app-gas-data-static-entry
-                *ngIf="isGasProduct && getForm('after') && !isDynamicSystem"
-                [tank]="selectedTank"
-                [isBefore]="false"
-              />
-
-              <div class="mt-4 text-right">
-                <button
-                  mat-raised-button
-                  matStepperNext
-                  color="primary"
-                  (click)="saveToReview()"
-                  [disabled]="activeAfterTankForm?.invalid"
-                >
-                  Save
                 </button>
               </div>
             </mat-step>
           </mat-stepper>
+        </mat-step>
 
-          <div class="mt-4 overflow-x-auto">
-            <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
-            <hr />
-            <ng-container *ngIf="!isGasProduct">
-              <div
-                *ngIf="
-                  coqFormService?.liquidProductReviewData.length;
-                  else noReview
-                "
-              >
-                <app-coq-form-review
-                  [isGasProduct]="isGasProduct"
-                ></app-coq-form-review>
-              </div>
-            </ng-container>
-            <ng-container *ngIf="isGasProduct">
-              <div
-                *ngIf="
-                  coqFormService?.gasProductReviewData.length;
-                  else noReview
-                "
-              >
-                <app-coq-form-review
-                  [isGasProduct]="isGasProduct"
-                ></app-coq-form-review>
-              </div>
-            </ng-container>
+        <mat-step
+          label="Data Entry Section"
+          #dataEntryWrapper
+          [completed]="ppContext.isCompletedDataEntryObs | async"
+        >
+          <app-data-entry-form
+            [isGas]="isGasProduct"
+            [selectedMeasurementSystem]="selectedMeasurement"
+            [selectedProduct]="selectedProduct"
+            [selectedMeterType]="selectedMeterType"
+            [selectedDipMethod]="selectedDipMethod"
+          />
 
-            <div class="text-right">
-              <button
-                class="mt-4"
-                mat-raised-button
-                color="primary"
-                matStepperNext
-                [disabled]="
-                  !isGasProduct
-                    ? !coqFormService?.liquidProductReviewData.length
-                    : !coqFormService.gasProductReviewData.length
-                "
-              >
-                Proceed
-              </button>
-            </div>
-
-            <ng-template #noReview>
-              <p class="text-slate-600 text-center">
-                No Certificate of Quantity Data pending submission
-              </p>
-            </ng-template>
-          </div>
+          <button
+            [disabled]="!(ppContext.isCompletedDataEntryObs | async)"
+            mat-raised-button
+            matStepperNext
+            color="primary"
+          >
+            Continue
+          </button>
         </mat-step>
 
         <mat-step
