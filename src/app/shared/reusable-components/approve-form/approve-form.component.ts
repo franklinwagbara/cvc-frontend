@@ -33,6 +33,8 @@ export class ApproveFormComponent implements OnInit {
   public coqId: number;
   public isLoading = false;
 
+  public isPPCOQ = false;
+
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,6 +52,7 @@ export class ApproveFormComponent implements OnInit {
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
     this.isCOQProcessor = data.data.isCOQProcessor;
+    this.isPPCOQ = data.data.isPPCOQ;
   }
 
   ngOnInit(): void {
@@ -95,7 +98,8 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
-    if (this.isCOQProcessor) this.approveFO();
+    debugger;
+    if (this.isCOQProcessor || this.isPPCOQ) this.approveFO();
     else this.approveOther();
   }
 
@@ -160,6 +164,7 @@ export class ApproveFormComponent implements OnInit {
   }
 
   private approveFO() {
+    debugger;
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
@@ -168,7 +173,7 @@ export class ApproveFormComponent implements OnInit {
       comment: this.form.controls['comment'].value,
     };
 
-    this.coqService.processApplication(model).subscribe({
+    this.coqService.processApplication(model, this.isPPCOQ).subscribe({
       next: (res) => {
         if (res.success) {
           this.popup.open(

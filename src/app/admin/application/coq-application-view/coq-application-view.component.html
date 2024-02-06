@@ -1,9 +1,5 @@
 <div class="view-application-container">
-  <button
-    (click)="location.back()"
-    class="my-4"
-    mat-button
-  >
+  <button (click)="location.back()" class="my-4" mat-button>
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
   </button>
   <div class="view-application">
@@ -71,7 +67,7 @@
       </div>
 
       <ng-container *ngIf="appLoaded">
-        <div class="application-controls" *ngIf="isStaffDesk && !isFAD">
+        <div class="application-controls" *ngIf="isStaffDesk">
           <div class="actions">
             <button
               mat-raised-button
@@ -83,16 +79,15 @@
             <button mat-raised-button color="warn" (click)="action('sendBack')">
               Send Back
             </button>
-  
           </div>
         </div>
       </ng-container>
 
-      <div class="application-controls" *ngIf="isStaffDesk && isFAD">
+      <!-- <div class="application-controls" *ngIf="isStaffDesk && isFAD">
         <div class="actions">
-          <button 
-            mat-raised-button 
-            class="bg-yellow-500 text-white" 
+          <button
+            mat-raised-button
+            class="bg-yellow-500 text-white"
             (click)="previewDebitNote()"
           >
             Preview Debit Note
@@ -105,7 +100,7 @@
             Generate Debit Note
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
