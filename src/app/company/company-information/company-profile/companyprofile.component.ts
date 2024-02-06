@@ -192,12 +192,15 @@ export class CompanyProfileComponent implements OnInit {
         this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
         const data: LoginModel = res[0].data;
-        //const user:LoginModel = this.currentUser
-        this.currentUser.operationFacility = data.operationFacility;
-        this.currentUser.profileComplete = data.profileComplete;
+        this.currentUser.operationFacility = res[1].data.name;
+        this.currentUser.profileComplete = data?.profileComplete;
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        this.router.navigate([returnUrl]);
+        if (returnUrl) {
+          window.location.assign(returnUrl);
+        } else {
+          window.location.reload();
+        }
         this.cd.markForCheck();
       },
       error: (error: any) => {
