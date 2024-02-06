@@ -28,7 +28,7 @@ import { FieldOfficerDepotSettingComponent } from '../settings/field-officer-dep
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { FieldOfficerOrOfficeGuard } from '../../shared/guards/field-officer-or-office.guard';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
-import { NoaAndApplicationsGuard } from '../../../../src/app/shared/guards/noa-and-applications.guard';
+import { ApplicationsGuard } from '../../shared/guards/applications.guard';
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
@@ -41,42 +41,44 @@ import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaApplicationsByJettyComponent } from '../noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { StsApplicationsComponent } from '../sts-applications/sts-applications.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: AdminComponent, pathMatch: 'full' },
   {
     path: 'applications',
-    redirectTo: 'applications/noa-applications',
+    redirectTo: 'applications/coq-applications',
     pathMatch: 'full',
   },
   {
     path: 'applications/noa-applications',
     component: ApplicationComponent,
     pathMatch: 'full',
-    canActivate: [NoaAndApplicationsGuard],
+    canActivate: [ApplicationsGuard],
+  },
+  {
+    path: 'applications/sts-applications',
+    component: StsApplicationsComponent,
+    pathMatch: 'full',
   },
   {
     path: 'applications/noa-applications/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-  },
-  {
-    path: 'applications/noa-applications-by-depot',
-    component: NoaApplicationsByDepotComponent,
-    pathMatch: 'full',
+    canActivate: [ApplicationsGuard]
   },
   {
     path: 'applications/coq-applications',
     component: AllCoqApplicationsComponent,
     pathMatch: 'full',
-    canActivate: [NoaAndApplicationsGuard],
+    canActivate: [ApplicationsGuard],
   },
   {
     path: 'applications/coq-applications/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [NoaAndApplicationsGuard],
+    canActivate: [ApplicationsGuard],
   },
   {
     path: 'settings',
@@ -205,7 +207,7 @@ const routes: Routes = [
   {
     path: 'certificates',
     component: CertificatesComponent,
-    canActivate: [NoaAndApplicationsGuard],
+    canActivate: [ApplicationsGuard],
     pathMatch: 'full',
   },
   {

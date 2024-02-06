@@ -168,9 +168,8 @@ export class BarChartComponent implements AfterViewInit, OnDestroy {
               this.chart2 = chart2;
     
             })
-          })
+          }).catch(error => console.log(error));
       }
-
     })
   }
 

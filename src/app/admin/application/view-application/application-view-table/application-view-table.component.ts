@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Application } from '../../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../../company/cvc-applications/cvc-applications.component';
 import { AuthenticationService } from 'src/app/shared/services';
 
 @Component({

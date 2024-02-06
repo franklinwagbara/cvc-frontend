@@ -8,7 +8,7 @@ import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-a
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';

@@ -13,7 +13,7 @@ import { ApplyService } from '../../../../../src/app/shared/services/apply.servi
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ShowMoreComponent } from './show-more/show-more.component';
 
 @Component({
