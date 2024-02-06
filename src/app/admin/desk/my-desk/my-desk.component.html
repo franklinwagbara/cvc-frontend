@@ -4,17 +4,43 @@
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
+          [table_title]="'DEPOT COQ'"
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="applications"
-          [EnableViewControl]="!isFAD"
-          [EnableViewCoQCertControl]="isFAD"
+          [EnableViewControl]="true"
+          [EnableViewCoQCertControl]="false"
           [EnableInitiateCoQControl]="isDssriFieldOfficer"
-          [EnableGenDebitNoteControl]="isFAD"
+          [EnableGenDebitNoteControl]="false"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
-          [noTitle]="true"
+          [noTitle]="false"
           (onViewData)="onViewData($event, 'applications')"
+          (onViewCoQCert)="onViewCoqCert($event)"
+          (onGenDebitNote)="genDebitNote($event)"
+          (onInitiateCoQ)="initiateCoq($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="processingPlantCOQs && processingPlantCOQs.length > 0">
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'PROCESSING PLANT COQ'"
+          [table_keysMappedToHeaders]="PPCoqKeysMappedToHeaders"
+          [table_content]="processingPlantCOQs"
+          [EnableViewControl]="true"
+          [EnableViewCoQCertControl]="false"
+          [EnableInitiateCoQControl]="isDssriFieldOfficer"
+          [EnableGenDebitNoteControl]="false"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          [noTitle]="false"
+          (onViewData)="onViewData($event, 'ppCoQs')"
           (onViewCoQCert)="onViewCoqCert($event)"
           (onGenDebitNote)="genDebitNote($event)"
           (onInitiateCoQ)="initiateCoq($event)"
