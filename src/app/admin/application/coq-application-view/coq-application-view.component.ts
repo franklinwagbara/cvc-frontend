@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog, } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
@@ -28,6 +28,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
 })
 export class CoqApplicationViewComponent implements OnInit {
   public application: Application | any;
+  public ppCoqs: any[];
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -36,6 +37,9 @@ export class CoqApplicationViewComponent implements OnInit {
   public coqId: number;
   public documents: any;
   public tanksList: any[];
+
+  public isPPCOQ = false;
+  public PPCOQId: number;
 
   appLoaded = false;
   isLoading = true;
@@ -68,14 +72,22 @@ export class CoqApplicationViewComponent implements OnInit {
     this.isFO = this.auth.isFO;
 
     this.route.params.subscribe((param) => {
-      this.appId = parseInt(param['id']);
-      this.coqId = parseInt(param['id']);
-      this.getApplication();
+      // this.appId = parseInt(param['id']);
+      // this.coqId = parseInt(param['id']);
+      // this.PPCOQId = parseInt(param['PPCOQId']);
+      // this.isPPCOQ = param['isPPCOQ'];
+      // this.getApplication();
     });
 
     this.route.queryParams.subscribe((params) => {
+      debugger;
       this.spinner.show('Loading application...');
+      this.appId = parseInt(params['id']);
+      this.coqId = parseInt(params['id']);
+      this.PPCOQId = parseInt(params['PPCOQId']);
+      this.isPPCOQ = params['isPPCOQ'];
       this.appSource = params['appSource'];
+      this.getApplication();
     });
 
     this.currentUser = this.auth.currentUser as LoginModel;
@@ -100,28 +112,38 @@ export class CoqApplicationViewComponent implements OnInit {
           this.popUp.open('Debit Note generated successfully', 'success');
           setTimeout(() => {
             this.router.navigate(['/admin/desk']);
-          }, 3000)
+          }, 3000);
         }
         this.isLoading = false;
         this.spinner.close();
-      }, 
+      },
       error: (error: unknown) => {
         console.log(error);
-        this.popUp.open('Something went wrong while generating Debit Note', 'error');
+        this.popUp.open(
+          'Something went wrong while generating Debit Note',
+          'error'
+        );
         this.spinner.close();
-      }
+      },
     });
   }
 
   getApplication() {
-    this.coqService.viewCoqApplication(this.appId).subscribe({
+    debugger;
+    (!this.isPPCOQ
+      ? this.coqService.viewCoqApplication(this.appId)
+      : this.coqService.viewPPCoqApplication(this.PPCOQId)
+    ).subscribe({
       next: (res) => {
-        if (res.success) {
+        if (res.success && this.isPPCOQ) {
+          this.ppCoqs = res.data;
+          this.appLoaded = true;
+        } else if (res.success) {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
           this.appLoaded = true;
-          this.isProcessingPlant = !this.application.appId;
+          this.isProcessingPlant = this.isPPCOQ;
         }
 
         this.progressBar.close();
@@ -129,7 +151,7 @@ export class CoqApplicationViewComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -153,19 +175,21 @@ export class CoqApplicationViewComponent implements OnInit {
     const operationConfiguration = {
       approve: {
         data: {
-          application: this.application,
+          application: this.isPPCOQ ? this.application : this.ppCoqs,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: this.coqId,
+          coqId: this.isPPCOQ ? this.coqId : this.PPCOQId,
+          isPPCOQ: this.isPPCOQ,
         },
         form: ApproveFormComponent,
       },
       sendBack: {
         data: {
-          application: this.application,
+          application: this.isPPCOQ ? this.application : this.ppCoqs,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: this.coqId,
+          coqId: this.isPPCOQ ? this.coqId : this.PPCOQId,
+          isPPCOQ: this.isPPCOQ,
         },
         form: SendBackFormComponent,
       },
@@ -192,7 +216,6 @@ export class CoqApplicationViewComponent implements OnInit {
       },
       disableClose: true,
     });
-
   }
 
   previewDetails(): void {
@@ -200,19 +223,24 @@ export class CoqApplicationViewComponent implements OnInit {
       dateOfArrival: this.application?.DateOfVesselArrival,
       dateOfUllage: this.application?.DateOfVesselUllage,
       dateOfShoreTank: this.application?.DateOfSTAfterDischarge,
-      depotPrice: this.application?.DepotPrice
-    }
+      depotPrice: this.application?.DepotPrice,
+    };
     const isGasProduct = this.application?.ProductType.toLowerCase() === 'gas';
-    this.dialog.open(CoqApplicationPreviewComponent, { data: {
-      tankData: {},
-      isGasProduct,
-      vesselDischargeData: isGasProduct ? {
-        ...vesselData,
-        quauntityReflectedOnBill: this.application?.QuauntityReflectedOnBill,
-        arrivalShipFigure: this.application?.ArrivalShipFigure,
-        dischargeShipFigure: this.application?.DischargeShipFigure,
-      } : vesselData,
-    } })
+    this.dialog.open(CoqApplicationPreviewComponent, {
+      data: {
+        tankData: {},
+        isGasProduct,
+        vesselDischargeData: isGasProduct
+          ? {
+              ...vesselData,
+              quauntityReflectedOnBill:
+                this.application?.QuauntityReflectedOnBill,
+              arrivalShipFigure: this.application?.ArrivalShipFigure,
+              dischargeShipFigure: this.application?.DischargeShipFigure,
+            }
+          : vesselData,
+      },
+    });
   }
 
   showMore(type: string) {
