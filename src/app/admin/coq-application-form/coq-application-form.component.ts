@@ -62,7 +62,7 @@ import { Util } from 'src/app/shared/lib/Util';
 export class CoqApplicationFormComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  private allSubscriptions = new Subscription()
+  private allSubscriptions = new Subscription();
 
   depotSelection = new FormControl('', Validators.required);
   plantSelection = new FormControl('', Validators.required);
@@ -308,7 +308,8 @@ export class CoqApplicationFormComponent
             ? !this.plantTanks.length
             : !this.requirement.tanks.length;
           if (!this.isProcessingPlant) {
-            this.isGasProduct = this.requirement?.productType.toLowerCase() === 'gas';
+            this.isGasProduct =
+              this.requirement?.productType.toLowerCase() === 'gas';
           }
           if (this.noTankConfigured) {
             this.popUp.open(
@@ -628,35 +629,49 @@ export class CoqApplicationFormComponent
   preview() {
     const vesselData = {
       dateOfArrival: this.isGasProduct
-        ? new Date(this.vesselGasInfoForm.controls['vesselArrivalDate'].value).toLocaleDateString()
-        : new Date(this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value).toLocaleDateString(),
+        ? new Date(
+            this.vesselGasInfoForm.controls['vesselArrivalDate'].value
+          ).toLocaleDateString()
+        : new Date(
+            this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value
+          ).toLocaleDateString(),
       dateOfUllage: this.isGasProduct
-        ? new Date(this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value).toLocaleDateString()
-        : new Date(this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value).toLocaleDateString(),
+        ? new Date(
+            this.vesselGasInfoForm.controls['prodDischargeCommenceDate'].value
+          ).toLocaleDateString()
+        : new Date(
+            this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value
+          ).toLocaleDateString(),
       dateOfShoreTank: this.isGasProduct
-        ? new Date(this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value).toLocaleDateString()
-        : new Date(this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value).toLocaleDateString(),
+        ? new Date(
+            this.vesselGasInfoForm.controls['prodDischargeCompletionDate'].value
+          ).toLocaleDateString()
+        : new Date(
+            this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value
+          ).toLocaleDateString(),
       depotPrice: this.isGasProduct
         ? this.vesselGasInfoForm.controls['depotPrice'].value
         : this.vesselLiqInfoForm.controls['depotPrice'].value,
       documents: this.documents,
-      productName: this.requirement.productName
-    }
+      productName: this.requirement.productName,
+    };
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
         tankData: this.isGasProduct
           ? this.coqFormService.gasProductReviewData
           : this.coqFormService.liquidProductReviewData,
         isGasProduct: this.isGasProduct,
-        vesselDischargeData: this.isGasProduct ? {
-          ...vesselData,
-          quauntityReflectedOnBill:
-            this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
-          arrivalShipFigure:
-            this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
-          dischargeShipFigure:
-            this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
-        } : vesselData,
+        vesselDischargeData: this.isGasProduct
+          ? {
+              ...vesselData,
+              quauntityReflectedOnBill:
+                this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
+              arrivalShipFigure:
+                this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
+              dischargeShipFigure:
+                this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
+            }
+          : vesselData,
       },
     });
   }
@@ -675,8 +690,10 @@ export class CoqApplicationFormComponent
         this.isSubmitted = true;
         this.spinner.close();
         if (res?.success) {
-          this.snackBar.open('CoQ Application Created Successfully. Redirecting...',
-            null, { panelClass: ['success'], duration: 2500 }
+          this.snackBar.open(
+            'CoQ Application Created Successfully. Redirecting...',
+            null,
+            { panelClass: ['success'], duration: 2500 }
           );
           localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
           if (this.isGasProduct) {
@@ -691,8 +708,12 @@ export class CoqApplicationFormComponent
         }
         this.cd.markForCheck();
         setTimeout(() => {
-          this.router.navigate(['admin', 'coq-and-plant', 'coq-applications-by-depot']);
-        }, 2400)
+          this.router.navigate([
+            'admin',
+            'coq-and-plant',
+            'coq-applications-by-depot',
+          ]);
+        }, 2400);
       },
       error: (error: unknown) => {
         this.isSubmitting = false;

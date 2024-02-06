@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <h1>Certificate of Quantity Application Form</h1>
+  <h3>PROCESSING PLANT</h3>
+  <div class="flex justify-center align-middle">
+    <div *ngIf="isGasProduct !== null" class="grid grid-cols-1 w-full">
+      <h5 class="w-full text-slate-600 col-span-3 text-left">
+        {{
+          !isGasProduct
+            ? "TRUCK" + " ULLAGE AFTER VESSEL DISCHARGE"
+            : "LPG WEIGHT CERTIFICATION"
+        }}
+      </h5>
+    </div>
+  </div>
+</div>

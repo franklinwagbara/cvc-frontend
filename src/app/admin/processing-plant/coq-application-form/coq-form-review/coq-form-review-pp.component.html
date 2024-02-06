@@ -1,0 +1,51 @@
+<mat-accordion class="my-accordion" *ngFor="let dSource of dataSources; let i = index" (click)="openAccordion(i)">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <span>{{ dSource.data[0]['tank'] }}</span>
+        <button mat-button class="text-red-500" (click)="coqFormService.removeFormData(dSource.data[0], localDataKey, isGasProduct)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="overflow-x-auto">
+      <table 
+        mat-table 
+        [dataSource]="dSource" 
+        id="coq-form-data-review-table" 
+        *ngIf="!isGasProduct ? coqFormService?.liquidProductReviewData.length : coqFormService?.gasProductReviewData.length" 
+        class="table table-responsive table-striped"
+        aria-describedby="coq-form-data-table-review-title"
+        matSort
+      >
+        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <ng-container *ngIf="coqFormService.hasNoUnit(column)">{{ column | uppercase }}</ng-container>
+            <ng-container *ngIf="coqFormService.hasMeterUnit(column)">{{ column | uppercase }}(m)</ng-container>
+            <ng-container *ngIf="coqFormService.hasMeterCubeUnit(column)">{{ column | uppercase }}(m<sup>3</sup>)</ng-container>
+            <ng-container *ngIf="coqFormService.hasKgPerL(column)">{{ column | uppercase }}(Kg/L)</ng-container>
+            <ng-container *ngIf="coqFormService.hasTempUnit(column)">{{ column | uppercase }}(<sup>0</sup>C)</ng-container>
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container *ngIf="objNotEmpty(element)">
+              <ng-container *ngIf="column !== 'actions' && column !== 'status'">{{ element[column] }}</ng-container>
+              <ng-container *ngIf="column !== 'actions' && column === 'status'">{{ element[column] | uppercase }}</ng-container>
+              <ng-container *ngIf="column === 'actions'">
+                <div *ngIf="element.status.toLowerCase() !== 'calc'" class="flex justify-center items-center">
+                  <button 
+                    mat-button 
+                    class="text-blue-500" 
+                    (click)="coqFormService.openEditDialog({ form: element, title: element?.tank + ' - ' + element.status.toUpperCase(), isGasProduct }, localDataKey, isGasProduct)"
+                  >Edit</button>
+                </div>
+              </ng-container>
+            </ng-container>
+          </td>
+        </ng-container>
+      
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

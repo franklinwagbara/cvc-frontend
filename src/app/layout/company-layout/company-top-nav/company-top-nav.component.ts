@@ -96,9 +96,10 @@ export class CompanyTopNavComponent implements OnInit {
     public auth: AuthenticationService
   ) {
     this.currentUser = this.auth.currentUser;
-
+    debugger;
     if (
-      this.currentUser.operatingFacility === OperatingFacility.ProcessingPlant
+      this.currentUser.operationFacility ===
+      this.OperatingFacility.ProcessingPlant
     ) {
       this.myAccountMenuItems.push({
         name: 'Processing Plants',

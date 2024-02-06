@@ -22,6 +22,13 @@ import { environment } from 'src/environments/environment';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { LoginModel } from 'src/app/shared/models/login-model';
+import {
+  APPLICATION_KEYS_MAPPED_TO_HEADERS,
+  COQ_KEYS_MAPPED_TO_HEADERS,
+  DN_KEYS_MAPPED_TO_HEADERS,
+  FIELD_OFFICER_NOA_KEYS_MAPPED_TO_HEADERS,
+  PP_COQ_KEYS_MAPPED_TO_HEADERS,
+} from './mappings';
 
 @Component({
   selector: 'app-my-desk',
@@ -30,6 +37,7 @@ import { LoginModel } from 'src/app/shared/models/login-model';
 })
 export class MyDeskComponent implements OnInit {
   public applications: IApplication[];
+  public processingPlantCOQs: any[];
   public applications$ = new Subject<IApplication[]>();
   public categories: Category[] = [];
   public categories$ = new Subject<Category[]>();
@@ -51,52 +59,12 @@ export class MyDeskComponent implements OnInit {
     applications: 'All Applications',
   };
 
-  public applicationKeysMappedToHeaders = {
-    reference: 'Reference Number',
-    // importName: 'Import Name',
-    companyEmail: 'Company Email',
-    applicationType: 'Application Type',
-    vesselName: 'Vessel Name',
-    vesselType: 'Vessel Type',
-    // capacity: 'Capacity',
-    paymentStatus: 'Payment Status',
-    status: 'Status',
-    createdDate: 'Initiation Date',
-  };
-
-  public fieldOfficerNoaKeysMappedToHeaders = {
-    reference: 'Reference',
-    companyName: 'Company Name',
-    companyEmail: 'Company Email',
-    vesselName: 'Vessel Name',
-    vesselType: 'Vessel Type',
-    jetty: 'Jetty',
-    // capacity: 'Capacity',
-    status: 'Status',
-    // rrr: 'RRR',
-    createdDate: 'Initiated Date',
-  };
-
-  public coqKeysMappedToHeaders = {
-    companyEmail: 'Company Email',
-    vesselName: 'Vessel Name',
-    depotName: 'Depot Name',
-    mT_VAC: 'MT VAC',
-    dateOfVesselArrival: 'Date of Arrival',
-    dateOfSTAfterDischarge: 'Date of Discharge',
-    depotPrice: 'Initiation Date',
-    submittedDate: 'Date Submitted',
-    status: 'Status',
-  };
-
-  public dnKeysMappedToHeaders = {
-    reference: 'Reference',
-    name: 'Name',
-    depotName: 'Depot Name',
-    depotPrice: 'Depot Price',
-    gsv: 'GSV',
-    debitNote: 'Debit Note',
-  };
+  public applicationKeysMappedToHeaders = APPLICATION_KEYS_MAPPED_TO_HEADERS;
+  public fieldOfficerNoaKeysMappedToHeaders =
+    FIELD_OFFICER_NOA_KEYS_MAPPED_TO_HEADERS;
+  public coqKeysMappedToHeaders = COQ_KEYS_MAPPED_TO_HEADERS;
+  public PPCoqKeysMappedToHeaders = PP_COQ_KEYS_MAPPED_TO_HEADERS;
+  public dnKeysMappedToHeaders = DN_KEYS_MAPPED_TO_HEADERS;
 
   constructor(
     private adminService: AdminService,
@@ -130,13 +98,14 @@ export class MyDeskComponent implements OnInit {
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
-          this.applications = res[0].data;
+          this.applications = res[0].data.coQ;
+          this.processingPlantCOQs = res[0].data.processingPlantCOQ;
           if (this.isDssriFieldOfficer) {
             this.applications = this.applications
-              .filter((app) => app.status === 'Completed')
+              ?.filter((app) => app.status === 'Completed')
               .reverse();
           }
-          if (this.applications.length > 0)
+          if (this.applications?.length > 0)
             this.appType$.next(this.applications[0].applicationType);
           this.applications$.next(this.applications);
         }
@@ -159,13 +128,17 @@ export class MyDeskComponent implements OnInit {
   }
 
   get isDssriFieldOfficer(): boolean {
-    return this.currentUser.userRoles === UserRole.FIELDOFFICER 
-      && this.currentUser.directorate === Directorate.DSSRI;
+    return (
+      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser.directorate === Directorate.DSSRI
+    );
   }
 
   get isHppitiFieldOfficer(): boolean {
-    return this.currentUser.userRoles === UserRole.FIELDOFFICER 
-      && this.currentUser.directorate === Directorate.HPPITI;
+    return (
+      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
+      this.currentUser.directorate === Directorate.HPPITI
+    );
   }
 
   get isFAD() {
@@ -173,18 +146,32 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type: string) {
-    if (this.appType$.getValue() === AppType.COQ || this.isFAD) {
-      this.router.navigate([`/admin/desk/view-coq-application/${event.id}`], {
-        queryParams: {
-          id: event.appId,
-          appSource: AppSource.MyDesk,
-          depotId: event.depotId,
-          coqId: event.id,
-        },
-      });
+    debugger;
+    if (
+      this.appType$.value === AppType.COQ ||
+      this.appType$.value == AppType.PPCOQ ||
+      this.isFAD
+    ) {
+      this.router.navigate(
+        [
+          `/admin/desk/view-coq-application/${
+            event.id ?? event.processingPlantCOQId
+          }`,
+        ],
+        {
+          queryParams: {
+            id: event.appId ?? event.processingPlantCOQId,
+            appSource: AppSource.MyDesk,
+            depotId: event.depotId,
+            coqId: event.id,
+            isPPCOQ: event.applicationType == AppType.PPCOQ,
+            PPCOQId: event.processingPlantCOQId,
+          },
+        }
+      );
     } else if (
       this.isDssriFieldOfficer ||
-      this.appType$.getValue() === AppType.NOA
+      this.appType$.value === AppType.NOA
     ) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },

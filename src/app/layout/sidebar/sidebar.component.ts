@@ -31,6 +31,8 @@ export interface RouteInfo {
   iconId: string;
   iconColor: string;
   subRoutes: SubRouteInfo[];
+  directorate: 'HPPITI' | 'DSSRI' | 'BOTH';
+  userRole: UserRole[];
 }
 
 const ROUTES: RouteInfo[] = [
@@ -42,6 +44,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -59,6 +63,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -76,6 +82,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'DSSRI',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -95,6 +103,53 @@ const ROUTES: RouteInfo[] = [
       },
     ],
   },
+  {
+    id: 6,
+    title: 'ALL APPROVALS',
+    iconName: 'licence-outline',
+    iconId: 'licence_outline',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
+
+    subRoutes: [
+      {
+        id: 1,
+        title: 'CoQ CERTIFICATES',
+        url: '/admin/all-approvals/coq-certificates',
+      },
+      {
+        id: 2,
+        title: 'NoA CLEARANCES',
+        url: '/admin/all-approvals/noa-clearances',
+      },
+    ],
+  },
+  {
+    id: 16,
+    title: 'Processing Plant',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
+    subRoutes: [
+      {
+        id: 2,
+        title: 'CoQ Form',
+        url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+      },
+      {
+        id: 1,
+        title: 'CoQ Applications',
+        url: '/admin/coq-and-plant/coq-applications-by-depot',
+      },
+    ],
+  },
 
   {
     id: 7,
@@ -104,6 +159,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -121,6 +178,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -148,6 +207,8 @@ const ROUTES: RouteInfo[] = [
     iconColor: 'white',
     active: false,
     subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
 
     subRoutes: [
       {
@@ -225,6 +286,16 @@ const ROUTES: RouteInfo[] = [
         title: 'EMAIL CONFIGURATION',
         url: '/admin/settings/email-config',
       },
+      {
+        id: 17,
+        title: 'METER TYPE CONFIGURATION',
+        url: '/admin/settings/meter-types',
+      },
+      {
+        id: 18,
+        title: 'DIP METHOD CONFIGURATION',
+        url: '/admin/settings/dip-method',
+      },
     ],
   },
 ];
@@ -264,6 +335,25 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
           {
+            id: 5,
+            title: 'DISCHARGE CLEARANCE',
+            iconName: 'apps',
+            iconId: 'apps',
+            iconColor: 'white',
+            active: false,
+            subMenuActive: false,
+            directorate: 'BOTH',
+            userRole: [UserRole.ALL],
+
+            subRoutes: [
+              {
+                id: 1,
+                title: 'NoA APPLICATIONS',
+                url: '/admin/noa-application-by-jetty-officer',
+              },
+            ],
+          },
+          {
             id: 3,
             title: 'VESSEL CLEARANCE',
             iconName: 'approval',
@@ -271,6 +361,8 @@ export class SidebarComponent implements OnInit, OnChanges {
             iconColor: 'white',
             active: false,
             subMenuActive: false,
+            directorate: 'BOTH',
+            userRole: [UserRole.ALL],
 
             subRoutes: [
               {
@@ -314,6 +406,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: coqSubRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(3)
       );
@@ -344,6 +438,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: coqSubRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(3)
       );
@@ -376,6 +472,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: subRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(4)
       );
@@ -406,6 +504,8 @@ export class SidebarComponent implements OnInit, OnChanges {
           active: false,
           subMenuActive: false,
           subRoutes: subRoutes,
+          directorate: 'BOTH',
+          userRole: [UserRole.ALL],
         },
         this.menuItems.slice(4)
       );

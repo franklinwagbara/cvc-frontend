@@ -41,6 +41,9 @@ import { FieldOfficerGuard } from 'src/app/shared/guards/field-officer.guard';
 import { SuperadminGuard } from 'src/app/shared/guards/superadmin.guard';
 import { FieldOfficerJettySettingComponent } from '../settings/field-officer-jetty-setting/field-officer-jetty-setting.component';
 import { NoaApplicationsByJettyComponent } from '../noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { MeterTypeSettingComponent } from '../settings/meter-type-setting/meter-type-setting.component';
+import { DipMethodSettingComponent } from '../settings/dip-method-setting/dip-method-setting.component';
+import { CoqApplicationPPFormComponent } from '../processing-plant/coq-application-form/coq-application-pp-form.component';
 import { StsApplicationsComponent } from '../sts-applications/sts-applications.component';
 
 const routes: Routes = [
@@ -253,6 +256,18 @@ const routes: Routes = [
     canActivate: [SuperadminGuard],
   },
   {
+    path: 'settings/meter-types',
+    component: MeterTypeSettingComponent,
+    pathMatch: 'full',
+    canActivate: [SuperadminGuard],
+  },
+  {
+    path: 'settings/dip-method',
+    component: DipMethodSettingComponent,
+    pathMatch: 'full',
+    canActivate: [SuperadminGuard],
+  },
+  {
     path: 'coq-and-plant',
     redirectTo: 'coq-and-plant/coq-applications-by-depot',
     pathMatch: 'full',
@@ -302,6 +317,15 @@ const routes: Routes = [
   {
     path: 'coq-and-plant/processing-plant/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
+    pathMatch: 'full',
+    canActivate: [FieldOfficerOrOfficeGuard],
+    data: {
+      type: ApplicationTerm.PROCESSINGPLANT,
+    },
+  },
+  {
+    path: 'coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+    component: CoqApplicationPPFormComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerOrOfficeGuard],
     data: {

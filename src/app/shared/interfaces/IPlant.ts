@@ -1,3 +1,5 @@
+import { IMeter } from './IMeter';
+
 // Interface for Depot and Processing Plant
 export interface IPlant {
   id?: number;
@@ -23,5 +25,6 @@ export interface IPlant {
       position: string;
       isDeleted: boolean;
     }
-  ]
+  ];
+  meters?: IMeter[];
 }

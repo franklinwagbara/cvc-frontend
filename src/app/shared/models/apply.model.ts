@@ -77,6 +77,8 @@ export class companyProfile {
   year_Incorporated?: string;
   yearly_Revenue?: string;
 
+  email: string;
+
   address_1?: string;
   address_2?: string;
   city?: string;

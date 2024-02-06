@@ -1,4 +1,5 @@
 export enum AppType {
   NOA = 'NOA',
-  COQ = 'COQ'
+  COQ = 'COQ',
+  PPCOQ = 'Processing Plant COQ',
 }

@@ -99,8 +99,8 @@ function showMyApplication() {
   throw new Error('Function not implemented.');
 }
 
-export enum OperatingFacility {
-  ProcessingPlant = 'Processing Plant',
-  CVC = 'CVC',
-  Both = 'Both',
-}
+export const OperatingFacility = {
+  ProcessingPlant: 'ProcessingPlant',
+  CVC: 'CVC',
+  Both: 'Both',
+};

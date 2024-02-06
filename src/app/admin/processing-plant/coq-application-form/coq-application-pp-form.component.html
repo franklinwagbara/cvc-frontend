@@ -1,0 +1,387 @@
+<div>
+  <button (click)="goBack()" class="m-4 mb-2" mat-button>
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Go Back
+  </button>
+
+  <div class="form-details-container">
+    <!-- Liquid Gas Form-->
+    <div class="form-wrapper">
+      <app-page-title />
+
+      <hr class="w-full" />
+      <hr class="w-full" />
+
+      <mat-vertical-stepper class="pl-3 pr-2" linear #coqstepper>
+        <ng-template matStepperIcon="done">
+          <mat-icon>check</mat-icon>
+        </ng-template>
+
+        <mat-step
+          [stepControl]="plantSelection"
+          [label]="'Select Processing Plant'"
+        >
+          <mat-form-field appearance="fill" style="min-width: fit-content">
+            <mat-label>Processing Plant</mat-label>
+            <mat-select [formControl]="plantSelection">
+              <mat-option
+                *ngFor="let plant of processingPlants"
+                [value]="plant?.id"
+              >
+                {{ plant?.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-error *ngIf="noPlantFetched !== null && noPlantFetched">
+            {{ "No " + "processing plant " + "available for this application" }}
+          </mat-error>
+          <div class="text-right">
+            <button
+              mat-raised-button
+              matStepperNext
+              (click)="plantSelection.markAllAsTouched()"
+              [disabled]="
+                !plantSelection.valid ||
+                fetchingRequirement ||
+                !plantTanks.length
+              "
+            >
+              Next
+            </button>
+          </div>
+          <app-capsule-card
+            *ngIf="selectedPlant"
+            [data]="selectedPlant"
+            [colMappings]="plantColMappings"
+          ></app-capsule-card>
+        </mat-step>
+
+        <mat-step [stepControl]="productSelection" label="Select Product">
+          <mat-form-field appearance="fill" style="min-width: fit-content">
+            <mat-label>Product</mat-label>
+
+            <mat-select [formControl]="productSelection">
+              <mat-option
+                *ngFor="let product of products"
+                [value]="product?.id"
+              >
+                {{ product?.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <app-capsule-card
+            *ngIf="selectedProduct"
+            [data]="selectedProduct"
+            [colMappings]="productColMappings"
+          ></app-capsule-card>
+
+          <div class="text-right">
+            <button
+              mat-raised-button
+              matStepperNext
+              (click)="productSelection.markAllAsTouched()"
+              [disabled]="!productSelection.valid"
+            >
+              Next
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step
+          [stepControl]="measurementSelection"
+          label="Select Measurement System"
+        >
+          <mat-form-field appearance="fill" style="min-width: fit-content">
+            <mat-label>Measurement System</mat-label>
+
+            <mat-select [formControl]="measurementSelection">
+              <mat-option *ngFor="let mt of measurementTypes" [value]="mt">
+                {{ mt }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="text-right">
+            <button
+              mat-raised-button
+              matStepperNext
+              color="primary"
+              [disabled]="!measurementSelection?.valid"
+            >
+              Continue
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step label="Tank / Meter Type / Dip Method Selection">
+          <mat-stepper #tankInfoStepper linear>
+            <mat-step
+              [stepControl]="getMeterTypeDipForm"
+              label="{{
+                'Select ' +
+                  (selectedMeasurement == 'Dynamic'
+                    ? 'Meter Type'
+                    : 'Dip Method')
+              }}"
+            >
+              <mat-form-field>
+                <mat-label>{{
+                  selectedMeasurement == "Dynamic" ? "Meter Type" : "Dip Method"
+                }}</mat-label>
+                <mat-select [formControl]="getMeterTypeDipForm">
+                  <mat-option
+                    *ngFor="let mo of getMeterTypeDipItems"
+                    [value]="mo.id"
+                  >
+                    {{ mo.name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <div class="text-right">
+                <button
+                  mat-raised-button
+                  matStepperNext
+                  color="primary"
+                  (click)="onStepFromMeterType()"
+                  [disabled]="!getMeterTypeDipForm?.valid"
+                >
+                  Continue
+                </button>
+              </div>
+            </mat-step>
+          </mat-stepper>
+        </mat-step>
+
+        <mat-step
+          label="Data Entry Section"
+          #dataEntryWrapper
+          [completed]="ppContext.isCompletedDataEntryObs | async"
+        >
+          <app-data-entry-form
+            [isGas]="isGasProduct"
+            [selectedMeasurementSystem]="selectedMeasurement"
+            [selectedProduct]="selectedProduct"
+            [selectedMeterType]="selectedMeterType"
+            [selectedDipMethod]="selectedDipMethod"
+          />
+
+          <button
+            [disabled]="!(ppContext.isCompletedDataEntryObs | async)"
+            mat-raised-button
+            matStepperNext
+            color="primary"
+          >
+            Continue
+          </button>
+        </mat-step>
+
+        <mat-step
+          [stepControl]="getActiveProcDetailsForm"
+          [label]="'Truck Ullage Details Entry'"
+        >
+          <app-processing-details-liquid
+            *ngIf="!isGasProduct && getDetailsForm"
+          />
+          <app-processing-details-gas *ngIf="isGasProduct && getDetailsForm" />
+
+          <div class="text-right">
+            <button
+              mat-raised-button
+              matStepperNext
+              (click)="getActiveProcDetailsForm.markAllAsTouched()"
+              [disabled]="getActiveProcDetailsForm?.invalid"
+            >
+              Next
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step label="Document(s) Upload">
+          <div class="w-[90%] mb-4 p-0">
+            <div class="guidelines">
+              <h4>Please Note</h4>
+              <ul class="guidelines-list">
+                <li>
+                  All documents listed below are required and must be uploaded.
+                  Subsequently, other documents may be needed and will be added
+                  to this list.
+                </li>
+                <li>
+                  The Maximum file size allowed is <strong>20MB</strong> per
+                  document, any file size greater than this value will not be
+                  uploaded.
+                </li>
+                <li>
+                  Only <strong>JPEG</strong>, <strong>PNG</strong>,
+                  <strong>JPG</strong>, and <strong>PDF</strong> file types are
+                  allowed on this platform.
+                </li>
+              </ul>
+            </div>
+
+            <div id="coq_doc_upload_table_description" class="hidden">
+              Document Upload Table
+            </div>
+
+            <div class="table-container mat-elevation-z8">
+              <div class="table-title">REQUIRED DOCUMENTS</div>
+              <h4 *ngIf="spinner.isOpen" class="text-center">Loading....</h4>
+              <table
+                *ngIf="!spinner.isOpen"
+                mat-table
+                [dataSource]="dataSource"
+                aria-describedby="coq_doc_upload_table_description"
+              >
+                <ng-container
+                  *ngFor="let column of displayedColumns"
+                  [matColumnDef]="column"
+                >
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    class="text-slate-700 text-[16px] text-left"
+                  >
+                    {{ column | uppercase }}
+                  </th>
+                  <td
+                    mat-cell
+                    *matCellDef="let element; let i = index"
+                    class="text-left"
+                  >
+                    <ng-container *ngIf="column === 'document'">
+                      <div class="flex justify-start align-middle">
+                        <span
+                          class="truncate max-w-40"
+                          [title]="element.docName"
+                        >
+                          {{ element?.docName }}</span
+                        >&nbsp;
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="column === 'action'">
+                      <button
+                        mat-button
+                        class="upload-btn"
+                        (click)="triggerFileInput(i)"
+                      >
+                        {{ element?.docSource ? "Replace" : "Upload" }}
+                      </button>
+
+                      <input
+                        class="d-none file-input"
+                        type="file"
+                        accept=".png,.jpg,.jpeg,.pdf"
+                        (change)="onFileSelected($event, i)"
+                      />
+                    </ng-container>
+
+                    <ng-container *ngIf="column === 'source'">
+                      <div>
+                        <a
+                          *ngIf="element?.docSource"
+                          [href]="element?.docSource"
+                          target="_blank"
+                          download
+                          ><img
+                            src="../../../assets/image/pdfIcon.png"
+                            width="30"
+                            height="30"
+                            alt="Facility Document"
+                        /></a>
+                      </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="column === 'progress'">
+                      <div class="flex flex-col items-center justify-center">
+                        <span
+                          *ngIf="
+                            documents?.length > 0 && documents[i]?.fileName
+                          "
+                          class="font-bold text-slate-500"
+                          >{{
+                            documents[i]?.fileName +
+                              " (" +
+                              documents[i]?.fileSizeInKb +
+                              "Kb)"
+                          }}</span
+                        >
+                        <mat-progress-bar
+                          mode="determinate"
+                          [value]="
+                            documents?.length > 0
+                              ? documents[i]?.percentProgress
+                              : 0
+                          "
+                          [ngClass]="{
+                            'in-progress':
+                              documents?.length > 0 &&
+                              documents[i]?.success === null,
+                            success:
+                              documents?.length > 0 && documents[i]?.success,
+                            failed:
+                              documents?.length > 0 && !documents[i]?.success
+                          }"
+                        >
+                        </mat-progress-bar>
+                      </div>
+                    </ng-container>
+                  </td>
+                </ng-container>
+
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="displayedColumns"
+                  class="rounded-md shadow-lg"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+            </div>
+
+            <div
+              *ngIf="hasUploadedAllRequiredDocs && !isSubmitted"
+              class="flex justify-between mt-8"
+            >
+              <button
+                *ngIf="!isSubmitted"
+                mat-button
+                (click)="preview()"
+                class="action bg-yellow-500 hover:bg-yellow-600"
+              >
+                Preview
+              </button>
+              <button
+                *ngIf="!isSubmitted"
+                type="submit"
+                (click)="submit()"
+                mat-button
+                class="action bg-green-500 hover:bg-green-600"
+                [disabled]="isSubmitting"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+
+          <ng-template #noRequiredDocsWarn>
+            <div
+              class="bg-yellow-100 w-[90%] border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong class="font-bold"
+                >No Required Documents Configured:&nbsp;&nbsp;</strong
+              >
+              <span class="block sm:inline"
+                >You may not proceed with this application.</span
+              >
+            </div>
+          </ng-template>
+        </mat-step>
+      </mat-vertical-stepper>
+    </div>
+  </div>
+</div>

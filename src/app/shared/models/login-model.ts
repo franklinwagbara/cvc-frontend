@@ -22,5 +22,5 @@ export class LoginModel {
   directorate: string;
   office: string;
   location: string;
-  operatingFacility: string;
+  operationFacility: string;
 }
