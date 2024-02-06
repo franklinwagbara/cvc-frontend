@@ -1,1 +1,8 @@
-<router-outlet></router-outlet>
+<div class="flex flex-col min-h-[100vh]">
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="!(loading$ | async) && !hideFooter">
+    <app-footer></app-footer>
+  </div>
+</div>

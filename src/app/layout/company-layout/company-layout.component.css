@@ -1,5 +1,9 @@
+.company {
+  min-height: calc(0.835 * 100vh);
+  @apply bg-slate-200;
+}
+
 .main-area {
   margin-top: 4rem;
   flex: 0.8;
-  @apply bg-slate-200;
 }

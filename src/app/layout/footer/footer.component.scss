@@ -1,6 +1,5 @@
 .footer {
-  background-color: #091b29;
-  height: 120px;
   line-height: 2;
-  @apply text-slate-300 flex flex-col justify-center w-full;
+  min-height: calc(0.114 * 100vh);
+  @apply text-slate-300 bg-[#091b29] flex flex-col justify-center items-center w-full;
 }

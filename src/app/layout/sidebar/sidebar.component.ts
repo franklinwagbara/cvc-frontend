@@ -445,70 +445,11 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    if (
-      this.currentUser?.directorate === Directorate.DSSRI ||
-      this.currentUser?.userRoles === UserRole.SUPERADMIN
-    ) {
-      let subRoutes = [
-        {
-          id: 1,
-          title: 'CoQ CERTIFICATES',
-          url: '/admin/all-approvals/coq-certificates',
-        },
-        {
-          id: 2,
-          title: 'NoA CLEARANCES',
-          url: '/admin/all-approvals/noa-clearances',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 4).concat(
-        {
-          id: 4,
-          title: 'ALL APPROVALS',
-          iconName: 'licence-outline',
-          iconId: 'licence_outline',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: subRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(4)
-      );
-    } else if (
-      this.currentUser?.directorate === Directorate.HPPITI ||
-      this.currentUser?.userRoles === UserRole.SUPERADMIN
-    ) {
-      let subRoutes = [
-        {
-          id: 1,
-          title: 'CoQ CERTIFICATES',
-          url: '/admin/all-approvals/coq-certificates',
-        },
-        // {
-        //   id: 2,
-        //   title: 'NoA CLEARANCES',
-        //   url: '/admin/all-approvals/noa-clearances',
-        // },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 4).concat(
-        {
-          id: 4,
-          title: 'ALL APPROVALS',
-          iconName: 'licence-outline',
-          iconId: 'licence_outline',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: subRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(4)
-      );
+    if (this.currentUser?.directorate === Directorate.HPPITI) {
+      let allApprovalsNav = this.menuItems.find((el) => el.title === 'ALL APPROVALS');
+      allApprovalsNav.subRoutes = allApprovalsNav.subRoutes.filter((el) => {
+        return el.title !== 'CVC CLEARANCES'
+      })
     }
 
     if (this.currentUser.directorate === Directorate.HPPITI) {
