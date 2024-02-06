@@ -10,11 +10,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
-import { LOCATION } from 'src/app/shared/constants/location';
 import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { LOCATION } from 'src/app/shared/constants/location';
+
 
 export interface SubRouteInfo {
   id: number;
@@ -85,6 +85,11 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 2,
+        title: 'STS APPLICATIONS',
+        url: '/admin/applications/sts-applications',
+      },
+      {
+        id: 3,
         title: 'CoQ APPLICATIONS',
         url: '/admin/applications/coq-applications',
       },
@@ -235,9 +240,9 @@ export class SidebarComponent implements OnInit, OnChanges {
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
-  currentUser: any;
   public Directorate = Directorate;
   public directorate: string;
+  currentUser: any;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -386,7 +391,7 @@ export class SidebarComponent implements OnInit, OnChanges {
         },
         // {
         //   id: 2,
-        //   title: 'NoA CLEAR ANCES',
+        //   title: 'NoA CLEARANCES',
         //   url: '/admin/all-approvals/noa-clearances',
         // },
       ];
@@ -406,15 +411,26 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (!Util.adminRoles.includes(this.currentUser?.userRoles)) {
-      this.menuItems = this.menuItems.filter(
-        (item) =>
-          item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS'
-      );
+    if (this.currentUser.directorate === Directorate.HPPITI) {
+      let applicationsNav = this.menuItems.find((item) => item.title === 'APPLICATIONS');
+      if (applicationsNav) {
+        applicationsNav.subRoutes = applicationsNav.subRoutes.filter((el) => {
+          return el.title === 'CoQ APPLICATIONS';
+        })
+      }
     }
 
-    // Show settings only SuperAdmin
+    // If not SuperAdmin or HQ staff, remove NoA & CoQ Applications navitems
+    if (this.currentUser.location !== LOCATION.HQ
+      && this.currentUser.userRoles !== UserRole.SUPERADMIN) 
+    {
+      let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
+      applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {
+        return sub.title !== 'NoA APPLICATIONS' && sub.title !== 'CoQ APPLICATIONS'
+      })
+    }
+
+    // Show settings if SuperAdmin
     if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {
       this.menuItems = this.menuItems.filter(
         (item) => item.title !== 'SETTINGS'

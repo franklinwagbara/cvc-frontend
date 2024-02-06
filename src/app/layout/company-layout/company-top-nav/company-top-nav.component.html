@@ -78,13 +78,22 @@
             <span>Apply</span>
           </div>
         </button>
-        <button mat-menu-item routerLink="/company/myapplication">
+        <button mat-menu-item routerLink="/company/cvc-applications">
           <div class="menu-item-content">
             <ng-container
               *ngTemplateOutlet="iconTemp; context: iconContexts.myapps"
             >
             </ng-container>
-            <span>My Applications</span>
+            <span>CVC Applications</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/sts-applications">
+          <div class="menu-item-content">
+            <ng-container
+              *ngTemplateOutlet="iconTemp; context: iconContexts.myapps"
+            >
+            </ng-container>
+            <span>STS Applications</span>
           </div>
         </button>
       </mat-menu>

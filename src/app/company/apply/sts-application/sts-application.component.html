@@ -78,6 +78,7 @@
               <span class="input-label"> Total Volume (Litres) </span>
               <input
                 type="number"
+                min="1"
                 name="totalVolume" 
                 formControlName="totalVolume"
                 placeholder="Total Volume to Discharge"
@@ -194,7 +195,7 @@
             <span class="input-label"> Volume to Transfer </span>
             <input
               type="number"
-              min="0"
+              min="1"
               class="border border-t border-b rounded-r p-2"
               placeholder="Volume To Transfer"
               formControlName="offtakeVolume"
@@ -232,7 +233,7 @@
                   <th>Vessel Name</th>
                   <th>Imo Number</th>
                   <th>Offtake Volume</th>
-                  <th>Product Name</th>
+                  <th>Product</th>
                 </tr>
               </thead>
 
@@ -279,7 +280,7 @@
 
       <div *ngIf="activateThirdSegment" class="preview-wrapper">
         <h4 class="text-center">Preview</h4>
-        <div>
+        <div class="w-full">
           <h5>Source Vessel</h5>
           <div class="preview-table-wrapper">
             <table class="table table-striped font-medium">
@@ -306,7 +307,7 @@
                 <tr>
                   <th 
                     scope="col" 
-                    *ngFor="let key of ['Vessel Name', 'Imo Number', 'Offtake Volume', 'Product Name']"
+                    *ngFor="let key of ['Vessel Name', 'Imo Number', 'Offtake Volume', 'Product']"
                   >{{ key }}</th>
                 </tr>
                 <tr *ngFor="let data of selectedRecipientVessels">

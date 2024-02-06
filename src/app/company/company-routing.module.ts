@@ -5,7 +5,7 @@ import { ApplyComponent } from './apply/apply.component';
 import { ChangePasswordComponent } from './changepassword/changepassword.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MessagesComponent } from './messages/messages.component';
-import { MyApplicationComponent } from './my-applications/myapplication.component';
+import { CvcApplicationsComponent } from './cvc-applications/cvc-applications.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
 import { MyapprovalsComponent } from './approvals/myapprovals.component';
 import { RegisterDirectorComponent } from './director/registerdirector.component';
@@ -22,6 +22,7 @@ import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.com
 import { ProcessingPlantComponent } from './settings/processing-plant/processing-plant.component';
 import { AuthCompleteProfileGuard } from '../shared/guards/company.guard';
 import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
+import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 
 const routes: Routes = [
   {
@@ -56,9 +57,13 @@ const routes: Routes = [
     component: ApplyComponent,
   },
   {
-    path: 'myapplication',
+    path: 'cvc-applications',
     // canActivate: [AuthCompleteProfileGuard],
-    component: MyApplicationComponent,
+    component: CvcApplicationsComponent,
+  },
+  {
+    path: 'sts-applications',
+    component: StsApplicationsComponent
   },
   {
     path: 'processing-plant',

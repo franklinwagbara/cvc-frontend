@@ -87,6 +87,8 @@ import {
 } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa-applications-by-jetty.component';
+import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
+import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +149,8 @@ import { NoaApplicationsByJettyComponent } from './noa-applications-by-jetty/noa
     AllCoqApplicationsComponent,
     FieldOfficerJettySettingComponent,
     NoaApplicationsByJettyComponent,
+    StsApplicationsComponent,
+    RecipientsViewComponent,
   ],
 
   imports: [

@@ -28,7 +28,7 @@ import { MessagesComponent } from './messages/messages.component';
 import { MyScheduleComponent } from './schedules/myschedule.component';
 import { MyapprovalsComponent } from './approvals/myapprovals.component';
 import { ApplyComponent } from './apply/apply.component';
-import { MyApplicationComponent } from './my-applications/myapplication.component';
+import { CvcApplicationsComponent } from './cvc-applications/cvc-applications.component';
 import { RegisterDirectorComponent } from './director/registerdirector.component';
 import { CompanyComponent } from './company.component';
 import { UploadComponent } from './apply/upload.component';
@@ -51,6 +51,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
+import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
+import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
 
 @NgModule({
   imports: [
@@ -88,7 +90,7 @@ import { StsApplicationComponent } from './apply/sts-application/sts-application
     MyScheduleComponent,
     MyapprovalsComponent,
     ApplyComponent,
-    MyApplicationComponent,
+    CvcApplicationsComponent,
     RegisterDirectorComponent,
     CompanyComponent,
     UploadComponent,
@@ -107,6 +109,8 @@ import { StsApplicationComponent } from './apply/sts-application/sts-application
     ProcessingPlantComponent,
     TanksComponent,
     StsApplicationComponent,
+    StsApplicationsComponent,
+    RecipientsViewComponent,
   ],
   providers: [],
 })

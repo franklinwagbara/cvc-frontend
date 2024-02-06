@@ -17,7 +17,7 @@ import { ITableKeysMappedToHeaders } from '../../../../../src/app/shared/interfa
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 
 interface IColumn {

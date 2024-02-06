@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ApplicationService } from '../../services/application.service';
 import { SpinnerService } from '../../services/spinner.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
