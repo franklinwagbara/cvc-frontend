@@ -48,7 +48,7 @@ export class CoqApplicationViewTableComponent implements OnInit {
     this.dialog.open(operationConfiguration.form, {
       data: {
         tanks: operationConfiguration.tanks,
-        productType: operationConfiguration.productType
+        productType: operationConfiguration.productType,
       },
     });
   }

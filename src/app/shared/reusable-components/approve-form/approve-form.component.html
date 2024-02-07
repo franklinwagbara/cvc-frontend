@@ -5,13 +5,21 @@
       <div class="item-title">Reference No.</div>
       <div class="item-content">{{ application?.reference }}</div>
     </div>
-    <div class="card-item">
+    <div class="card-item" *ngIf="!isPPCOQ">
       <div class="item-title">Vessel Name</div>
       <div class="item-content">{{ application?.vessel?.name }}</div>
     </div>
-    <div class="card-item">
+    <div class="card-item" *ngIf="isPPCOQ">
+      <div class="item-title">Plant Name</div>
+      <div class="item-content">{{ application?.plant.name }}</div>
+    </div>
+    <div class="card-item" *ngIf="!isPPCOQ">
       <div class="item-title">Vessel Type</div>
       <div class="item-content">{{ application?.vessel?.vesselType }}</div>
+    </div>
+    <div class="card-item" *ngIf="isPPCOQ">
+      <div class="item-title">Product Name</div>
+      <div class="item-content">{{ application?.product.name }}</div>
     </div>
   </div>
 

@@ -28,7 +28,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
 })
 export class CoqApplicationViewComponent implements OnInit {
   public application: Application | any;
-  public ppCoqs: any[];
+  public ppCoq: any;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -80,12 +80,11 @@ export class CoqApplicationViewComponent implements OnInit {
     });
 
     this.route.queryParams.subscribe((params) => {
-      debugger;
       this.spinner.show('Loading application...');
       this.appId = parseInt(params['id']);
       this.coqId = parseInt(params['id']);
       this.PPCOQId = parseInt(params['PPCOQId']);
-      this.isPPCOQ = params['isPPCOQ'];
+      this.isPPCOQ = Boolean(params['isPPCOQ']);
       this.appSource = params['appSource'];
       this.getApplication();
     });
@@ -129,22 +128,21 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   getApplication() {
-    debugger;
     (!this.isPPCOQ
       ? this.coqService.viewCoqApplication(this.appId)
       : this.coqService.viewPPCoqApplication(this.PPCOQId)
     ).subscribe({
       next: (res) => {
         if (res.success && this.isPPCOQ) {
-          this.ppCoqs = res.data;
+          this.ppCoq = res.data;
           this.appLoaded = true;
         } else if (res.success) {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
           this.appLoaded = true;
-          this.isProcessingPlant = this.isPPCOQ;
         }
+        this.isProcessingPlant = this.isPPCOQ;
 
         this.progressBar.close();
         this.spinner.close();
@@ -172,23 +170,24 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
+    debugger;
     const operationConfiguration = {
       approve: {
         data: {
-          application: this.isPPCOQ ? this.application : this.ppCoqs,
+          application: !this.isPPCOQ ? this.application : this.ppCoq,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: this.isPPCOQ ? this.coqId : this.PPCOQId,
+          coqId: !this.isPPCOQ ? this.coqId : this.PPCOQId,
           isPPCOQ: this.isPPCOQ,
         },
         form: ApproveFormComponent,
       },
       sendBack: {
         data: {
-          application: this.isPPCOQ ? this.application : this.ppCoqs,
+          application: !this.isPPCOQ ? this.application : this.ppCoq,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: this.isPPCOQ ? this.coqId : this.PPCOQId,
+          coqId: !this.isPPCOQ ? this.coqId : this.PPCOQId,
           isPPCOQ: this.isPPCOQ,
         },
         form: SendBackFormComponent,

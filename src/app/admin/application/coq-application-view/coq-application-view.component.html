@@ -4,13 +4,14 @@
   </button>
   <div class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
-      APPLICATION REFERENCE : {{ application?.reference }}
+      APPLICATION REFERENCE :
+      {{ isProcessingPlant ? ppCoq?.reference : application?.reference }}
     </h2>
 
     <div mat-dialog-content class="content !overflow-x-auto">
       <div class="application-view flex-1">
         <app-coq-application-view-table
-          [application]="application"
+          [application]="isPPCOQ ? ppCoq : application"
           [appId]="coqId"
           [appSource]="appSource"
           [tankList]="tanksList"
@@ -23,7 +24,13 @@
           <mat-expansion-panel-header>
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
-          <p>{{ application?.CurrentDesk }}</p>
+          <p>
+            {{
+              isProcessingPlant
+                ? ppCoq?.currentDeskName + " (" + ppCoq?.currentDeskEmail + ")"
+                : application?.CurrentDesk
+            }}
+          </p>
         </mat-expansion-panel>
 
         <mat-expansion-panel>

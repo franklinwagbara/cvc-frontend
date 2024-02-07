@@ -8,7 +8,7 @@
     <ng-container *ngIf="isCoqProcessor">
       <tr *ngIf="isProcessingPlant">
         <th>Plant Name</th>
-        <td>{{ application?.plant }}</td>
+        <td>{{ application?.plant.name }}</td>
       </tr>
       <tr *ngIf="application?.productType">
         <th>Product Type</th>
@@ -51,10 +51,10 @@
         <td>{{ application?.dischargeShipFigure }}</td>
       </tr>
       <tr *ngIf="application?.depotPrice">
-        <th>{{ isProcessingPlant ? 'Plant' : 'Depot' }} Price</th>
-        <td>{{ application?.depotPrice | currency:'NGN' }}</td>
+        <th>{{ isProcessingPlant ? "Plant" : "Depot" }} Price</th>
+        <td>{{ application?.depotPrice | currency : "NGN" }}</td>
       </tr>
-  
+
       <tr *ngIf="application?.dateOfVesselArrival">
         <th>Date Of Vessel Arrival</th>
         <td>{{ application?.dateOfVesselArrival | date }}</td>
@@ -79,7 +79,7 @@
         <th>Nominated Surveyor</th>
         <td>{{ application?.nominatedSurveyor }}</td>
       </tr>
-      
+
       <tr>
         <th>Application Type</th>
         <td>COQ</td>
@@ -96,29 +96,74 @@
     </tr>
 
     <ng-container *ngIf="!isCoqProcessor">
-      <tr>
-        <th>Company Name</th>
-        <td>{{ application?.companyName }}</td>
-      </tr>
-  
-      <tr>
-        <th>Depot Name</th>
-        <td>{{ application?.depotName }}</td>
-      </tr>
-      <tr>
-        <th>Depot Price</th>
-        <td>{{ application?.depotPrice }}</td>
-      </tr>
-      <tr>
-        <th>Total Volume</th>
-        <td>{{ application?.totalVolume }}</td>
-      </tr>
-      <tr>
-        <th>Debit Note</th>
-        <td>{{ application?.debitNote }}</td>
-      </tr>
+      <ng-container *ngIf="!isProcessingPlant">
+        <tr>
+          <th>Company Name</th>
+          <td>{{ application?.companyName }}</td>
+        </tr>
+
+        <tr>
+          <th>Depot Name</th>
+          <td>{{ application?.depotName }}</td>
+        </tr>
+        <tr>
+          <th>Depot Price</th>
+          <td>{{ application?.depotPrice }}</td>
+        </tr>
+        <tr>
+          <th>Total Volume</th>
+          <td>{{ application?.totalVolume }}</td>
+        </tr>
+        <tr>
+          <th>Debit Note</th>
+          <td>{{ application?.debitNote }}</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="isProcessingPlant">
+        <tr>
+          <th>Company Name</th>
+          <td>{{ application?.plant.company }}</td>
+        </tr>
+
+        <tr>
+          <th>Plant Name</th>
+          <td>{{ application?.plant.name }}</td>
+        </tr>
+        <tr>
+          <th>Name of Consignor</th>
+          <td>{{ application?.consignorName }}</td>
+        </tr>
+        <tr>
+          <th>Name of Consignee</th>
+          <td>{{ application?.consignee }}</td>
+        </tr>
+        <tr>
+          <th>Terminal</th>
+          <td>{{ application?.terminal }}</td>
+        </tr>
+        <tr>
+          <th>Destination</th>
+          <td>{{ application?.destination }}</td>
+        </tr>
+        <tr>
+          <th>Product Name</th>
+          <td>{{ application?.product.name }}</td>
+        </tr>
+        <tr>
+          <th>Price</th>
+          <td>{{ application?.price }}</td>
+        </tr>
+        <tr>
+          <th>Total MTVAC</th>
+          <td>{{ application?.totalMTVac }}</td>
+        </tr>
+        <tr>
+          <th>Debit Note</th>
+          <td>{{ application?.debitNote }}</td>
+        </tr>
+      </ng-container>
     </ng-container>
-    
+
     <tr *ngIf="isCoqProcessor">
       <th>Tanks</th>
       <td class="text-center">

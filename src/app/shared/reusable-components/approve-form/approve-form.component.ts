@@ -48,6 +48,7 @@ export class ApproveFormComponent implements OnInit {
     private coqService: CoqService,
     private dialog: MatDialog
   ) {
+    debugger;
     this.application = data?.data?.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
