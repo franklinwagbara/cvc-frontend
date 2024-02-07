@@ -67,7 +67,7 @@ button:disabled {
 
 .setting-desk {
   min-height: fit-content;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 5px;
   margin: 0 1.5rem 0 1.5rem;
   @apply bg-background;
