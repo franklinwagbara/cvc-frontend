@@ -324,7 +324,7 @@ const routes: Routes = [
     },
   },
   {
-    path: 'coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+    path: 'processing-plant/certificate-of-quantity/new-application',
     component: CoqApplicationPPFormComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerOrOfficeGuard],

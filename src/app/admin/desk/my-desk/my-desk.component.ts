@@ -146,7 +146,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type: string) {
-    debugger;
+    // debugger;
     if (
       this.appType$.value === AppType.COQ ||
       this.appType$.value == AppType.PPCOQ ||

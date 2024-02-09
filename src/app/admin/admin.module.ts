@@ -68,7 +68,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 import { ProductsComponent } from './settings/products/products.component';
-import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { CoqApplicationViewComponent } from './application/coq-application-view/coq-application-view.component';
 import { CoqApplicationViewTableComponent } from './application/coq-application-view/coq-application-view-table/coq-application-view-table.component';
@@ -160,7 +159,6 @@ import { RecipientsViewComponent } from './sts-applications/recipients-view/reci
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ProductsComponent,
-    ProcessingPlantCoqFormComponent,
     CoqApplicationViewComponent,
     CoqApplicationViewTableComponent,
     ViewCoqTankComponent,

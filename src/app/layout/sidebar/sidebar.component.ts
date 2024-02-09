@@ -141,7 +141,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'CoQ Form',
-        url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+        url: '/admin/processing-plant/certificate-of-quantity/new-application',
       },
       {
         id: 1,

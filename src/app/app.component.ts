@@ -23,7 +23,9 @@ export class AppComponent {
       if (obs instanceof NavigationEnd) {
         Util.scrollToTop();
         this.loading$.next(false);
-        this.hideFooter = auth.currentUser?.userRoles !== UserRole.COMPANY;
+        if (auth.currentUser) {
+          this.hideFooter = auth.currentUser?.userRoles !== UserRole.COMPANY;
+        }
       }
     })
   }
