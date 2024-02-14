@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { ApplicationService } from '../../../../../src/app/shared/services/appli
 import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -23,13 +24,14 @@ import { ShowMoreComponent } from '../../../shared/reusable-components/show-more
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent implements OnInit, OnDestroy {
   public application: Application;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
   public licence: any;
   public coqId: number;
+  private destroy = new Subject<void>();
 
   public loading: boolean;
   isApprover: boolean;
@@ -79,6 +81,11 @@ export class ViewApplicationComponent implements OnInit {
     this.isApprover = this.auth.isApprover;
   }
 
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
+  }
+
   isCreatedByMe(scheduleBy: string) {
     const currentUser = this.auth.currentUser;
     return currentUser.userId == scheduleBy;
@@ -86,61 +93,65 @@ export class ViewApplicationComponent implements OnInit {
 
   getApplication() {
     this.loading = true;
-    this.spinner.show('Fetching application');
-    this.applicationService.viewApplication(this.appId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.application = res.data;
-        }
-        this.loading = false;
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        console.log(error);
-        this.loading = false;
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
+    this.spinner.show('Loading application...');
+    this.applicationService.viewApplication(this.appId)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.application = res.data;
           }
-        );
+          this.loading = false;
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          console.log(error);
+          this.loading = false;
+          this.snackBar.open(
+            'Something went wrong while retrieving data.',
+            null,
+            {
+              panelClass: ['error'],
+            }
+          );
 
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+      });
   }
 
   getLicence() {
     this.spinner.show('Loading license details');
-    this.licenceService.getLicence(this.appId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.licence = res.data;
-        }
-
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
+    this.licenceService.getLicence(this.appId)
+      .pipe(takeUntil(this.destroy))  
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.licence = res.data;
           }
-        );
 
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          this.snackBar.open(
+            'Something went wrong while retrieving data.',
+            null,
+            {
+              panelClass: ['error'],
+            }
+          );
+
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+      });
   }
 
   public get isStaffDesk() {

@@ -28,17 +28,21 @@ const routes: Routes = [
   {
     path: '',
     // canActivate: [AuthCompleteProfileGuard],
-    component: DashboardComponent,
+    pathMatch: 'full',
+    redirectTo: 'dashboard',
   },
   {
     path: 'dashboard',
     // canActivate: [AuthCompleteProfileGuard],
     component: DashboardComponent,
+    pathMatch: 'full',
+    title: 'CVC & CoQ | Company Dashboard'
   },
   {
     path: 'messages',
     // canActivate: [AuthCompleteProfileGuard],
     component: MessagesComponent,
+    title: 'CVC & CoQ | Company Notifications'
   },
   {
     path: 'myschedule',
@@ -49,28 +53,37 @@ const routes: Routes = [
     path: 'changepassword',
     // canActivate: [AuthCompleteProfileGuard],
     component: ChangePasswordComponent,
+    title: 'CVC & CoQ | Change Password'
   },
   // { path: 'mypermits', component: MypermitsComponent },
   {
     path: 'apply',
     // canActivate: [AuthCompleteProfileGuard],
     component: ApplyComponent,
+    title: 'CVC & CoQ | Apply'
   },
   {
     path: 'cvc-applications',
     // canActivate: [AuthCompleteProfileGuard],
     component: CvcApplicationsComponent,
+    title: 'CVC & CoQ | CVC Applications'
   },
   {
     path: 'sts-applications',
-    component: StsApplicationsComponent
+    component: StsApplicationsComponent,
+    title: 'CVC & CoQ | Ship-to-Ship Applications'
   },
   {
     path: 'processing-plant',
     // canActivate: [AuthCompleteProfileGuard],
     component: ProcessingPlantComponent,
+    title: 'CVC & CoQ | Processing Plant'
   },
-  { path: 'registerdirector', component: RegisterDirectorComponent },
+  { 
+    path: 'registerdirector', 
+    component: RegisterDirectorComponent,
+    title: 'CVC & CoQ | Register Director'
+  },
   {
     path: 'upload',
     // canActivate: [AuthCompleteProfileGuard],
@@ -85,53 +98,56 @@ const routes: Routes = [
     path: 'paymentsum/:id',
     // canActivate: [AuthCompleteProfileGuard],
     component: PaymentSumComponent,
+    title: 'CVC & CoQ | Application Payment Summary'
   },
   {
     path: 'upload-document/:id',
     // canActivate: [AuthCompleteProfileGuard],
     component: DocumentUploadComponent,
+    title: 'CVC & CoQ | Application Document Upload'
   },
 
   {
     path: 'view-application/:id',
     canActivate: [AuthCompleteProfileGuard],
     component: ViewApplicationComponent,
+    title: 'CVC & CoQ | View Application'
   },
   {
     path: 'approvals/:id/coqs',
     //canActivate: [AuthCompleteProfileGuard],
     component: ViewCoqCertsComponent,
+    title: 'CVC & CoQ | CoQ Certificates'
   },
-  { path: 'upload', component: UploadComponent },
-  { path: 'previewapp/:id', component: PreviewAppComponent },
-  { path: 'paymentsum/:id', component: PaymentSumComponent },
-  { path: 'upload-document/:id', component: DocumentUploadComponent },
   {
     path: 'application/new-clearance',
     component: NewApplicationComponent,
     pathMatch: 'full',
+    title: 'CVC & CoQ | New CVC Application'
   },
   {
     path: 'application/ship-to-ship',
     component: StsApplicationComponent,
     pathMatch: 'full',
+    title: 'CVC & CoQ | New Ship-to-Ship Application'
   },
-  { path: 'view-application/:id', component: ViewApplicationComponent },
-  { path: 'approvals/:id/coqs', component: ViewCoqCertsComponent },
   {
     path: 'approvals/:id/debit-notes',
     component: ViewDebitNotesComponent,
     // canActivate: [AuthCompleteProfileGuard],
+    title: 'CVC & CoQ | Debit Notes'
   },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
     // canActivate: [AuthCompleteProfileGuard],
+    title: 'CVC & CoQ | Full Application Details'
   },
   {
     path: 'approvals',
     // canActivate: [AuthCompleteProfileGuard],
     component: MyapprovalsComponent,
+    title: 'CVC & CoQ | Company Approvals'
   },
   {
     path: 'companyinformation',
@@ -140,6 +156,7 @@ const routes: Routes = [
       import('./company-information/company-information.module').then(
         (m) => m.CompanyInformationModule
       ),
+    title: 'CVC & CoQ | Company Information'
   },
 ];
 

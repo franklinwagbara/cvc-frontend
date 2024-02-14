@@ -722,7 +722,7 @@ export class CoqApplicationFormComponent
         setTimeout(() => {
           this.router.navigate([
             'admin',
-            'coq-and-plant',
+            'coq',
             'coq-applications-by-depot',
           ]);
         }, 2400);

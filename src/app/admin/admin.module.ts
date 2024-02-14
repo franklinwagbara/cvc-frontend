@@ -111,6 +111,9 @@ import { AfterGasStaticDataEntryComponent } from './processing-plant/coq-applica
 import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/before-gas-static-data-entry/before-gas-static-data-entry.component';
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
+import { AllPpcoqApplicationsComponent } from './all-ppcoq-applications/all-ppcoq-applications.component';
+import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
+import { ViewPpcoqTankComponent } from './application/coq-application-view/view-ppcoq-tank/view-ppcoq-tank.component';
 
 @NgModule({
   declarations: [
@@ -195,6 +198,9 @@ import { RecipientsViewComponent } from './sts-applications/recipients-view/reci
     BeforeGasStaticDataEntryComponent,
     StsApplicationsComponent,
     RecipientsViewComponent,
+    AllPpcoqApplicationsComponent,
+    PpcoqApplicationViewTableComponent,
+    ViewPpcoqTankComponent,
   ],
 
   imports: [

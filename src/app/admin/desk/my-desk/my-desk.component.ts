@@ -154,9 +154,8 @@ export class MyDeskComponent implements OnInit {
     ) {
       this.router.navigate(
         [
-          `/admin/desk/view-coq-application/${
-            event.id ?? event.processingPlantCOQId
-          }`,
+          '/admin/desk/view-coq-application/',
+          event.id ?? event.processingPlantCOQId
         ],
         {
           queryParams: {
@@ -229,7 +228,7 @@ export class MyDeskComponent implements OnInit {
   initiateCoq(event: any) {
     this.router.navigate([
       'admin',
-      'coq-and-plant',
+      'coq',
       'noa-applications-by-depot',
       event.id,
       'certificate-of-quantity',

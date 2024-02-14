@@ -1,65 +1,50 @@
 <table class="table">
-  <tbody>
+  <tbody *ngIf="application">
     <tr>
       <th>Reference Number</th>
       <td>{{ application?.reference }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.companyName">
       <th>Company Name</th>
       <td>{{ application?.companyName }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.email">
       <th>Company Email</th>
       <td>{{ application?.email }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.vessel.name">
       <th>Vessel Name</th>
       <td>{{ application?.vessel.name }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.vessel.imoNumber">
       <th>Vessel IMO Number</th>
       <td>{{ application?.vessel.imoNumber }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.appType">
       <th>Application Type</th>
       <td>{{ application?.appType }}</td>
     </tr>
-    <!-- <tr>
-      <th>Category</th>
-      <td>{{ application?.category }}</td>
-    </tr>
-    <tr>
-      <th>Permit Type</th>
-      <td>{{ application?.permitType }}</td>
-    </tr> -->
-    <tr>
+    <tr *ngIf="application?.status">
       <th>Application Status</th>
       <td>{{ application?.status }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.paymnetStatus">
       <th>Payment Status</th>
       <td>{{ application?.paymnetStatus }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.paymnetDate">
       <th>Payment Date</th>
       <td>{{ application?.paymnetDate }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.createdDate">
       <th>Initiated On</th>
       <td>{{ application?.createdDate }}</td>
     </tr>
-    <tr>
+    <tr *ngIf="application?.submittedDate">
       <th>Submitted On</th>
       <td>{{ application?.submittedDate }}</td>
     </tr>
-    <!-- <tr>
-      <th>View COQ Application</th>
-      <td>
-        <button mat-raised-button class="btn" (click)="viewCOQApplication()">
-          View Submission
-        </button>
-      </td>
-    </tr> -->
+
     <tr>
       <th>View Full Application Details</th>
       <td>

@@ -20,7 +20,7 @@ export class LiquidDataDynamicEntryComponent {
   }
 
   public onCompleted(output: IDataEntryResult) {
-    debugger;
+    // debugger;
     if (output.state == 'initial') {
       this.isInitialCompleted = true;
       this.ppContext.addLiquidDynamicBatchReading(output.formValue, true);

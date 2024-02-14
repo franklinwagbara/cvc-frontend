@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
 import { decodeFullUserInfo } from '../../helpers/tokenUtils';
+import { PopupService } from '../services/popup.service';
 
 
 @Injectable({
@@ -11,16 +12,18 @@ import { decodeFullUserInfo } from '../../helpers/tokenUtils';
 export class FieldOfficerOrOfficeGuard implements CanActivate {
   constructor(
     private router: Router,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private popUp: PopupService
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    if (this.authService.isFieldOfficer || this.authService.isFO) {
+    if (this.authService.isFieldOfficer || this.authService.isFOLocation) {
       return true;
     } else {
+      this.popUp.open('You do not have access to the page!', 'error');
       this.router.navigate(['/admin/dashboard']);
       return false;
     }

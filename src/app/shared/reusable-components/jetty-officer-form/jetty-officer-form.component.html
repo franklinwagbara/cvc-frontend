@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New Mapping</h1>
+<h1 mat-dialog-title>{{ dialogTitle }}</h1>
 <div mat-dialog-content class="modal-width">
   <form [formGroup]="form" (ngSubmit)="createBranch()">
     <div class="fomr-group" style="margin-bottom: 10px">
@@ -6,6 +6,10 @@
       <select name="jettyID" formControlName="jettyID" class="form-control">
         <option *ngFor="let jetty of jettys" [ngValue]="jetty.id">
           {{ jetty.name }}
+        </option>
+        
+        <option [value]="selectedData?.jettyName" [selected]="selectedData?.jettyID">
+          {{ selectedData?.jettyName }}
         </option>
       </select>
       <div
@@ -34,7 +38,20 @@
 </div>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close>Close</button>
-  <button mat-raised-button (click)="createBranch()" [disabled]="form.invalid">
-    Create
+  <button 
+    *ngIf="!submitting" 
+    mat-raised-button 
+    (click)="createBranch()" 
+    [disabled]="form.invalid"
+  >
+    Submit
+  </button>
+  <button
+    *ngIf="submitting"
+    class="!flex !justify-center !items-center"
+    mat-mini-fab
+    color="disabled"
+  >
+    <mat-spinner diameter="35" strokeWidth="7"></mat-spinner>
   </button>
 </div>

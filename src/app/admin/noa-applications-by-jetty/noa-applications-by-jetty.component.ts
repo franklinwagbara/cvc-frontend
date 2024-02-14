@@ -21,7 +21,7 @@ export class NoaApplicationsByJettyComponent implements OnInit, OnDestroy {
   private allSubscriptions = new Subscription();
 
   public tableTitles = {
-    applications: 'Approved NOA Applications',
+    applications: 'Approved NoA Applications',
   };
 
   public applicationKeysMappedToHeaders = {
@@ -114,7 +114,7 @@ export class NoaApplicationsByJettyComponent implements OnInit, OnDestroy {
   initiateCoQ(event: any) {
     this.router.navigate([
       'admin',
-      'coq-and-plant',
+      'coq',
       'noa-applications-by-jetty',
       event.id,
       'certificate-of-quantity',

@@ -1,21 +1,18 @@
 <div class="setting-desk">
-  <h2
-    class="page-title bg-yellow-500 text-yellow-800 bg-gradient-to-r from-[#3a6073] to-[#3a7bd5]"
-  >
-    {{ pageTitle }}
-  </h2>
+  <h2 class="page-title bg-yellow-500 text-yellow-800">ALL CoQ APPLICATIONS</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
-          [noTitle]="true"
+          [table_title]="'CoQ Applications'"
+          [title-color]="'green'"
           [table_keysMappedToHeaders]="coqKeysMappedToHeaders"
           [table_content]="coqs"
           [EnableViewControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
-          (onViewData)="onViewCOQ($event)"
+          (onViewData)="onViewData($event)"
         >
         </generic-table>
       </div>

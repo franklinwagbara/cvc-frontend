@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthenticationService } from 'src/app/shared/services';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
@@ -22,7 +23,8 @@ export class AllCoqCertificatesComponent implements OnInit {
     private spinner: SpinnerService,
     private coqService: CoqService,
     private popUp: PopupService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private auth: AuthenticationService
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +36,11 @@ export class AllCoqCertificatesComponent implements OnInit {
     this.coqService.getAllCoQCerts().subscribe({
       next: (res: any) => {
         this.certificates = res?.data;
+        if (this.auth.currentUser.directorate) {
+          this.certificates = this.certificates.filter((item) => !item.certifcateNo?.includes(
+            (this.auth.isHppitiStaff && 'DSSRI') || (this.auth.isDssriStaff && 'HPPITI'))
+          );
+        }
         this.spinner.close();
       },
       error: (error: unknown) => {

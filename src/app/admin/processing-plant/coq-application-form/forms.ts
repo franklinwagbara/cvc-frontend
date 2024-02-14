@@ -31,13 +31,14 @@ export const getDetailsForm = (productType: 'Liquid' | 'Gas') => {
 
 let fb = new FormBuilder();
 
-const LIQUID_DYNAMIC_FORM = (status: 'before' | 'after') =>
+const LIQUID_DYNAMIC_FORM = (status?: 'before' | 'after') =>
   fb.group({
     id: [''],
     tank: [''],
     status: [status || '', [Validators.required]],
     batch: [''],
-    readingM: ['', [Validators.required]],
+    initialReadingM: ['', [Validators.required]],
+    finalReadingM: ['', [Validators.required]],
     temperature: ['', [Validators.required]],
     density: ['', [Validators.required]],
     meterFactor: ['', [Validators.required]],
