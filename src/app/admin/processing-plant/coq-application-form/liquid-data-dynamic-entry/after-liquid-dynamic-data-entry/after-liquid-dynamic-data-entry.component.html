@@ -10,29 +10,12 @@
   <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
     <div class="md:col-span-3 form-group">
       <label for="coq-liquid-product-readingM"
-        >INITIAL READING(m) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="initialReadingM"
-        formControlName="initialReadingM"
-        id="coq-liquid-product-initialReadingM"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['initialReadingM'].touched &&
-            form?.controls['initialReadingM'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-readingM"
-        >FINAL READING(m) <sup class="text-red-700">*</sup></label
+        >READING(m) <sup class="text-red-700">*</sup></label
       >
       <input
         type="number"
         name="readingM"
-        formControlName="finalReadingM"
+        formControlName="readingM"
         id="coq-liquid-product-readingM"
         class="form-field form-control"
         [ngClass]="{
