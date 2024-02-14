@@ -7,12 +7,12 @@
 >
   <div
     [ngClass]="{
-      'flex flex-col': currentUser.directorate === Directorate.HPPITI
+      'flex flex-col gap-3': currentUser.directorate === Directorate.HPPITI
     }"
     class="logo-title justify-center"
   >
-    <img src="../../../assets/img/brand/logo.png" alt="NUPRC" />
-    <h4 *ngIf="!isCollapsed" class="text-black font-bold">
+    <img src="../../../assets/img/brand/logo.png" alt="NMDPRA" />
+    <h4 *ngIf="!isCollapsed" class="text-black font-bold" style="font-size: larger;">
       {{
         currentUser.directorate === Directorate.HPPITI
           ? "PROCESSING PLANT"

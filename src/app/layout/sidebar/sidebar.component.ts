@@ -105,6 +105,24 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 6,
+    title: 'CoQ',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
+    subRoutes: [
+      {
+        id: 1,
+        title: 'CoQ Applications',
+        url: '/admin/coq/coq-applications-by-depot',
+      },
+    ]
+  },
+  {
+    id: 7,
     title: 'ALL APPROVALS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -128,8 +146,8 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 16,
-    title: 'Processing Plant',
+    id: 8,
+    title: 'PROCESSING PLANT',
     iconName: 'carbon',
     iconId: 'carbon',
     iconColor: 'white',
@@ -146,13 +164,13 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'CoQ Applications',
-        url: '/admin/coq-and-plant/coq-applications-by-depot',
+        url: '/admin/processing-plant/certificate-of-quantity/applications',
       },
     ],
   },
 
   {
-    id: 7,
+    id: 9,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -171,7 +189,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 10,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -200,7 +218,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 9,
+    id: 11,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -335,25 +353,6 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
           {
-            id: 5,
-            title: 'DISCHARGE CLEARANCE',
-            iconName: 'apps',
-            iconId: 'apps',
-            iconColor: 'white',
-            active: false,
-            subMenuActive: false,
-            directorate: 'BOTH',
-            userRole: [UserRole.ALL],
-
-            subRoutes: [
-              {
-                id: 1,
-                title: 'NoA APPLICATIONS',
-                url: '/admin/noa-application-by-jetty-officer',
-              },
-            ],
-          },
-          {
             id: 3,
             title: 'VESSEL CLEARANCE',
             iconName: 'approval',
@@ -377,82 +376,20 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (
-      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser?.directorate === Directorate.DSSRI
-    ) {
-      let coqSubRoutes = [
-        // {
-        //   id: 1,
-        //   title: 'NoA Applications',
-        //   url: '/admin/applications/noa-applications-by-depot',
-        // },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 3).concat(
-        {
-          id: 3,
-          title: 'CoQ',
-          // title: 'CoQ And NOA',
-          iconName: 'carbon',
-          iconId: 'carbon',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: coqSubRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(3)
-      );
-    } else if (
-      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser?.directorate === Directorate.HPPITI
-    ) {
-      let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'Processing Plant',
-          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 3).concat(
-        {
-          id: 3,
-          title: 'CoQ And Plant',
-          iconName: 'carbon',
-          iconId: 'carbon',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: coqSubRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(3)
-      );
+    // Show CoQ nav only to Staffs in Field Officers
+    if (this.currentUser?.userRoles !== UserRole.FIELDOFFICER) {
+      this.menuItems = this.menuItems.filter((el) => el.title !== 'CoQ');
     }
 
-    if (this.currentUser?.directorate === Directorate.HPPITI) {
+    if (this.auth.isDssriStaff || !this.auth.currentUser.directorate) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'PROCESSING PLANT');
+    }
+
+    if (this.auth.isHppitiStaff) {
       let allApprovalsNav = this.menuItems.find((el) => el.title === 'ALL APPROVALS');
       allApprovalsNav.subRoutes = allApprovalsNav.subRoutes.filter((el) => {
-        return el.title !== 'CVC CLEARANCES'
+        return el.title !== 'NoA CLEARANCES'
       })
-    }
-
-    if (this.currentUser.directorate === Directorate.HPPITI) {
       let applicationsNav = this.menuItems.find((item) => item.title === 'APPLICATIONS');
       if (applicationsNav) {
         applicationsNav.subRoutes = applicationsNav.subRoutes.filter((el) => {
@@ -463,7 +400,7 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     // If not SuperAdmin or HQ staff, remove NoA & CoQ Applications navitems
     if (this.currentUser.location !== LOCATION.HQ
-      && this.currentUser.userRoles !== UserRole.SUPERADMIN) 
+      && this.currentUser.userRoles !== UserRole.SUPERADMIN)
     {
       let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
       applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {

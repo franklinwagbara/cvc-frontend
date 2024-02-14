@@ -1,8 +1,14 @@
 /** Side nav css */
 .side-nav {
-  width: 300px;
   border-color: transparent !important;
-  @apply fixed top-0 left-0 z-50 bg-slate-100 pt-9 h-full pr-0 overflow-y-auto;
+  @apply fixed top-0 left-0 z-50 bg-slate-100 pt-9 h-full pr-0 overflow-y-auto 
+    w-[240px] max-w-[240px] md:w-[300px] md:max-w-[300px];
+}
+
+@media screen and (max-width: 600px) {
+  .side-nav {
+    display: none;
+  }
 }
 
 .logo-title {
@@ -14,11 +20,11 @@
 }
 
 .logo-title img {
-  @apply w-32;
+  @apply w-24 md:w-32;
 }
 
 .nav-items {
-  @apply ml-4 mt-20 overflow-hidden;
+  @apply ml-4 mt-12 overflow-hidden;
 }
 
 .nav-items:hover + .dashboard {
@@ -27,7 +33,8 @@
 
 // remove from here
 .nav-item {
-  @apply relative z-10 mt-10 py-4 pl-14 flex items-center font-bold text-slate-50 fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
+  @apply relative z-10 mt-10 py-4 pl-14 flex items-center font-bold text-slate-50 fill-slate-50 
+    hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
 }
 
 .nav-item-control {

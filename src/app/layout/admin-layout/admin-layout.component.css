@@ -1,9 +1,35 @@
 /** Toggle side nav css */
 .dashboard {
-  width: calc(100% - 19rem);
-  margin-left: 19rem;
+  width: calc(100% - 300px);
+  margin-left: 300px;
   @apply relative min-h-screen bg-background transition-all ease-in-out delay-150 duration-500;
 }
+
+@media screen and (min-width:601px) and (max-width: 767px) {
+  .dashboard {
+    width: calc(100% - 240px);
+    margin-left: 240px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .dashboard {
+    width: 100%;
+    margin-left: 0px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .sidenav-overlay {
+    z-index: 99;
+    @apply absolute top-0 left-0 bottom-0 right-0 h-[100vh] bg-transparent;
+  }
+
+  .sidenav-overlay .sidenav {
+    @apply bg-white w-[85%] h-[100vh];
+  }
+}
+
 
 .content-area {
   margin-top: 4rem;

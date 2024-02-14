@@ -1,12 +1,12 @@
 <div class="filter">
-  <div>
+  <div class="w-full">
     <input
       type="text"
       placeholder="Search..."
       (input)="onSearchValueChanged($event)"
     />
   </div>
-  <div>
+  <div class="w-full">
     <select [(ngModel)]="selectedHeader1">
       <option *ngFor="let ch of columnsHeaders" [value]="ch.header">
         {{ ch.columDef }}
