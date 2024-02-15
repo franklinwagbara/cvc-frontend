@@ -1,6 +1,6 @@
 <div class="apply-container">
   <div class="apply-wrapper">
-    <h1>NEW CVC CLEARANCE</h1>
+    <h1 class="pb-3">NEW CVC CLEARANCE</h1>
     <div class="form-wrapper">
       <div class="form" [ngClass]="{ hide: !activateFirstSegment }">
         <form [formGroup]="vesselForm" class="main-form">
@@ -23,10 +23,10 @@
               />
             </div>
             <div class="flex flex-col">
-              <div class="input-label">
-                <span> Vessel Name </span>
-                <span *ngIf="vesselInfo" class="text-green-600">
-                  Vessel found
+              <div class="input-label flex justify-between">
+                <span class="">Vessel Name &nbsp;</span>
+                <span *ngIf="vesselInfo" class="text-green-600 text-right">
+                  Vessel Found
                 </span>
               </div>
               <input
@@ -150,107 +150,178 @@
         </form>
       </div>
 
-      <div class="second-segment" *ngIf="activateSecondSegment">
-        <div class="appDepotForm">
-          <form class="appDepotForm depot-form" [formGroup]="appDepotForm">
-            <h5 class="w-full">Add Destination Depot(s)</h5>
-            <div class="flex flex-col">
-              <span class="input-label"> Depot Name </span>
-              <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="depotId"
-              >
-                <option value="" [selected]="true">-- Select Depot --</option>
-                <option *ngFor="let d of depots" [ngValue]="d.id">
-                  {{ d.name }}
-                </option>
-              </select>
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Volume to Discharge </span>
-              <input
-                type="number"
-                min="0"
-                class="border border-t border-b rounded-r p-2"
-                placeholder="Volume"
-                formControlName="volume"
-              />
-            </div>
-
-            <div class="flex flex-col">
-              <span class="input-label"> Product </span>
-              <select
-                type="text"
-                class="border border-t border-b rounded-r p-2"
-                formControlName="productId"
-              >
-                <option value="" [selected]="true">-- Select Product --</option>
-                <option *ngFor="let p of products" [ngValue]="p.id">
-                  {{ p.name }}
-                </option>
-              </select>
-            </div>
-
-            <button
-              mat-stroked-button
-              color="primary"
-              class="m-4"
-              [disabled]="appDepotForm.invalid ? true : null"
-              (click)="addAppDepot()"
+      <div class="second-segment form gap-0" *ngIf="activateSecondSegment">
+        <form class="flex flex-col" [formGroup]="appDepotForm">
+          <h5 class="w-full">Add Destination Depot(s)</h5>
+          <div class="flex flex-col">
+            <span class="input-label"> Depot Name </span>
+            <select
+              type="text"
+              class="border border-t border-b rounded-r p-2"
+              formControlName="depotId"
             >
-              Add Depot
+              <option value="" [selected]="true">-- Select Depot --</option>
+              <option *ngFor="let d of depots" [ngValue]="d.id">
+                {{ d.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="flex flex-col">
+            <span class="input-label"> Volume to Discharge </span>
+            <input
+              type="number"
+              min="0"
+              class="border border-t border-b rounded-r p-2"
+              placeholder="Volume"
+              formControlName="volume"
+            />
+          </div>
+
+          <div class="flex flex-col">
+            <span class="input-label"> Product </span>
+            <select
+              type="text"
+              class="border border-t border-b rounded-r p-2"
+              formControlName="productId"
+            >
+              <option value="" [selected]="true">-- Select Product --</option>
+              <option *ngFor="let p of products" [ngValue]="p.id">
+                {{ p.name }}
+              </option>
+            </select>
+          </div>
+
+          <button
+            mat-stroked-button
+            color="primary"
+            class="m-4"
+            [disabled]="appDepotForm.invalid ? true : null"
+            (click)="addAppDepot()"
+          >
+            Add Depot
+          </button>
+
+          <div *ngIf="selectedAppDepots?.length > 0" class="depot-list">
+            <table class="table table-auto data-table">
+              <thead>
+                <tr>
+                  <th>Depot Name</th>
+                  <th>Volume</th>
+                  <th>Product Name</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let t of selectedAppDepots">
+                  <td>{{ t.name }}</td>
+                  <td>{{ t.volume }}</td>
+                  <td>{{ t.product }}</td>
+                  <td>
+                    <button
+                      (click)="removeDepot(t)"
+                      mat-flat-button
+                      color="accent"
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <button
+              class="btn-back"
+              mat-raised-button
+              (click)="updateState(1)"
+            >
+              Back
             </button>
 
-            <div *ngIf="selectedAppDepots?.length > 0">
-              <table class="table table-auto data-table">
-                <thead>
-                  <tr>
-                    <th>Depot Name</th>
-                    <th>Volumne</th>
-                    <th>Product Name</th>
-                  </tr>
-                </thead>
+            <button
+              *ngIf="selectedAppDepots.length > 0"
+              mat-raised-button
+              color="primary"
+              class="primary"
+              (click)="updateState(3)"
+            >
+              Continue
+            </button>
+          </div>
+        </form>
+      </div>
 
-                <tbody>
-                  <tr *ngFor="let t of selectedAppDepots">
-                    <td>{{ t.name }}</td>
-                    <td>{{ t.volume }}</td>
-                    <td>{{ t.product }}</td>
-                    <td>
-                      <button
-                        (click)="removeDepot(t)"
-                        mat-flat-button
-                        color="accent"
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div>
-              <button
-                class="btn-back"
-                mat-raised-button
-                (click)="updateState(1)"
-              >
-                Back
-              </button>
+      <div *ngIf="activateThirdSegment" class="preview-wrapper">
+        <h4 class="text-center">Preview</h4>
+        <div>
+          <h5>Vessel</h5>
+          <div class="preview-table-wrapper">
+            <table class="table table-striped font-medium">
+              <tbody>
+                <tr>
+                  <th 
+                    scope="col" 
+                    *ngFor="let key of ['Imo Number', 'Vessel Name', 'Mother Vessel', 'Loading Port', 'Jetty', 'ETA']"
+                  >{{ key }}</th>
+                </tr>
+                <tr>
+                  <td *ngFor="let field of ['imoNumber', 'vesselName', 'motherVessel', 'loadingPort', 'jettyName', 'eta']"
+                >{{ vesselFormControl[field].value }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <hr />
 
-              <button
-                *ngIf="selectedAppDepots.length > 0"
-                mat-raised-button
-                color="primary"
-                class="primary"
-                (click)="submit()"
-              >
-                Continue
-              </button>
-            </div>
-          </form>
+          <h5>Destination Depot(s)</h5>
+          <div class="preview-table-wrapper">
+            <table class="table table-striped font-medium">
+              <tbody>
+                <tr>
+                  <th 
+                    scope="col" 
+                    *ngFor="let key of ['Vessel Name', 'Volume', 'Product Name']"
+                  >{{ key }}</th>
+                </tr>
+                <tr *ngFor="let data of selectedAppDepots">
+                  <td *ngFor="let field of ['name', 'volume', 'product']"
+                >{{ data[field] }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="flex justify-between">
+            <button
+              *ngIf="!submitted"
+              class="btn-back"
+              mat-raised-button
+              (click)="updateState(2)"
+            >
+              Back
+            </button>
+            
+            <button
+              *ngIf="!submitting && !submitted"
+              mat-raised-button
+              color="primary"
+              class="primary"
+              [disabled]="submitting"
+              (click)="submit()"
+            >
+              Submit
+            </button>
+
+            <button
+              *ngIf="submitting"
+              class="!flex !justify-center !items-center"
+              mat-mini-fab
+              color="disabled"
+            >
+              <mat-spinner diameter="35" strokeWidth="7"></mat-spinner>
+            </button>
+          </div>
         </div>
       </div>
     </div>

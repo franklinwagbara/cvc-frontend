@@ -2,7 +2,7 @@
   <div class="chart-container ">
     <div class="chart-title"><span>Applications</span></div>
     <div id="chartdiv" class="w-[100%] h-[100%]">
-      <div *ngIf="!chartLoaded" class="w-full flex items-center justify-center h-full">
+      <div *ngIf="chartLoaded === null" class="w-full flex items-center justify-center h-full">
         <mat-spinner class="mat-spinner"></mat-spinner>
       </div>
     </div>
@@ -10,7 +10,7 @@
   <div class="chart-container">
     <div class="chart-title"><span>Payments</span></div>
     <div id="chartdiv2" class="w-[100%] h-[100%]">
-      <div *ngIf="!chartLoaded" class="w-full flex items-center justify-center h-full">
+      <div *ngIf="chartLoaded === null" class="w-full flex items-center justify-center h-full">
         <mat-spinner class="mat-spinner"></mat-spinner>
       </div>
     </div>

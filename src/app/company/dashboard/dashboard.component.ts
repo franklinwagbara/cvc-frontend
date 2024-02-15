@@ -19,7 +19,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  public title = 'AUS2FrontEnd';
   public showapply = false;
   public showaccount = false;
   public generic: GenericService;

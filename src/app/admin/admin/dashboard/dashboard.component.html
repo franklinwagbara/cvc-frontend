@@ -104,10 +104,12 @@
   <div class="content">
     <app-bar-chart></app-bar-chart>
     <div class="row-container">
-      <div class="table-group mt-10 w-[100%] xl:w-[45%]">
-        <div class="table-wrapper px-0 w-full">
-          <div class="chart-title mb-4">
-            <span>{{ tableTitles.processingForThreeWeeks }}</span>
+      <div class="table-group flex-1 w-full">
+        <div class="table-wrapper w-full">
+          <div class="chart-title">
+            <span class="text-truncate" [title]="tableTitles.processingForThreeWeeks">
+              {{ tableTitles.processingForThreeWeeks }}
+            </span>
           </div>
           <generic-table
             [title-color]="'yellow'"
@@ -125,10 +127,12 @@
         </div>
       </div>
 
-      <div class="table-group mt-10 w-full xl:w-[55%]">
-        <div class="table-wrapper px-0">
-          <div class="chart-title mb-4">
-            <span>{{ tableTitles.onStaffDeskForFiveDays }}</span>
+      <div class="table-group flex-1 w-full">
+        <div class="table-wrapper w-full">
+          <div class="chart-title">
+            <span class="text-truncate" [title]="tableTitles.onStaffDeskForFiveDays">
+              {{ tableTitles.onStaffDeskForFiveDays }}
+            </span>
           </div>
           <generic-table
             [title-color]="'yellow'"
@@ -144,9 +148,9 @@
         </div>
       </div>
     </div>
-    <div class="table-group mt-8">
+    <div class="table-group">
       <div class="table-wrapper px-0">
-        <div class="chart-title mb-4">
+        <div class="chart-title">
           <span>{{ tableTitles.messages }}</span>
         </div>
         <generic-table

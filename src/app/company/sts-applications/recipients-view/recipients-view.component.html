@@ -1,0 +1,23 @@
+<div class="container wrapper">
+  <div class="text-right">
+    <button mat-icon-button class="text-red-600 hover:shadow-md" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="table-group">
+    <div class="table-wrapper">
+      <generic-table
+        [table_title]="'Recipient Vessels'"
+        [title-color]="'teal'"
+        [table_controls_horizontal]="true"
+        [table_keysMappedToHeaders]="recipientKeysMappedToHeaders"
+        [table_content]="vessels"
+        [noEditControl]="true"
+        [noCheckControls]="true"
+        [noAddOrDeleteButton]="true"
+        [flat]="true"
+      >
+      </generic-table>
+    </div>
+  </div>
+</div>

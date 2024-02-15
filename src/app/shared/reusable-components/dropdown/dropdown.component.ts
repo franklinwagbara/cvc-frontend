@@ -72,6 +72,7 @@ export class DropdownComponent implements OnInit, AfterViewInit {
 
   navigateTo(menuItem: ISubmenu) {
     if (!menuItem.url) return;
+    this.toggleOpen();
     this.router.navigate([menuItem.url]);
   }
 

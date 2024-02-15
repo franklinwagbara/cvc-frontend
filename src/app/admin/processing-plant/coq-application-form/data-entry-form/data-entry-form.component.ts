@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -22,6 +23,8 @@ import { BatchService } from 'src/app/shared/services/batch.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { MatStep } from '@angular/material/stepper';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
+
 import { CondensateDataStaticEntryComponent } from '../condensate-data-static-entry/condensate-data-static-entry.component';
 import { CondensateDataDynamicEntryComponent } from '../condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
 
@@ -136,6 +139,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
       }
     }
     this.cd.markForCheck();
+    (this.dataEntryContainer.element.nativeElement as HTMLElement).scrollIntoView(true);
   }
 
   private initSubscriptions() {

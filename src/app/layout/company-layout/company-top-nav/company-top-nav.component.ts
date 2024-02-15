@@ -37,11 +37,16 @@ export class CompanyTopNavComponent implements OnInit {
     {
       name: 'Apply',
       url: 'company/apply',
-      subMenu: [],
+      subMenu: null,
     },
     {
-      name: 'My Application',
-      url: 'company/myapplication',
+      name: 'CVC Applications',
+      url: 'company/cvc-applications',
+      subMenu: null,
+    },
+    {
+      name: 'STS Applications',
+      url: 'company/sts-applications',
       subMenu: null,
     },
   ];

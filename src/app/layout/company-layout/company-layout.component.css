@@ -1,8 +1,9 @@
+.company {
+  min-height: calc(0.835 * 100vh);
+  @apply bg-slate-200;
+}
+
 .main-area {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
   margin-top: 4rem;
-  min-height: 100%;
-  @apply bg-slate-200 w-full max-w-full;
+  flex: 0.8;
 }

@@ -23,5 +23,6 @@ export class LoginModel {
   office: string;
   location: string;
   operationFacility: string;
+  userUuid: string;
   profileComplete: boolean;
 }

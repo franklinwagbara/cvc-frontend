@@ -676,6 +676,21 @@ export class CoqApplicationFormComponent
     });
   }
 
+  resetFormOnSubmitted() {
+    if (this.isSubmitted) {
+      if (this.isGasProduct) {
+        this.vesselGasInfoForm.reset();  
+      } else {
+        this.vesselLiqInfoForm.reset();
+      }
+      this.depotSelection.reset();
+      this.productSelection.reset();
+      this.plantSelection.reset();
+      this.documents = [];
+      this.uploadedDocInfo = [];
+    }
+  }
+
   submit() {
     const payload = this.constructPayload();
     this.isSubmitting = true;
@@ -696,11 +711,8 @@ export class CoqApplicationFormComponent
             { panelClass: ['success'], duration: 2500 }
           );
           localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
-          if (this.isGasProduct) {
-            this.vesselGasInfoForm.reset();
-          } else {
-            this.vesselLiqInfoForm.reset();
-          }
+          this.resetFormOnSubmitted();
+
           this.restoreReviewData();
           this.coqStepper.selectedIndex = 0;
         } else {
@@ -710,7 +722,7 @@ export class CoqApplicationFormComponent
         setTimeout(() => {
           this.router.navigate([
             'admin',
-            'coq-and-plant',
+            'coq',
             'coq-applications-by-depot',
           ]);
         }, 2400);

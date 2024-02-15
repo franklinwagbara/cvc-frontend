@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {}
   ngOnInit(): void {
-    this.spinner.open();
+    this.spinner.show('Loading dashboard...');
 
     this.auth.getStaffDashboard().subscribe({
       next: (result) => {
@@ -73,6 +73,7 @@ export class DashboardComponent implements OnInit {
         }
       },
       error: (error: any) => {
+        console.log(error);
         this.spinner.close();
         this.snackBar.open('Could not get dashboard', null, {
           panelClass: ['error'],

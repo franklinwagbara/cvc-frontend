@@ -56,7 +56,15 @@
 
 .content {
   /* box-shadow: 0px 4px 5px #888888; */
-  @apply mt-20 mx-5 -mt-content_mt bg-content_area min-h-[1000px] p-6;
+  @apply flex flex-col w-full mt-20 -mt-content_mt bg-content_area p-4;
+}
+
+.chart-title {
+  @apply flex justify-center items-center py-4;
+}
+
+.row-container {
+  @apply flex flex-wrap justify-center items-center my-10 w-full;
 }
 
 /** Dashboard css ends here */

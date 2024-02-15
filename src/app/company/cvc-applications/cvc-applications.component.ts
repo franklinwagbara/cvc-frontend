@@ -3,24 +3,24 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { GenericService } from '../../../../src/app/shared/services';
-import { ApplyService } from '../../../../src/app/shared/services/apply.service';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
-import { ApplicationService } from '../../../../src/app/shared/services/application.service';
-import { AppSource } from '../../../../src/app/shared/constants/appSource';
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
+import { GenericService } from '../../shared/services';
+import { ApplyService } from '../../shared/services/apply.service';
+import { ProgressBarService } from '../../shared/services/progress-bar.service';
+import { ApplicationService } from '../../shared/services/application.service';
+import { AppSource } from '../../shared/constants/appSource';
+import { PopupService } from '../../shared/services/popup.service';
 import { PaymentSummary } from '../payment-summary/paymentsum.component';
 import {
   ITankDTO,
 } from '../apply/new-application/new-application.component';
-import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { IFacility } from 'src/app/shared/interfaces/IFacility';
+import { SpinnerService } from '../../shared/services/spinner.service';
+import { IFacility } from '../../shared/interfaces/IFacility';
 
 @Component({
-  templateUrl: 'myapplication.component.html',
-  styleUrls: ['./myapplication.component.scss'],
+  templateUrl: 'cvc-applications.component.html',
+  styleUrls: ['./cvc-applications.component.scss'],
 })
-export class MyApplicationComponent implements OnInit {
+export class CvcApplicationsComponent implements OnInit {
   genk: GenericService;
   application_id: number = null;
   paymentSummary: PaymentSummary;

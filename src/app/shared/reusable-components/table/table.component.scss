@@ -46,6 +46,10 @@ th {
   width: fit-content;
 }
 
+th {
+  @apply font-bold tracking-wide text-slate-700;
+}
+
 .table-controls {
   padding: 15px;
 }
