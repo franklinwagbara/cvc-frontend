@@ -110,6 +110,12 @@ import { BeforeGasDynamicDataEntryComponent } from './processing-plant/coq-appli
 import { AfterGasDynamicDataEntryComponent } from './processing-plant/coq-application-form/gas-data-dynamic-entry/after-gas-dynamic-data-entry/after-gas-dynamic-data-entry.component';
 import { AfterGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/after-gas-static-data-entry/after-gas-static-data-entry.component';
 import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/before-gas-static-data-entry/before-gas-static-data-entry.component';
+import { CondensateDataDynamicEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
+import { CondensateDataStaticEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/condensate-data-static-entry.component';
+import { AfterCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/after-condensate-dynamic-data-entry/after-condensate-dynamic-data-entry.component';
+import { BeforeCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
+import { BeforeCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/before-condensate-static-data-entry/before-condensate-static-data-entry.component';
+import { AfterCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/after-condensate-static-data-entry/after-condensate-static-data-entry.component';
 
 @NgModule({
   declarations: [
@@ -193,6 +199,12 @@ import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-applic
     AfterGasDynamicDataEntryComponent,
     AfterGasStaticDataEntryComponent,
     BeforeGasStaticDataEntryComponent,
+    CondensateDataDynamicEntryComponent,
+    CondensateDataStaticEntryComponent,
+    AfterCondensateDynamicDataEntryComponent,
+    BeforeCondensateDynamicDataEntryComponent,
+    BeforeCondensateStaticDataEntryComponent,
+    AfterCondensateStaticDataEntryComponent,
   ],
 
   imports: [

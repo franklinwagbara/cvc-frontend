@@ -1,0 +1,152 @@
+<form [formGroup]="form">
+  <div class="col-span-2 flex justify-center items-center my-6">
+    <div
+      class="bg-slate-400/60 flex flex-col justify-center p-2 px-3 rounded-md"
+    >
+      <h5 class="text-sm">CONDENSATE STATIC DATA ENTRY (FINAL MEASUREMENTS)</h5>
+    </div>
+  </div>
+
+  <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
+    <div class="md:col-span-3 form-group">
+      <label for="coq-condensate-product-readingM"
+        >READING(m) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="readingM"
+        formControlName="readingM"
+        id="coq-condensate-product-readingM"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['readingM'].touched &&
+            form?.controls['readingM'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-temperature"
+        >TANK TEMP (<sup class="text-red-700">o</sup>C)
+        <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="temperature"
+        formControlName="temperature"
+        id="coq-condensate-product-temperature"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['temperature'].touched &&
+            form?.controls['temperature'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-density"
+        >DENSITY(Kg/m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="density"
+        formControlName="density"
+        id="coq-condensate-product-density"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['density'].touched &&
+            form?.controls['density'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-3">
+      <label for="coq-condensateproduct-specificGravityObs"
+        >SPECIFIC GRAVITY OBS (<sup>@</sup>TANK TEMP)<sup class="text-red-700"
+          >*</sup
+        ></label
+      >
+      <input
+        type="number"
+        name="specificGravityObs"
+        formControlName="specificGravityObs"
+        id="coq-condensateproduct-specificGravityObs"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['specificGravityObs'].touched &&
+            form?.controls['specificGravityObs'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-gov"
+        >GOV(m<sup>3</sup>) <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        formControlName="gov"
+        id="coq-condensate-product-gov"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['gov'].touched && form?.controls['gov'].invalid
+        }"
+      />
+    </div>
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-barrelsAtTankTables"
+        >BARRELS AT TANK TABLES <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="barrelsAtTankTables"
+        formControlName="barrelsAtTankTables"
+        id="coq-condensate-product-barrelsAtTankTables"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['barrelsAtTankTables'].touched &&
+            form?.controls['barrelsAtTankTables'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-volumeCorrectionFactor"
+        >VOLUME CORRECTION FACTOR <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="volumeCorrectionFactor"
+        formControlName="volumeCorrectionFactor"
+        id="coq-condensate-product-volumeCorrectionFactor"
+        class="form-field form-control"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['volumeCorrectionFactor'].touched &&
+            form?.controls['volumeCorrectionFactor'].invalid
+        }"
+      />
+    </div>
+
+    <div class="md:col-span-3">
+      <label for="coq-condensate-product-wtAir"
+        >WTAIR <sup class="text-red-700">*</sup></label
+      >
+      <input
+        type="number"
+        name="wtAir"
+        formControlName="wtAir"
+        id="coq-condensate-product-wtAir"
+        class="form-field form-control"
+        (click)="see()"
+        [ngClass]="{
+          'is-invalid':
+            form?.controls['wtAir'].touched && form?.controls['wtAir'].invalid
+        }"
+      />
+    </div>
+  </div>
+</form>
