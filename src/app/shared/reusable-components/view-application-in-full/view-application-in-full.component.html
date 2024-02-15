@@ -2,7 +2,7 @@
   <button (click)="location.back()" class="my-4 text-lg" mat-button>
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Go Back
   </button>
-  <div class="application-details">
+  <div *ngIf="application; else noData" class="application-details">
     <h1>FULL APPLICATION DETAILS</h1>
 
     <div class="info-sections-wrapper">
@@ -188,86 +188,6 @@
     <div class="application-controls">
       <h3 class="text-slate-500">Other Information</h3>
 
-      <!-- <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title> SCHEDULE(S) </mat-panel-title>
-        </mat-expansion-panel-header>
-        <div
-          class="card-list"
-          *ngFor="let schedule of application?.schedules | firstN : 4"
-        >
-          <div
-            *ngIf="isCreatedByMe(schedule.scheduledBy)"
-            class="flex justify-end"
-          >
-            <button
-              mat-stroked-button
-              color="accent"
-              (click)="action('editSchedule', schedule)"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-
-          <div *ngIf="isSupervisor" class="flex justify-end">
-            <button
-              mat-stroked-button
-              color="accent"
-              (click)="action('editSchedule', schedule)"
-            >
-              <mat-icon>check</mat-icon>
-            </button>
-          </div>
-
-          <div class="card-item">
-            <div class="item-title">Initiator</div>
-            <div class="item-content">{{ schedule.scheduledBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Schedule Date</div>
-            <div class="item-content">{{ schedule.inspectionDate }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Expiry Date</div>
-            <div class="item-content">{{ schedule.expiryDate }}</div>
-          </div>
-
-          <div class="card-item">
-            <div class="item-title">Approval Remark</div>
-            <div class="item-content">{{ schedule.approvalMessage }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approver</div>
-            <div class="item-content">{{ schedule.approvedBy }}</div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approval Status</div>
-            <div class="item-content">
-              {{
-                schedule.isApproved
-                  ? "Approved"
-                  : schedule.isApproved === null
-                  ? "Approval Pending"
-                  : "Disapproved"
-              }}
-            </div>
-          </div>
-          <div class="card-item">
-            <div class="item-title">Approval Accepted</div>
-            <div class="item-content">
-              {{
-                schedule.isApproved
-                  ? "Approved"
-                  : schedule.isApproved === null
-                  ? "Approval Pending"
-                  : "Disapproved"
-              }}
-            </div>
-          </div>
-        </div>
-        <p class="show-more" (click)="showMore('schedules')">Show more</p>
-      </mat-expansion-panel> -->
-
       <mat-expansion-panel>
         <mat-expansion-panel-header>
           <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
@@ -312,4 +232,10 @@
       </mat-expansion-panel>
     </div>
   </div>
+
+  <ng-template #noData>
+    <div class="flex justify-center items-center">
+      <div *ngIf="!loading" class="border-4 border-white p-12 font-bold">Application Details Unavailable</div>
+    </div>
+  </ng-template>
 </div>
