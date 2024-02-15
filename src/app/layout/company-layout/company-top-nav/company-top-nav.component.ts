@@ -96,7 +96,6 @@ export class CompanyTopNavComponent implements OnInit {
     public auth: AuthenticationService
   ) {
     this.currentUser = this.auth.currentUser;
-    debugger;
     if (
       this.currentUser.operationFacility ===
       this.OperatingFacility.ProcessingPlant
