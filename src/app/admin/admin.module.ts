@@ -116,6 +116,7 @@ import { AfterCondensateDynamicDataEntryComponent } from './processing-plant/coq
 import { BeforeCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
 import { BeforeCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/before-condensate-static-data-entry/before-condensate-static-data-entry.component';
 import { AfterCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/after-condensate-static-data-entry/after-condensate-static-data-entry.component';
+import { ProcessingDetailsCondensateComponent } from './processing-plant/coq-application-form/processing-details-condensate/processing-details-condensate.component';
 
 @NgModule({
   declarations: [
@@ -205,6 +206,7 @@ import { AfterCondensateStaticDataEntryComponent } from './processing-plant/coq-
     BeforeCondensateDynamicDataEntryComponent,
     BeforeCondensateStaticDataEntryComponent,
     AfterCondensateStaticDataEntryComponent,
+    ProcessingDetailsCondensateComponent,
   ],
 
   imports: [
