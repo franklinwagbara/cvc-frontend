@@ -12,10 +12,11 @@ import { ApplyService } from '../../../../src/app/shared/services/apply.service'
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../src/app/shared/services/application.service';
-import { Application } from '../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../cvc-applications/cvc-applications.component';
 import { LicenceService } from '../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../../src/app/shared/reusable-components/show-more/show-more.component';
 import { Util } from '../../../../src/app/shared/lib/Util';
+import { UserRole } from 'src/app/shared/constants/userRole';
 
 
 @Component({
@@ -62,7 +63,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
+    return this.currentUser.userRoles === UserRole.SUPERVISOR;
   }
 
   isCreatedByMe(scheduleBy: string) {

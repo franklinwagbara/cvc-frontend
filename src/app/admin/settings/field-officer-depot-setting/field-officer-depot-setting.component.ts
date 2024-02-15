@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { forkJoin } from 'rxjs';
 import { IPlant } from '../../../shared/interfaces/IPlant';
@@ -40,7 +40,8 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
     private libraryService: LibaryService,
     private spinner: SpinnerService,
     private progressBar: ProgressBarService,
-    private popUp: PopupService
+    private popUp: PopupService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -84,7 +85,14 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         offices: this.offices,
       },
     };
-    this.dialog.open(DepotOfficerFormComponent, { data });
+    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
+
+    dialogRef.afterClosed().subscribe((result: 'submitted') => {
+      if (result) {
+        this.progressBar.open();
+        this.refreshMappings();
+      }
+    })
   }
 
   deleteData(selected: any[]) {
@@ -138,12 +146,31 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         roles: this.roles,
         offices: this.offices,
         currentValue: '',
+        depotId: event?.depotId
       },
     };
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
-    dialogRef.afterClosed().subscribe((res) => {
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
       if (res) {
+        this.progressBar.open();
+        this.refreshMappings();
       }
     });
+  }
+
+  refreshMappings(): void {
+    this.depotOfficerService.getAllMappings().subscribe({
+      next: (res) => {
+        this.depotOfficers = res?.data;
+        this.progressBar.close();
+        this.cdr.markForCheck();
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.progressBar.close();
+        this.popUp.open('Could not refresh mappings', 'error');
+        this.cdr.markForCheck();
+      }
+    })
   }
 }

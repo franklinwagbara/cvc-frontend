@@ -8,7 +8,10 @@ import { CoqService } from '../../shared/services/coq.service';
 import { PopupService } from '../../shared/services/popup.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { CoqAppFormService } from '../../shared/services/coq-app-form.service';
+import { AuthenticationService } from 'src/app/shared/services';
+import { ProcessingPlantCOQService } from 'src/app/shared/services/processing-plant-coq/processing-plant-coq.service';
 
+// Only Field Officers Have Access
 @Component({
   selector: 'app-coq-applications-by-depot',
   templateUrl: './coq-applications-by-depot.component.html',
@@ -16,17 +19,9 @@ import { CoqAppFormService } from '../../shared/services/coq-app-form.service';
 })
 export class CoqApplicationsByDepotComponent implements OnInit {
   public coqs: ICoQApplication[];
+  pageTitle: string;
 
-  public coqKeysMappedToHeaders = {
-    importName: 'Importer Name',
-    vesselName: 'Vessel Name',
-    depotName: 'Receiving Terminal',
-    dateOfVesselUllage: 'Date of Vessel Ullage',
-    dateOfSTAfterDischarge: 'Date of Shore-Tank After Discharge',
-    gov: 'GOV',
-    gsv: 'GSV',
-    depotPrice: 'Depot Price (NGN)'
-  };
+  coqKeysMappedToHeaders: any;
 
   constructor(
     private spinner: SpinnerService,
@@ -34,8 +29,28 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     private popUp: PopupService,
     private coqService: CoqService,
     public coqFormService: CoqAppFormService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private auth: AuthenticationService,
+    private ppCoqService: ProcessingPlantCOQService,
+  ) {
+    this.pageTitle = auth.isHppitiStaff ? 'CoQ APPLICATIONS' : 'CoQ APPLICATIONS BY DEPOT';
+    this.coqKeysMappedToHeaders = auth.isHppitiStaff
+      ?  {
+          plantPrice: 'Plant Price',
+          gov: 'GOV',
+          gsv: 'GSV'
+        }
+      : {
+          importName: 'Importer Name',
+          vesselName: 'Vessel Name',
+          depotName: 'Receiving Terminal',
+          dateOfVesselUllage: 'Date of Vessel Ullage',
+          dateOfSTAfterDischarge: 'Date of Shore-Tank After Discharge',
+          gov: 'GOV',
+          gsv: 'GSV',
+          depotPrice: 'Depot Price (NGN)'
+        }
+  }
 
   ngOnInit(): void {
     this.fetchAllData();
@@ -44,7 +59,10 @@ export class CoqApplicationsByDepotComponent implements OnInit {
   public fetchAllData() {
     this.spinner.open();
 
-    this.coqService.getAllCOQs().subscribe({
+    (this.auth.isHppitiStaff 
+      ? this.ppCoqService.getAllCoqs() 
+      : this.coqService.getAllCOQs()
+    ).subscribe({
       next: (res) => {
         this.coqs = (res?.data || []).reverse();
         this.spinner.close();
@@ -64,7 +82,7 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     this.router.navigate(
       [
         'admin',
-        'coq-and-plant',
+        'coq',
         'coq-applications-by-depot',
         event.id,
       ]

@@ -69,11 +69,14 @@ export class PaymentReportComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (err: unknown) => {
+        console.log(err);
+        this.spinner.close();
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
           { panelClass: 'error' }
         );
+        this.cd.markForCheck();
       },
     });
   }

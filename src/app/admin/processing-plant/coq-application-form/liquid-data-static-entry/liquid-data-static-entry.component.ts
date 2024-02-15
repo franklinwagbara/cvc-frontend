@@ -20,7 +20,7 @@ export class LiquidDataStaticEntryComponent {
   }
 
   public onCompleted(output: IDataEntryResult) {
-    debugger;
+    // debugger;
     if (output.state == 'initial') {
       this.isInitialCompleted = true;
       this.ppContext.addLiquidStaticBatchReading(output.formValue, true);
@@ -31,7 +31,7 @@ export class LiquidDataStaticEntryComponent {
   }
 
   public onCompleteEntry() {
-    debugger;
+    // debugger;
     this.batchStepper?.select();
     this.ppContext.isCompletedDataEntry$.next(true);
     this.isShow = false;

@@ -51,8 +51,8 @@ export class ApplicationService {
   viewApplicationByDepot(): Observable<any> {
     return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
   }
-
-  viewApplicationByJetty(): Observable<any> {
+  
+  viewAppByJettyOfficer(): Observable<any> {
     return this.http.get<any>(`${API}/view-application-By-Jetty-Officer`, {});
   }
 

@@ -8,16 +8,14 @@ import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-a
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
-import { UserRole } from 'src/app/shared/constants/userRole';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 
@@ -63,31 +61,26 @@ export class CoqApplicationViewComponent implements OnInit {
     private paymentService: PaymentService,
     private popUp: PopupService,
     private router: Router
-  ) {}
+  ) {
+    this.route.params.subscribe((param) => {
+      this.appId = parseInt(param['id']);
+      this.coqId = parseInt(param['id']);
+      this.PPCOQId = parseInt(param['id']);
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.spinner.show('Loading application...');
+      this.isPPCOQ = Boolean(params['isPPCOQ']);
+      this.appSource = params['appSource'];
+      this.getApplication();
+    });
+  }
 
   ngOnInit(): void {
     this.isFAD = this.auth.isFAD;
     this.isSupervisor = this.auth.isSupervisor;
     this.isCOQProcessor = this.auth.isCOQProcessor;
     this.isFO = this.auth.isFO;
-
-    this.route.params.subscribe((param) => {
-      // this.appId = parseInt(param['id']);
-      // this.coqId = parseInt(param['id']);
-      // this.PPCOQId = parseInt(param['PPCOQId']);
-      // this.isPPCOQ = param['isPPCOQ'];
-      // this.getApplication();
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      this.spinner.show('Loading application...');
-      this.appId = parseInt(params['id']);
-      this.coqId = parseInt(params['id']);
-      this.PPCOQId = parseInt(params['PPCOQId']);
-      this.isPPCOQ = Boolean(params['isPPCOQ']);
-      this.appSource = params['appSource'];
-      this.getApplication();
-    });
 
     this.currentUser = this.auth.currentUser as LoginModel;
   }

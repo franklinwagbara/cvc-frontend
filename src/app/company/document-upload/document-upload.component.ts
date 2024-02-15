@@ -244,9 +244,20 @@ export class DocumentUploadComponent implements OnInit {
     });
   }
 
+  get hasUploadedAllRequiredDocs(): boolean {
+    if (this.documents.length) {
+      return this.documents.every((info) => !!info.docSource);
+    }
+    return false;
+  }
+
   submitApplication() {
-    this.progressBar.open();
-    this.spinner.open();
+    if (!this.hasUploadedAllRequiredDocs) {
+      this.popUp.open('All Required Documents Must Be Uploaded', 'error');
+      return;
+    }
+
+    this.spinner.show('Submitting application...');
 
     const payload = {
       appId: Number(this.application_id),
@@ -256,7 +267,6 @@ export class DocumentUploadComponent implements OnInit {
     this.applicationService.submitApplication(payload).subscribe({
       next: (res) => {
         this.spinner.close();
-        this.progressBar.close();
         // this.popUp.open('Document(s) upload was successfull.', 'success');
         this.popUp.open('Application was submitted successfully', 'success');
         this.router.navigate(['/company/dashboard']);
@@ -264,7 +274,6 @@ export class DocumentUploadComponent implements OnInit {
       },
       error: (res: unknown) => {
         this.spinner.close();
-        this.progressBar.close();
         // this.popUp.open('Document(s) upload failed!', 'error');
         this.popUp.open('Application submission failed!', 'error');
         this.cd.markForCheck();

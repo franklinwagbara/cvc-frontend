@@ -1,7 +1,8 @@
 .top-nav {
-  width: calc(100% - 19rem);
-  margin-left: 19rem;
-  @apply fixed top-0 right-0 z-50 h-16 shadow-md flex items-center px-10 justify-between backdrop-blur-sm bg-white/30 transition-all ease-in-out delay-75 duration-700;
+  width: calc(100% - 300px);
+  margin-left: 300px;
+  @apply fixed top-0 right-0 z-50 h-16 shadow-md flex items-center px-5 md:px-10 
+    justify-between backdrop-blur-sm bg-white/30 transition-all ease-in-out delay-75 duration-700;
 }
 
 .expand-top-nav {
@@ -15,8 +16,47 @@
   @apply -mr-4;
 }
 
-.avatar {
+.avatar, .avatar .user-profile {
   @apply flex gap-2 items-center justify-around;
+}
+
+.user-profile {
+  @apply cursor-pointer md:cursor-default;
+}
+
+@media screen and (max-width: 600px) {
+  .avatar {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 767px) {
+  .top-nav {
+    width: calc(100% - 240px);
+    margin-left: 240px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .top-nav {
+    width: 100%;
+    margin-left: 0px;
+  }
+  .mobile-userprofile {
+    @apply flex items-center justify-center gap-2;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  .mobile-userprofile {
+    display: none;
+  }
+}
+
+.mobile-userprofile h4, .avatar h4 {
+  background: linear-gradient(to right, #17411d, #eeec09);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .account-info {
@@ -28,9 +68,23 @@ h4 {
 }
 
 .account-info h5 {
-  @apply text-gray-500 text-sm;
+  @apply text-gray-500 text-sm hidden md:block;
 }
 
 .logout {
-  @apply flex ml-5 items-center gap-2 justify-center bg-primary hover:sepia fill-white text-white cursor-pointer px-4 py-1 rounded-xl;
+  @apply hidden md:flex ml-5 items-center gap-2 justify-center bg-primary 
+    hover:sepia fill-white text-white cursor-pointer px-4 py-1 rounded-xl;
+}
+
+.menu-logout, .menu {
+  display: none;
+  height: 0px;
+  max-height: 0px;
+}
+
+@media screen and (max-width: 600px) {
+  .menu-logout {
+    @apply flex items-center gap-2 justify-center font-medium text-red-400
+      hover:text-red-600 fill-white cursor-pointer px-4 py-1 rounded-xl;
+  }
 }

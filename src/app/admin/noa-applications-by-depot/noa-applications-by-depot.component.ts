@@ -81,7 +81,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   viewApplication(event: any): void {
-    this.router.navigate(['admin', 'coq-and-plant', 'noa-applications-by-depot', event.id]);
+    this.router.navigate(['admin', 'coq', 'noa-applications-by-depot', event.id]);
   }
 
   public get isFieldOfficer(): boolean {
@@ -98,7 +98,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   initiateCoQ(event: any) {
     this.router.navigate([
       'admin',
-      'coq-and-plant',
+      'coq',
       'noa-applications-by-depot',
       event.id,
       'certificate-of-quantity',

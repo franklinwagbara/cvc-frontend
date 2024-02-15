@@ -1,7 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output, ViewChild } from '@angular/core';
 import { LoginModel } from '../../../../src/app/shared/models/login-model';
 import { AuthenticationService } from '../../../../src/app/shared/services';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
+import { ScreenDetectorService } from 'src/app/shared/services/screen-detector.service';
+import { MatMenu } from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-top-nav',
@@ -12,12 +15,17 @@ export class TopNavComponent implements OnInit {
   menuOpen = true;
   currentUserInfo: LoginModel;
 
+  @ViewChild('mobileNavMenu') mobileNavMenu: MatMenu;
+
   @Output() onMenuOpen: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(
     private authService: AuthenticationService,
-    private pageManagerService: PageManagerService
-  ) {}
+    private pageManagerService: PageManagerService,
+    public screenDetector: ScreenDetectorService,
+    private cdr: ChangeDetectorRef
+  ) {
+  }
 
   ngOnInit(): void {
     this.currentUserInfo = this.authService.currentUser;
@@ -39,5 +47,16 @@ export class TopNavComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  openMobileMenu(): void {
+    if (this.mobileNavMenu) {
+      (this.mobileNavMenu.templateRef.elementRef.nativeElement as HTMLElement).style.display = 'absolute';
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.cdr.markForCheck();
   }
 }

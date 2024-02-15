@@ -23,6 +23,7 @@ export class DepotOfficerFormComponent {
   public form: FormGroup;
   public depots: IPlant[];
   public staffList: Staff[];
+  submitting = false;
 
   constructor(
     public dialogRef: MatDialogRef<DepotOfficerFormComponent>,
@@ -38,11 +39,14 @@ export class DepotOfficerFormComponent {
     this.staffList = data.data.staffList;
 
     this.staffList = this.staffList.filter(
-      (s) => s.role.toLowerCase() == 'field_officer'.toLowerCase()
+      (s) => s.role.toLowerCase() == 'field_officer'
     );
 
     this.form = this.formBuilder.group({
-      depotID: ['', Validators.required],
+      depotID: [
+        { value: data?.data?.depotId || '', disabled: !!data?.data?.depotId }, 
+        Validators.required
+      ],
       userID: ['', Validators.required],
     });
   }
@@ -52,29 +56,38 @@ export class DepotOfficerFormComponent {
   }
 
   createBranch() {
-    this.onClose();
-    this.spinner.open();
-
+    this.submitting = true;
     this.depotOfficer.createMapping(this.form.value).subscribe({
       next: (res) => {
-        if (res.success) {
-          this.popUp.open('Configuration was created successfully!', 'success');
-          this.dialogRef.close();
-        }
-        this.spinner.close();
-        setTimeout(() => {
-          window.location.reload();
-        }, 2500)
+        this.submitting = false;
+        this.popUp.open('Configuration was created successfully', 'success');
+        this.dialogRef.close('submitted');
       },
 
       error: (error: unknown) => {
+        console.log(error);
+        this.submitting = false;
         this.popUp.open(
           'Operation failed! Could not create the Branch!',
           'error'
         );
-
-        this.spinner.close();
       },
     });
+  }
+
+  editBranch() {
+    this.submitting = true;
+    this.depotOfficer.editMapping(this.form.value).subscribe({
+      next: (res: any) => {
+        this.submitting = false;
+        this.popUp.open("Configuration updated successfully", 'success')
+        this.dialogRef.close('submitted');
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.submitting = false;
+        this.popUp.open("Failed to update configuration", 'error');
+      }
+    })
   }
 }

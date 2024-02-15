@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Application } from '../../my-applications/myapplication.component';
+import { Application } from '../../cvc-applications/cvc-applications.component';
 import { Router } from '@angular/router';
 
 

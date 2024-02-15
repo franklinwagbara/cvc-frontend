@@ -1,5 +1,5 @@
 <div class="setting-desk">
-  <h2 class="page-title">APPROVED NoA APPLICATIONS BY JETTY</h2>
+  <h2 class="page-title">NoA APPLICATIONS BY JETTY</h2>
   <div>
     <div class="table-group">
       <div class="table-wrapper">
@@ -12,7 +12,7 @@
           [noCheckControls]="true"
           [noEditControl]="true"
           [EnableViewControl]="true"
-          [EnableDischargeClearanceControls]="isFieldOfficer"
+          [EnableDischargeClearanceControls]="isDSSRIFieldOfficer"
           (onViewData)="viewApplication($event)"
           (onInitiateCoQ)="initiateCoQ($event)"
           (allowDischarge)="onAllowDischarge($event)"

@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -22,6 +23,8 @@ import { BatchService } from 'src/app/shared/services/batch.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { MatStep } from '@angular/material/stepper';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
+
 
 @Component({
   selector: 'app-data-entry-form',
@@ -80,8 +83,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
 
   public setUpDataEntry() {
     this.dataEntryContainer = this.viewContainerRef;
-    debugger;
-    if (this.selectedMeasurementSystem == 'Static') {
+    if (this.selectedMeasurementSystem == MeasurementType.STATIC) {
       if (this.isGas) {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
@@ -119,6 +121,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
       }
     }
     this.cd.markForCheck();
+    (this.dataEntryContainer.element.nativeElement as HTMLElement).scrollIntoView(true);
   }
 
   private initSubscriptions() {

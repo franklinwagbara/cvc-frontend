@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Application } from '../../../../company/my-applications/myapplication.component';
+import { Application } from '../../../../company/cvc-applications/cvc-applications.component';
 import { IApplication } from '../../../../shared/interfaces/IApplication';
 
 @Component({

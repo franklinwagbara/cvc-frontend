@@ -183,24 +183,4 @@ export class UploadComponent implements OnInit {
       }
     });
   }
-
-  // savecontinue(){
-  //   // let s = this.genk.state;
-  //   // let c = this.genk.category;
-  //   // let p = this.genk.phase;
-  //   // let a = this.genk.address;
-  //   // let l = this.genk.lga;
-  //   // let u = this.genk.upload;
-  //   //debugger;
-  //   this.apply.postsavecontinue(null, this.genk.state, this.genk.category, this.genk.phase, this.genk.address, this.genk.lga, this.genk.upload)
-  //     .subscribe(res => {
-
-  //       if(res.statusCode == 300){
-  //         this.modalService.logNotice("Error", res.message, 'error');
-  //       }
-  //       else{
-  //         this.modalService.logNotice("Success", res.message, 'success');
-  //       }
-  //   })
-  // }
 }

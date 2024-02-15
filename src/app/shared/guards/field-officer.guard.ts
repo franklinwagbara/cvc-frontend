@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
+import { PopupService } from '../services/popup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { AuthenticationService } from '../services';
 export class FieldOfficerGuard implements CanActivate {
   constructor(
     private auth: AuthenticationService,
-    private router: Router
+    private popUp: PopupService
   ) {}
 
   canActivate(
@@ -18,7 +19,7 @@ export class FieldOfficerGuard implements CanActivate {
     if (this.auth.isFieldOfficer) {
       return true;
     } else {
-      this.router.navigate(['/admin/dashboard']);
+      this.popUp.open('You do not have access to the page!', 'error');
       return false;
     }
   }

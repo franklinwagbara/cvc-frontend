@@ -1,9 +1,14 @@
 .payment {
-  width: 95%;
+  width: 100%;
   margin: 30px auto 30px auto;
+  padding-top: 30px;
 }
 
 .filterWrapper {
   margin: 40px 0px;
   @apply flex justify-between flex-col lg:flex-row gap-4;
+}
+
+.filter-right-wrapper {
+  @apply w-full flex flex-col gap-1 justify-center items-center;
 }

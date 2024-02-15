@@ -3,7 +3,7 @@
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
   </button>
 
-  <div class="view-application">
+  <div *ngIf="application; else noData" class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
       APPLICATION REFERENCE : {{ application?.reference }}
     </h2>
@@ -100,4 +100,11 @@
       </ng-container>
     </div>
   </div>
+
+  <ng-template #noData>
+    <div class="flex justify-center items-center">
+      <div *ngIf="!loading" class="border-4 border-white p-12 font-bold">Nothing to display</div>
+      <mat-spinner *ngIf="loading" diameter="35" strokeWidth="7"></mat-spinner>
+    </div>
+  </ng-template>
 </div>

@@ -26,7 +26,7 @@ import { environment } from 'src/environments/environment';
 export class BarChartComponent implements AfterViewInit, OnDestroy {
   private chart: am4charts.XYChart3D;
   private chart2: am4charts.PieChart3D;
-  chartLoaded = false;
+  chartLoaded: boolean | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId, 
@@ -168,9 +168,13 @@ export class BarChartComponent implements AfterViewInit, OnDestroy {
               this.chart2 = chart2;
     
             })
-          })
+          }).catch(error => {
+            this.zone.run(() => {
+              this.chartLoaded = false;
+            })
+            console.log(error)
+          });
       }
-
     })
   }
 

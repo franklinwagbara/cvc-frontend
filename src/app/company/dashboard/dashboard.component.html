@@ -1,6 +1,6 @@
 <div class="dashboard-container">
   <div class="dashboard-wrapper">
-    <div class="card" (click)="navigateTo(NavigatePath.applications)">
+    <div class="card blue-card" (click)="navigateTo(NavigatePath.applications)">
       <div>
         <h1>
           {{
@@ -15,7 +15,7 @@
     </div>
 
     <div
-      class="card yellow-card-2"
+      class="card yellow-card"
       (click)="navigateTo(NavigatePath.processing)"
     >
       <div>
@@ -32,7 +32,7 @@
     </div>
 
     <div
-      class="card yellow-card-3"
+      class="card green-card"
       (click)="navigateTo(NavigatePath.approvals)"
     >
       <div>
@@ -48,7 +48,7 @@
       <p>Approval(s)</p>
     </div>
 
-    <div class="card yellow-card-4">
+    <div class="card orange-card">
       <div>
         <h1>
           {{
@@ -59,14 +59,7 @@
         </h1>
         <img src="../../../assets/img/icons/common/money-stack.png" />
       </div>
-      <p class="flex items-center justify-between">
-        <span>Total Amount Owed</span>
-        <img
-          src="../../../assets/img/icons/common/currency-ngn.png"
-          width="37"
-          height="37"
-        />
-      </p>
+      <p>Total Debt</p>
     </div>
   </div>
 
@@ -85,7 +78,7 @@
     <hr />
 
     <div class="messages-wrapper">
-      <div class="w-full !min-w-[600px] !overflow-x-auto">
+      <div class="w-full">
         <h3>RECENT MESSAGE(S)</h3>
         <table class="table table-auto data-table">
           <thead>

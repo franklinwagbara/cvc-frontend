@@ -1,5 +1,5 @@
 <div class="payment h-full">
-  <div class="pl-2 pr-6 my-20">
+  <div class="px-4">
     <h1 class="page-title">PAYMENT REPORT</h1>
     <div class="filterWrapper">
       <app-paymentfilterleft
@@ -8,7 +8,7 @@
         (onChecked)="onCheck($event)"
       ></app-paymentfilterleft>
 
-      <div class="flex flex-col">
+      <div class="filter-right-wrapper">
         <app-paymentfilterright
           (searchValueChanged)="onSearchValueEntered1($event)"
           [applications]="applications"
@@ -26,16 +26,18 @@
     ></app-paymentextras>
   </div>
 
-  <generic-table
-    [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
-    [table_content]="checked ? sortedApps : filteredApps2"
-    [noAddOrDeleteButton]="true"
-    [noCheckControls]="true"
-    [noEditControl]="true"
-    [noFilter]="true"
-    [noTitle]="true"
-  >
-  </generic-table>
+  <div class="px-2 pr-4">
+    <generic-table
+      [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+      [table_content]="checked ? sortedApps : filteredApps2"
+      [noAddOrDeleteButton]="true"
+      [noCheckControls]="true"
+      [noEditControl]="true"
+      [noFilter]="true"
+      [noTitle]="true"
+    >
+    </generic-table>
+  </div>
   <app-paymentgraph-modal
     *ngIf="showModal"
     (onClose)="closeGraphModal()"

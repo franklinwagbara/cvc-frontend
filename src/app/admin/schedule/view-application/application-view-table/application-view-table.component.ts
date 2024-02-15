@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Application } from '../../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../../company/cvc-applications/cvc-applications.component';
 
 @Component({
   selector: 'app-application-view-table',

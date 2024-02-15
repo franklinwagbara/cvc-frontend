@@ -187,7 +187,7 @@ export class UserFormComponent implements OnInit {
             panelClass: ['success'],
           });
           this.isLoading = false;
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
       },
       error: (error: unknown) => {

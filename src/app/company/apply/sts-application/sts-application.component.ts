@@ -14,6 +14,7 @@ import { IAppDepot } from 'src/app/shared/interfaces/IAppDepot';
 import { Util } from 'src/app/shared/lib/Util';
 import { ShipToShipService } from 'src/app/shared/services/ship-to-ship.service';
 
+
 @Component({
   selector: 'app-sts-application',
   templateUrl: './sts-application.component.html',
@@ -72,16 +73,15 @@ export class StsApplicationComponent {
       vesselName: ['', Validators.required],
       motherVessel: ['', Validators.required],
       loadingPort: ['', Validators.required],
-      totalVolume: ['', Validators.required],
+      totalVolume: ['', [Validators.required, Validators.min(1)]],
       vesselTypeId: ['', Validators.required],
-      productId: ['', Validators.required],
       transferDate: ['', Validators.required]
     });
-
+    
     this.recipientVesselForm = this.formBuilder.group({
       imoNumber: ['', Validators.required],
       vesselName: ['', Validators.required],
-      offtakeVolume: ['', Validators.required],
+      offtakeVolume: ['', [Validators.required, Validators.min(1)]],
       productId: ['', Validators.required],
     });
 
@@ -136,15 +136,7 @@ export class StsApplicationComponent {
   }
 
   public get isNext() {
-    return (
-      this.vesselForm.controls['vesselName'].valid &&
-      this.vesselForm.controls['loadingPort'].valid &&
-      this.vesselForm.controls['totalVolume'].valid &&
-      this.vesselForm.controls['motherVessel'].valid &&
-      this.vesselForm.controls['vesselTypeId'].valid &&
-      this.vesselForm.controls['imoNumber'].valid &&
-      this.vesselForm.controls['transferDate'].valid
-    );
+    return this.vesselForm.valid;
   }
 
   public get licenseNumberControl() {
@@ -165,8 +157,8 @@ export class StsApplicationComponent {
     const payload: IApplicationFormDTO = {
       vesselName: this.vesselForm.value.vesselName,
       loadingPort: this.vesselForm.value.loadingPort,
-      imoNumber: (this.vesselForm.value.imoNumber as number).toString(),
-      totalVolume: this.vesselForm.value.jetty,
+      imoNumber: this.vesselForm.value.imoNumber,
+      totalVolume: this.vesselForm.value.totalVolume,
       motherVessel: this.vesselForm.value.motherVessel,
       vesselTypeId: this.vesselForm.value.vesselTypeId,
       transferDate: new Date(this.vesselForm.value.transferDate).toISOString(),
@@ -187,8 +179,8 @@ export class StsApplicationComponent {
         this.spinner.close();
         this.popUp.open('Application submitted successfully.', 'success');
         setTimeout(() => {
-          this.router.navigate(['company', 'myapplication']);
-        }, 3500)
+          this.router.navigate(['company', 'sts-applications']);
+        }, 2500)
         this.cd.markForCheck();
       },
       error: (error: AppException) => {
@@ -211,7 +203,7 @@ export class StsApplicationComponent {
 
     const isExist = this.selectedRecipientVessels.find((x) => x.imoNumber == newVessel.imoNumber);
     const volumeMismatch = this.selectedRecipientVessels.reduce((prev, curr) => {
-      prev += (curr?.offtakeVolume as number);
+      prev += curr?.offtakeVolume;
       return prev;
     }, 0) + newVessel.offtakeVolume > (this.vesselForm.controls['totalVolume'].value as number);
 
@@ -229,7 +221,7 @@ export class StsApplicationComponent {
 
   public removeVessel(vessel: IVessel) {
     this.selectedRecipientVessels = this.selectedRecipientVessels.filter(
-      (x) => x.name !== vessel.name
+      (x) => x.vesselName !== vessel.vesselName
     );
     this.cd.markForCheck();
   }
@@ -283,18 +275,18 @@ export class StsApplicationComponent {
     this.libraryService.getProducts().subscribe({
       next: (res) => {
         this.products = res?.data.sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase
-            ? -1
-            : a?.name.toLowerCase() > b?.name.toLowerCase()
-            ? 1
-            : 0;
+          const aGreaterThanB = 
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0;
+          const predicate = 
+            a?.name.toLowerCase() < b?.name.toLowerCase ? -1 : aGreaterThanB
+          return predicate;
         });
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: AppException) => {
-        this.popUp.open(error.message, 'error');
         this.spinner.close();
+        this.popUp.open(error.message, 'error');
         this.cd.markForCheck();
       },
     });
@@ -305,11 +297,11 @@ export class StsApplicationComponent {
     this.libraryService.getAppDepots().subscribe({
       next: (res) => {
         this.depots = (res?.data || []).sort((a: any, b: any) => {
-          return a?.name.toLowerCase() < b?.name.toLowerCase()
-            ? -1
-            : a?.name.toLowerCase() > b?.name.toLowerCase()
-            ? 1
-            : 0;
+          const aGreaterThanB = 
+            a?.name.toLowerCase() > b?.name.toLowerCase() ? 1 : 0;
+          const predicate = 
+            a?.name.toLowerCase() < b?.name.toLowerCase ? -1 : aGreaterThanB
+          return predicate;
         });
         this.spinner.close();
         this.cd.markForCheck();

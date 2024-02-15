@@ -82,6 +82,7 @@
               column.cell(row) === "edit_control" ||
               column.cell(row) === "initiate_coq_control" ||
               column.cell(row) === "view_control" ||
+              column.cell(row) === "sts_recipient_vessel_control" ||
               column.cell(row) === "view_coq_certs_control" ||
               column.cell(row) === "discharge_onspec_control" ||
               column.cell(row) === "discharge_offspec_control" ||
@@ -135,6 +136,15 @@
                 (click)="editData(row)"
               >
                 Edit
+              </button>
+
+              <button
+                mat-flat-button
+                class="bg-[#eeec09] font-medium view-button"
+                *ngIf="column.cell(row) === 'sts_recipient_vessel_control'"
+                (click)="viewData(row)"
+              >
+                View Recipients
               </button>
 
               <button
