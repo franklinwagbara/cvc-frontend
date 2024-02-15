@@ -84,7 +84,7 @@ export class CvcApplicationsComponent implements OnInit {
             res.data = (res.data as Application[]).filter(
               (x) => x.status.toLowerCase() == 'processing'
             );
-          this.applications = res.data.reverse();
+          this.applications = res.data;
           this.applications$.next(res.data);
 
           //todo: display success dialog
