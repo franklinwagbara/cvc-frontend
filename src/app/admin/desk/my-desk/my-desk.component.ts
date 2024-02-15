@@ -98,7 +98,7 @@ export class MyDeskComponent implements OnInit {
     ]).subscribe({
       next: (res) => {
         if (res[0].success) {
-          this.applications = res[0].data.coQ;
+          this.applications = res[0].data;
           this.processingPlantCOQs = res[0].data.processingPlantCOQ;
           if (this.isDssriFieldOfficer) {
             this.applications = this.applications
@@ -108,7 +108,7 @@ export class MyDeskComponent implements OnInit {
           if (this.applications?.length > 0)
             this.appType$.next(this.applications[0].applicationType);
           this.applications$.next(this.applications);
-        }
+        } 
         this.spinner.close();
         this.cd.markForCheck();
       },
