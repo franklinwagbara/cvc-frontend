@@ -1,0 +1,116 @@
+<table class="table">
+  <tbody ngIf="application">
+    <tr>
+      <th>Reference Number</th>
+      <td>{{ application?.reference }}</td>
+    </tr>
+
+    <tr *ngIf="application?.plant.company">
+      <th>Company Name</th>
+      <td>{{ application?.plant.company }}</td>
+    </tr>
+
+    <tr *ngIf="application?.plant.name">
+      <th>Plant Name</th>
+      <td>{{ application?.plant.name }}</td>
+    </tr>
+
+    <tr *ngIf="application?.plant.state">
+      <th>Plant State</th>
+      <td>{{ application?.plant.state }}</td>
+    </tr>
+
+    <tr *ngIf="application?.status">
+      <th>Status</th>
+      <td>{{ application?.status }}</td>
+    </tr>
+
+    <tr *ngIf="application?.startTime">
+      <th>Start Time</th>
+      <td>{{ application?.startTime }}</td>
+    </tr>
+
+    <tr *ngIf="application?.endTime">
+      <th>End Time</th>
+      <td>{{ application?.endTime }}</td>
+    </tr>
+
+    <tr *ngIf="application?.consignorName">
+      <th>Name of Consignor</th>
+      <td>{{ application?.consignorName }}</td>
+    </tr>
+
+    <tr *ngIf="application?.consignee">
+      <th>Name of Consignee</th>
+      <td>{{ application?.consignee }}</td>
+    </tr>
+
+    <tr *ngIf="application?.terminal">
+      <th>Terminal</th>
+      <td>{{ application?.terminal }}</td>
+    </tr>
+
+    <tr *ngIf="application?.destination">
+      <th>Destination</th>
+      <td>{{ application?.destination }}</td>
+    </tr>
+
+    <tr *ngIf="application?.product.name">
+      <th>Product Name</th>
+      <td>{{ application?.product.name }}</td>
+    </tr>
+
+    <tr *ngIf="application?.product.productType">
+      <th>Product Type</th>
+      <td>{{ application?.product.productType }}</td>
+    </tr>
+
+    <tr *ngIf="application?.price">
+      <th>Plant Price</th>
+      <td>{{ application?.price }}</td>
+    </tr>
+
+    <tr *ngIf="application?.shipFigure">
+      <th>Ship Figure</th>
+      <td>{{ application?.shipFigure }}</td>
+    </tr>
+
+    <tr *ngIf="application?.shoreFigure">
+      <th>Shore Figure</th>
+      <td>{{ application?.shoreFigure }}</td>
+    </tr>
+
+    <tr *ngIf="application?.totalMTVac">
+      <th>Total MTVAC</th>
+      <td>{{ application?.totalMTVac }}</td>
+    </tr>
+
+    <tr *ngIf="application?.totalMTAir">
+      <th>Total MTAir</th>
+      <td>{{ application?.totalMTAir }}</td>
+    </tr>
+    
+    <tr *ngIf="isCoqProcessor">
+      <th>Debit Note</th>
+      <td>{{ application?.debitNote }}</td>
+    </tr>
+
+    <tr>
+      <th>Shipment No</th>
+      <td>{{ application?.shipmentNo }}</td>
+    </tr>
+
+    <tr *ngIf="isCoqProcessor">
+      <th>Tank Reading</th>
+      <td class="text-center">
+        <button
+          mat-raised-button
+          [disabled]="tankList?.length < 1"
+          (click)="viewTanks()"
+        >
+          View Readings
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -89,6 +89,7 @@ export class AllStaffComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -254,7 +255,7 @@ export class AllStaffComponent implements OnInit {
     });
   }
 
-  onEditData(event: Event, type: string) {
+  onEditData(event: any, type: string) {
     const operationConfiguration = {
       users: {
         data: {

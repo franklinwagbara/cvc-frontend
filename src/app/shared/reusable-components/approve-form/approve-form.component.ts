@@ -48,7 +48,6 @@ export class ApproveFormComponent implements OnInit {
     private coqService: CoqService,
     private dialog: MatDialog
   ) {
-    debugger;
     this.application = data?.data?.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
@@ -99,7 +98,6 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
-    debugger;
     if (this.isCOQProcessor || this.isPPCOQ) this.approveFO();
     else this.approveOther();
   }
@@ -165,7 +163,6 @@ export class ApproveFormComponent implements OnInit {
   }
 
   private approveFO() {
-    debugger;
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
@@ -187,7 +184,7 @@ export class ApproveFormComponent implements OnInit {
         }
         this.isLoading = false;
         this.progressBarService.close();
-        this.router.navigate(['/admin/my-desk']);
+        this.router.navigate(['/admin/desk']);
         this.cd.markForCheck();
       },
 

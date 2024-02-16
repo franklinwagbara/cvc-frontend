@@ -67,7 +67,7 @@
         <option
           *ngFor="let ut of roles"
           [selected]="ut.name === currentValue?.role"
-          [ngValue]="ut"
+          [ngValue]="ut.name"
         >
           {{ ut.name }}
         </option>

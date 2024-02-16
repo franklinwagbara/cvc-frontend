@@ -112,8 +112,12 @@ import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-applic
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
 import { AllPpcoqApplicationsComponent } from './all-ppcoq-applications/all-ppcoq-applications.component';
-import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
+import { PpcoqLiquidAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-liquid-app-view-table/ppcoq-liquid-app-view-table.component';
 import { ViewPpcoqTankComponent } from './application/coq-application-view/view-ppcoq-tank/view-ppcoq-tank.component';
+import { PpcoqGasAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-gas-app-view-table/ppcoq-gas-app-view-table.component';
+import { PpcoqCondensateAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-condensate-app-view-table/ppcoq-condensate-app-view-table.component';
+import { ReadingsModalComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-liquid-app-view-table/readings-modal/readings-modal.component';
+import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
 
 @NgModule({
   declarations: [
@@ -199,8 +203,12 @@ import { ViewPpcoqTankComponent } from './application/coq-application-view/view-
     StsApplicationsComponent,
     RecipientsViewComponent,
     AllPpcoqApplicationsComponent,
-    PpcoqApplicationViewTableComponent,
+    PpcoqLiquidAppViewTableComponent,
     ViewPpcoqTankComponent,
+    PpcoqGasAppViewTableComponent,
+    PpcoqCondensateAppViewTableComponent,
+    ReadingsModalComponent,
+    PpcoqApplicationViewTableComponent,
   ],
 
   imports: [

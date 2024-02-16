@@ -24,6 +24,8 @@ export class DepotOfficerFormComponent {
   public depots: IPlant[];
   public staffList: Staff[];
   submitting = false;
+  selectedData: any;
+  dialogTitle: string;
 
   constructor(
     public dialogRef: MatDialogRef<DepotOfficerFormComponent>,
@@ -37,14 +39,18 @@ export class DepotOfficerFormComponent {
   ) {
     this.depots = data.data.depots;
     this.staffList = data.data.staffList;
-
+    this.selectedData = data.data?.currentData;
+    this.dialogTitle = data?.data?.dialogTitle;
     this.staffList = this.staffList.filter(
       (s) => s.role.toLowerCase() == 'field_officer'
     );
 
     this.form = this.formBuilder.group({
       depotID: [
-        { value: data?.data?.depotId || '', disabled: !!data?.data?.depotId }, 
+        { 
+          value: this.selectedData?.depotID || '', 
+          disabled: this.selectedData?.depotID 
+        }, 
         Validators.required
       ],
       userID: ['', Validators.required],
@@ -57,7 +63,13 @@ export class DepotOfficerFormComponent {
 
   createBranch() {
     this.submitting = true;
-    this.depotOfficer.createMapping(this.form.value).subscribe({
+    const staff = this.staffList.find((el) => el.id === this.form.value.userID);
+    const model = {
+      ...this.form.value,
+      officerName: staff.firstName + ' ' + staff.lastName,
+      depotName: this.depots.find((el) => el.id === this.form.value.depotID)?.name
+    };
+    this.depotOfficer.createMapping(model).subscribe({
       next: (res) => {
         this.submitting = false;
         this.popUp.open('Configuration was created successfully', 'success');
@@ -77,7 +89,8 @@ export class DepotOfficerFormComponent {
 
   editBranch() {
     this.submitting = true;
-    this.depotOfficer.editMapping(this.form.value).subscribe({
+    const model = { ...this.selectedData, ...this.form.value };
+    this.depotOfficer.editMapping(model).subscribe({
       next: (res: any) => {
         this.submitting = false;
         this.popUp.open("Configuration updated successfully", 'success')

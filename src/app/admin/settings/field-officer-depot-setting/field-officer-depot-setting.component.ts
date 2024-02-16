@@ -83,6 +83,7 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         depots: this.depots,
         roles: this.roles,
         offices: this.offices,
+        dialogTitle: 'Add New Mapping' 
       },
     };
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
@@ -97,27 +98,18 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
 
   deleteData(selected: any[]) {
     if (selected?.length) {
-      const listOfDataToDelete = selected.filter((s) => {
-        if (s.appCount > 0) {
-          this.popUp.open(
-            'Cannot delete a field officer with an assigned depot',
-            'error'
-          );
-        }
-        return s.appCount === 0;
+      const requests = selected.map((req) => {
+        console.log('Selected DepotOfficer Mappings ==========> ', req);
+        return this.depotOfficerService.deleteMapping(req?.plantFieldOfficerID);
       });
-  
-      const requests = (listOfDataToDelete as any[]).map((req) => {
-        return this.adminService.deleteStaff(req.id);
-      });
-  
+      
       this.progressBar.open();
   
       forkJoin(requests).subscribe({
         next: (res) => {
           if (res && res.length > 0) {
             this.popUp.open(
-              `User${res.length > 1 ? 's' : ''} was deleted successfully!`,
+              `Mapping${res.length > 1 ? 's' : ''} was deleted successfully!`,
               'success'
             );
 
@@ -127,12 +119,12 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
   
             this.allUsers = responses[0];
           }
-          this.fetchAllData()
+          this.refreshMappings();
         },
         error: (error: unknown) => {
           console.log(error);
           this.progressBar.close();
-          this.popUp.open('Something went wrong while deleting data!', 'error');
+          this.popUp.open('Something went wrong while deleting mapping!', 'error');
         },
       });
     }
@@ -145,8 +137,9 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         staffList: this.staffList,
         roles: this.roles,
         offices: this.offices,
-        currentValue: '',
-        depotId: event?.depotId
+        depotId: event?.depotId,
+        currentData: event,
+        dialogTitle: 'Edit Mapping'
       },
     };
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });

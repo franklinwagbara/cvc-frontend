@@ -56,7 +56,7 @@ export class JettyOfficerFormComponent {
 
   createBranch() {
     this.submitting = true;
-    const staff = this.staffList.find((el) => el.userId === this.form.value.userID);
+    const staff = this.staffList.find((el) => el.id === this.form.value.userID);
     const model = {
       ...this.form.value,
       officerName: staff.firstName + ' ' + staff.lastName,
@@ -83,7 +83,7 @@ export class JettyOfficerFormComponent {
   editBranch() {
     this.submitting = true;
     const model = { ...this.selectedData, ...this.form.value };
-    this.jettyOfficer.editMapping(1, model).subscribe({
+    this.jettyOfficer.editMapping(model?.jettyFieldOfficerID, model).subscribe({
       next: (res: any) => {
         this.submitting = false;
         this.popUp.open('Configuration was updated successfully!', 'success');

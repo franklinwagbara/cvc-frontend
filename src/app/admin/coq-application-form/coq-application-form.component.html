@@ -1171,12 +1171,12 @@
                     </ng-container>
 
                     <ng-container *ngIf="column === 'progress'">
-                      <div class="flex flex-col items-center justify-center">
+                      <div class="flex flex-col items-center justify-center gap-2 py-4">
                         <span
                           *ngIf="
                             documents?.length > 0 && documents[i]?.fileName
                           "
-                          class="font-bold text-slate-500"
+                          class="font-bold text-slate-500 text-center"
                           >{{
                             documents[i]?.fileName +
                               " (" +
