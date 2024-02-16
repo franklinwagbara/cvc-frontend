@@ -72,21 +72,12 @@ export class homeComponent implements OnInit {
               const returnUrl =
                 this.route.snapshot.queryParamMap.get('returnUrl');
               if (user.userRoles === UserType.Company) {
-                if (user.profileComplete && user?.OperatingFacility !== null) {
-                  this.router.navigate([returnUrl || '/company/dashboard']);
-                } else {
-                  if (
-                    user.profileComplete &&
-                    user?.OperatingFacility === null
-                  ) {
-                    this.router.navigate([
-                      '/company/companyinformation/operatingfaclicity',
-                    ]);
-                  } else {
-                    this.router.navigate(['/company/companyinformation']);
-                    this.popupService.open('Complete your profile', 'success');
-                  }
-                }
+                // if (user.profileComplete && user?.OperatingFacility !== null) {
+                this.router.navigate([returnUrl || '/company/dashboard']);
+                // } else {
+                //   this.router.navigate(['/company/companyinformation']);
+                //   this.popupService.open('Complete your profilesss', 'error');
+                // }
               } else {
                 this.router.navigate([returnUrl || '/admin']);
               }

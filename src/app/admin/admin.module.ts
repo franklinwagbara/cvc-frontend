@@ -114,6 +114,13 @@ import { RecipientsViewComponent } from './sts-applications/recipients-view/reci
 import { AllPpcoqApplicationsComponent } from './all-ppcoq-applications/all-ppcoq-applications.component';
 import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
 import { ViewPpcoqTankComponent } from './application/coq-application-view/view-ppcoq-tank/view-ppcoq-tank.component';
+import { CondensateDataDynamicEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
+import { CondensateDataStaticEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/condensate-data-static-entry.component';
+import { AfterCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/after-condensate-dynamic-data-entry/after-condensate-dynamic-data-entry.component';
+import { BeforeCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
+import { BeforeCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/before-condensate-static-data-entry/before-condensate-static-data-entry.component';
+import { AfterCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/after-condensate-static-data-entry/after-condensate-static-data-entry.component';
+import { ProcessingDetailsCondensateComponent } from './processing-plant/coq-application-form/processing-details-condensate/processing-details-condensate.component';
 
 @NgModule({
   declarations: [
@@ -201,6 +208,13 @@ import { ViewPpcoqTankComponent } from './application/coq-application-view/view-
     AllPpcoqApplicationsComponent,
     PpcoqApplicationViewTableComponent,
     ViewPpcoqTankComponent,
+    CondensateDataDynamicEntryComponent,
+    CondensateDataStaticEntryComponent,
+    AfterCondensateDynamicDataEntryComponent,
+    BeforeCondensateDynamicDataEntryComponent,
+    BeforeCondensateStaticDataEntryComponent,
+    AfterCondensateStaticDataEntryComponent,
+    ProcessingDetailsCondensateComponent,
   ],
 
   imports: [

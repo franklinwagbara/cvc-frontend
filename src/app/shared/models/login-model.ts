@@ -24,4 +24,5 @@ export class LoginModel {
   location: string;
   operationFacility: string;
   userUuid: string;
+  profileComplete: boolean;
 }

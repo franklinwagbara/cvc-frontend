@@ -109,25 +109,32 @@ const routes: Routes = [
 
   {
     path: 'view-application/:id',
-    canActivate: [AuthCompleteProfileGuard],
+    // canActivate: [AuthCompleteProfileGuard],
     component: ViewApplicationComponent,
     title: 'CVC & CoQ | View Application'
   },
   {
     path: 'approvals/:id/coqs',
-    //canActivate: [AuthCompleteProfileGuard],
+    // canActivate: [AuthCompleteProfileGuard],
     component: ViewCoqCertsComponent,
     title: 'CVC & CoQ | CoQ Certificates'
   },
+  
+  { path: 'upload', component: UploadComponent },
+  { path: 'previewapp/:id', component: PreviewAppComponent },
+  { path: 'paymentsum/:id', component: PaymentSumComponent },
+  { path: 'upload-document/:id', component: DocumentUploadComponent },
   {
     path: 'application/new-clearance',
     component: NewApplicationComponent,
+    // canActivate: [AuthCompleteProfileGuard],
     pathMatch: 'full',
     title: 'CVC & CoQ | New CVC Application'
   },
   {
     path: 'application/ship-to-ship',
     component: StsApplicationComponent,
+    // canActivate: [AuthCompleteProfileGuard],
     pathMatch: 'full',
     title: 'CVC & CoQ | New Ship-to-Ship Application'
   },

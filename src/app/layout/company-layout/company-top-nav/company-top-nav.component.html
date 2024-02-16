@@ -18,10 +18,21 @@
       </app-dropdown>
       <app-dropdown
         *ngIf="
-          currentUser?.operationFacility !== OperatingFacility.ProcessingPlant
+          currentUser?.operationFacility === OperatingFacility.CVC ||
+          currentUser?.operationFacility === OperatingFacility.Both
         "
         title="APPLICATIONS"
         [menu-items]="applicationsMenuItems"
+      >
+      </app-dropdown>
+      <app-dropdown
+        *ngIf="
+          currentUser?.operationFacility ===
+            OperatingFacility.ProcessingPlant ||
+          currentUser?.operationFacility === OperatingFacility.Both
+        "
+        [menu-items]="processingPlantMenuItems"
+        title="PROCESSING PLANT"
       >
       </app-dropdown>
       <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">

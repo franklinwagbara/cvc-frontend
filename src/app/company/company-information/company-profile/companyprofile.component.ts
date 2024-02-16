@@ -19,6 +19,7 @@ import { companyProfile } from '../../../../../src/app/shared/models/apply.model
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { OperatingFacility } from '../../company.component';
 import { forkJoin } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   templateUrl: 'companyprofile.component.html',
@@ -27,7 +28,7 @@ import { forkJoin } from 'rxjs';
 })
 export class CompanyProfileComponent implements OnInit {
   profileForm: FormGroup;
-  public currentUsername: LoginModel;
+  public currentUser: LoginModel;
   private email = '';
 
   public OperatingFacilities = [
@@ -49,10 +50,12 @@ export class CompanyProfileComponent implements OnInit {
     private auth: AuthenticationService,
     private cd: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
-    this.currentUsername = this.auth.currentUser;
-    this.email = this.currentUsername.userId;
+    this.currentUser = this.auth.currentUser;
+    this.email = this.currentUser.userId;
     this.createForm();
     this.cd.markForCheck();
   }
@@ -188,11 +191,22 @@ export class CompanyProfileComponent implements OnInit {
       next: (res) => {
         this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
+        const data: LoginModel = res[0].data;
+        this.currentUser.operationFacility = res[1].data.name;
+        this.currentUser.profileComplete = data?.profileComplete;
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+        if (returnUrl) {
+          window.location.assign(returnUrl);
+        } else {
+          window.location.reload();
+        }
         this.cd.markForCheck();
       },
       error: (error: any) => {
         this.spinner.close();
         this.popupService.open('Unable to update profile', 'error');
+
         this.cd.markForCheck();
       },
     });
