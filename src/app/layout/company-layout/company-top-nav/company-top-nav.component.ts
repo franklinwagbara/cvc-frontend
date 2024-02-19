@@ -89,6 +89,14 @@ export class CompanyTopNavComponent implements OnInit {
     },
   ];
 
+  public processingPlantMenuItems = [
+    {
+      name: 'Processing Plants',
+      url: 'company/processing-plant',
+      subMenu: null,
+    },
+  ];
+
   constructor(
     private applyService: ApplyService,
     private spinner: SpinnerService,

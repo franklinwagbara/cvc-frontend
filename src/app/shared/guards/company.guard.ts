@@ -57,15 +57,15 @@ export class CompleteProfileGuard {
     if (operatingFacility !== null && currentUser.profileComplete) {
       return true;
     } else {
-      if (operatingFacility === null) {
-        this.router.navigate([
-          '/company/companyinformation/operatingfaclicity',
-        ]);
-        this.popupService.open('Select your Operating ', 'error');
-      } else {
-        this.router.navigate(['/company/companyinformation']);
-        this.popupService.open('Complete your profile', 'error');
-      }
+      // if (operatingFacility === null) {
+      //   this.popupService.open('Select your Operating facility', 'error');
+      // } else {
+      this.router.navigate(['/company/companyinformation'], {
+        queryParams: { returnUrl: state.url },
+      });
+
+      this.popupService.open('Complete your profile', 'error');
+      // }
       return false;
     }
   }

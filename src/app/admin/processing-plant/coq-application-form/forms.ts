@@ -2,7 +2,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MeasurementType } from './coq-application-pp-form.component';
 
 export const getForm = (
-  productType: 'Liquid' | 'Gas',
+  productType: 'Liquid' | 'Gas' | 'Condensate',
   measurementType: MeasurementType,
   status: 'before' | 'after'
 ) => {
@@ -15,15 +15,22 @@ export const getForm = (
       Dynamic: GAS_DYNAMIC_FORM(status),
       Static: GAS_STATIC_FORM(status),
     },
+    Condensate: {
+      Dynamic: CONDENSATE_DYNAMIC_FORM(status),
+      Static: CONDENSATE_STATIC_FORM(status),
+    },
   };
 
   return mappings[productType][measurementType];
 };
 
-export const getDetailsForm = (productType: 'Liquid' | 'Gas') => {
+export const getDetailsForm = (
+  productType: 'Liquid' | 'Gas' | 'Condensate'
+) => {
   const mappings = {
     Liquid: PROCESSING_DETAILS_LIQUID_FORM,
     Gas: PROCESSING_DETAILS_GAS_FORM,
+    Condensate: PROCESSING_DETAILS_CONDENSATE_FORM,
   };
 
   return mappings[productType];
@@ -101,6 +108,37 @@ const GAS_STATIC_FORM = (status: 'before' | 'after') =>
     vapourFactor: ['', [Validators.required]],
   });
 
+const CONDENSATE_DYNAMIC_FORM = (status: 'before' | 'after') =>
+  fb.group({
+    meterId: [''],
+    // tank: [''],
+    status: [status || '', [Validators.required]],
+    batch: [''],
+    readingM: ['', [Validators.required]],
+    temperature: ['', [Validators.required]],
+    density: ['', [Validators.required]],
+    meterFactor: ['', [Validators.required]],
+    ctl: ['', [Validators.required]],
+    cpl: ['', [Validators.required]],
+    wtAir: ['', [Validators.required]],
+  });
+
+const CONDENSATE_STATIC_FORM = (status: 'before' | 'after') =>
+  fb.group({
+    tankId: [''],
+    // tank: [''],
+    status: [status || '', [Validators.required]],
+    measurementType: ['static', [Validators.required]],
+    readingM: ['', [Validators.required]],
+    temperature: ['', [Validators.required]],
+    density: ['', [Validators.required]],
+    specificGravityObs: ['', [Validators.required]],
+    gov: ['', [Validators.required]],
+    barrelsAtTankTables: ['', [Validators.required]],
+    volumeCorrectionFactor: ['', [Validators.required]],
+    wtAir: ['', [Validators.required]],
+  });
+
 const PROCESSING_DETAILS_LIQUID_FORM = fb.group({
   startTime: ['', [Validators.required, Validators.max]],
   endTime: ['', [Validators.required]],
@@ -125,4 +163,29 @@ const PROCESSING_DETAILS_GAS_FORM = fb.group({
   shipDischargedMtAir: ['', [Validators.required]],
   nameConsignee: ['', [Validators.required]],
   depotPrice: ['', [Validators.required]],
+});
+
+const PROCESSING_DETAILS_CONDENSATE_FORM = fb.group({
+  plantId: ['', [Validators.required]],
+  productId: ['', [Validators.required]],
+  measurementSystem: ['', [Validators.required]],
+  startTime: ['', [Validators.required, Validators.max]],
+  endTime: ['', [Validators.required]],
+  price: ['', [Validators.required]],
+  deliveredLongTonsAir: ['', [Validators.required]],
+  deliveredMTAir: ['', [Validators.required]],
+  deliveredMTVac: ['', [Validators.required]],
+  deliveredUsBarrelsAt15Degree: ['', [Validators.required]],
+  deliveredMCubeAt15Degree: ['', [Validators.required]],
+  prevWTAir: ['', [Validators.required]],
+  prevUsBarrelsAt15Degree: ['', [Validators.required]],
+  consignorName: ['', [Validators.required]],
+  consignee: ['', [Validators.required]],
+  shipFigure: ['', [Validators.required]],
+  // shoreFigure: ['', [Validators.required]],
+  shipmentNo: ['', [Validators.required]],
+  destination: ['', [Validators.required]],
+  terminal: ['', [Validators.required]],
+  // tankerName: ['', [Validators.required]],
+  dipMethodId: ['', [Validators.required]],
 });
