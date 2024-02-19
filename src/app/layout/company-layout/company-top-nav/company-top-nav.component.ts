@@ -104,16 +104,16 @@ export class CompanyTopNavComponent implements OnInit {
     public auth: AuthenticationService
   ) {
     this.currentUser = this.auth.currentUser;
-    if (
-      this.currentUser.operationFacility ===
-      this.OperatingFacility.ProcessingPlant
-    ) {
-      this.myAccountMenuItems.push({
-        name: 'Processing Plants',
-        url: 'company/processing-plant',
-        subMenu: null,
-      });
-    }
+    // if (
+    //   this.currentUser.operationFacility ===
+    //   this.OperatingFacility.ProcessingPlant
+    // ) {
+    //   this.myAccountMenuItems.push({
+    //     name: 'Processing Plants',
+    //     url: 'company/processing-plant',
+    //     subMenu: null,
+    //   });
+    // }
   }
 
   iconContexts = {
