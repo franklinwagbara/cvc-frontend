@@ -717,17 +717,15 @@ export class CoqApplicationFormComponent
 
           this.restoreReviewData();
           this.coqStepper.selectedIndex = 0;
-        } else {
-          this.popUp.open('CoQ Application Creation Failed', 'error');
-        }
-        this.cd.markForCheck();
-        setTimeout(() => {
           this.router.navigate([
             'admin',
             'coq',
             'coq-applications-by-depot',
           ]);
-        }, 2400);
+        } else {
+          this.popUp.open('CoQ Application Creation Failed', 'error');
+        }
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.isSubmitting = false;
@@ -953,7 +951,16 @@ export class CoqApplicationFormComponent
       localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA)
     );
     if (Array.isArray(coqFormDataArr) && coqFormDataArr.length) {
-      coqFormDataArr.push(coqData);
+      if ((this.isGasProduct 
+        && Util.hasProperties(coqFormDataArr[0].before, this.coqFormService.gasProductProps))
+        || (!this.isGasProduct 
+        && Util.hasProperties(coqFormDataArr[0].before, this.coqFormService.liquidProductProps))) 
+      {
+        coqFormDataArr.push(coqData);
+      } else {
+        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+        coqFormDataArr = [coqData];
+      }
     } else {
       coqFormDataArr = [coqData];
     }

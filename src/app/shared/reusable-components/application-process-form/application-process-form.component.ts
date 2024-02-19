@@ -5,7 +5,6 @@ import {
   MatDialogRef,
   MatDialog,
 } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { PermitStage } from '../../../../../src/app/admin/settings/modules-setting/modules-setting.component';
 import {
   IApplicationType,
@@ -15,7 +14,6 @@ import { IApplicationProcess } from '../../interfaces/IApplicationProcess';
 import { IBranch } from '../../interfaces/IBranch';
 import { IRole } from '../../interfaces/IRole';
 import { IStatus } from '../../interfaces/IStatus';
-import { AdminService } from '../../services/admin.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PermitStageDocFormComponent } from '../permit-stage-doc-form/permit-stage-doc-form.component';
 import { ApplicationProcessesService } from '../../services/application-processes.service';
@@ -69,11 +67,11 @@ export class ApplicationProcessFormComponent implements OnInit {
   public applicationTypes: IApplicationType[];
   public vesselTypes: IVessel[];
   public editMode: boolean = false;
+  public loading = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<PermitStageDocFormComponent>,
-    private snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private progressBar: ProgressBarService,
@@ -81,7 +79,6 @@ export class ApplicationProcessFormComponent implements OnInit {
     private libService: LibaryService,
     private popUp: PopupService
   ) {
-    debugger;
     this.editMode = data.data?.editMode;
     this.permitStages = data.data.permitStages;
     this.branches = data.data.branches;
@@ -172,56 +169,46 @@ export class ApplicationProcessFormComponent implements OnInit {
   }
 
   createProcessFlow() {
+    this.loading = true;
     this.progressBar.open();
 
     this.processFlow.createApplicationProcess(this.form.value).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success) {
-          this.snackBar.open(
-            'Application Process was created successfully!',
-            null,
-            {
-              panelClass: ['success'],
-            }
+          this.popUp.open(
+            'Application Process was created successfully!', 
+            'success'
           );
-
           this.dialogRef.close();
         }
 
         this.progressBar.close();
       },
       error: (error: any) => {
-        this.snackBar.open(error?.message, null, {
-          panelClass: ['error'],
-        });
+        this.loading = false;
+        this.popUp.open(error?.message, 'error');
         this.progressBar.close();
       },
     });
   }
 
   editProcessFlow() {
+    this.loading = true;
     this.progressBar.open();
     const payload = { id: this.applicationProccess.id, ...this.form.value };
     this.processFlow.editApplicationProcess(payload).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success) {
-          this.snackBar.open(
-            'Application Process was created successfully!',
-            null,
-            {
-              panelClass: ['success'],
-            }
-          );
-
+          this.popUp.open('Application process updated successfully', 'success');
           this.dialogRef.close();
         }
-
         this.progressBar.close();
       },
       error: (error: any) => {
-        this.snackBar.open(error?.message, null, {
-          panelClass: ['error'],
-        });
+        this.loading = false;
+        this.popUp.open(error?.message, 'error');
         this.progressBar.close();
       },
     });

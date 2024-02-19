@@ -11,11 +11,9 @@
           [table_keysMappedToHeaders]="branchKeysMappedToHeaders"
           [table_content]="applicationProcesses"
           [table_controls_horizontal]="true"
-          [noDeleteButton]="true"
-          [noCheckControls]="true"
           [noTitle]="true"
-          (onAddData)="onAddData($event, 'applicationProcesses')"
-          (onDeleteData)="onDeleteData($event, 'applicationProcesses')"
+          (onAddData)="onAddData('applicationProcesses')"
+          (onDeleteData)="onDeleteData($event)"
           (onEditData)="onEditData($event, 'applicationProcesses')"
         ></generic-table>
       </div>

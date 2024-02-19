@@ -149,7 +149,6 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type?: 'PPCOQ' | 'COQ') {
-    // debugger;
     if (this.appType$.value === AppType.COQ || this.isFAD) {
       this.router.navigate(
         [

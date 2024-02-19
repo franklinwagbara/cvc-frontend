@@ -19,7 +19,7 @@ export class JettyOfficerFormComponent {
   public form: FormGroup;
   public jettys: IPlant[];
   public staffList: Staff[];
-  dialogTitle: string;
+  editMode: boolean;
   submitting = false;
   selectedData: any;
 
@@ -30,7 +30,7 @@ export class JettyOfficerFormComponent {
     private popUp: PopupService,
     private jettyOfficer: JettyOfficerService
   ) {
-    this.dialogTitle = data.data.dialogTitle;
+    this.editMode = data.data?.editMode;
     this.jettys = data.data.jettys;
     this.staffList = data.data.staffList;
     this.selectedData = data?.data?.currentData;
@@ -46,7 +46,7 @@ export class JettyOfficerFormComponent {
         }, 
         Validators.required
       ],
-      userID: ['', Validators.required],
+      userID: [this.selectedData?.userID || '', Validators.required],
     });
   }
 
@@ -56,7 +56,8 @@ export class JettyOfficerFormComponent {
 
   createBranch() {
     this.submitting = true;
-    const staff = this.staffList.find((el) => el.id === this.form.value.userID);
+    console.log('STAFF LIST ==========> ', this.staffList);
+    const staff = (this.staffList as any[]).find((el) => el.id === this.form.value.userID);
     const model = {
       ...this.form.value,
       officerName: staff.firstName + ' ' + staff.lastName,
@@ -90,7 +91,7 @@ export class JettyOfficerFormComponent {
         this.dialogRef.close('submitted');
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.submitting = false;
         this.popUp.open(
           'Could not update the Branch!',

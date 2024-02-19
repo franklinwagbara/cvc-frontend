@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New Application Process</h1>
+<h1 mat-dialog-title>{{ editMode ? 'Edit' : 'Add' }} Application Process</h1>
 <div mat-dialog-content class="min-w-[500px]">
   <form [formGroup]="form" (ngSubmit)="createProcessFlow()">
     <div class="fomr-group" style="margin-bottom: 10px">
@@ -235,7 +235,7 @@
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="onClose()">Close</button>
   <button
-    *ngIf="!editMode"
+    *ngIf="!editMode && !loading"
     mat-raised-button
     (click)="createProcessFlow()"
     [disabled]="form.invalid"
@@ -244,11 +244,20 @@
   </button>
 
   <button
-    *ngIf="editMode"
+    *ngIf="editMode && !loading"
     mat-raised-button
     (click)="editProcessFlow()"
     [disabled]="form.invalid"
   >
     Edit
+  </button>
+
+  <button
+    *ngIf="loading"
+    class="!flex !justify-center !items-center"
+    mat-mini-fab
+    color="disabled"
+  >
+    <mat-spinner diameter="35" strokeWidth="7"></mat-spinner>
   </button>
 </div>

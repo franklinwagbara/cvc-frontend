@@ -73,7 +73,7 @@ export class CoqApplicationViewComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.spinner.show('Loading application...');
-      this.isPPCOQ = Boolean(params['isPPCOQ']);
+      this.isPPCOQ = params['isPPCOQ'] === 'true';
       this.appSource = params['appSource'];
       this.getApplication();
     });
@@ -125,6 +125,7 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   getApplication() {
+    console.log('isPPCOQ =============> ', this.isPPCOQ);
     this.loading = true;
     (!this.isPPCOQ
       ? this.coqService.viewCoqApplication(this.appId)

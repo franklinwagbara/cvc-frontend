@@ -71,6 +71,9 @@
         >
           {{ ut.name }}
         </option>
+        <option [value]="currentValue?.role" [selected]="currentValue?.role">
+          {{ currentValue?.role }}
+        </option>
       </select>
       <div
         *ngIf="form.get('roleId')?.touched && form.get('roleId')?.invalid"

@@ -83,7 +83,7 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         depots: this.depots,
         roles: this.roles,
         offices: this.offices,
-        dialogTitle: 'Add New Mapping' 
+        editMode: false, 
       },
     };
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
@@ -139,7 +139,7 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
         offices: this.offices,
         depotId: event?.depotId,
         currentData: event,
-        dialogTitle: 'Edit Mapping'
+        editMode: true,
       },
     };
     const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });

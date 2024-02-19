@@ -1,5 +1,11 @@
 .footer {
   line-height: 2;
   min-height: calc(0.114 * 100vh);
-  @apply text-slate-300 bg-[#091b29] flex flex-col justify-center items-center w-full;
+  @apply text-slate-300 bg-[#091b29] flex flex-col justify-center items-center w-full p-3;
+}
+
+@media screen and (max-width: 600px) {
+  .footer {
+    font-size: x-small;
+  }
 }

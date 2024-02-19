@@ -6,6 +6,7 @@ import {
 } from '../../../../../src/app/shared/services';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { environment } from '../../../../../src/environments/environment';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -55,6 +56,7 @@ export class DashboardComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar
   ) {}
+
   ngOnInit(): void {
     this.spinner.show('Loading dashboard...');
 
@@ -73,7 +75,7 @@ export class DashboardComponent implements OnInit {
         }
       },
       error: (error: any) => {
-        console.log(error);
+        console.error(error);
         this.spinner.close();
         this.snackBar.open('Could not get dashboard', null, {
           panelClass: ['error'],
