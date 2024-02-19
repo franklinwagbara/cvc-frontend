@@ -32,6 +32,7 @@ import { UserRole } from '../../constants/userRole';
 })
 export class UserFormComponent implements OnInit {
   public form: FormGroup;
+  public editMode: boolean;
   public usersFromCvc: StaffWithName[];
   public userTypes = [''];
   public offices: FieldOffice[];
@@ -71,10 +72,14 @@ export class UserFormComponent implements OnInit {
     // this.branches = data.data.branches;
     this.roles = data.data?.roles;
     this.locations = data.data?.locations;
+    this.editMode = data.data?.editMode;
     this.usersFromElps = data.data?.staffList;
     this.currentValue = data.data?.currentValue;
     this.directorates = data.data?.directorate;
-    console.log(data.data);
+    this.selectedRole = data.data?.roles
+      .find((role: any) => role.name === data.data?.currentValue?.role);
+    
+    console.log('Selected Role =========> ', this.selectedRole);
     let currentUserId: string;
 
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
@@ -121,7 +126,7 @@ export class UserFormComponent implements OnInit {
         },
       ],
       userType: [this.currentValue ? this.currentValue.userType : ''],
-      roleId: ['', Validators.required],
+      roleId: [this.selectedRole?.id || '', Validators.required],
 
       locationId: [this.currentValue ? this.currentValue.locationId : ''],
 
@@ -130,7 +135,7 @@ export class UserFormComponent implements OnInit {
 
       // branchId: [this.currentValue ? this.currentValue.branchId : ''],
       isActive: [
-        this.currentValue ? this.currentValue.status : '',
+        this.currentValue ? this.currentValue?.isActive : '',
         Validators.required,
       ],
 
@@ -152,7 +157,7 @@ export class UserFormComponent implements OnInit {
   }
 
   onRoleChanges() {
-    this.selectedRole = this.form.get('roleId').value;
+    this.selectedRole = this.roles.find((role: any) => role.id === this.form.get('roleId').value);
     return this.requiredSignatureRoles.includes(this.selectedRole?.name);
   }
 
@@ -162,19 +167,16 @@ export class UserFormComponent implements OnInit {
     this.isLoading = true;
     const formDataToSubmit = new FormData();
 
-    formDataToSubmit.append('id', '0');
-    formDataToSubmit.append('elpsId', this.form.get('elpsId').value);
-    formDataToSubmit.append('firstName', this.form.get('firstName').value);
-    formDataToSubmit.append('lastName', this.form.get('lastName').value);
-    formDataToSubmit.append('email', this.form.get('email').value);
-    formDataToSubmit.append('phone', this.form.get('phone').value);
-    formDataToSubmit.append('userType', this.form.get('userType').value);
+    const formKeys = [
+      'id', 'elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 
+      'roleId', 'locationId', 'officeId', 'isActive', 'directorate'
+    ]
+
+    formKeys.forEach((key) => {
+      formDataToSubmit.append(key, this.form.get(key).value);
+    })
     formDataToSubmit.append('roleId', this.selectedRole?.id);
-    formDataToSubmit.append('locationId', this.form.get('locationId').value);
-    formDataToSubmit.append('officeId', this.form.get('officeId').value);
-    formDataToSubmit.append('isActive', this.form.get('isActive').value);
     formDataToSubmit.append('signatureFile', this.file);
-    formDataToSubmit.append('directorate', this.form.get('directorate').value);
 
     this.adminService.createStaff(formDataToSubmit).subscribe({
       next: (res) => {
@@ -208,20 +210,15 @@ export class UserFormComponent implements OnInit {
     const formDataToSubmit = new FormData();
 
     const formKeys = [
-      'id',
-      'firstName',
-      'lastName',
-      'email',
-      'phone',
-      'userType',
-      'isActive',
-      'directorate',
+      'id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'isActive', 'directorate',
     ];
+    const roleId = this.roles.find((role) => role.name === this.currentValue?.role).id;
+    console.log('RoleId =========> ', roleId);
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);
     });
     formDataToSubmit.append('signatureFile', this.file);
-    formDataToSubmit.append('roleId', this.selectedRole.id);
+    formDataToSubmit.append('roleId', roleId);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
       next: (res) => {
@@ -230,10 +227,11 @@ export class UserFormComponent implements OnInit {
             panelClass: ['success'],
           });
           this.isLoading = false;
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Operation failed! Could not update the Staff account.',
           null,
@@ -242,14 +240,9 @@ export class UserFormComponent implements OnInit {
           }
         );
         this.isLoading = false;
-        //this.progressBar.close();
       },
     });
   }
-
-  // onClose() {
-  //   console.log(this.form);
-  // }
 
   onFileChange(event: any) {
     this.file = event.target.files[0];

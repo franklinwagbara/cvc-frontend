@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add Staff</h1>
+<h1 mat-dialog-title>{{editMode ? 'Edit' : 'Add'}} Staff</h1>
 <div mat-dialog-content class="h-screen">
   <form [formGroup]="form" (ngSubmit)="createUser()">
     <div class="form-group" style="margin-bottom: 10px">
@@ -65,14 +65,13 @@
         (change)="onRoleChanges()"
       >
         <option
-          *ngFor="let ut of roles"
-          [selected]="ut.name === currentValue?.role"
-          [ngValue]="ut.name"
+          *ngFor="let role of roles"
+          [value]="role.id"
         >
-          {{ ut.name }}
+          {{ role.name }}
         </option>
-        <option [value]="currentValue?.role" [selected]="currentValue?.role">
-          {{ currentValue?.role }}
+        <option [value]="selectedRole?.id" [selected]="selectedRole?.id">
+          {{ selectedRole?.name }}
         </option>
       </select>
       <div
