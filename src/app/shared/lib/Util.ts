@@ -46,6 +46,10 @@ export class Util {
     }
   }
 
+  public static hasProperties(obj: any, properties: any[]) {
+    return properties.every(prop => prop in obj);
+  }
+
   public static scrollToTop(): void {
     if (document.documentElement) {
       document.documentElement.scroll({behavior: 'smooth', top: 0});

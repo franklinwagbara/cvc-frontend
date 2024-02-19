@@ -320,7 +320,7 @@
                 "
                 (click)="uploadDocument(row)"
               >
-                Upload Document
+                {{ row?.status === 'Rejected' ? 'Resubmit' : 'Document Upload' }}
               </button>
 
               <button

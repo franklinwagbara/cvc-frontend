@@ -19,7 +19,7 @@ export class DepotOfficerService {
   }
 
   public editMapping(model: any) {
-    return this.http.post<any>(`${api}/edit-mapping/${model.depotId}`, model);
+    return this.http.put<any>(`${api}/edit-mapping/${model.depotId}`, model);
   }
 
   public deleteMapping(id: number) {

@@ -114,7 +114,7 @@ export class AppProcessComponent implements OnInit {
     });
   }
 
-  onAddData(event: Event, type: string) {
+  onAddData(type: string) {
     const operationConfiguration = {
       applicationProcesses: {
         data: {
@@ -149,7 +149,7 @@ export class AppProcessComponent implements OnInit {
     });
   }
 
-  onDeleteData(event: any, type: string) {
+  onDeleteData(event: any, type?: string) {
     const typeToModelMapper = {
       applicationProcesses: {
         name: 'Application Process',
@@ -159,16 +159,10 @@ export class AppProcessComponent implements OnInit {
 
     const listOfDataToDelete = [...event];
 
-    const requests = (listOfDataToDelete as any[]).map((req) => {
-      if (type === 'applicationProcesses') {
-        return this.processFlow.deleteApplicationProcess(
-          req[typeToModelMapper[type].id]
-        );
-      } else {
-        return this.processFlow.deleteApplicationProcess(
-          req[typeToModelMapper[type].id]
-        );
-      }
+    const requests = listOfDataToDelete.map((req) => {
+      return this.processFlow.deleteApplicationProcess(
+        req[typeToModelMapper[type].id]
+      );
     });
 
     this.progressBarService.open();
@@ -196,6 +190,7 @@ export class AppProcessComponent implements OnInit {
       },
 
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });

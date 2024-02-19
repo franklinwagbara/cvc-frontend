@@ -6,12 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./ppcoq-application-view-table.component.css']
 })
 export class PpcoqApplicationViewTableComponent {
-  application;
-  isProcessingPlant;
-  isCoqProcessor;
-  tankList: any[];
 
-  viewTanks(): void {
-
-  }
 }

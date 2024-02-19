@@ -33,7 +33,7 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
   public coqId: number;
   private destroy = new Subject<void>();
 
-  public loading: boolean;
+  public loading = true;
   isApprover: boolean;
   isFieldOfficer: boolean;
   isFO: boolean;
@@ -53,6 +53,15 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
     private licenceService: LicenceService,
     public location: Location
   ) {
+    
+  }
+
+  ngOnInit(): void {
+    this.isFO = this.auth.isFO;
+    this.isSupervisor = this.auth.isSupervisor;
+    this.isFieldOfficer = this.auth.isFieldOfficer;
+    this.isApprover = this.auth.isApprover;
+
     this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
         this.spinner.open();
@@ -72,13 +81,6 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
         if (this.appSource != AppSource.Licence) this.getApplication();
       }
     });
-  }
-
-  ngOnInit(): void {
-    this.isFO = this.auth.isFO;
-    this.isSupervisor = this.auth.isSupervisor;
-    this.isFieldOfficer = this.auth.isFieldOfficer;
-    this.isApprover = this.auth.isApprover;
   }
 
   ngOnDestroy(): void {
@@ -229,16 +231,10 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
     });
   }
 

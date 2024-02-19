@@ -18,6 +18,7 @@ import { LoginModel } from '../../../../../src/app/shared/models/login-model';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -40,12 +41,14 @@ export class CoqApplicationViewComponent implements OnInit {
   public PPCOQId: number;
 
   appLoaded = false;
-  isLoading = true;
+  loading = true;
   isFAD: boolean;
   isSupervisor: boolean;
   isCOQProcessor: boolean;
   isFO: boolean;
   isProcessingPlant: boolean;
+  isIMG = Util.isIMG;
+  isPDF = Util.isPDF;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -70,7 +73,7 @@ export class CoqApplicationViewComponent implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.spinner.show('Loading application...');
-      this.isPPCOQ = Boolean(params['isPPCOQ']);
+      this.isPPCOQ = params['isPPCOQ'] === 'true';
       this.appSource = params['appSource'];
       this.getApplication();
     });
@@ -95,7 +98,7 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   generateDebitNote() {
-    this.isLoading = true;
+    this.loading = true;
     this.spinner.show('Generating Debit Note...');
 
     this.paymentService.generateDebitNote(this.coqId).subscribe({
@@ -106,11 +109,12 @@ export class CoqApplicationViewComponent implements OnInit {
             this.router.navigate(['/admin/desk']);
           }, 3000);
         }
-        this.isLoading = false;
+        this.loading = false;
         this.spinner.close();
       },
       error: (error: unknown) => {
-        console.log(error);
+        this.loading = false;
+        console.error(error);
         this.popUp.open(
           'Something went wrong while generating Debit Note',
           'error'
@@ -121,11 +125,14 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   getApplication() {
+    console.log('isPPCOQ =============> ', this.isPPCOQ);
+    this.loading = true;
     (!this.isPPCOQ
       ? this.coqService.viewCoqApplication(this.appId)
       : this.coqService.viewPPCoqApplication(this.PPCOQId)
     ).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success && this.isPPCOQ) {
           this.ppCoq = res.data;
           this.appLoaded = true;
@@ -142,14 +149,9 @@ export class CoqApplicationViewComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        this.loading = false;
         console.error(error);
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
+        this.popUp.open('Something went wrong while retrieving data.', 'error');
 
         this.progressBar.close();
         this.spinner.close();
@@ -163,7 +165,6 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
-    debugger;
     const operationConfiguration = {
       approve: {
         data: {
@@ -264,33 +265,10 @@ export class CoqApplicationViewComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
-  }
-
-  isPDF(filePath: string) {
-    if (!filePath) return false;
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return fileType == 'pdf';
-  }
-
-  isIMG(filePath) {
-    if (!filePath) return false;
-    const imageTypes = ['png', 'jpg', 'jpeg', 'tiff'];
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return imageTypes.includes(fileType);
   }
 }

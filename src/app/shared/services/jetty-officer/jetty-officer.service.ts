@@ -19,7 +19,7 @@ export class JettyOfficerService {
   }
 
   public editMapping(id: number, model: any) {
-    return this.http.post<any>(`${api}/edit-mapping/${id}`, model);
+    return this.http.put<any>(`${api}/edit-mapping/${id}`, model);
   }
 
   public deleteMapping(id: number) {

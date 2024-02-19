@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New Mapping</h1>
+<h1 mat-dialog-title>{{ editMode ? 'Edit' : 'Add' }} Mapping</h1>
 <div mat-dialog-content class="modal-width">
   <form [formGroup]="form" (ngSubmit)="createBranch()">
     <div class="fomr-group" style="margin-bottom: 10px">
@@ -6,6 +6,10 @@
       <select name="depotID" formControlName="depotID" class="form-control">
         <option *ngFor="let depot of depots" [ngValue]="depot.id">
           {{ depot.name }}
+        </option>
+
+        <option [value]="selectedData?.depotID" [selected]="selectedData?.depotID">
+          {{ selectedData?.depotName }}
         </option>
       </select>
       <div
@@ -22,6 +26,9 @@
         <option *ngFor="let staff of staffList" [ngValue]="staff.id">
           {{ staff.name }}
         </option>
+        <option [value]="selectedData?.userID" [selected]="selectedData?.userID">
+          {{ selectedData?.officerName }}
+        </option>
       </select>
       <div
         *ngIf="form.get('userID')?.touched && form.get('userID')?.invalid"
@@ -37,10 +44,10 @@
   <button 
     *ngIf="!submitting" 
     mat-raised-button 
-    (click)="createBranch()" 
+    (click)="editMode ? editBranch() : createBranch()" 
     [disabled]="form.invalid"
   >
-    Create
+    {{ editMode ? 'Edit' : 'Create' }}
   </button>
   <button
     *ngIf="submitting"

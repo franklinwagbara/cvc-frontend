@@ -42,7 +42,7 @@ export class MyDeskComponent implements OnInit {
   public categories: Category[] = [];
   public categories$ = new Subject<Category[]>();
 
-  public appType$ = new BehaviorSubject<string>('NOA');
+  public appType$ = new BehaviorSubject<'NOA' | 'COQ' | null>(null);
 
   public coqApplications: ICOQ[];
 
@@ -91,24 +91,27 @@ export class MyDeskComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.open();
 
-    forkJoin([
+    (
       this.isDssriFieldOfficer
         ? this.applicationService.viewApplicationByDepot()
-        : this.applicationService.getApplicationsOnDesk(),
-    ]).subscribe({
+        : this.applicationService.getApplicationsOnDesk()
+    ).subscribe({
       next: (res) => {
-        if (res[0].success) {
-          this.applications = res[0].data.coQ;
-          this.processingPlantCOQs = res[0].data.processingPlantCOQ;
+        if (res.success) {
+          if (res.data?.coQ) {
+            this.appType$.next('COQ');
+            this.applications = res.data.coQ;
+            this.processingPlantCOQs = res.data?.processingPlantCOQ;
+          } else {
+            this.appType$.next('NOA');
+            this.applications = res.data;
+          }
           if (this.isDssriFieldOfficer) {
             this.applications = this.applications
               ?.filter((app) => app.status === 'Completed')
-              .reverse();
           }
-          if (this.applications?.length > 0)
-            this.appType$.next(this.applications[0].applicationType);
           this.applications$.next(this.applications);
-        }
+        } 
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -145,13 +148,8 @@ export class MyDeskComponent implements OnInit {
     return this.currentUser.userRoles === UserRole.FAD;
   }
 
-  onViewData(event: any, type: string) {
-    // debugger;
-    if (
-      this.appType$.value === AppType.COQ ||
-      this.appType$.value == AppType.PPCOQ ||
-      this.isFAD
-    ) {
+  onViewData(event: any, type?: 'PPCOQ' | 'COQ') {
+    if (this.appType$.value === AppType.COQ || this.isFAD) {
       this.router.navigate(
         [
           '/admin/desk/view-coq-application/',
@@ -163,14 +161,13 @@ export class MyDeskComponent implements OnInit {
             appSource: AppSource.MyDesk,
             depotId: event.depotId,
             coqId: event.id,
-            isPPCOQ: event.applicationType == AppType.PPCOQ,
+            isPPCOQ: type === 'PPCOQ',
             PPCOQId: event.processingPlantCOQId,
           },
         }
       );
     } else if (
-      this.isDssriFieldOfficer ||
-      this.appType$.value === AppType.NOA
+      this.isDssriFieldOfficer || this.appType$.value === AppType.NOA
     ) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
