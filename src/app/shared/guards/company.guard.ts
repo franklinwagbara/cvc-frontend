@@ -10,6 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
 import { PopupService } from '../services/popup.service';
+import { OperatingFacility } from 'src/app/company/company.component';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,6 @@ export class CompanyGuard implements CanActivate {
   }
 }
 
-//lab stackholders
 @Injectable({
   providedIn: 'root',
 })
@@ -52,9 +52,13 @@ export class CompleteProfileGuard {
     state: RouterStateSnapshot
   ): boolean {
     const currentUser = this.auth.currentUser;
-    const operatingFacility = currentUser?.OperatingFacility;
-
-    if (operatingFacility !== null && currentUser.profileComplete) {
+    const operatingFacility = currentUser?.operationFacility;
+    if (
+      operatingFacility === OperatingFacility.ProcessingPlant ||
+      operatingFacility === OperatingFacility.CVC ||
+      operatingFacility === OperatingFacility.Both
+    ) {
+      // if (operatingFacility !== null && currentUser.profileComplete) {
       return true;
     } else {
       // if (operatingFacility === null) {
