@@ -899,6 +899,8 @@ export class CoqApplicationFormComponent
         if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.gasProductProps)) {
           this.coqFormService.gasProductReviewData$.next(localFormReviewData);
         }
+      } else {
+        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
       }
     }
   }
@@ -951,16 +953,7 @@ export class CoqApplicationFormComponent
       localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA)
     );
     if (Array.isArray(coqFormDataArr) && coqFormDataArr.length) {
-      if ((this.isGasProduct 
-        && Util.hasProperties(coqFormDataArr[0].before, this.coqFormService.gasProductProps))
-        || (!this.isGasProduct 
-        && Util.hasProperties(coqFormDataArr[0].before, this.coqFormService.liquidProductProps))) 
-      {
-        coqFormDataArr.push(coqData);
-      } else {
-        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
-        coqFormDataArr = [coqData];
-      }
+      coqFormDataArr.push(coqData);
     } else {
       coqFormDataArr = [coqData];
     }
