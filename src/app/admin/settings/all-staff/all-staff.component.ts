@@ -4,7 +4,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AdminService } from '../../../../../src/app/shared/services/admin.service';
@@ -105,7 +105,7 @@ export class AllStaffComponent implements OnInit {
     });
   }
 
-  onAddData(event: Event, type: string) {
+  onAddData(type: string) {
     const operationConfiguration = {
       users: {
         data: {
@@ -116,6 +116,7 @@ export class AllStaffComponent implements OnInit {
           locations: this.locations,
           offices: this.offices,
           directorate: this.directorate,
+          editMode: false,
         },
         form: UserFormComponent,
       },
@@ -130,16 +131,7 @@ export class AllStaffComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((result: 'submitted') => {
-      if (result) {
-        this.progressBar.open();
-        this.adminHttpService.getAllStaff().subscribe((res) => {
-          this.users = res.data;
-
-          this.progressBar.close();
-        });
-      }
-    });
+    this.refreshUsers(dialogRef);
   }
 
   onDeleteData(event: any, type: string) {
@@ -243,16 +235,7 @@ export class AllStaffComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.spinner.show('Loading users');
-
-      this.adminHttpService.getAllStaff().subscribe((res) => {
-        this.users = res.data;
-
-        this.spinner.close();
-        this.cd.markForCheck();
-      });
-    });
+    this.refreshUsers(dialogRef);
   }
 
   onEditData(event: any, type: string) {
@@ -267,6 +250,7 @@ export class AllStaffComponent implements OnInit {
           locations: this.locations,
           currentValue: event,
           directorate: this.directorate,
+          editMode: true,
         },
         form: UserFormComponent,
       },
@@ -280,13 +264,20 @@ export class AllStaffComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.spinner.show('Loading users');
-      this.adminHttpService.getAllStaff().subscribe((res) => {
-        this.users = res.data;
+    this.refreshUsers(dialogRef);
+  }
 
-        this.spinner.close();
-      });
+  refreshUsers(dialogRef: any): void {
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.progressBar.open();
+        this.adminHttpService.getAllStaff().subscribe((res) => {
+          this.users = res.data;
+  
+          this.progressBar.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 }
@@ -306,6 +297,7 @@ export class Staff {
   officeId: any;
   userType: string;
   elpsId: string;
+  isActive?: boolean;
   signatureFile: any;
   id: any;
   name?: string;
