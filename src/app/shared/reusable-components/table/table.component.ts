@@ -32,7 +32,6 @@ interface IColumn {
 }
 
 const PAGESIZEOPTIONS = [5, 10, 20, 30, 40, 50];
-const PAGESIZE = 10;
 
 @Component({
   selector: 'generic-table',
@@ -112,7 +111,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   public displayedColumns: string[];
 
   //MatPaginator variables declarations
-  public pageSize: number = PAGESIZE;
+  @Input('pageSize') pageSize: number = 10;
   public pageSizeOptions: number[] = [...PAGESIZEOPTIONS];
   public length = 100;
   public pageEvent: PageEvent;
