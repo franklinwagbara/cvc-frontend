@@ -78,6 +78,7 @@ export class DocumentUploadComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open('Fetching upload documents failed!', null, {
           panelClass: ['error'],
         });
@@ -89,128 +90,150 @@ export class DocumentUploadComponent implements OnInit {
   }
 
   uploadFile(data) {
-    this.progressBar.open();
-    this.spinner.show('Uploading file...');
+    if (this.isValidFile(data.file)) {
+      this.progressBar.open();
+      this.spinner.show('Uploading file...');
+  
+      const fileEvent = data.file;
+      const doc: DocumentInfo = data.doc;
+  
+      const action = doc.docSource ? 'update' : 'create';
+  
+      const file = fileEvent.target.files[0];
+      const fileName = file.name;
+  
+      const formdata = new FormData();
+      formdata.append('file', file);
+  
+      this.applicationService
+        .uploadCompanyFileToElps(
+          doc.docId,
+          this.documentConfig.companyElpsId,
+          this.documentConfig.facilityElpsId,
+          this.documentConfig.apiEmail,
+          this.documentConfig.apiHash,
+          doc.docName,
+          doc.docType,
+          '',
+          formdata,
+          action,
+          doc.fileId
+        )
+        .subscribe({
+          next: (res) => {
+            this.documents = this.documents.map((d) => {
+              if (d.docId === doc.docId) {
+                d.docSource = res?.FileId > 0 && !!res?.name ? res.source : null;
+                d.fileId = res?.FileId;
+                d.available = 'Document Uploaded';
+                d.source = d.docSource
+                  ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                  : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
+              }
+  
+              return d;
+            });
+            this.documents$.next(this.documents);
+  
+            this.progressBar.close();
+            this.snackBar.open('File was uploaded successfully!', null, {
+              panelClass: ['success'],
+            });
+            this.spinner.close();
+            this.cd.markForCheck();
+          },
+          error: (error: unknown) => { 
+            console.error(error);
+            this.progressBar.close();
+            this.snackBar.open('File upload was not successfull.', null, {
+              panelClass: ['error'],
+            });
+            this.spinner.close();
+            this.cd.markForCheck();
+          },
+        });
+    }
+  }
 
-    const fileEvent = data.file;
-    const doc: DocumentInfo = data.doc;
+  isValidFile(file: File): boolean {
+    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
+    if (!isAccepted) {
+      this.popUp.open(`Invalid file format`, 'error');
+      return false;
+    }
 
-    const action = doc.docSource ? 'update' : 'create';
-
-    const file = fileEvent.target.files[0];
-    const fileName = file.name;
-
-    const formdata = new FormData();
-    formdata.append('file', file);
-
-    this.applicationService
-      .uploadCompanyFileToElps(
-        doc.docId,
-        this.documentConfig.companyElpsId,
-        this.documentConfig.facilityElpsId,
-        this.documentConfig.apiEmail,
-        this.documentConfig.apiHash,
-        doc.docName,
-        doc.docType,
-        '',
-        formdata,
-        action,
-        doc.fileId
-      )
-      .subscribe({
-        next: (res) => {
-          this.documents = this.documents.map((d) => {
-            if (d.docId === doc.docId) {
-              d.docSource = res.source;
-              d.fileId = res.fileId;
-              d.available = 'Document Uploaded';
-              d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
-            }
-
-            return d;
-          });
-          this.documents$.next(this.documents);
-
-          this.progressBar.close();
-          this.snackBar.open('File was uploaded successfully!', null, {
-            panelClass: ['success'],
-          });
-          this.spinner.close();
-          this.cd.markForCheck();
-        },
-        error: (error: unknown) => {
-          this.progressBar.close();
-          this.snackBar.open('File upload was not successfull.', null, {
-            panelClass: ['error'],
-          });
-          this.spinner.close();
-          this.cd.markForCheck();
-        },
-      });
+    const fileSizeInBytes = file.size;
+    const fileSizeInKb = fileSizeInBytes / 1024;
+    const fileSizeInMB = fileSizeInKb / 1024;
+    if (fileSizeInMB > 20) {
+      this.popUp.open(`File ${file.name} size too large`, 'error');
+      return false;
+    }
+    return true;
   }
 
   uploadAdditionalFile(data) {
-    this.progressBar.open();
-    this.spinner.open();
-
-    const fileEvent = data.file;
-    const doc: DocumentInfo = data.doc;
-
-    const action = doc.docSource ? 'update' : 'create';
-
-    const file = fileEvent.target.files[0];
-    const fileName = file.name;
-
-    const formdata = new FormData();
-    formdata.append('file', file);
-
-    this.applicationService
-      .uploadCompanyFileToElps(
-        doc.docId,
-        this.documentConfig.companyElpsId,
-        this.documentConfig.facilityElpsId,
-        this.documentConfig.apiEmail,
-        this.documentConfig.apiHash,
-        doc.docName,
-        doc.docType,
-        '',
-        formdata,
-        action,
-      )
-      .subscribe({
-        next: (res) => {
-          this.additionalDocuments = this.additionalDocuments.map((d) => {
-            if (d.docId === doc.docId) {
-              d.docSource = res.source;
-              d.fileId = res.fileId;
-              d.available = 'Document Uploaded';
-              d.source = d.docSource
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
-            }
-
-            return d;
-          });
-          this.additionalDocuments$.next(this.additionalDocuments);
-
-          this.progressBar.close();
-          this.snackBar.open('File was uploaded successfully!', null, {
-            panelClass: ['success'],
-          });
-          this.spinner.close();
-          this.cd.markForCheck();
-        },
-        error: (error: unknown) => {
-          this.spinner.close();
-          this.progressBar.close();
-          this.snackBar.open('File upload was not successfull.', null, {
-            panelClass: ['error'],
-          });
-          this.cd.markForCheck();
-        },
-      });
+    if (this.isValidFile(data.file)) {
+      this.progressBar.open();
+      this.spinner.open();
+  
+      const fileEvent = data.file;
+      const doc: DocumentInfo = data.doc;
+  
+      const action = doc.docSource ? 'update' : 'create';
+  
+      const file = fileEvent.target.files[0];
+      const fileName = file.name;
+  
+      const formdata = new FormData();
+      formdata.append('file', file);
+  
+      this.applicationService
+        .uploadCompanyFileToElps(
+          doc.docId,
+          this.documentConfig.companyElpsId,
+          this.documentConfig.facilityElpsId,
+          this.documentConfig.apiEmail,
+          this.documentConfig.apiHash,
+          doc.docName,
+          doc.docType,
+          '',
+          formdata,
+          action,
+        )
+        .subscribe({
+          next: (res) => {
+            this.additionalDocuments = this.additionalDocuments.map((d) => {
+              if (d.docId === doc.docId) {
+                d.docSource = res.source;
+                d.fileId = res.fileId;
+                d.available = 'Document Uploaded';
+                d.source = d.docSource
+                  ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                  : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
+              }
+  
+              return d;
+            });
+            this.additionalDocuments$.next(this.additionalDocuments);
+  
+            this.progressBar.close();
+            this.snackBar.open('File was uploaded successfully!', null, {
+              panelClass: ['success'],
+            });
+            this.spinner.close();
+            this.cd.markForCheck();
+          },
+          error: (error: unknown) => {
+            this.spinner.close();
+            this.progressBar.close();
+            this.snackBar.open('File upload was not successfull.', null, {
+              panelClass: ['error'],
+            });
+            this.cd.markForCheck();
+          },
+        });
+    }
   }
 
   getListOfAdditionalDocuments() {

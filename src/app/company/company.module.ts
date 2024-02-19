@@ -53,6 +53,7 @@ import { NgxMatMomentModule } from '@angular-material-components/moment-adapter'
 import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
+import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-paymentsum.component';
 
 @NgModule({
   imports: [
@@ -111,6 +112,7 @@ import { RecipientsViewComponent } from './sts-applications/recipients-view/reci
     StsApplicationComponent,
     StsApplicationsComponent,
     RecipientsViewComponent,
+    DebitnotePaymentsumComponent,
   ],
   providers: [],
 })

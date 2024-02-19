@@ -64,7 +64,6 @@ const routes: Routes = [
     path: 'applications/noa-applications',
     component: ApplicationComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
     title: 'NoA Applications | CVC & CoQ Portal'
   },
   {
@@ -77,21 +76,18 @@ const routes: Routes = [
     path: 'applications/noa-applications/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
     title: 'NoA Application View | CVC & CoQ Portal'
   },
   {
     path: 'applications/coq-applications',
     component: AllCoqApplicationsComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
     title: 'All CoQ Applications | CVC & CoQ Portal'
   },
   {
     path: 'applications/coq-applications/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
     title: 'CoQ Application View | CVC & CoQ Portal'
   },
   {
