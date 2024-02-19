@@ -1,20 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { ApplyService } from '../../../../src/app/shared/services/apply.service';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
-import { environment } from '../../../../src/environments/environment';
-
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
-import { AuthenticationService, GenericService } from '../../shared/services';
-import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
-import { ApplicationService } from '../../../../src/app/shared/services/application.service';
+import { AuthenticationService, GenericService } from 'src/app/shared/services';
+import { ApplicationService } from 'src/app/shared/services/application.service';
+import { ApplyService } from 'src/app/shared/services/apply.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  templateUrl: 'paymentsum.component.html',
-  styleUrls: ['./paymentsum.component.scss'],
+  selector: 'app-debitnote-paymentsum',
+  templateUrl: './debitnote-paymentsum.component.html',
+  styleUrls: ['./debitnote-paymentsum.component.css']
 })
-export class PaymentSumComponent implements OnInit {
+export class DebitnotePaymentsumComponent {
   genk: GenericService;
   application_id: number = null;
   paymentSummary: PaymentSummary;
@@ -128,37 +128,21 @@ export class PaymentSumComponent implements OnInit {
   uploadDocument() {
     this.router.navigate([`/company/upload-document/${this.application_id}`]);
   }
-
-  back() {
-    // this.router.navigate([`/company/new`]);
-  }
 }
 
-export class PaymentSummary {
-  appReference = '';
-  vesselName = '';
-  permitType = '';
-  docList: string[] = [];
-  facilityAddress = '';
-  fee = '';
-  rrr = '';
-  serviceCharge = '';
-  serciveCharge: number;
-  totalAmount = '';
-  // status: string = '';
-  paymentStatus = '';
+interface PaymentSummary {
+  appReference: string;
+  vesselName: string;
+  fee: string;
+  rrr: string;
+  serviceCharge: string;
+  totalAmount: string;
+  paymentType: string;
+  paymentStatus: string;
   paymentDescription?: string;
 
   applicationType: string;
-  accreditationFee: number;
-  administrativeFee: number;
   applicationFee: number;
   facilityType: string;
-  inspectionFee: number;
-  total: number;
-  vesselLicenseFee: number;
-  coqFee: number;
-  noaFee: number;
-
-  description: string;
+  description?: string;
 }

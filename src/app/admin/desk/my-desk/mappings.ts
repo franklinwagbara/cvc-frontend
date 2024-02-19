@@ -31,7 +31,7 @@ export const COQ_KEYS_MAPPED_TO_HEADERS = {
   mT_VAC: 'MT VAC',
   dateOfVesselArrival: 'Date of Arrival',
   dateOfSTAfterDischarge: 'Date of Discharge',
-  depotPrice: 'Initiation Date',
+  depotPrice: 'Depot Price',
   submittedDate: 'Date Submitted',
   status: 'Status',
 };

@@ -78,8 +78,7 @@ export class UserFormComponent implements OnInit {
     this.directorates = data.data?.directorate;
     this.selectedRole = data.data?.roles
       .find((role: any) => role.name === data.data?.currentValue?.role);
-    
-    console.log('Selected Role =========> ', this.selectedRole);
+  
     let currentUserId: string;
 
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
@@ -210,15 +209,14 @@ export class UserFormComponent implements OnInit {
     const formDataToSubmit = new FormData();
 
     const formKeys = [
-      'id', 'firstName', 'lastName', 'email', 'phone', 'userType', 'isActive', 'directorate',
+      'id', 'firstName', 'lastName', 'email', 'phone', 'userType', 
+      'locationId', 'isActive', 'directorate',
     ];
-    const roleId = this.roles.find((role) => role.name === this.currentValue?.role).id;
-    console.log('RoleId =========> ', roleId);
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);
     });
     formDataToSubmit.append('signatureFile', this.file);
-    formDataToSubmit.append('roleId', roleId);
+    formDataToSubmit.append('roleId', this.selectedRole?.id);
 
     this.adminService.updateStaff(formDataToSubmit).subscribe({
       next: (res) => {
