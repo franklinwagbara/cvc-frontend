@@ -100,16 +100,12 @@ export class UserFormComponent implements OnInit {
         Validators.required,
       ],
       firstName: [
-        {
-          value: this.currentValue ? this.currentValue.firstName : '',
-          disabled: true,
-        },
+        this.currentValue ? this.currentValue?.name.split(/\s+/)[0] : '',
+        Validators.required
       ],
       lastName: [
-        {
-          value: this.currentValue ? this.currentValue.lastName : '',
-          disabled: true,
-        },
+        this.currentValue ? this.currentValue?.name.split(/\s+/)[1] : '',
+        Validators.required
       ],
       email: [
         {
@@ -187,7 +183,7 @@ export class UserFormComponent implements OnInit {
             panelClass: ['success'],
           });
           this.isLoading = false;
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
       },
       error: (error: unknown) => {

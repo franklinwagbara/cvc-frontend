@@ -10,11 +10,11 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject, filter } from 'rxjs';
 import { PageManagerService } from '../../../../src/app/shared/services/page-manager.service';
 import { Util } from '../../../../src/app/shared/lib/Util';
-import { LOCATION } from 'src/app/shared/constants/location';
 import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
-import { decodeFullUserInfo } from 'src/app/helpers/tokenUtils';
+import { LOCATION } from 'src/app/shared/constants/location';
+
 
 export interface SubRouteInfo {
   id: number;
@@ -93,6 +93,11 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 2,
+        title: 'STS APPLICATIONS',
+        url: '/admin/applications/sts-applications',
+      },
+      {
+        id: 3,
         title: 'CoQ APPLICATIONS',
         url: '/admin/applications/coq-applications',
       },
@@ -100,6 +105,24 @@ const ROUTES: RouteInfo[] = [
   },
   {
     id: 6,
+    title: 'CoQ',
+    iconName: 'carbon',
+    iconId: 'carbon',
+    iconColor: 'white',
+    active: false,
+    subMenuActive: false,
+    directorate: 'BOTH',
+    userRole: [UserRole.ALL],
+    subRoutes: [
+      {
+        id: 1,
+        title: 'CoQ Applications',
+        url: '/admin/coq/coq-applications-by-depot',
+      },
+    ]
+  },
+  {
+    id: 7,
     title: 'ALL APPROVALS',
     iconName: 'licence-outline',
     iconId: 'licence_outline',
@@ -123,8 +146,8 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 16,
-    title: 'Processing Plant',
+    id: 8,
+    title: 'PROCESSING PLANT',
     iconName: 'carbon',
     iconId: 'carbon',
     iconColor: 'white',
@@ -136,18 +159,18 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'CoQ Form',
-        url: '/admin/coq-and-plant/processing-plant-new/certificate-of-quantity/new-application',
+        url: '/admin/processing-plant/certificate-of-quantity/new-application',
       },
       {
         id: 1,
         title: 'CoQ Applications',
-        url: '/admin/coq-and-plant/coq-applications-by-depot',
+        url: '/admin/processing-plant/certificate-of-quantity/applications',
       },
     ],
   },
 
   {
-    id: 7,
+    id: 9,
     title: 'PAYMENTS',
     iconName: 'payment',
     iconId: 'payment_fluent',
@@ -166,7 +189,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 8,
+    id: 10,
     title: 'REPORTS',
     iconName: 'treatment',
     iconId: 'Layer_1',
@@ -195,7 +218,7 @@ const ROUTES: RouteInfo[] = [
     ],
   },
   {
-    id: 9,
+    id: 11,
     title: 'SETTINGS',
     iconName: 'setting',
     iconId: 'setting',
@@ -306,9 +329,9 @@ export class SidebarComponent implements OnInit, OnChanges {
   public submenuItems: SubRouteInfo[];
   public activeNavItem = 'DASHBOARD';
   public isSubMenuCollapsed = true;
-  currentUser: any;
   public Directorate = Directorate;
   public directorate: string;
+  currentUser: any;
 
   isCollapsed = false;
   @Input() isCollapsed$ = new BehaviorSubject<boolean>(false);
@@ -329,25 +352,6 @@ export class SidebarComponent implements OnInit, OnChanges {
     ) {
       this.menuItems = this.menuItems.slice(0, 2).concat(
         [
-          {
-            id: 5,
-            title: 'DISCHARGE CLEARANCE',
-            iconName: 'apps',
-            iconId: 'apps',
-            iconColor: 'white',
-            active: false,
-            subMenuActive: false,
-            directorate: 'BOTH',
-            userRole: [UserRole.ALL],
-
-            subRoutes: [
-              {
-                id: 1,
-                title: 'NoA APPLICATIONS',
-                url: '/admin/noa-application-by-jetty-officer',
-              },
-            ],
-          },
           {
             id: 3,
             title: 'VESSEL CLEARANCE',
@@ -372,149 +376,39 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show CoQ nav only to Staffs in Field Offices and Field Officers
-    if (
-      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser?.directorate === Directorate.DSSRI
-    ) {
-      let coqSubRoutes = [
-        // {
-        //   id: 1,
-        //   title: 'NoA Applications',
-        //   url: '/admin/applications/noa-applications-by-depot',
-        // },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 3).concat(
-        {
-          id: 3,
-          title: 'CoQ',
-          // title: 'CoQ And NOA',
-          iconName: 'carbon',
-          iconId: 'carbon',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: coqSubRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(3)
-      );
-    } else if (
-      this.currentUser?.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser?.directorate === Directorate.HPPITI
-    ) {
-      let coqSubRoutes = [
-        {
-          id: 1,
-          title: 'Processing Plant',
-          url: '/admin/coq-and-plant/processing-plant/certificate-of-quantity/new-application',
-        },
-        {
-          id: 2,
-          title: 'CoQ Applications',
-          url: '/admin/coq-and-plant/coq-applications-by-depot',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 3).concat(
-        {
-          id: 3,
-          title: 'CoQ And Plant',
-          iconName: 'carbon',
-          iconId: 'carbon',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: coqSubRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(3)
-      );
+    // Show CoQ nav only to Staffs in Field Officers
+    if (this.currentUser?.userRoles !== UserRole.FIELDOFFICER) {
+      this.menuItems = this.menuItems.filter((el) => el.title !== 'CoQ');
     }
 
-    if (
-      this.currentUser?.directorate === Directorate.DSSRI ||
-      this.currentUser?.userRoles === UserRole.SUPERADMIN
-    ) {
-      let subRoutes = [
-        {
-          id: 1,
-          title: 'CoQ CERTIFICATES',
-          url: '/admin/all-approvals/coq-certificates',
-        },
-        {
-          id: 2,
-          title: 'NoA CLEARANCES',
-          url: '/admin/all-approvals/noa-clearances',
-        },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 4).concat(
-        {
-          id: 4,
-          title: 'ALL APPROVALS',
-          iconName: 'licence-outline',
-          iconId: 'licence_outline',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: subRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(4)
-      );
-    } else if (
-      this.currentUser?.directorate === Directorate.HPPITI ||
-      this.currentUser?.userRoles === UserRole.SUPERADMIN
-    ) {
-      let subRoutes = [
-        {
-          id: 1,
-          title: 'CoQ CERTIFICATES',
-          url: '/admin/all-approvals/coq-certificates',
-        },
-        // {
-        //   id: 2,
-        //   title: 'NoA CLEAR ANCES',
-        //   url: '/admin/all-approvals/noa-clearances',
-        // },
-      ];
-
-      this.menuItems = this.menuItems.slice(0, 4).concat(
-        {
-          id: 4,
-          title: 'ALL APPROVALS',
-          iconName: 'licence-outline',
-          iconId: 'licence_outline',
-          iconColor: 'white',
-          active: false,
-          subMenuActive: false,
-          subRoutes: subRoutes,
-          directorate: 'BOTH',
-          userRole: [UserRole.ALL],
-        },
-        this.menuItems.slice(4)
-      );
+    if (this.auth.isDssriStaff || !this.auth.currentUser.directorate) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'PROCESSING PLANT');
     }
 
-    // Show NOA Applications and All Applications only to Admins and HQ staffs
-    if (!Util.adminRoles.includes(this.currentUser?.userRoles)) {
-      this.menuItems = this.menuItems.filter(
-        (item) =>
-          item.title !== 'NOA APPLICATIONS' && item.title !== 'APPLICATIONS'
-      );
+    if (this.auth.isHppitiStaff) {
+      let allApprovalsNav = this.menuItems.find((el) => el.title === 'ALL APPROVALS');
+      allApprovalsNav.subRoutes = allApprovalsNav.subRoutes.filter((el) => {
+        return el.title !== 'NoA CLEARANCES'
+      })
+      let applicationsNav = this.menuItems.find((item) => item.title === 'APPLICATIONS');
+      if (applicationsNav) {
+        applicationsNav.subRoutes = applicationsNav.subRoutes.filter((el) => {
+          return el.title === 'CoQ APPLICATIONS';
+        })
+      }
     }
 
-    // Show settings only SuperAdmin
+    // If not SuperAdmin or HQ staff, remove NoA & CoQ Applications navitems
+    if (this.currentUser.location !== LOCATION.HQ
+      && this.currentUser.userRoles !== UserRole.SUPERADMIN)
+    {
+      let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
+      applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {
+        return sub.title !== 'NoA APPLICATIONS' && sub.title !== 'CoQ APPLICATIONS'
+      })
+    }
+
+    // Show settings if SuperAdmin
     if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {
       this.menuItems = this.menuItems.filter(
         (item) => item.title !== 'SETTINGS'

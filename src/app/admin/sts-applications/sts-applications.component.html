@@ -1,0 +1,21 @@
+<div class="setting-desk">
+  <h2 class="page-title">SHIP-TO-SHIP APPLICATIONS</h2>
+  <div class="table-group">
+    <div class="table-wrapper">
+      <generic-table
+        [EnableViewRecipientControl]="true"
+        [title-color]="'teal'"
+        [table_controls_horizontal]="true"
+        [table_keysMappedToHeaders]="appKeysMappedToHeaders"
+        [table_content]="applications"
+        [noEditControl]="true"
+        [noCheckControls]="true"
+        [noAddOrDeleteButton]="true"
+        [noTitle]="true"
+        (onViewData)="viewRecipients($event)"
+        [flat]="true"
+      >
+      </generic-table>
+    </div>
+  </div>
+</div>

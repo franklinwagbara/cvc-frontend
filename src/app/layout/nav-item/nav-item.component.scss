@@ -1,10 +1,23 @@
 /** Toggle side nav css ends here */
 .nav-item {
-  @apply relative z-10 mt-10 py-4 pl-7 flex items-center font-bold text-black fill-slate-50 hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
+  @apply relative z-10 mt-10 py-4 pl-7 flex items-center font-bold text-black fill-slate-50 
+    hover:cursor-pointer hover:bg-yellow-100 hover:text-black transition ease-in-out duration-500;
 }
 
 .nav-item-control {
   @apply flex gap-4;
+
+  & span {
+    font-size: medium;
+
+    @media screen and (max-width: 899px) {
+      font-size: small;
+    }
+  }
+}
+
+.nav-item-logo {
+  @apply w-[20px] h-[20px] md:w-[28px] md:h-[28px] fill-green-800;
 }
 
 .nav-item-active {
@@ -23,10 +36,16 @@
 /**Toggle nav sub menu css */
 .nav-sub-menu {
   @apply flex flex-col bg-yellow-100 text-black pt-6 overflow-auto;
-}
 
-.nav-sub-menu p {
-  @apply bg-yellow-200 m-3 p-3 shadow-lg hover:bg-yellow-400 transition-all ease-in-out delay-150 duration-300 hover:cursor-pointer;
+  & p {
+    font-size: medium;
+    @apply bg-yellow-200 m-3 p-3 shadow-lg hover:bg-yellow-400 transition-all 
+      ease-in-out delay-150 duration-300 hover:cursor-pointer;
+
+    @media screen and (max-width: 768px) {
+      font-size: small;
+    }
+  }
 }
 
 a {

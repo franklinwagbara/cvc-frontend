@@ -1,14 +1,14 @@
 <div class="application h-full">
-  <div class="pl-2 pr-6">
+  <div class="px-4">
     <h1 class="page-title">APPLICATION REPORT</h1>
     <div class="filterWrapper">
       <app-filterleft
         [applications]="applications"
         (sortedApps)="onSortApps($event)"
-        (onChecked)="onCheck($event)"
+        (onChecked)="onCheck($event)" 
       ></app-filterleft>
 
-      <div class="flex flex-col gap-1">
+      <div class="filter-right-wrapper">
         <app-filterright
           (searchValueChanged)="onSearchValueEntered1($event)"
           [applications]="applications"
@@ -26,16 +26,18 @@
     ></app-extras>
   </div>
 
-  <generic-table
-    [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
-    [table_content]="checked ? sortedApps : filteredApps2"
-    [noAddOrDeleteButton]="true"
-    [noCheckControls]="true"
-    [noEditControl]="true"
-    [noFilter]="true"
-    [noTitle]="true"
-  >
-  </generic-table>
+  <div class="px-2 pr-4">
+    <generic-table
+      [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
+      [table_content]="checked ? sortedApps : filteredApps2"
+      [noAddOrDeleteButton]="true"
+      [noCheckControls]="true"
+      [noEditControl]="true"
+      [noFilter]="true"
+      [noTitle]="true"
+    >
+    </generic-table>
+  </div>
   <app-graph-modal
     *ngIf="showModal"
     (onClose)="closeGraphModal()"

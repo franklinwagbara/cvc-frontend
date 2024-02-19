@@ -89,6 +89,7 @@ export class AllStaffComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -129,14 +130,13 @@ export class AllStaffComponent implements OnInit {
       disableClose: true,
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.spinner.show('Loading users');
-
+    dialogRef.afterClosed().subscribe((result: 'submitted') => {
+      if (result) {
+        this.progressBar.open();
         this.adminHttpService.getAllStaff().subscribe((res) => {
           this.users = res.data;
 
-          this.spinner.close();
+          this.progressBar.close();
         });
       }
     });
@@ -255,7 +255,7 @@ export class AllStaffComponent implements OnInit {
     });
   }
 
-  onEditData(event: Event, type: string) {
+  onEditData(event: any, type: string) {
     const operationConfiguration = {
       users: {
         data: {

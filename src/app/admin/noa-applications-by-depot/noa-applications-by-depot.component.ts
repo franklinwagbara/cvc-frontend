@@ -65,7 +65,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
         this.applications = this.applications
           .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
           .filter((app) => app.status !== 'Completed')
-          .reverse();
         this.spinner.close();
         this.progressBar.close();
         this.cdr.markForCheck();
@@ -81,7 +80,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   viewApplication(event: any): void {
-    this.router.navigate(['admin', 'coq-and-plant', 'noa-applications-by-depot', event.id]);
+    this.router.navigate(['admin', 'coq', 'noa-applications-by-depot', event.id]);
   }
 
   public get isFieldOfficer(): boolean {
@@ -98,7 +97,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   initiateCoQ(event: any) {
     this.router.navigate([
       'admin',
-      'coq-and-plant',
+      'coq',
       'noa-applications-by-depot',
       event.id,
       'certificate-of-quantity',

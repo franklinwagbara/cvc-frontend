@@ -15,7 +15,7 @@ export class AfterGasDynamicDataEntryComponent {
 
   public form: FormGroup;
 
-  public allSubscriptions = new Subscription();
+  private allSubscriptions = new Subscription();
 
   constructor(private ppContext: ProcessingPlantContextService) {}
 

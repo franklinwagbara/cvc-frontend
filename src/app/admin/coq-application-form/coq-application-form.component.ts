@@ -311,14 +311,16 @@ export class CoqApplicationFormComponent
             this.isGasProduct =
               this.requirement?.productType.toLowerCase() === 'gas';
           }
+
           if (this.noTankConfigured) {
             this.popUp.open(
-              'No tanks configured for this depot. You may not proceed to next step.',
+              'No tanks configured for this depot. You may not proceed to the next step.',
               'error'
             );
           } else {
             this.restoreReviewData();
           }
+
           this.documents$.next(
             this.requirement.requiredDocuments.map((el) => {
               return { ...el, success: null, percentProgress: 0 };
@@ -676,6 +678,21 @@ export class CoqApplicationFormComponent
     });
   }
 
+  resetFormOnSubmitted() {
+    if (this.isSubmitted) {
+      if (this.isGasProduct) {
+        this.vesselGasInfoForm.reset();  
+      } else {
+        this.vesselLiqInfoForm.reset();
+      }
+      this.depotSelection.reset();
+      this.productSelection.reset();
+      this.plantSelection.reset();
+      this.documents = [];
+      this.uploadedDocInfo = [];
+    }
+  }
+
   submit() {
     const payload = this.constructPayload();
     this.isSubmitting = true;
@@ -696,24 +713,19 @@ export class CoqApplicationFormComponent
             { panelClass: ['success'], duration: 2500 }
           );
           localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
-          if (this.isGasProduct) {
-            this.vesselGasInfoForm.reset();
-          } else {
-            this.vesselLiqInfoForm.reset();
-          }
+          this.resetFormOnSubmitted();
+
           this.restoreReviewData();
           this.coqStepper.selectedIndex = 0;
+          this.router.navigate([
+            'admin',
+            'coq',
+            'coq-applications-by-depot',
+          ]);
         } else {
           this.popUp.open('CoQ Application Creation Failed', 'error');
         }
         this.cd.markForCheck();
-        setTimeout(() => {
-          this.router.navigate([
-            'admin',
-            'coq-and-plant',
-            'coq-applications-by-depot',
-          ]);
-        }, 2400);
       },
       error: (error: unknown) => {
         this.isSubmitting = false;
@@ -869,15 +881,26 @@ export class CoqApplicationFormComponent
     };
   }
 
+  /**
+   * Restores previous COQ data from localStorage only if data is for the current product type (gas or liquid),
+   * thus eliminating pollution of localStorage with data of different product type, in which case 
+   * there will be a high chance of eventually submitting some COQ data set (before & after) with empty readings.
+   */
   restoreReviewData(): void {
     const localFormReviewData = JSON.parse(
       localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA)
     );
     if (Array.isArray(localFormReviewData) && localFormReviewData.length) {
       if (this.isGasProduct !== null && !this.isGasProduct) {
-        this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.liquidProductProps)) {
+          this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+        }
       } else if (this.isGasProduct !== null && this.isGasProduct) {
-        this.coqFormService.gasProductReviewData$.next(localFormReviewData);
+        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.gasProductProps)) {
+          this.coqFormService.gasProductReviewData$.next(localFormReviewData);
+        }
+      } else {
+        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
       }
     }
   }
@@ -993,8 +1016,9 @@ export interface IVesselDetail {
 }
 
 export interface GasTankReading {
-  tank?: string;
-  status?: string;
+  id: number;
+  tank: string;
+  status: string;
   liquidDensityVac: number;
   observedSounding: number;
   tapeCorrection: number;
@@ -1009,3 +1033,21 @@ export interface GasTankReading {
   molecularWeight: number;
   vapourFactor: number;
 }
+
+export interface LiquidTankReading {
+  id: number;
+  tank: string;
+  status: string;
+  density: number;
+  dip: number;
+  floatRoofCorr: number;
+  gov: number;
+  temperature: number;
+  tov: number;
+  vcf: number;
+  waterDIP: number;
+  waterVolume: number;
+}
+
+export type GasProductReviewData = { before: GasTankReading, after: GasTankReading };
+export type LiquidProductReviewData = { before: LiquidTankReading, after: LiquidTankReading };

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const API = `${environment.apiUrl}/ProcessingPlantCOQ`;
@@ -24,6 +25,10 @@ export class ProcessingPlantCOQService {
         return this.createLiquidDynamicCoq(payload);
       else return this.createLiquidStaticCoq(payload);
     }
+  }
+
+  public getAllCoqs(): Observable<any> {
+    return this.http.get<any>(`${API}/all_coqs`);
   }
 
   private createLiquidStaticCoq(payload) {

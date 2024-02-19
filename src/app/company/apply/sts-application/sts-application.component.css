@@ -1,5 +1,6 @@
 .form-wrapper {
-  @apply flex gap-5;
+  @apply flex items-center justify-center gap-4
+    w-[95%] sm:w-[400px] md:w-[500px] lg:w-[500px];
 }
 
 .form-wrapper h3 {
@@ -7,14 +8,11 @@
 }
 
 .apply-container {
-  position: relative;
-  margin: auto;
-  padding: 2rem;
-  @apply flex flex-col justify-center items-center;
+  @apply w-full flex flex-col justify-center items-center p-[2rem];
 }
 
 .apply-wrapper {
-  @apply flex flex-col gap-5 border-[1px] border-slate-200 p-10 pb-16;
+  @apply w-full flex flex-col justify-center items-center py-12;
 }
 
 .apply-wrapper h1 {
@@ -47,20 +45,24 @@
 }
 
 .form {
-  min-width: 400px;
-  @apply border border-gray-400 p-5 flex flex-col gap-10 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
+  @apply border border-gray-400 p-5 flex flex-col gap-10 
+    justify-center text-center rounded-t-lg shadow-md 
+    hover:bg-slate-100 w-full;
 }
 
-.recipient-vessel-form {
-  min-width: 400px;
-  @apply border border-gray-400 flex flex-col p-5 justify-center text-center rounded-t-lg shadow-md hover:bg-slate-100;
+.preview-wrapper {
+  @apply flex-col gap-4 p-2 justify-center w-full;
+}
+
+.preview-table-wrapper {
+  @apply overflow-x-auto p-2 bg-white;
 }
 
 .form h3 {
   @apply bg-slate-200 p-3;
 }
 
-.form button {
+.form:not(.second-segment) button {
   @apply bg-blue-200 p-2 border;
 }
 
@@ -119,6 +121,10 @@ button {
   font-size: small;
   color: white;
   @apply relative -mt-7 px-3 py-1;
+}
+
+.vessel-list {
+  @apply overflow-x-auto px-3 pt-3 pb-1 bg-white;
 }
 
 .hide {

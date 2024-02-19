@@ -90,7 +90,7 @@ export class DocumentUploadComponent implements OnInit {
 
   uploadFile(data) {
     this.progressBar.open();
-    this.spinner.open();
+    this.spinner.show('Uploading file...');
 
     const fileEvent = data.file;
     const doc: DocumentInfo = data.doc;
@@ -165,8 +165,6 @@ export class DocumentUploadComponent implements OnInit {
 
     const formdata = new FormData();
     formdata.append('file', file);
-
-    debugger;
 
     this.applicationService
       .uploadCompanyFileToElps(
@@ -244,9 +242,20 @@ export class DocumentUploadComponent implements OnInit {
     });
   }
 
+  get hasUploadedAllRequiredDocs(): boolean {
+    if (this.documents.length) {
+      return this.documents.every((info) => !!info.docSource);
+    }
+    return false;
+  }
+
   submitApplication() {
-    this.progressBar.open();
-    this.spinner.open();
+    if (!this.hasUploadedAllRequiredDocs) {
+      this.popUp.open('All Required Documents Must Be Uploaded', 'error');
+      return;
+    }
+
+    this.spinner.show('Submitting application...');
 
     const payload = {
       appId: Number(this.application_id),
@@ -256,15 +265,13 @@ export class DocumentUploadComponent implements OnInit {
     this.applicationService.submitApplication(payload).subscribe({
       next: (res) => {
         this.spinner.close();
-        this.progressBar.close();
         // this.popUp.open('Document(s) upload was successfull.', 'success');
         this.popUp.open('Application was submitted successfully', 'success');
-        this.router.navigate(['/company/dashboard']);
+        this.router.navigate(['/company/cvc-applications']);
         this.cd.markForCheck();
       },
       error: (res: unknown) => {
         this.spinner.close();
-        this.progressBar.close();
         // this.popUp.open('Document(s) upload failed!', 'error');
         this.popUp.open('Application submission failed!', 'error');
         this.cd.markForCheck();

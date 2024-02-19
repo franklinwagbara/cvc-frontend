@@ -4,14 +4,11 @@
 }
 
 .apply-container {
-  position: relative;
-  margin: auto;
-  padding: 2rem;
-  @apply flex flex-col justify-center items-center;
+  @apply w-full flex flex-col justify-center items-center p-[2rem];
 }
 
 .apply-wrapper {
-  @apply flex flex-col gap-5 border-[1px] border-slate-200 p-10 pb-16;
+  @apply w-full flex flex-col justify-center items-center py-12;
 
   & > h1 {
     font-size: larger;
@@ -21,7 +18,7 @@
 }
 
 .option-wrapper {
-  @apply flex gap-5;
+  @apply flex flex-col md:flex-row gap-5;
 
   & h3 {
     font-size: large;

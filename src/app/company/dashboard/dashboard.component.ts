@@ -13,13 +13,13 @@ import { ViewMessageComponent } from '../messages/view-message/view-message.comp
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
+import { OperatingFacility } from '../company.component';
 
 @Component({
   templateUrl: 'dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  public title = 'AUS2FrontEnd';
   public showapply = false;
   public showaccount = false;
   public generic: GenericService;
@@ -33,6 +33,7 @@ export class DashboardComponent implements OnInit {
   paginator!: MatPaginator;
   public dataSource = new MatTableDataSource<any>();
   public messagesCopy: IMessage[];
+  public OperatingFacility = OperatingFacility;
 
   public NavigatePath = {
     applications: 'myapplication',

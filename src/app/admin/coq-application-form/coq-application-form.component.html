@@ -42,24 +42,19 @@
               {{ noaApplication?.vessel?.productName }}
             </p>
             <p
-              *ngIf="!isProcessingPlant && noaApplication?.vessel?.jetty"
-              class="md:col-span-6"
-            >
-              <span class="form-header-info">JETTY</span>:
-              {{ noaApplication?.vessel?.jetty }}
-            </p>
-            <p
               *ngIf="!isProcessingPlant && noaApplication?.vessel?.name"
               class="md:col-span-6"
             >
               <span class="form-header-info">VESSEL NAME</span>:
               {{ noaApplication?.vessel?.name }}
             </p>
-            <p class="md:col-span-6">
+            <p 
+              *ngIf="noaApplication?.jetty" 
+              class="md:col-span-6"
+            >
               <span class="form-header-info">RECEIVING TERMINAL</span>:
               {{
-                noaApplication?.vessel?.recievingTerminal ||
-                  noaApplication?.receivingTerminal
+                noaApplication?.loadingPort
               }}
             </p>
           </div>
@@ -1171,12 +1166,12 @@
                     </ng-container>
 
                     <ng-container *ngIf="column === 'progress'">
-                      <div class="flex flex-col items-center justify-center">
+                      <div class="flex flex-col items-center justify-center gap-2 py-4">
                         <span
                           *ngIf="
                             documents?.length > 0 && documents[i]?.fileName
                           "
-                          class="font-bold text-slate-500"
+                          class="font-bold text-slate-500 text-center"
                           >{{
                             documents[i]?.fileName +
                               " (" +

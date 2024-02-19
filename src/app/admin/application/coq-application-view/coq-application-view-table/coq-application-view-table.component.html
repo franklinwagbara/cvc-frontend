@@ -1,15 +1,11 @@
 <table class="table">
-  <tbody>
+  <tbody *ngIf="application">
     <tr>
       <th>Reference Number</th>
       <td>{{ application?.reference }}</td>
     </tr>
 
     <ng-container *ngIf="isCoqProcessor">
-      <tr *ngIf="isProcessingPlant">
-        <th>Plant Name</th>
-        <td>{{ application?.plant.name }}</td>
-      </tr>
       <tr *ngIf="application?.productType">
         <th>Product Type</th>
         <td>{{ application?.productType }}</td>
@@ -96,72 +92,40 @@
     </tr>
 
     <ng-container *ngIf="!isCoqProcessor">
-      <ng-container *ngIf="!isProcessingPlant">
-        <tr>
-          <th>Company Name</th>
-          <td>{{ application?.companyName }}</td>
-        </tr>
+      <tr *ngIf="application?.marketerName">
+        <th>Marketer Name</th>
+        <td>{{ application?.marketerName }}</td>
+      </tr>
 
-        <tr>
-          <th>Depot Name</th>
-          <td>{{ application?.depotName }}</td>
-        </tr>
-        <tr>
-          <th>Depot Price</th>
-          <td>{{ application?.depotPrice }}</td>
-        </tr>
-        <tr>
-          <th>Total Volume</th>
-          <td>{{ application?.totalVolume }}</td>
-        </tr>
-        <tr>
-          <th>Debit Note</th>
-          <td>{{ application?.debitNote }}</td>
-        </tr>
-      </ng-container>
-      <ng-container *ngIf="isProcessingPlant">
-        <tr>
-          <th>Company Name</th>
-          <td>{{ application?.plant.company }}</td>
-        </tr>
+      <tr *ngIf="application?.depotName">
+        <th>Depot Name</th>
+        <td>{{ application?.depotName }}</td>
+      </tr>
 
-        <tr>
-          <th>Plant Name</th>
-          <td>{{ application?.plant.name }}</td>
-        </tr>
-        <tr>
-          <th>Name of Consignor</th>
-          <td>{{ application?.consignorName }}</td>
-        </tr>
-        <tr>
-          <th>Name of Consignee</th>
-          <td>{{ application?.consignee }}</td>
-        </tr>
-        <tr>
-          <th>Terminal</th>
-          <td>{{ application?.terminal }}</td>
-        </tr>
-        <tr>
-          <th>Destination</th>
-          <td>{{ application?.destination }}</td>
-        </tr>
-        <tr>
-          <th>Product Name</th>
-          <td>{{ application?.product.name }}</td>
-        </tr>
-        <tr>
-          <th>Price</th>
-          <td>{{ application?.price }}</td>
-        </tr>
-        <tr>
-          <th>Total MTVAC</th>
-          <td>{{ application?.totalMTVac }}</td>
-        </tr>
-        <tr>
-          <th>Debit Note</th>
-          <td>{{ application?.debitNote }}</td>
-        </tr>
-      </ng-container>
+      <tr *ngIf="application?.status">
+        <th>Status</th>
+        <td>{{ application?.status }}</td>
+      </tr>
+
+      <tr *ngIf="application?.depotPrice">
+        <th>Depot Price</th>
+        <td>{{ application?.depotPrice | currency:'NGN' }}</td>
+      </tr>
+
+      <tr *ngIf="application?.gsv">
+        <th>GSV</th>
+        <td>{{ application?.gsv }}</td>
+      </tr>
+
+      <tr *ngIf="application?.gov">
+        <th>G0V</th>
+        <td>{{ application?.gov }}</td>
+      </tr>
+
+      <tr *ngIf="application?.debitNote">
+        <th>Debit Note</th>
+        <td>{{ application?.debitNote }}</td>
+      </tr>
     </ng-container>
 
     <tr *ngIf="isCoqProcessor">

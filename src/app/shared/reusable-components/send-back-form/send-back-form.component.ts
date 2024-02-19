@@ -95,7 +95,7 @@ export class SendBackFormComponent implements OnInit {
         }
         this.isLoading = false;
         this.progressBarService.close();
-        this.router.navigate(['/admin/my-desk']);
+        this.router.navigate(['/admin/desk']);
         this.cd.markForCheck();
       },
 

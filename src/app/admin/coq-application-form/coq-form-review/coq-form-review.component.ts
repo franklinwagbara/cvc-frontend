@@ -49,7 +49,6 @@ export class CoqFormReviewComponent implements OnInit {
     this.dataSources = [];
     this.formData = this.coqFormService.flattenCoQDataArr(val);
     this.formData = this.formData.filter((el) => Object.values(el).every((val) => !!val))
-    console.log('Coq App Form Service =============> ', this.formData);
     for (let i = 0; i < this.formData.length; i += 2) {
       const tableData = [this.formData[i], this.formData[i+1]];
       this.dataSources.push(new MatTableDataSource<any[]>(tableData));

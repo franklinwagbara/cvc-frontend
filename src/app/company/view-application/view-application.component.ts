@@ -12,10 +12,12 @@ import { ApplyService } from '../../../../src/app/shared/services/apply.service'
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../src/app/shared/services/application.service';
-import { Application } from '../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../cvc-applications/cvc-applications.component';
 import { LicenceService } from '../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../../src/app/shared/reusable-components/show-more/show-more.component';
 import { Util } from '../../../../src/app/shared/lib/Util';
+import { UserRole } from 'src/app/shared/constants/userRole';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 
 @Component({
@@ -32,6 +34,7 @@ export class ViewApplicationComponent implements OnInit {
   public currentUser: any;
   isPDF = Util.isPDF;
   isIMG = Util.isIMG;
+  loading = true;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -45,7 +48,8 @@ export class ViewApplicationComponent implements OnInit {
     private router: Router,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
-    public location: Location
+    public location: Location,
+    private popUp: PopupService
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +66,7 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
+    return this.currentUser.userRoles === UserRole.SUPERVISOR;
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -71,8 +75,10 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   getApplication() {
+    this.loading = true;
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success) {
           this.application = res.data;
         }
@@ -82,12 +88,10 @@ export class ViewApplicationComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
+        this.loading = false;
+        this.popUp.open(
           'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
+          'error'
         );
 
         this.progressBar.close();
@@ -109,12 +113,9 @@ export class ViewApplicationComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
+        this.popUp.open(
           'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
+          'error'
         );
 
         this.progressBar.close();
@@ -199,18 +200,11 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
   }
-
 
 }

@@ -68,7 +68,6 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { EditCoqFormComponent } from './coq-application-form/edit-coq-form/edit-coq-form.component';
 import { CoqFormReviewComponent } from './coq-application-form/coq-form-review/coq-form-review.component';
 import { ProductsComponent } from './settings/products/products.component';
-import { ProcessingPlantCoqFormComponent } from './processing-plant-coq-form/processing-plant-coq-form.component';
 import { MatCardModule } from '@angular/material/card';
 import { CoqApplicationViewComponent } from './application/coq-application-view/coq-application-view.component';
 import { CoqApplicationViewTableComponent } from './application/coq-application-view/coq-application-view-table/coq-application-view-table.component';
@@ -110,6 +109,22 @@ import { BeforeGasDynamicDataEntryComponent } from './processing-plant/coq-appli
 import { AfterGasDynamicDataEntryComponent } from './processing-plant/coq-application-form/gas-data-dynamic-entry/after-gas-dynamic-data-entry/after-gas-dynamic-data-entry.component';
 import { AfterGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/after-gas-static-data-entry/after-gas-static-data-entry.component';
 import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-application-form/gas-data-static-entry/before-gas-static-data-entry/before-gas-static-data-entry.component';
+import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
+import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
+import { AllPpcoqApplicationsComponent } from './all-ppcoq-applications/all-ppcoq-applications.component';
+import { PpcoqLiquidAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-liquid-app-view-table/ppcoq-liquid-app-view-table.component';
+import { ViewPpcoqTankComponent } from './application/coq-application-view/view-ppcoq-tank/view-ppcoq-tank.component';
+import { CondensateDataDynamicEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
+import { CondensateDataStaticEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/condensate-data-static-entry.component';
+import { AfterCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/after-condensate-dynamic-data-entry/after-condensate-dynamic-data-entry.component';
+import { BeforeCondensateDynamicDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
+import { BeforeCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/before-condensate-static-data-entry/before-condensate-static-data-entry.component';
+import { AfterCondensateStaticDataEntryComponent } from './processing-plant/coq-application-form/condensate-data-static-entry/after-condensate-static-data-entry/after-condensate-static-data-entry.component';
+import { ProcessingDetailsCondensateComponent } from './processing-plant/coq-application-form/processing-details-condensate/processing-details-condensate.component';
+import { PpcoqGasAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-gas-app-view-table/ppcoq-gas-app-view-table.component';
+import { PpcoqCondensateAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-condensate-app-view-table/ppcoq-condensate-app-view-table.component';
+import { ReadingsModalComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-liquid-app-view-table/readings-modal/readings-modal.component';
+import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
 
 @NgModule({
   declarations: [
@@ -158,7 +173,6 @@ import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-applic
     EditCoqFormComponent,
     CoqFormReviewComponent,
     ProductsComponent,
-    ProcessingPlantCoqFormComponent,
     CoqApplicationViewComponent,
     CoqApplicationViewTableComponent,
     ViewCoqTankComponent,
@@ -193,6 +207,22 @@ import { BeforeGasStaticDataEntryComponent } from './processing-plant/coq-applic
     AfterGasDynamicDataEntryComponent,
     AfterGasStaticDataEntryComponent,
     BeforeGasStaticDataEntryComponent,
+    StsApplicationsComponent,
+    RecipientsViewComponent,
+    AllPpcoqApplicationsComponent,
+    PpcoqLiquidAppViewTableComponent,
+    ViewPpcoqTankComponent,
+    CondensateDataDynamicEntryComponent,
+    CondensateDataStaticEntryComponent,
+    AfterCondensateDynamicDataEntryComponent,
+    BeforeCondensateDynamicDataEntryComponent,
+    BeforeCondensateStaticDataEntryComponent,
+    AfterCondensateStaticDataEntryComponent,
+    ProcessingDetailsCondensateComponent,
+    PpcoqGasAppViewTableComponent,
+    PpcoqCondensateAppViewTableComponent,
+    ReadingsModalComponent,
+    PpcoqApplicationViewTableComponent,
   ],
 
   imports: [

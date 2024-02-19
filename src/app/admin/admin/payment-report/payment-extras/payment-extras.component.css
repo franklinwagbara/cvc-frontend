@@ -1,22 +1,12 @@
 .extras {
-  margin-bottom: 40px;
-}
-
-.extrasWrapper {
-  width: 50%;
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px 0px;
+  @apply mt-16 flex justify-start flex-wrap gap-4;
 }
 
 .extrasItem {
   color: #fff;
   background-color: #051438ed;
-  font-size: 17px;
-  padding: 5px 10px;
+  font-size: small;
+  padding: 8px;
   border-radius: 10px;
   cursor: pointer;
 }

@@ -8,18 +8,17 @@ import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-a
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
-import { LOCATION } from '../../../../../src/app/shared/constants/location';
 import { CoqService } from 'src/app/shared/services/coq.service';
-import { UserRole } from 'src/app/shared/constants/userRole';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-view',
@@ -42,12 +41,14 @@ export class CoqApplicationViewComponent implements OnInit {
   public PPCOQId: number;
 
   appLoaded = false;
-  isLoading = true;
+  loading = true;
   isFAD: boolean;
   isSupervisor: boolean;
   isCOQProcessor: boolean;
   isFO: boolean;
   isProcessingPlant: boolean;
+  isIMG = Util.isIMG;
+  isPDF = Util.isPDF;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -63,31 +64,26 @@ export class CoqApplicationViewComponent implements OnInit {
     private paymentService: PaymentService,
     private popUp: PopupService,
     private router: Router
-  ) {}
+  ) {
+    this.route.params.subscribe((param) => {
+      this.appId = parseInt(param['id']);
+      this.coqId = parseInt(param['id']);
+      this.PPCOQId = parseInt(param['id']);
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      this.spinner.show('Loading application...');
+      this.isPPCOQ = params['isPPCOQ'] === 'true';
+      this.appSource = params['appSource'];
+      this.getApplication();
+    });
+  }
 
   ngOnInit(): void {
     this.isFAD = this.auth.isFAD;
     this.isSupervisor = this.auth.isSupervisor;
     this.isCOQProcessor = this.auth.isCOQProcessor;
     this.isFO = this.auth.isFO;
-
-    this.route.params.subscribe((param) => {
-      // this.appId = parseInt(param['id']);
-      // this.coqId = parseInt(param['id']);
-      // this.PPCOQId = parseInt(param['PPCOQId']);
-      // this.isPPCOQ = param['isPPCOQ'];
-      // this.getApplication();
-    });
-
-    this.route.queryParams.subscribe((params) => {
-      this.spinner.show('Loading application...');
-      this.appId = parseInt(params['id']);
-      this.coqId = parseInt(params['id']);
-      this.PPCOQId = parseInt(params['PPCOQId']);
-      this.isPPCOQ = Boolean(params['isPPCOQ']);
-      this.appSource = params['appSource'];
-      this.getApplication();
-    });
 
     this.currentUser = this.auth.currentUser as LoginModel;
   }
@@ -102,7 +98,7 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   generateDebitNote() {
-    this.isLoading = true;
+    this.loading = true;
     this.spinner.show('Generating Debit Note...');
 
     this.paymentService.generateDebitNote(this.coqId).subscribe({
@@ -113,11 +109,12 @@ export class CoqApplicationViewComponent implements OnInit {
             this.router.navigate(['/admin/desk']);
           }, 3000);
         }
-        this.isLoading = false;
+        this.loading = false;
         this.spinner.close();
       },
       error: (error: unknown) => {
-        console.log(error);
+        this.loading = false;
+        console.error(error);
         this.popUp.open(
           'Something went wrong while generating Debit Note',
           'error'
@@ -128,11 +125,14 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   getApplication() {
+    console.log('isPPCOQ =============> ', this.isPPCOQ);
+    this.loading = true;
     (!this.isPPCOQ
       ? this.coqService.viewCoqApplication(this.appId)
       : this.coqService.viewPPCoqApplication(this.PPCOQId)
     ).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success && this.isPPCOQ) {
           this.ppCoq = res.data;
           this.appLoaded = true;
@@ -149,14 +149,9 @@ export class CoqApplicationViewComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        this.loading = false;
         console.error(error);
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
-        );
+        this.popUp.open('Something went wrong while retrieving data.', 'error');
 
         this.progressBar.close();
         this.spinner.close();
@@ -170,7 +165,6 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
-    debugger;
     const operationConfiguration = {
       approve: {
         data: {
@@ -271,33 +265,10 @@ export class CoqApplicationViewComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
     });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
-    });
-  }
-
-  isPDF(filePath: string) {
-    if (!filePath) return false;
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return fileType == 'pdf';
-  }
-
-  isIMG(filePath) {
-    if (!filePath) return false;
-    const imageTypes = ['png', 'jpg', 'jpeg', 'tiff'];
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return imageTypes.includes(fileType);
   }
 }

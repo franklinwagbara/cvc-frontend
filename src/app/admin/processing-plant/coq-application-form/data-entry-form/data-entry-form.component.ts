@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  Inject,
   Input,
   OnDestroy,
   OnInit,
@@ -22,6 +23,10 @@ import { BatchService } from 'src/app/shared/services/batch.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { MatStep } from '@angular/material/stepper';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
+
+import { CondensateDataStaticEntryComponent } from '../condensate-data-static-entry/condensate-data-static-entry.component';
+import { CondensateDataDynamicEntryComponent } from '../condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
 
 @Component({
   selector: 'app-data-entry-form',
@@ -30,6 +35,7 @@ import { MatStep } from '@angular/material/stepper';
 })
 export class DataEntryFormComponent implements OnInit, OnDestroy {
   @Input() isGas: boolean;
+  @Input() productType: 'Gas' | 'Liquid' | 'Condensate';
   @Input() selectedMeasurementSystem: MeasurementSystem;
   @Input() selectedProduct: IProduct;
   @Input() selectedMeterType: any;
@@ -82,23 +88,30 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
     this.dataEntryContainer = this.viewContainerRef;
     debugger;
     if (this.selectedMeasurementSystem == 'Static') {
-      if (this.isGas) {
+      if (this.productType === 'Gas') {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           GasDataStaticEntryComponent
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else {
+      } else if (this.productType === 'Liquid') {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           LiquidDataStaticEntryComponent
         );
 
         component.instance.batchStepper = this.batchStepper;
+      } else if (this.productType === 'Condensate') {
+        this.dataEntryContainer.clear();
+        let component = this.dataEntryContainer.createComponent(
+          CondensateDataStaticEntryComponent
+        );
+
+        component.instance.batchStepper = this.batchStepper;
       }
     } else {
-      if (this.isGas) {
+      if (this.productType === 'Gas') {
         this.dataEntryContainer.clear();
 
         let component = this.dataEntryContainer.createComponent(
@@ -106,7 +119,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else {
+      } else if (this.productType === 'Liquid') {
         if (!this.dataEntryContainer) return;
 
         this.dataEntryContainer.clear();
@@ -116,9 +129,17 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
         );
 
         component.instance.batchStepper = this.batchStepper;
+      } else if (this.productType === 'Condensate') {
+        this.dataEntryContainer.clear();
+        let component = this.dataEntryContainer.createComponent(
+          CondensateDataDynamicEntryComponent
+        );
+
+        component.instance.batchStepper = this.batchStepper;
       }
     }
     this.cd.markForCheck();
+    (this.dataEntryContainer.element.nativeElement as HTMLElement).scrollIntoView(true);
   }
 
   private initSubscriptions() {

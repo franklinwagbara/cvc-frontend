@@ -16,6 +16,10 @@ export class ShipToShipService {
   public getAllRecords(): Observable<any> {
     return this.http.get<any>(`${API}/get-all-records`);
   }
+  
+  public getAllRecordsByCompany(): Observable<any> {
+    return this.http.get<any>(`${API}/get-all-records-by-company`);
+  }
 
   public addRecord(payload: IApplicationFormDTO): Observable<any> {
     return this.http.post<IApplicationFormDTO>(`${API}/add-records`, payload);

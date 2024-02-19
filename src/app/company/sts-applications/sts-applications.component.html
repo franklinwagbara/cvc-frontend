@@ -1,0 +1,20 @@
+<div class="container wrapper">
+  <div class="table-group">
+    <div class="table-wrapper">
+      <generic-table
+        [EnableViewRecipientControl]="true"
+        [table_title]="'Ship-to-Ship Applications'"
+        [title-color]="'teal'"
+        [table_controls_horizontal]="true"
+        [table_keysMappedToHeaders]="appKeysMappedToHeaders"
+        [table_content]="applications"
+        [noEditControl]="true"
+        [noCheckControls]="true"
+        [noAddOrDeleteButton]="true"
+        (onViewData)="viewRecipients($event)"
+        [flat]="true"
+      >
+      </generic-table>
+    </div>
+  </div>
+</div>

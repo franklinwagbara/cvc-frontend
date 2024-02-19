@@ -1,7 +1,7 @@
 <nav id="company-top-nav">
   <div class="brand-logo">
     <img src="../../../../assets/img/brand/logo.png" />
-    <span class="pl-2">{{
+    <span class="pl-2" style="font-size: large;">{{
       currentUser?.operationFacility === OperatingFacility.ProcessingPlant
         ? "Processing Plant"
         : "CVC"
@@ -18,10 +18,21 @@
       </app-dropdown>
       <app-dropdown
         *ngIf="
-          currentUser?.operationFacility !== OperatingFacility.ProcessingPlant
+          currentUser?.operationFacility === OperatingFacility.CVC ||
+          currentUser?.operationFacility === OperatingFacility.Both
         "
         title="APPLICATIONS"
         [menu-items]="applicationsMenuItems"
+      >
+      </app-dropdown>
+      <app-dropdown
+        *ngIf="
+          currentUser?.operationFacility ===
+            OperatingFacility.ProcessingPlant ||
+          currentUser?.operationFacility === OperatingFacility.Both
+        "
+        [menu-items]="processingPlantMenuItems"
+        title="PROCESSING PLANT"
       >
       </app-dropdown>
       <app-dropdown title="MY ACCOUNT" [menu-items]="myAccountMenuItems">
@@ -78,13 +89,22 @@
             <span>Apply</span>
           </div>
         </button>
-        <button mat-menu-item routerLink="/company/myapplication">
+        <button mat-menu-item routerLink="/company/cvc-applications">
           <div class="menu-item-content">
             <ng-container
               *ngTemplateOutlet="iconTemp; context: iconContexts.myapps"
             >
             </ng-container>
-            <span>My Applications</span>
+            <span>CVC Applications</span>
+          </div>
+        </button>
+        <button mat-menu-item routerLink="/company/sts-applications">
+          <div class="menu-item-content">
+            <ng-container
+              *ngTemplateOutlet="iconTemp; context: iconContexts.myapps"
+            >
+            </ng-container>
+            <span>STS Applications</span>
           </div>
         </button>
       </mat-menu>

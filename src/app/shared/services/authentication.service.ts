@@ -6,7 +6,7 @@ import { map, retry } from 'rxjs/operators';
 import { environment } from '../../../../src/environments/environment';
 import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
-import { UserRole } from '../constants/userRole';
+import { Directorate, UserRole } from '../constants/userRole';
 import { LOCATION } from '../constants/location';
 
 @Injectable({ providedIn: 'root' })
@@ -85,7 +85,7 @@ export class AuthenticationService {
   }
 
   public get isFO() {
-    return (this.currentUser as LoginModel).userRoles === LOCATION.FO;
+    return (this.currentUser as LoginModel).location === LOCATION.FO;
   }
 
   public get isApprover() {
@@ -94,6 +94,14 @@ export class AuthenticationService {
 
   public get isFieldOfficer() {
     return (this.currentUser as LoginModel).userRoles == UserRole.FIELDOFFICER;
+  }
+
+  public get isHppitiStaff() {
+    return (this.currentUser as LoginModel).directorate === Directorate.HPPITI;
+  }
+
+  public get isDssriStaff() {
+    return (this.currentUser as LoginModel).directorate === Directorate.DSSRI;
   }
 
   public get isStaff() {

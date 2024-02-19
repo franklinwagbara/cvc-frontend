@@ -11,7 +11,7 @@
 
 html,
 body {
-  min-width: fit-content;
+  min-height: 99vh;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -61,21 +61,21 @@ button:disabled {
 
 .page-title {
   box-shadow: 1px 3px 4px 0px #9fa4c2;
+  font-size: x-large;
   color: wheat !important;
-  @apply text-center py-6 mb-6 rounded-full min-w-fit bg-gradient-to-r from-[#71B280] to-[#134E5E];
+  @apply text-center py-6 px-4 mb-6 rounded-full min-w-fit bg-gradient-to-r from-[#71B280] to-[#134E5E];
 }
 
 .setting-desk {
-  min-height: fit-content;
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 5px;
   margin: 0 1.5rem 0 1.5rem;
-  @apply bg-background;
+  @apply bg-background min-h-screen;
 }
 
 .table-wrapper {
   border-radius: 10px;
-  padding: 20px;
+  padding: 10px;
   margin-bottom: 20px;
 }
 

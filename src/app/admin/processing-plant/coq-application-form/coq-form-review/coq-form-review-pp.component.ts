@@ -42,6 +42,7 @@ export class CoqFormReviewPPComponent implements OnInit {
     'vapourFactor',
     'actions',
   ];
+
   displayedColumns: string[];
   localDataKey = LocalDataKey.COQFORMREVIEWDATA;
   dataSources: MatTableDataSource<any[]>[] = [];

@@ -1,5 +1,3 @@
-import { Category } from '../../../admin/settings/modules-setting/modules-setting.component';
-
 import { Component, Inject } from '@angular/core';
 import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -7,8 +5,6 @@ import {
   MatDialog,
   MatDialogRef,
 } from '@angular/material/dialog';
-import { AdminService } from '../../services/admin.service';
-import { SpinnerService } from '../../services/spinner.service';
 import { PopupService } from '../../services/popup.service';
 import { Staff } from '../../../admin/settings/all-staff/all-staff.component';
 import { IPlant } from '../../interfaces/IPlant';
@@ -23,27 +19,34 @@ export class JettyOfficerFormComponent {
   public form: FormGroup;
   public jettys: IPlant[];
   public staffList: Staff[];
+  editMode: boolean;
+  submitting = false;
+  selectedData: any;
 
   constructor(
     public dialogRef: MatDialogRef<JettyOfficerFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private adminHttpService: AdminService,
     private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private spinner: SpinnerService,
     private popUp: PopupService,
     private jettyOfficer: JettyOfficerService
   ) {
+    this.editMode = data.data?.editMode;
     this.jettys = data.data.jettys;
     this.staffList = data.data.staffList;
-
+    this.selectedData = data?.data?.currentData;
     this.staffList = this.staffList.filter(
-      (s) => s.role.toLowerCase() == 'field_officer'.toLowerCase()
+      (s) => s.role.toLowerCase() == 'field_officer'
     );
 
     this.form = this.formBuilder.group({
-      jettyID: ['', Validators.required],
-      userID: ['', Validators.required],
+      jettyID: [
+        { 
+          value: this.selectedData?.jettyID || '', 
+          disabled: this.selectedData?.jettyID 
+        }, 
+        Validators.required
+      ],
+      userID: [this.selectedData?.userID || '', Validators.required],
     });
   }
 
@@ -52,29 +55,49 @@ export class JettyOfficerFormComponent {
   }
 
   createBranch() {
-    this.onClose();
-    this.spinner.open();
-
-    this.jettyOfficer.createMapping(this.form.value).subscribe({
+    this.submitting = true;
+    console.log('STAFF LIST ==========> ', this.staffList);
+    const staff = (this.staffList as any[]).find((el) => el.id === this.form.value.userID);
+    const model = {
+      ...this.form.value,
+      officerName: staff.firstName + ' ' + staff.lastName,
+      jettyName: this.jettys.find((el) => el.id === this.form.value.jettyID)?.name
+    };
+    this.jettyOfficer.createMapping(model).subscribe({
       next: (res) => {
-        if (res.success) {
-          this.popUp.open('Configuration was created successfully!', 'success');
-          this.dialogRef.close();
-        }
-        this.spinner.close();
-        setTimeout(() => {
-          window.location.reload();
-        }, 2500)
+        this.submitting = false;
+        this.popUp.open('Configuration was created successfully!', 'success');
+        this.dialogRef.close('submitted');
       },
 
       error: (error: unknown) => {
+        console.log(error);
+        this.submitting = false;
         this.popUp.open(
-          'Operation failed! Could not create the Branch!',
+          'Could not create the Branch!',
           'error'
         );
-
-        this.spinner.close();
       },
     });
+  }
+
+  editBranch() {
+    this.submitting = true;
+    const model = { ...this.selectedData, ...this.form.value };
+    this.jettyOfficer.editMapping(model?.jettyFieldOfficerID, model).subscribe({
+      next: (res: any) => {
+        this.submitting = false;
+        this.popUp.open('Configuration was updated successfully!', 'success');
+        this.dialogRef.close('submitted');
+      },
+      error: (error: unknown) => {
+        console.error(error);
+        this.submitting = false;
+        this.popUp.open(
+          'Could not update the Branch!',
+          'error'
+        );
+      }
+    })
   }
 }

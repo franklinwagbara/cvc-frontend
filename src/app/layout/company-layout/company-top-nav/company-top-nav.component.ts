@@ -37,11 +37,16 @@ export class CompanyTopNavComponent implements OnInit {
     {
       name: 'Apply',
       url: 'company/apply',
-      subMenu: [],
+      subMenu: null,
     },
     {
-      name: 'My Application',
-      url: 'company/myapplication',
+      name: 'CVC Applications',
+      url: 'company/cvc-applications',
+      subMenu: null,
+    },
+    {
+      name: 'STS Applications',
+      url: 'company/sts-applications',
       subMenu: null,
     },
   ];
@@ -84,6 +89,14 @@ export class CompanyTopNavComponent implements OnInit {
     },
   ];
 
+  public processingPlantMenuItems = [
+    {
+      name: 'Processing Plants',
+      url: 'company/processing-plant',
+      subMenu: null,
+    },
+  ];
+
   constructor(
     private applyService: ApplyService,
     private spinner: SpinnerService,
@@ -91,17 +104,16 @@ export class CompanyTopNavComponent implements OnInit {
     public auth: AuthenticationService
   ) {
     this.currentUser = this.auth.currentUser;
-    debugger;
-    if (
-      this.currentUser.operationFacility ===
-      this.OperatingFacility.ProcessingPlant
-    ) {
-      this.myAccountMenuItems.push({
-        name: 'Processing Plants',
-        url: 'company/processing-plant',
-        subMenu: null,
-      });
-    }
+    // if (
+    //   this.currentUser.operationFacility ===
+    //   this.OperatingFacility.ProcessingPlant
+    // ) {
+    //   this.myAccountMenuItems.push({
+    //     name: 'Processing Plants',
+    //     url: 'company/processing-plant',
+    //     subMenu: null,
+    //   });
+    // }
   }
 
   iconContexts = {

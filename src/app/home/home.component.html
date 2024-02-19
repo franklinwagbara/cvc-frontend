@@ -7,7 +7,7 @@
           <h1>NMDPRA</h1>
         </div>
         <div class="buttons-wrapper">
-          <div>
+          <div class="buttons-group">
             <button class="green">
               <a href="{{ elpsbase }}/Account/Login?appId={{ appid }}"
                 >PORTAL LOGIN</a
@@ -19,14 +19,14 @@
               >
             </button>
           </div>
-          <div>
+          <div class="buttons-group">
             <button class="blue">
-              <a href="{{ elpsbase }}/Account/forgotPassword?appId={{ appid }}"
-                >VERIFY PERMIT</a
+              <a href="{{ elpsbase }}/Account/verifyPermit?appId={{ appid }}"
+                >VERIFY CLEARANCE</a
               >
             </button>
             <button class="red">
-              <a href="{{ elpsbase }}/permit/verifyPermit?appId={{ appid }}"
+              <a href="{{ elpsbase }}/permit/forgotPassword?appId={{ appid }}"
                 >FORGOT PASSWORD</a
               >
             </button>
@@ -40,7 +40,7 @@
     <div class="side-area">
       <div class="title-wrapper">
         <h2>CVC & CoQ PORTAL</h2>
-        <h6>(COASTAL VESSEL CLEARANCE & CERTIFICATE OF QUANTITY PORTAL)</h6>
+        <h6 class="text-center">(COASTAL VESSEL CLEARANCE & CERTIFICATE OF QUANTITY PORTAL)</h6>
       </div>
       <div *ngIf="windowScreenSize > 1216; else mainArea"></div>
       <div class="cards-wrapper">
@@ -50,7 +50,7 @@
           <ul>
             <li><a href="">Online Application Guide</a></li>
             <li><a href="">Resend Activation Email</a></li>
-            <li><a href="">Verify a Permit</a></li>
+            <li><a href="">Apply for Clearance</a></li>
             <li><a href="">FAQ</a></li>
           </ul>
         </div>
@@ -61,7 +61,7 @@
             <li><a href="">Create an account to use</a></li>
             <li><a href="">resources on this portal. Note</a></li>
             <li><a href="">that account creation is not</a></li>
-            <li><a href="">required to validate permit.</a></li>
+            <li><a href="">required to validate clearance.</a></li>
           </ul>
         </div>
         <div class="card">
@@ -69,8 +69,8 @@
           <img src="assets/image/icon3.png" alt="logo" />
           <ul>
             <li><a href="">Login to apply for a new</a></li>
-            <li><a href="">application form, renew or</a></li>
-            <li><a href="">manage your permits</a></li>
+            <li><a href="">CVC clearance, STS transfer or</a></li>
+            <li><a href="">manage your applications.</a></li>
           </ul>
         </div>
       </div>

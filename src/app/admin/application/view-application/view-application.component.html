@@ -3,7 +3,7 @@
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
   </button>
 
-  <div class="view-application">
+  <div *ngIf="application; else noData" class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
       APPLICATION REFERENCE : {{ application?.reference }}
     </h2>
@@ -23,6 +23,34 @@
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
           <p>{{ application?.currentDesk }}</p>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div
+            class="card-list"
+            *ngFor="let history of application?.appHistories | firstN : 4"
+          >
+            <div class="card-item">
+              <div class="item-title">Initiator</div>
+              <div class="item-content">{{ history.triggeredBy }}</div>
+            </div>
+            <div class="card-item">
+              <div class="item-title">Recipient</div>
+              <div class="item-content">{{ history.targetedTo }}</div>
+            </div>
+            <div class="card-item">
+              <div class="item-title">Remark</div>
+              <div class="item-content">{{ history.comment }}</div>
+            </div>
+            <div class="card-item">
+              <div class="item-title">Date</div>
+              <div class="item-content">{{ history.date }}</div>
+            </div>
+          </div>
+          <p class="show-more" (click)="showMore('appHistory')">Show more</p>
         </mat-expansion-panel>
 
         <mat-expansion-panel>
@@ -100,4 +128,15 @@
       </ng-container>
     </div>
   </div>
+
+  <ng-template #noData>
+    <div class="flex justify-center items-center">
+      <div 
+        *ngIf="!loading" 
+        class="border-4 p-12 font-bold border-red-300 bg-red-200 text-center"
+      >
+        Application Details Unavailable
+      </div>
+    </div>
+  </ng-template>
 </div>

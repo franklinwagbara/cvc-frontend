@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,9 +13,10 @@ import { ApplyService } from '../../../../../src/app/shared/services/apply.servi
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../../src/app/shared/services/application.service';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
+import { Subject, takeUntil } from 'rxjs';
 
 
 @Component({
@@ -23,15 +24,16 @@ import { ShowMoreComponent } from '../../../shared/reusable-components/show-more
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent implements OnInit, OnDestroy {
   public application: Application;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
   public licence: any;
   public coqId: number;
+  private destroy = new Subject<void>();
 
-  public loading: boolean;
+  public loading = true;
   isApprover: boolean;
   isFieldOfficer: boolean;
   isFO: boolean;
@@ -51,6 +53,15 @@ export class ViewApplicationComponent implements OnInit {
     private licenceService: LicenceService,
     public location: Location
   ) {
+    
+  }
+
+  ngOnInit(): void {
+    this.isFO = this.auth.isFO;
+    this.isSupervisor = this.auth.isSupervisor;
+    this.isFieldOfficer = this.auth.isFieldOfficer;
+    this.isApprover = this.auth.isApprover;
+
     this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
         this.spinner.open();
@@ -72,11 +83,9 @@ export class ViewApplicationComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.isFO = this.auth.isFO;
-    this.isSupervisor = this.auth.isSupervisor;
-    this.isFieldOfficer = this.auth.isFieldOfficer;
-    this.isApprover = this.auth.isApprover;
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -86,61 +95,65 @@ export class ViewApplicationComponent implements OnInit {
 
   getApplication() {
     this.loading = true;
-    this.spinner.show('Fetching application');
-    this.applicationService.viewApplication(this.appId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.application = res.data;
-        }
-        this.loading = false;
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        console.log(error);
-        this.loading = false;
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
+    this.spinner.show('Loading application...');
+    this.applicationService.viewApplication(this.appId)
+      .pipe(takeUntil(this.destroy))
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.application = res.data;
           }
-        );
+          this.loading = false;
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          console.log(error);
+          this.loading = false;
+          this.snackBar.open(
+            'Something went wrong while retrieving data.',
+            null,
+            {
+              panelClass: ['error'],
+            }
+          );
 
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+      });
   }
 
   getLicence() {
     this.spinner.show('Loading license details');
-    this.licenceService.getLicence(this.appId).subscribe({
-      next: (res) => {
-        if (res.success) {
-          this.licence = res.data;
-        }
-
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.snackBar.open(
-          'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
+    this.licenceService.getLicence(this.appId)
+      .pipe(takeUntil(this.destroy))  
+      .subscribe({
+        next: (res) => {
+          if (res.success) {
+            this.licence = res.data;
           }
-        );
 
-        this.progressBar.close();
-        this.spinner.close();
-        this.cd.markForCheck();
-      },
-    });
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          this.snackBar.open(
+            'Something went wrong while retrieving data.',
+            null,
+            {
+              panelClass: ['error'],
+            }
+          );
+
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        },
+      });
   }
 
   public get isStaffDesk() {
@@ -218,16 +231,10 @@ export class ViewApplicationComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(ShowMoreComponent, {
+    this.dialog.open(ShowMoreComponent, {
       data: {
         data: operationConfiguration[type].data,
       },
-    });
-
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBar.open();
-
-      this.getApplication();
     });
   }
 

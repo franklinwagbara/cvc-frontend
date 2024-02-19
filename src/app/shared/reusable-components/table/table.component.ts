@@ -16,12 +16,11 @@ import { ITableKeysMappedToHeaders } from '../../../../../src/app/shared/interfa
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { Application } from '../../../../../src/app/company/my-applications/myapplication.component';
+import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { IApplication } from '../../interfaces/IApplication';
 import { MatDialog } from '@angular/material/dialog';
 import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
-import { LibaryService } from '../../services/libary.service';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { ProductService } from '../../services/product.service';
@@ -32,7 +31,7 @@ interface IColumn {
   cell: (element: object) => string;
 }
 
-const PAGESIZEOPTIONS = [2, 5, 10];
+const PAGESIZEOPTIONS = [5, 10, 20, 30, 40, 50];
 const PAGESIZE = 10;
 
 @Component({
@@ -74,6 +73,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
   @Input('EnableViewDebitNoteControl') enableViewDebitNoteControl?: boolean =
+    false;
+  @Input('EnableViewRecipientControl') enableViewRecipientControl?: boolean =
     false;
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
@@ -183,6 +184,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'edit_control',
         header: '',
         cell: (item) => 'edit_control',
+      });
+    }
+
+    if (this.enableViewRecipientControl) {
+      this.columns.push({
+        columnDef: 'sts_recipent_vessel_control',
+        header: '',
+        cell: (item) => 'sts_recipient_vessel_control',
       });
     }
 

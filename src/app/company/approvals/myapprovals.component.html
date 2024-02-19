@@ -1,5 +1,5 @@
-<div class="setting-desk">
-  <h2 class="page-title bg-yellow-500 text-yellow-800">MY APPROVALS</h2>
+<div class="pt-4">
+  <h2 class="page-title bg-yellow-500 text-yellow-800 mx-3">MY APPROVALS</h2>
   <div>
     <!-- <mat-tab-group> -->
     <!-- <mat-tab *ngFor="let cat of categories" [label]="cat.name"> -->
@@ -11,9 +11,10 @@
           [table_keysMappedToHeaders]="applicationKeysMappedToHeaders"
           [table_content]="approvals"
           [EnableViewClearanceControl]="
-            currentUser.operationFacility === OperatingFacility.ProcessingPlant
-              ? false
-              : true
+            currentUser?.operationFacility === OperatingFacility.CVC ||
+            currentUser?.operationFacility === OperatingFacility.Both
+              ? true
+              : false
           "
           [EnableViewCoQCertsControl]="true"
           [EnableViewDebitNotesControl]="true"
@@ -32,120 +33,3 @@
     <!-- </mat-tab-group> -->
   </div>
 </div>
-
-<!-- <div class="container" style="box-shadow:0 0 5px #c5c5c5; padding: 0 15px 20px 15px; background:white;">
-    <div class="panel-body">
-        <br><br>
-        <p></p>
-
-
-        <div class="">
-
-            <div class="row" id="BackImage">
-
-                <br>
-                <h3 class="DashCompanyName">My approvals </h3>
-                <hr>
-            </div>
-
-            <br>
-
-            <div>
-
-                <div id="MyFacilityTable_wrapper" class="dataTables_wrapper no-footer">
-                    <div class="dt-buttons"> <button class="dt-button buttons-collection buttons-page-length"
-                            tabindex="0" aria-controls="MyFacilityTable" aria-haspopup="true"><span>Show 1000
-                                rows</span></button> <button class="dt-button buttons-copy buttons-html5" tabindex="0"
-                            aria-controls="MyFacilityTable"><span>Copy</span></button> <button
-                            class="dt-button buttons-csv buttons-html5" tabindex="0"
-                            aria-controls="MyFacilityTable"><span>CSV</span></button> <button
-                            class="dt-button buttons-excel buttons-html5" tabindex="0"
-                            aria-controls="MyFacilityTable"><span>Excel</span></button> <button
-                            class="dt-button buttons-pdf buttons-html5" tabindex="0"
-                            aria-controls="MyFacilityTable"><span>PDF</span></button> <button
-                            class="dt-button buttons-print" tabindex="0" aria-controls="MyFacilityTable"><span>Print
-                                all</span></button> <button class="dt-button buttons-collection buttons-colvis"
-                            tabindex="0" aria-controls="MyFacilityTable" aria-haspopup="true"><span>Change
-                                columns</span></button> </div>
-                    <div id="MyFacilityTable_filter" class="dataTables_filter"><label>Search:<input type="search"
-                                class="" placeholder="" aria-controls="MyFacilityTable"></label></div>
-                    <div id="MyFacilityTable_processing" class="dataTables_processing" style="display: none;">
-                        Processing...</div>
-                    <table class="table table-bordered table-hover dataTable no-footer" id="MyFacilityTable"
-                        style="font-size:small" role="grid" aria-describedby="MyFacilityTable_info">
-                        <thead>
-                            <tr role="row">
-                                <th class="sorting_desc" tabindex="0" aria-controls="MyFacilityTable" rowspan="1"
-                                    colspan="1" aria-sort="descending"
-                                    aria-label=" Permit NO: activate to sort column ascending"> Permit NO</th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" App. Ref. NO. : activate to sort column ascending"
-                                    style="width: 102.6px;"> App. Ref. NO. </th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" Company : activate to sort column ascending" style="width: 69.625px;">
-                                    Company </th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" Address : activate to sort column ascending" style="width: 347.862px;">
-                                    Address </th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" Issue Date : activate to sort column ascending"
-                                    style="width: 75.15px;"> Issue Date </th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" Expiry Date : activate to sort column ascending"
-                                    style="width: 85.7875px;"> Expiry Date </th>
-                                <th class="sorting" tabindex="0" aria-controls="MyFacilityTable" rowspan="1" colspan="1"
-                                    aria-label=" Action : activate to sort column ascending" style="width: 143.538px;">
-                                    Action </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-
-                            <tr role="row" class="odd">
-                                <td class="sorting_1"> NUPRC/UMR/RM/PRS/EPERMIT/2022/0001</td>
-                                <td> 345041621103430</td>
-                                <td> Daniel And Sons Nig. LTD</td>
-                                <td> 4 Augustus Aikhomu, Mabushi 900271, Abuja, Nigeria</td>
-                                <td> May 26, 2022 </td>
-                                <td>
-                                    April 22, 2022
-
-                                    <br>
-                                    <b class="text-danger"> Expired Permit </b>
-                                </td>
-
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a class="btn btn-primary btn-sm" href="/approvals/ViewPermit/TWc9PQ==/_view"
-                                            target="_blank"> <i class="fa fa-eye"> </i> View </a>
-                                        <a class="btn btn-success btn-sm" href="/approvals/ViewPermit/TWc9PQ==/_download"
-                                            target="_blank"> <i class="fa fa-file-download"> </i> Download </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="dataTables_info" id="MyFacilityTable_info" role="status" aria-live="polite">Showing 1 to
-                        1 of 1 entries</div>
-                    <div class="dataTables_paginate paging_simple_numbers" id="MyFacilityTable_paginate"><a
-                            class="paginate_button previous disabled" aria-controls="MyFacilityTable" data-dt-idx="0"
-                            tabindex="0" id="MyFacilityTable_previous">Previous</a><span><a
-                                class="paginate_button current" aria-controls="MyFacilityTable" data-dt-idx="1"
-                                tabindex="0">1</a></span><a class="paginate_button next disabled"
-                            aria-controls="MyFacilityTable" data-dt-idx="2" tabindex="0"
-                            id="MyFacilityTable_next">Next</a></div>
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <br>
-        <br>
-    </div>
-</div>
-
-<br><br>
- -->

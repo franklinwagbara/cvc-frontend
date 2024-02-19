@@ -26,7 +26,6 @@ export class CompanyService {
   }
 
   public updateCompanyProfile(data, oldemail) {
-    debugger;
     return this.http.post<any>(
       `${environment.apiUrl}/Company/profile-update`,
       data,

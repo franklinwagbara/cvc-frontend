@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { IDepotOfficer } from 'src/app/shared/interfaces/IDepotOfficer';
 import { IPlant } from 'src/app/shared/interfaces/IPlant';
 import { DepotOfficerFormComponent } from 'src/app/shared/reusable-components/depot-officer-form/depot-officer-form.component';
@@ -20,7 +20,7 @@ import { JettyService } from 'src/app/shared/services/jetty.service';
   templateUrl: './field-officer-jetty-setting.component.html',
   styleUrls: ['./field-officer-jetty-setting.component.css'],
 })
-export class FieldOfficerJettySettingComponent implements OnInit {
+export class FieldOfficerJettySettingComponent implements OnInit, OnDestroy {
   depotOfficers: IDepotOfficer[];
   jettys: IPlant[];
   allUsers: Staff[];
@@ -29,6 +29,8 @@ export class FieldOfficerJettySettingComponent implements OnInit {
   locations: any[];
   offices: any[];
   staffList: Staff[];
+
+  private destroy = new Subject<void>();
 
   officerKeysMappedToHeaders: any = {
     officerName: 'Officer Name',
@@ -51,6 +53,12 @@ export class FieldOfficerJettySettingComponent implements OnInit {
     this.fetchAllData();
   }
 
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
+    this.progressBar.close();
+  }
+
   public fetchAllData() {
     forkJoin([
       this.jettyOfficerService.getAllMappings(),
@@ -61,6 +69,7 @@ export class FieldOfficerJettySettingComponent implements OnInit {
     ]).subscribe({
       next: (res: any[]) => {
         this.depotOfficers = res[0].data;
+        console.log('Depot -> Officers ============> ', this.depotOfficers)
         this.jettys = res[1].data;
         this.staffList = res[2].data;
         this.elpsUsers = res[3].data;
@@ -85,9 +94,17 @@ export class FieldOfficerJettySettingComponent implements OnInit {
         jettys: this.jettys,
         roles: this.roles,
         offices: this.offices,
+        editMode: false
       },
     };
-    this.dialog.open(JettyOfficerFormComponent, { data });
+    const dialogRef = this.dialog.open(JettyOfficerFormComponent, { data, disableClose: true },);
+
+    dialogRef.afterClosed().subscribe((result: 'submitted') => {
+      if (result) {
+        this.progressBar.open();
+        this.refreshMappings();
+      }
+    })
   }
 
   deleteData(selected: any[]) {
@@ -108,7 +125,7 @@ export class FieldOfficerJettySettingComponent implements OnInit {
 
       this.progressBar.open();
 
-      forkJoin(requests).subscribe({
+      forkJoin(requests).pipe(takeUntil(this.destroy)).subscribe({
         next: (res) => {
           if (res && res.length > 0) {
             this.popUp.open(
@@ -140,13 +157,30 @@ export class FieldOfficerJettySettingComponent implements OnInit {
         staffList: this.staffList,
         roles: this.roles,
         offices: this.offices,
-        currentValue: '',
+        currentData: event,
+        editMode: true,
       },
     };
-    const dialogRef = this.dialog.open(DepotOfficerFormComponent, { data });
-    dialogRef.afterClosed().subscribe((res) => {
+    const dialogRef = this.dialog.open(JettyOfficerFormComponent, { data, disableClose: true });
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
       if (res) {
+        this.progressBar.open();
+        this.refreshMappings();
       }
     });
+  }
+
+  refreshMappings(): void {
+    this.jettyOfficerService.getAllMappings().subscribe({
+      next: (res: any) => {
+        this.depotOfficers = res?.data;
+        this.progressBar.close();
+      },
+      error: (error: unknown) => {
+        console.log(error);
+        this.progressBar.close();
+        this.popUp.open('Could not refresh mappings', 'error');
+      }
+    })
   }
 }
