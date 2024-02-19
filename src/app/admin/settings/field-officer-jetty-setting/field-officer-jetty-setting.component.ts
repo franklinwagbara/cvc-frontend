@@ -89,12 +89,12 @@ export class FieldOfficerJettySettingComponent implements OnInit, OnDestroy {
   addData() {
     const data = {
       data: {
-        dialogTitle: 'Add New Mapping',
         users: this.elpsUsers,
         staffList: this.staffList,
         jettys: this.jettys,
         roles: this.roles,
         offices: this.offices,
+        editMode: false
       },
     };
     const dialogRef = this.dialog.open(JettyOfficerFormComponent, { data, disableClose: true },);
@@ -153,12 +153,12 @@ export class FieldOfficerJettySettingComponent implements OnInit, OnDestroy {
   editData(event: any) {
     const data = {
       data: {
-        dialogTitle: 'Edit Mapping',
         users: this.allUsers,
         staffList: this.staffList,
         roles: this.roles,
         offices: this.offices,
         currentData: event,
+        editMode: true,
       },
     };
     const dialogRef = this.dialog.open(JettyOfficerFormComponent, { data, disableClose: true });

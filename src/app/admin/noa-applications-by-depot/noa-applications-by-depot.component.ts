@@ -65,7 +65,6 @@ export class NoaApplicationsByDepotComponent implements OnInit {
         this.applications = this.applications
           .map((el) => ({...el, createdDate: new Date(el?.createdDate).toLocaleDateString()}))
           .filter((app) => app.status !== 'Completed')
-          .reverse();
         this.spinner.close();
         this.progressBar.close();
         this.cdr.markForCheck();

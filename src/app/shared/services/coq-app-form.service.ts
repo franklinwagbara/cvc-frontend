@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
-import { CoQData, LocalDataKey } from '../../../../src/app/admin/coq-application-form/coq-application-form.component';
+import { CoQData, GasProductReviewData, LiquidProductReviewData, LocalDataKey } from '../../../../src/app/admin/coq-application-form/coq-application-form.component';
 import { DialogData, EditCoqFormComponent } from '../../../../src/app/admin/coq-application-form/edit-coq-form/edit-coq-form.component';
 import { ILiquidTankReading } from '../interfaces/ILiquidTankReading';
 import { IGasTankReading } from '../interfaces/IGasTankReading';
@@ -11,22 +11,52 @@ import { IGasTankReading } from '../interfaces/IGasTankReading';
 })
 export class CoqAppFormService {
   public configuredTanks: string[] = [];
-  public liquidProductReviewData: any[] = [];
-  public liquidProductReviewData$ = new BehaviorSubject<any[]>([]);
-  public gasProductReviewData: any[] = [];
-  public gasProductReviewData$ = new BehaviorSubject<any[]>([]);
+  public liquidProductReviewData: LiquidProductReviewData[] = [];
+  public liquidProductReviewData$ = new BehaviorSubject<LiquidProductReviewData[]>([]);
+  public gasProductReviewData: GasProductReviewData[] = [];
+  public gasProductReviewData$ = new BehaviorSubject<GasProductReviewData[]>([]);
   public formDataEvent = new EventEmitter<'edited' | 'removed'>();
 
+  liquidProductProps = [
+    'id', 
+    'tank', 
+    'status', 
+    'density', 
+    'dip', 
+    'floatRoofCorr', 
+    'gov', 
+    'temperature', 
+    'tov', 
+    'vcf', 
+    'waterDIP', 
+    'waterVolume'
+  ];
+  gasProductProps = [
+    'id', 
+    'tank', 
+    'status', 
+    'vcf',
+    'tankVolume',
+    'liquidDensityVac', 
+    'observedSounding', 
+    'tapeCorrection',
+    'liquidTemperature',
+    'observedLiquidVolume',
+    'shrinkageFactorLiquid',
+    'shrinkageFactorVapour',
+    'vapourTemperature',
+    'vapourPressure',
+    'molecularWeight',
+    'vapourFactor'
+  ]
+
   constructor(public dialog: MatDialog) {
-    this.liquidProductReviewData$.subscribe((value: any[]) => {
-      this.liquidProductReviewData = value.filter((val: CoQData) => {
-        return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
-      });
+    this.liquidProductReviewData$.subscribe((value: LiquidProductReviewData[]) => {
+      this.liquidProductReviewData = value;
     })
-    this.gasProductReviewData$.subscribe((value: any[]) => {
-      this.gasProductReviewData = value.filter((val: CoQData) => {
-        return val && (Object.keys(val.before).length > 0 || Object.keys(val.after).length > 0);
-      });
+    this.gasProductReviewData$.subscribe((value: GasProductReviewData[]) => {
+      this.gasProductReviewData = value;
+      console.log('Gas Product Review Data =======> ', this.gasProductReviewData);
     })
   }
 

@@ -31,7 +31,7 @@ interface IColumn {
   cell: (element: object) => string;
 }
 
-const PAGESIZEOPTIONS = [2, 5, 10];
+const PAGESIZEOPTIONS = [5, 10, 20, 30, 40, 50];
 const PAGESIZE = 10;
 
 @Component({

@@ -109,7 +109,7 @@
 
       <tr *ngIf="application?.depotPrice">
         <th>Depot Price</th>
-        <td>{{ application?.depotPrice }}</td>
+        <td>{{ application?.depotPrice | currency:'NGN' }}</td>
       </tr>
 
       <tr *ngIf="application?.gsv">

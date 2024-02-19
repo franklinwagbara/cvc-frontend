@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ApplicationService } from '../../services/application.service';
@@ -20,6 +20,7 @@ import { UserType } from '../../constants/userType';
   selector: 'app-view-application-in-full',
   templateUrl: './view-application-in-full.component.html',
   styleUrls: ['./view-application-in-full.component.css'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ViewApplicationInFullComponent implements OnInit {
   application: Application;
@@ -28,6 +29,7 @@ export class ViewApplicationInFullComponent implements OnInit {
   currentUser: any;
   isPDF = Util.isPDF;
   isIMG = Util.isIMG;
+  loading: boolean;
 
   constructor(
     private router: Router,
@@ -60,9 +62,11 @@ export class ViewApplicationInFullComponent implements OnInit {
   }
 
   getApplication() {
+    this.loading = true;
     this.spinner.show('Loading application details...');
     this.applicationService.viewApplication(this.appId).subscribe({
       next: (res) => {
+        this.loading = false;
         if (res.success) {
           this.application = res.data;
         }
@@ -70,6 +74,7 @@ export class ViewApplicationInFullComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        this.loading = false;
         console.log(error);
         this.spinner.close();
         this.snackBar.open(

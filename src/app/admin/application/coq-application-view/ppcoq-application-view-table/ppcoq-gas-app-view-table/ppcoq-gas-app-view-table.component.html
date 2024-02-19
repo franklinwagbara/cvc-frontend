@@ -1,0 +1,76 @@
+<table class="table">
+  <tbody ngIf="application">
+    <tr>
+      <th>Reference Number</th>
+      <td>{{ application?.reference }}</td>
+    </tr>
+
+    <tr *ngIf="application?.plant.company">
+      <th>Company Name</th>
+      <td>{{ application?.plant.company }}</td>
+    </tr>
+
+    <tr *ngIf="application?.plant.name">
+      <th>Plant Name</th>
+      <td>{{ application?.plant.name }}</td>
+    </tr>
+
+    <tr *ngIf="application?.consignorName">
+      <th>Name of Consignor</th>
+      <td>{{ application?.consignorName }}</td>
+    </tr>
+
+    <tr *ngIf="application?.consignee">
+      <th>Name of Consignee</th>
+      <td>{{ application?.consignee }}</td>
+    </tr>
+
+    <tr *ngIf="application?.terminal">
+      <th>Terminal</th>
+      <td>{{ application?.terminal }}</td>
+    </tr>
+
+    <tr *ngIf="application?.destination">
+      <th>Destination</th>
+      <td>{{ application?.destination }}</td>
+    </tr>
+
+    <tr *ngIf="application?.product.name">
+      <th>Product Name</th>
+      <td>{{ application?.product.name }}</td>
+    </tr>
+
+    <tr *ngIf="application?.price">
+      <th>Plant Price</th>
+      <td>{{ application?.price }}</td>
+    </tr>
+
+    <tr>
+      <th>Total MTVAC</th>
+      <td>{{ application?.totalMTVac }}</td>
+    </tr>
+    
+    <tr *ngIf="isCoqProcessor">
+      <th>Debit Note</th>
+      <td>{{ application?.debitNote }}</td>
+    </tr>
+
+    <tr>
+      <th>Shipment No</th>
+      <td>{{ application?.shipmentNo }}</td>
+    </tr>
+
+    <tr *ngIf="isCoqProcessor">
+      <th>Tank Reading</th>
+      <td class="text-center">
+        <button
+          mat-raised-button
+          [disabled]="tankList?.length < 1"
+          (click)="viewReadings()"
+        >
+          View Readings
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

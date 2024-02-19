@@ -12,14 +12,17 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 export class AllPpcoqApplicationsComponent implements OnInit {
   coqs: any[];
   coqKeysMappedToHeaders = {
-    importName: 'Importer Name',
-    vesselName: 'Vessel Name',
-    dateOfSTAfterDischarge: 'Shore Tank Date',
-    dateOfVesselUllage: 'Vessel Ullage Date',
+    reference: "Reference",
     plantName: 'Plant Name',
-    plantPrice: 'Plant Price',
-    gov: 'GOV',
-    gsv: 'GSV',
+    productName: "Product Name",
+    measurementSystem: "Measurement System",
+    startTime: "Start Time",
+    endTime: "End Time",
+    consignorName: "Consignor Name",
+    consignee: "Consignee",
+    terminal: "Terminal",
+    destination: "Destination",
+    shipmentNo: "Shipment Number",
   }
 
   constructor(

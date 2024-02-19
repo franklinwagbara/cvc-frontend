@@ -95,6 +95,13 @@ const routes: Routes = [
     title: 'CoQ Application View | CVC & CoQ Portal'
   },
   {
+    path: 'applications/processing-plant/coq-applications/:id',
+    component: CoqApplicationViewComponent,
+    pathMatch: 'full',
+    canActivate: [ApplicationsGuard],
+    title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal'
+  },
+  {
     path: 'settings',
     redirectTo: 'settings/all-staff',
     pathMatch: 'full',

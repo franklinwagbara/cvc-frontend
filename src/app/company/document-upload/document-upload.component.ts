@@ -90,7 +90,7 @@ export class DocumentUploadComponent implements OnInit {
 
   uploadFile(data) {
     this.progressBar.open();
-    this.spinner.open();
+    this.spinner.show('Uploading file...');
 
     const fileEvent = data.file;
     const doc: DocumentInfo = data.doc;
@@ -165,8 +165,6 @@ export class DocumentUploadComponent implements OnInit {
 
     const formdata = new FormData();
     formdata.append('file', file);
-
-    debugger;
 
     this.applicationService
       .uploadCompanyFileToElps(
@@ -269,7 +267,7 @@ export class DocumentUploadComponent implements OnInit {
         this.spinner.close();
         // this.popUp.open('Document(s) upload was successfull.', 'success');
         this.popUp.open('Application was submitted successfully', 'success');
-        this.router.navigate(['/company/dashboard']);
+        this.router.navigate(['/company/cvc-applications']);
         this.cd.markForCheck();
       },
       error: (res: unknown) => {
