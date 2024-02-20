@@ -97,8 +97,6 @@ export class CompanyProfileComponent implements OnInit {
       date: [''],
       isCompleted: [''],
       elps_Id: [''],
-      // oldemail: ['mymail@gmail.com'],
-      // id: [''],
     });
   }
 
@@ -110,13 +108,13 @@ export class CompanyProfileComponent implements OnInit {
         var tag = document.getElementById('operatingFacilityId');
 
         var selectedOF = this.OperatingFacilities.find(
-          (x) => x.name == this.operatingFacility.name
+          (x) => x.name == this.operatingFacility?.name
         );
 
         this.OperatingFacilities.forEach((o) => {
           if (
             (tag as HTMLSelectElement).options.item(o.value).value ==
-            selectedOF.name
+            selectedOF?.name
           )
             (tag as HTMLSelectElement).options.item(o.value).selected = true;
         });
@@ -152,7 +150,7 @@ export class CompanyProfileComponent implements OnInit {
 
   getCompanyProfile(email) {
     //this.spinner.show('Loading company profile');
-    this.companyService.getCompanyProfile(email).subscribe({
+    this.companyService.getCompanyProfile(email.toLowerCase()).subscribe({
       next: (res) => {
         this.spinner.close();
         this.companyProfile = res.data.company;
