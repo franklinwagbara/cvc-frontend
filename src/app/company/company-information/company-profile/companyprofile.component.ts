@@ -20,6 +20,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { OperatingFacility } from '../../company.component';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   templateUrl: 'companyprofile.component.html',
@@ -31,19 +32,13 @@ export class CompanyProfileComponent implements OnInit {
   public currentUser: LoginModel;
   private email = '';
 
-  public OperatingFacilities = [
-    { name: 'CVC', value: 0 },
-    { name: 'ProcessingPlant', value: 1 },
-    { name: 'Both', value: 2 },
-  ];
+  public operatingFacilities: IoperatingFacility[];
 
   countries: any;
   currentValue: any;
   companyProfile: companyProfile = new companyProfile();
   registeredAddress: any;
-  operatingFacility: any = { name: 'None' };
-
-  pepp = 'CVC';
+  operatingFacility: any;
 
   constructor(
     private companyService: CompanyService,
@@ -53,7 +48,8 @@ export class CompanyProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private spinner: SpinnerService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private libaryService: LibaryService
   ) {
     this.currentUser = this.auth.currentUser;
     this.email = this.currentUser.userId;
@@ -62,8 +58,9 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getOperatingFacilities();
     this.getCompanyProfile(this.email);
-    this.getOperatingFacility();
+    this.getMyOperatingFacility();
     this.cd.markForCheck();
   }
 
@@ -100,33 +97,48 @@ export class CompanyProfileComponent implements OnInit {
     });
   }
 
-  getOperatingFacility() {
-    this.companyService.getOperatingFacility(this.email).subscribe({
+  getOperatingFacilities() {
+    this.libaryService.getOperatingFacilities().subscribe({
       next: (res) => {
-        this.operatingFacility = res.data;
-
-        var tag = document.getElementById('operatingFacilityId');
-
-        var selectedOF = this.OperatingFacilities.find(
-          (x) => x.name == this.operatingFacility?.name
-        );
-
-        this.OperatingFacilities.forEach((o) => {
-          if (
-            (tag as HTMLSelectElement).options.item(o.value).value ==
-            selectedOF?.name
-          )
-            (tag as HTMLSelectElement).options.item(o.value).selected = true;
-        });
+        this.operatingFacilities = res.data;
+        if (this.currentUser.operationFacility) {
+          const getOperatingFacilityId = this.operatingFacilities.find(
+            (x) => x.name === this.currentUser.operationFacility
+          );
+          this.profileForm
+            .get('operatingFacilityId')
+            .setValue(getOperatingFacilityId.value);
+        }
+        this.cd.markForCheck();
       },
     });
+  }
+
+  getMyOperatingFacility() {
+    // this.companyService.getOperatingFacility(this.email).subscribe({
+    //   next: (res) => {
+    //     this.operatingFacility = res.data;
+    //     var tag = document.getElementById('operatingFacilityId');
+    //     var selectedOF = this.operatingFacilities.find(
+    //       (x) => x.name == this.operatingFacility?.name
+    //     );
+    //     this.operatingFacilities.forEach((o) => {
+    //       if (
+    //         (tag as HTMLSelectElement).options.item(o.value).value ==
+    //         selectedOF?.name
+    //       )
+    //         (tag as HTMLSelectElement).options.item(o.value).selected = true;
+    //     });
+    //   },
+    // });
   }
 
   onChangeOperatingFacility(event) {
     this.createOperationFacility(event.target.value);
   }
+
   createOperationFacility(value) {
-    this.spinner.open();
+    // this.spinner.open();
     this.companyService
       .createOperatingFacilities({
         id: 0,
@@ -185,7 +197,7 @@ export class CompanyProfileComponent implements OnInit {
       this.companyService.createOperatingFacilities({
         id: 0,
         companyEmail: this.email,
-        name: this.operatingFacility.name,
+        name: this.profileForm.get('operatingFacilityId').value,
       }),
     ]).subscribe({
       next: (res) => {
@@ -203,6 +215,7 @@ export class CompanyProfileComponent implements OnInit {
         } else {
           window.location.reload();
         }
+
         this.cd.markForCheck();
       },
       error: (error: any) => {
@@ -213,4 +226,9 @@ export class CompanyProfileComponent implements OnInit {
       },
     });
   }
+}
+
+class IoperatingFacility {
+  name: string;
+  value: number;
 }
