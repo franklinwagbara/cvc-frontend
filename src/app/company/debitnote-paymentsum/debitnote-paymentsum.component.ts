@@ -1,9 +1,8 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { AuthenticationService, GenericService } from 'src/app/shared/services';
-import { ApplicationService } from 'src/app/shared/services/application.service';
-import { ApplyService } from 'src/app/shared/services/apply.service';
+import { GenericService } from 'src/app/shared/services';
+import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
@@ -12,12 +11,14 @@ import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-debitnote-paymentsum',
   templateUrl: './debitnote-paymentsum.component.html',
-  styleUrls: ['./debitnote-paymentsum.component.css']
+  styleUrls: ['./debitnote-paymentsum.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class DebitnotePaymentsumComponent {
   genk: GenericService;
-  application_id: number = null;
+  debitNoteId: number;
   paymentSummary: PaymentSummary;
+  demandNotices: any[];
   public rrr$ = new Subject<string>();
   public applicationStatus$ = new Subject<string>();
   private rrr: string;
@@ -26,12 +27,9 @@ export class DebitnotePaymentsumComponent {
 
   constructor(
     private gen: GenericService,
-    private router: Router,
-    private auth: AuthenticationService,
     private route: ActivatedRoute,
     private progressbar: ProgressBarService,
-    private applicationServer: ApplyService,
-    private appService: ApplicationService,
+    private paymentService: PaymentService,
     private popUp: PopupService,
     private spinner: SpinnerService,
     private cd: ChangeDetectorRef
@@ -44,32 +42,38 @@ export class DebitnotePaymentsumComponent {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.application_id = params['id'];
+      this.debitNoteId = params['id'];
       this.getPaymentSummary();
       this.cd.markForCheck();
     });
   }
 
   getPaymentSummary() {
-    this.spinner.show('Fetching payment details');
+    this.spinner.show('Fetching payment details...');
     this.progressbar.open();
-    this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
+    this.paymentService.getDebitNotePaymentSummary(this.debitNoteId).subscribe({
       next: (res) => {
         if (res.success) {
-          this.paymentSummary = res.data;
+          const totalAmount = (res?.data?.paymentTypes || [])
+            .find((el: PaymentType) => el.paymentType === 'ToTal Amount')?.amount;
+          
+          this.paymentSummary = { ...res.data, totalAmount };
           this.rrr$.next(this.paymentSummary?.rrr);
-          this.applicationStatus$.next(this.paymentSummary?.paymentStatus);
+          this.demandNotices = (res.data?.paymentTypes || [])
+            .filter((d: any) => d.paymentType === 'DemandNotice');
+
+          this.applicationStatus$.next(this.paymentSummary?.status);
 
           this.isPaymentConfirmed$.next(
             this.paymentSummary?.rrr &&
-              this.paymentSummary?.paymentStatus === 'PaymentCompleted'
+              this.paymentSummary?.status === 'PaymentCompleted'
           );
-
+          
           this.isPaymentNotComfirmed$.next(
             this.paymentSummary?.rrr &&
-              this.paymentSummary?.paymentStatus !== 'PaymentCompleted'
+              this.paymentSummary?.status !== 'PaymentCompleted'
           );
-          if (this.paymentSummary?.paymentStatus === 'PaymentCompleted') {
+          if (this.paymentSummary?.status === 'PaymentCompleted') {
             this.popUp.open('Payment completed successfully!', 'success');
           }
         }
@@ -88,61 +92,55 @@ export class DebitnotePaymentsumComponent {
 
   generateRRR() {
     this.route.params.subscribe((params) => {
-      this.progressbar.open();
-      this.spinner.show('Generating RRR');
-      this.application_id = params['id'];
+      this.spinner.show('Generating RRR...');
+      this.debitNoteId = params['id'];
 
-      this.applicationServer.createPayment_RRR(this.application_id).subscribe({
+      this.paymentService.createDebitNoteRRR(this.debitNoteId).subscribe({
         next: (res) => {
           if (res.success) {
             this.rrr$.next(res.data.rrr);
 
             this.isPaymentNotComfirmed$.next(
               res.data.rrr &&
-                this.paymentSummary.paymentStatus !== 'PaymentConfirmed'
+                this.paymentSummary.status !== 'PaymentConfirmed'
             );
 
             this.popUp.open('RRR was generated successfully!', 'success');
             this.spinner.close();
-            this.progressbar.close();
             this.cd.markForCheck();
           }
         },
         error: (error: unknown) => {
-          //todo: display error dialog
+          console.error(error);
           this.popUp.open('RRR generation failed!', 'error');
           this.spinner.close();
-          this.progressbar.close();
           this.cd.markForCheck();
         },
       });
     });
   }
 
-  submitPayment() {
-    //this.router.navigate(['/auth/pay-online?rrr=' + this.rrr]);
+  payNow(): void {
+    this.spinner.show('Redirecting to Payment Gateway...');
     window.location.href =
       environment.apiUrl + '/payment/pay-online?rrr=' + this.rrr;
-  }
-
-  uploadDocument() {
-    this.router.navigate([`/company/upload-document/${this.application_id}`]);
   }
 }
 
 interface PaymentSummary {
-  appReference: string;
-  vesselName: string;
-  fee: string;
+  id: number;
+  orderId: string;
+  depotName: string;
   rrr: string;
-  serviceCharge: string;
-  totalAmount: string;
-  paymentType: string;
-  paymentStatus: string;
-  paymentDescription?: string;
-
-  applicationType: string;
-  applicationFee: number;
-  facilityType: string;
+  amount: string;
+  totalAmount?: number;
+  paymentType: PaymentType[];
+  status?: string;
   description?: string;
+}
+
+interface PaymentType {
+  paymentType: string;
+  amount: number;
+  createdDate: string;
 }

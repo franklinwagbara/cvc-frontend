@@ -91,6 +91,7 @@
               column.cell(row) === "view_clearance_control" ||
               column.cell(row) === "view_coq_cert_control" ||
               column.cell(row) === "view_debit_note_control" ||
+              column.cell(row) === "view_debit_note_payment_summary" ||
               column.cell(row) === "view_certificate_control" ||
               column.cell(row) === "view_schedule_control" ||
               column.cell(row) === "rrr_control" ||
@@ -155,6 +156,16 @@
                 (click)="viewData(row)"
               >
                 View Application
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'view_debit_note_payment_summary'"
+                (click)="viewData(row)"
+              >
+                View Payment Summary
               </button>
 
               <button
@@ -256,7 +267,7 @@
                 style="background-color: rgb(129, 42, 139); color: white"
                 class="view-button"
                 *ngIf="column.cell(row) === 'view_debit_note_control'"
-                (click)="viewDebitNotes(row)"
+                (click)="viewDebitNote(row)"
               >
                 View Debit Note
               </button>
@@ -337,7 +348,7 @@
               </button>
 
               <input
-                *ngIf="column.header === 'ACTION'"
+                *ngIf="column.header === 'Action'"
                 type="file"
                 accept=".jpg,.jpeg,.png,.pdf"
                 (change)="fileUpload($event, row)"

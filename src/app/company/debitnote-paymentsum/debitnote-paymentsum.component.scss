@@ -20,6 +20,10 @@
   justify-content: space-evenly;
 }
 
+.btns a {
+  @apply mb-4;
+}
+
 .pay-color {
   background-color: rgb(31, 180, 130);
   color: white;
@@ -58,6 +62,11 @@
   font-size: medium;
   padding: 5px 16px;
   border-radius: 5px;
+}
+
+.nested-subtitle {
+  @extend .sub-title;
+  background-color: rgb(205, 75, 75);
 }
 
 .col-title {

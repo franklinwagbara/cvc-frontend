@@ -68,6 +68,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
+  @Input('EnableViewDNPaymentSummary') enableViewDebitNotePaymentSummary?: boolean =
+    false;
   @Input('EnableGenDebitNoteControl') enableGenDebitNoteControl?: boolean =
     false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
@@ -170,7 +172,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
             item.status !== 'Completed'
           )
             return 'uploadDocument_control';
-          else if (item.rrr && item.paymentStatus !== 'Payment confirmed')
+          else if (item.rrr && item.paymentStatus !== 'Payment confirmed' 
+            && !['PaymentCompleted', 'Payment confirmed'].includes(item?.status)
+          )
             return 'confirmPayment_control';
           else if (!item.rrr) return 'rrr_control';
           else return '';
@@ -200,6 +204,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_control',
       });
+    }
+
+    if (this.enableViewDebitNotePaymentSummary) {
+      this.columns.push({
+        columnDef: 'view_debit_note_payment_summary',
+        header: '',
+        cell: (item) => 'view_debit_note_payment_summary'
+      })
     }
 
     if (this.enableGenDebitNoteControl) {

@@ -106,11 +106,9 @@ export class NewApplicationComponent implements OnInit {
           this.jetties.find((el) => el.id === parseInt(val))?.name
         )
       }
-      console.log(this.vesselForm.controls['jettyName'].value);
     })
 
     this.segmentState = 1;
-    // this.validateImo();
     this.fetchAllData();
   }
 
@@ -221,6 +219,7 @@ export class NewApplicationComponent implements OnInit {
         this.router.navigate(['company', 'paymentsum', appId]);
       },
       error: (error: AppException) => {
+        console.error(error);
         this.submitting = false;
         this.popUp.open(error.message, 'error');
         this.spinner.close();
@@ -372,7 +371,7 @@ export class NewApplicationComponent implements OnInit {
     this.spinner.open();
     this.libraryService.getVesselTypes().subscribe({
       next: (res) => {
-        this.vesselTypes = res.data;
+        this.vesselTypes = (res.data || []).filter((v) => v.name.toLowerCase() !== 'barge');
         this.spinner.close();
         this.cd.markForCheck();
       },

@@ -12,7 +12,12 @@
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
+          [EnableViewDNPaymentSummary]="true"
+          [enableConfirmPayment]="true"
           [noTitle]="true"
+          (onViewDebitNote)="viewDebitNote($event)"
+          (onConfirmPayment)="confirmPayment($event)"
+          (onViewData)="viewPaymentSummary($event)"
           (onViewDebitNote)="viewDebitNote($event)"
         >
         </generic-table>

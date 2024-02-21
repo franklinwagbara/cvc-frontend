@@ -29,6 +29,8 @@ export class ApproveFormComponent implements OnInit {
   public application: any;
   public currentUser: Staff;
   public isFO: boolean;
+  public isFAD: boolean;
+  public isApprover: boolean;
   public isCOQProcessor: boolean;
   public coqId: number;
   public isLoading = false;
@@ -48,10 +50,12 @@ export class ApproveFormComponent implements OnInit {
     private coqService: CoqService,
     private dialog: MatDialog
   ) {
+    this.isFAD = auth.isFAD;
+    this.isApprover = auth.isApprover;
     this.application = data?.data?.application;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
-    this.isCOQProcessor = data.data.isCOQProcessor;
+    this.isCOQProcessor = auth.isCOQProcessor;
     this.isPPCOQ = data.data.isPPCOQ;
   }
 
@@ -85,16 +89,6 @@ export class ApproveFormComponent implements OnInit {
 
   onClose() {
     this.dialogRef.close();
-  }
-
-  public get isApprover() {
-    const currentUser = this.auth.currentUser as LoginModel;
-    return (currentUser as any).userRoles === UserRole.APPROVER;
-  }
-
-  public get isFAD() {
-    const currentUser = this.auth.currentUser as LoginModel;
-    return (currentUser as any).userRoles === UserRole.FAD;
   }
 
   public approve() {

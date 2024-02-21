@@ -52,7 +52,16 @@
               *ngIf="noaApplication?.jetty" 
               class="md:col-span-6"
             >
-              <span class="form-header-info">RECEIVING TERMINAL</span>:
+              <span class="form-header-info">JETTY</span>:
+              {{
+                noaApplication?.jetty
+              }}
+            </p>
+            <p 
+              *ngIf="noaApplication?.loadingPort" 
+              class="md:col-span-6"
+            >
+              <span class="form-header-info">LOADING PORT</span>:
               {{
                 noaApplication?.loadingPort
               }}

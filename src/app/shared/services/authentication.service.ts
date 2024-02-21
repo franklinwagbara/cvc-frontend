@@ -8,6 +8,7 @@ import { tokenNotExpired } from '../../../../src/app/helpers/tokenUtils';
 import { LoginModel } from '../models/login-model';
 import { Directorate, UserRole } from '../constants/userRole';
 import { LOCATION } from '../constants/location';
+import { SpinnerService } from './spinner.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
@@ -17,7 +18,10 @@ export class AuthenticationService {
   private _isLoggedIn = false;
   private _isLoggedIn$ = new Subject<boolean>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private spinner: SpinnerService,
+  ) {}
 
   public get currentUser() {
     return JSON.parse(localStorage.getItem('currentUser'));
@@ -59,6 +63,7 @@ export class AuthenticationService {
     // this.currentUserSubject.next(null);
     this._isLoggedIn = false;
 
+    this.spinner.show('Logging you out...');    
     window.location.assign(`${environment.apiUrl}/account/logout`);
   }
 
@@ -81,7 +86,8 @@ export class AuthenticationService {
   }
 
   public get isCOQProcessor() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.CONTROLLER;
+    return (this.currentUser as LoginModel).userRoles === UserRole.CONTROLLER
+      || (this.currentUser as LoginModel).userRoles === UserRole.FAD;
   }
 
   public get isFO() {
