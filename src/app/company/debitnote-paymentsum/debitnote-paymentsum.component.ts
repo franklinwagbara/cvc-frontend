@@ -54,7 +54,10 @@ export class DebitnotePaymentsumComponent {
     this.paymentService.getDebitNotePaymentSummary(this.debitNoteId).subscribe({
       next: (res) => {
         if (res.success) {
-          this.paymentSummary = res.data;
+          const totalAmount = (res?.data?.paymentTypes || [])
+            .find((el: PaymentType) => el.paymentType === 'ToTal Amount')?.amount;
+          
+          this.paymentSummary = { ...res.data, totalAmount };
           this.rrr$.next(this.paymentSummary?.rrr);
           this.demandNotices = (res.data?.paymentTypes || [])
             .filter((d: any) => d.paymentType === 'DemandNotice');
@@ -130,6 +133,7 @@ interface PaymentSummary {
   depotName: string;
   rrr: string;
   amount: string;
+  totalAmount?: number;
   paymentType: PaymentType[];
   status?: string;
   description?: string;
