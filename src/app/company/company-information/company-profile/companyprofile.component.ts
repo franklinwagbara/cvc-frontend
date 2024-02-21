@@ -40,6 +40,7 @@ export class CompanyProfileComponent implements OnInit {
   countries: any;
   currentValue: any;
   companyProfile: companyProfile = new companyProfile();
+  registeredAddress: any;
   operatingFacility: any = { name: 'None' };
 
   pepp = 'CVC';
@@ -96,8 +97,6 @@ export class CompanyProfileComponent implements OnInit {
       date: [''],
       isCompleted: [''],
       elps_Id: [''],
-      // oldemail: ['mymail@gmail.com'],
-      // id: [''],
     });
   }
 
@@ -109,13 +108,13 @@ export class CompanyProfileComponent implements OnInit {
         var tag = document.getElementById('operatingFacilityId');
 
         var selectedOF = this.OperatingFacilities.find(
-          (x) => x.name == this.operatingFacility.name
+          (x) => x.name == this.operatingFacility?.name
         );
 
         this.OperatingFacilities.forEach((o) => {
           if (
             (tag as HTMLSelectElement).options.item(o.value).value ==
-            selectedOF.name
+            selectedOF?.name
           )
             (tag as HTMLSelectElement).options.item(o.value).selected = true;
         });
@@ -151,11 +150,12 @@ export class CompanyProfileComponent implements OnInit {
 
   getCompanyProfile(email) {
     //this.spinner.show('Loading company profile');
-    this.companyService.getCompanyProfile(email).subscribe({
+    this.companyService.getCompanyProfile(email.toLowerCase()).subscribe({
       next: (res) => {
         this.spinner.close();
         this.companyProfile = res.data.company;
         this.countries = res.data.nations;
+        this.registeredAddress = res.data.registeredAddress;
         this.cd.markForCheck();
         this.countries.filter((res) => {
           if (res.text == this.companyProfile.nationality) {
@@ -198,6 +198,8 @@ export class CompanyProfileComponent implements OnInit {
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
         if (returnUrl) {
           window.location.assign(returnUrl);
+          // } else if (this.registeredAddress == null) {
+          //   window.location.assign('company/companyinformation/companyaddress');
         } else {
           window.location.reload();
         }

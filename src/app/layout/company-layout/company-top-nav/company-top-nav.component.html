@@ -1,7 +1,7 @@
 <nav id="company-top-nav">
   <div class="brand-logo">
     <img src="../../../../assets/img/brand/logo.png" />
-    <span class="pl-2" style="font-size: large;">{{
+    <span class="pl-2" style="font-size: large">{{
       currentUser?.operationFacility === OperatingFacility.ProcessingPlant
         ? "Processing Plant"
         : "CVC"
@@ -70,7 +70,14 @@
           <span>Dashboard</span>
         </div>
       </button>
-      <button mat-menu-item [mat-menu-trigger-for]="applicationsdropdown">
+      <button
+        *ngIf="
+          currentUser?.operationFacility === OperatingFacility.CVC ||
+          currentUser?.operationFacility === OperatingFacility.Both
+        "
+        mat-menu-item
+        [mat-menu-trigger-for]="applicationsdropdown"
+      >
         <div class="menu-item-content">
           <ng-container
             *ngTemplateOutlet="iconTemp; context: iconContexts.applications"
@@ -117,6 +124,23 @@
           <span>My Account</span>
         </div>
       </button>
+      <button
+        *ngIf="
+          currentUser?.operationFacility ===
+            OperatingFacility.ProcessingPlant ||
+          currentUser?.operationFacility === OperatingFacility.Both
+        "
+        mat-menu-item
+        routerLink="/company/processing-plant"
+      >
+        <div class="menu-item-content">
+          <ng-container
+            *ngTemplateOutlet="iconTemp; context: iconContexts.procplant"
+          >
+          </ng-container>
+          <span>Processing Plants</span>
+        </div>
+      </button>
       <mat-menu #accountdropdown>
         <button mat-menu-item routerLink="/company/companyinformation">
           <div class="menu-item-content">
@@ -136,15 +160,7 @@
             <span>Change Password</span>
           </div>
         </button>
-        <button mat-menu-item routerLink="/company/processing-plant">
-          <div class="menu-item-content">
-            <ng-container
-              *ngTemplateOutlet="iconTemp; context: iconContexts.procplant"
-            >
-            </ng-container>
-            <span>Processing Plants</span>
-          </div>
-        </button>
+
         <button mat-menu-item routerLink="/company/messages">
           <div class="menu-item-content">
             <ng-container

@@ -28,99 +28,99 @@ import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-p
 const routes: Routes = [
   {
     path: '',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     pathMatch: 'full',
-    redirectTo: 'dashboard',
+    component: DashboardComponent,
   },
   {
     path: 'dashboard',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: DashboardComponent,
     pathMatch: 'full',
-    title: 'CVC & CoQ | Company Dashboard'
+    title: 'CVC & CoQ | Company Dashboard',
   },
   {
     path: 'messages',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: MessagesComponent,
-    title: 'CVC & CoQ | Company Notifications'
+    title: 'CVC & CoQ | Company Notifications',
   },
   {
     path: 'myschedule',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: MyScheduleComponent,
   },
   {
     path: 'changepassword',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: ChangePasswordComponent,
-    title: 'CVC & CoQ | Change Password'
+    title: 'CVC & CoQ | Change Password',
   },
   // { path: 'mypermits', component: MypermitsComponent },
   {
     path: 'apply',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: ApplyComponent,
-    title: 'CVC & CoQ | Apply'
+    title: 'CVC & CoQ | Apply',
   },
   {
     path: 'cvc-applications',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: CvcApplicationsComponent,
-    title: 'CVC & CoQ | CVC Applications'
+    title: 'CVC & CoQ | CVC Applications',
   },
   {
     path: 'sts-applications',
     component: StsApplicationsComponent,
-    title: 'CVC & CoQ | Ship-to-Ship Applications'
+    title: 'CVC & CoQ | Ship-to-Ship Applications',
   },
   {
     path: 'processing-plant',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: ProcessingPlantComponent,
-    title: 'CVC & CoQ | Processing Plant'
+    title: 'CVC & CoQ | Processing Plant',
   },
-  { 
-    path: 'registerdirector', 
+  {
+    path: 'registerdirector',
     component: RegisterDirectorComponent,
-    title: 'CVC & CoQ | Register Director'
+    title: 'CVC & CoQ | Register Director',
   },
   {
     path: 'upload',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: UploadComponent,
   },
   {
     path: 'previewapp/:id',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: PreviewAppComponent,
   },
   {
     path: 'paymentsum/:id',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: PaymentSumComponent,
-    title: 'CVC & CoQ | Application Payment Summary'
+    title: 'CVC & CoQ | Application Payment Summary',
   },
   {
     path: 'upload-document/:id',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: DocumentUploadComponent,
-    title: 'CVC & CoQ | Application Document Upload'
+    title: 'CVC & CoQ | Application Document Upload',
   },
 
   {
     path: 'view-application/:id',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: ViewApplicationComponent,
-    title: 'CVC & CoQ | View Application'
+    title: 'CVC & CoQ | View Application',
   },
   {
     path: 'approvals/:id/coqs',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: ViewCoqCertsComponent,
-    title: 'CVC & CoQ | CoQ Certificates'
+    title: 'CVC & CoQ | CoQ Certificates',
   },
-  
+
   { path: 'upload', component: UploadComponent },
   { path: 'previewapp/:id', component: PreviewAppComponent },
   { path: 'paymentsum/:id', component: PaymentSumComponent },
@@ -128,22 +128,22 @@ const routes: Routes = [
   {
     path: 'application/new-clearance',
     component: NewApplicationComponent,
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     pathMatch: 'full',
-    title: 'CVC & CoQ | New CVC Application'
+    title: 'CVC & CoQ | New CVC Application',
   },
   {
     path: 'application/ship-to-ship',
     component: StsApplicationComponent,
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     pathMatch: 'full',
-    title: 'CVC & CoQ | New Ship-to-Ship Application'
+    title: 'CVC & CoQ | New Ship-to-Ship Application',
   },
   {
     path: 'approvals/:appId/debit-notes',
     component: ViewDebitNotesComponent,
-    // canActivate: [AuthCompleteProfileGuard],
-    title: 'CVC & CoQ | Debit Notes'
+    canActivate: [AuthCompleteProfileGuard],
+    title: 'CVC & CoQ | Debit Notes',
   },
   {
     path: 'approvals/:appId/debit-notes/:id',
@@ -154,14 +154,14 @@ const routes: Routes = [
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
-    // canActivate: [AuthCompleteProfileGuard],
-    title: 'CVC & CoQ | Full Application Details'
+    canActivate: [AuthCompleteProfileGuard],
+    title: 'CVC & CoQ | Full Application Details',
   },
   {
     path: 'approvals',
-    // canActivate: [AuthCompleteProfileGuard],
+    canActivate: [AuthCompleteProfileGuard],
     component: MyapprovalsComponent,
-    title: 'CVC & CoQ | Company Approvals'
+    title: 'CVC & CoQ | Company Approvals',
   },
   {
     path: 'companyinformation',
@@ -170,7 +170,7 @@ const routes: Routes = [
       import('./company-information/company-information.module').then(
         (m) => m.CompanyInformationModule
       ),
-    title: 'CVC & CoQ | Company Information'
+    title: 'CVC & CoQ | Company Information',
   },
 ];
 

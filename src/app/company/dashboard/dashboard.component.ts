@@ -13,6 +13,7 @@ import { ViewMessageComponent } from '../messages/view-message/view-message.comp
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
+import { OperatingFacility } from '../company.component';
 
 @Component({
   templateUrl: 'dashboard.component.html',
@@ -32,6 +33,7 @@ export class DashboardComponent implements OnInit {
   paginator!: MatPaginator;
   public dataSource = new MatTableDataSource<any>();
   public messagesCopy: IMessage[];
+  public OperatingFacility = OperatingFacility;
 
   public NavigatePath = {
     applications: 'myapplication',

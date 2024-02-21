@@ -14,10 +14,7 @@
       <p>Application(s)</p>
     </div>
 
-    <div
-      class="card yellow-card"
-      (click)="navigateTo(NavigatePath.processing)"
-    >
+    <div class="card yellow-card" (click)="navigateTo(NavigatePath.processing)">
       <div>
         <h1>
           {{
@@ -31,10 +28,7 @@
       <p>Processing</p>
     </div>
 
-    <div
-      class="card green-card"
-      (click)="navigateTo(NavigatePath.approvals)"
-    >
+    <div class="card green-card" (click)="navigateTo(NavigatePath.approvals)">
       <div>
         <h1>
           {{
@@ -63,10 +57,15 @@
     </div>
   </div>
 
-  <div class="apply" [routerLink]="['/company/apply']">
-    <button mat-button class="apply-button">
-      Click Here to Apply
-    </button>
+  <div
+    *ngIf="
+      this.currentUsername.operationFacility === this.OperatingFacility.CVC ||
+      this.currentUsername.operationFacility === this.OperatingFacility.Both
+    "
+    class="apply"
+    [routerLink]="['/company/apply']"
+  >
+    <button mat-button class="apply-button">Click Here to Apply</button>
   </div>
 
   <div class="notification-wrapper">

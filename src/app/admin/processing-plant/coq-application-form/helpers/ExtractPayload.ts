@@ -1,3 +1,4 @@
+import { IProduct } from 'src/app/company/apply/new-application/new-application.component';
 import { ExtractGasDynamicPayload } from './ExtractGasDynamicPayload';
 import { ExtractGasStaticPayload } from './ExtractGasStaticPayload';
 import { ExtractLiquidDynamicPayload } from './ExtractLiquidDynamicPayload';
