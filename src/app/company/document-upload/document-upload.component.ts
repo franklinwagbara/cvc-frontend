@@ -27,7 +27,7 @@ export class DocumentUploadComponent implements OnInit {
     docName: 'Document Name',
     source: 'Source',
     available: 'Available',
-    action: 'ACTION',
+    action: 'Action',
   };
 
   constructor(

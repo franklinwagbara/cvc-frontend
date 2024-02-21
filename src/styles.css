@@ -145,6 +145,18 @@ button:disabled {
   height: 100% !important;
 }
 
+.mat-expansion-indicator::after {
+  color: black !important;
+  background-color: black;
+  height: 15px;
+  width: 15px;
+  font-weight: bolder !important;
+}
+
+.mat-expansion-indicator {
+  color: black;
+}
+
 @media only screen and (max-width: 768px) {
   .applicaion-preview {
     width: 100% !important;

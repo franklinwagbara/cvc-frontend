@@ -23,6 +23,7 @@ import { ProcessingPlantComponent } from './settings/processing-plant/processing
 import { AuthCompleteProfileGuard } from '../shared/guards/company.guard';
 import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
+import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-paymentsum.component';
 
 const routes: Routes = [
   {
@@ -139,10 +140,16 @@ const routes: Routes = [
     title: 'CVC & CoQ | New Ship-to-Ship Application'
   },
   {
-    path: 'approvals/:id/debit-notes',
+    path: 'approvals/:appId/debit-notes',
     component: ViewDebitNotesComponent,
     // canActivate: [AuthCompleteProfileGuard],
     title: 'CVC & CoQ | Debit Notes'
+  },
+  {
+    path: 'approvals/:appId/debit-notes/:id',
+    component: DebitnotePaymentsumComponent,
+    // canActivate: [AuthCompleteProfileGuard],
+    title: 'Debit Note Payment Summary | CVC & CoQ Portal'
   },
   {
     path: 'view-application-in-full/:id',

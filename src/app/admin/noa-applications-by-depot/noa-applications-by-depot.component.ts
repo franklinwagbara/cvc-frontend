@@ -7,6 +7,7 @@ import { PopupService } from '../../shared/services/popup.service';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { AuthenticationService } from 'src/app/shared/services';
 import { UserRole } from 'src/app/shared/constants/userRole';
+import { AppSource } from 'src/app/shared/constants/appSource';
 
 
 @Component({
@@ -80,7 +81,11 @@ export class NoaApplicationsByDepotComponent implements OnInit {
   }
 
   viewApplication(event: any): void {
-    this.router.navigate(['admin', 'coq', 'noa-applications-by-depot', event.id]);
+    this.router.navigate([
+      'admin', 'applications', 'noa-applications', event.id
+    ], {
+      queryParams: { appSource: AppSource.Application }
+    });
   }
 
   public get isFieldOfficer(): boolean {

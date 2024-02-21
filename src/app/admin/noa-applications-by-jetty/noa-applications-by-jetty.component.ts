@@ -8,6 +8,7 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 import { AuthenticationService } from 'src/app/shared/services';
 import { Directorate, UserRole } from 'src/app/shared/constants/userRole';
 import { Subscription } from 'rxjs';
+import { AppSource } from 'src/app/shared/constants/appSource';
 
 @Component({
   selector: 'app-noa-applications-by-jetty',
@@ -95,7 +96,9 @@ export class NoaApplicationsByJettyComponent implements OnInit, OnDestroy {
       'vessel-clearance',
       'noa-applications-by-jetty-officer',
       event.id,
-    ]);
+    ], {
+      queryParams: { appSource: AppSource.Application }
+    });
   }
 
   public get isDSSRIFieldOfficer(): boolean {

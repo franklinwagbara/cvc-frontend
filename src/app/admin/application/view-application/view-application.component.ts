@@ -17,6 +17,7 @@ import { Application } from '../../../company/cvc-applications/cvc-applications.
 import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
 import { Subject, takeUntil } from 'rxjs';
+import { Util } from 'src/app/shared/lib/Util';
 
 
 @Component({
@@ -37,7 +38,10 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
   isApprover: boolean;
   isFieldOfficer: boolean;
   isFO: boolean;
+  isFAD: boolean;
   isSupervisor: boolean;
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -53,18 +57,16 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
     private licenceService: LicenceService,
     public location: Location
   ) {
-    
+    this.isFO = auth.isFO;
+    this.isSupervisor = auth.isSupervisor;
+    this.isFieldOfficer = auth.isFieldOfficer;
+    this.isApprover = auth.isApprover;
+    this.isFAD = auth.isFAD;
   }
 
   ngOnInit(): void {
-    this.isFO = this.auth.isFO;
-    this.isSupervisor = this.auth.isSupervisor;
-    this.isFieldOfficer = this.auth.isFieldOfficer;
-    this.isApprover = this.auth.isApprover;
-
     this.route.params.subscribe((params) => {
       if (Object.keys(params).length !== 0) {
-        this.spinner.open();
         this.appId = parseInt(params['id']);
         if (isNaN(this.appId)) {
           this.location.back();
@@ -77,7 +79,6 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
       if (Object.keys(params).length !== 0) {
         this.appSource = params['appSource'];
         this.coqId = parseInt(params['coqId']);
-
         if (this.appSource != AppSource.Licence) this.getApplication();
       }
     });
@@ -236,22 +237,5 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
         data: operationConfiguration[type].data,
       },
     });
-  }
-
-  isPDF(filePath: string) {
-    if (!filePath) return false;
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return fileType == 'pdf';
-  }
-
-  isIMG(filePath) {
-    if (!filePath) return false;
-    const imageTypes = ['png', 'jpg', 'jpeg', 'tiff'];
-
-    const fileType = filePath.split('.').slice(-1)[0];
-
-    return imageTypes.includes(fileType);
   }
 }

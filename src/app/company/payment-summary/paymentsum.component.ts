@@ -119,8 +119,8 @@ export class PaymentSumComponent implements OnInit {
     });
   }
 
-  submitPayment() {
-    //this.router.navigate(['/auth/pay-online?rrr=' + this.rrr]);
+  payNow() {
+    this.spinner.show('Redirecting to Payment Gateway...');
     window.location.href =
       environment.apiUrl + '/payment/pay-online?rrr=' + this.rrr;
   }

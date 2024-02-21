@@ -399,14 +399,14 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     // If not SuperAdmin or HQ staff, remove NoA & CoQ Applications navitems
-    if (this.currentUser.location !== LOCATION.HQ
-      && this.currentUser.userRoles !== UserRole.SUPERADMIN)
-    {
-      let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
-      applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {
-        return sub.title !== 'NoA APPLICATIONS' && sub.title !== 'CoQ APPLICATIONS'
-      })
-    }
+    // if (this.currentUser.location !== LOCATION.HQ
+    //   && this.currentUser.userRoles !== UserRole.SUPERADMIN)
+    // {
+    //   let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
+    //   applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {
+    //     return sub.title !== 'NoA APPLICATIONS' && sub.title !== 'CoQ APPLICATIONS'
+    //   })
+    // }
 
     // Show settings if SuperAdmin
     if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {
