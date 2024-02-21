@@ -8,7 +8,7 @@
       APPLICATION REFERENCE : {{ application?.reference }}
     </h2>
 
-    <div mat-dialog-content class="content !overflow-x-auto">
+    <div class="content !overflow-x-auto">
       <div class="application-view min-w-[500px]">
         <app-application-view-table
           [application]="application"
@@ -97,35 +97,36 @@
             Show more
           </p>
         </mat-expansion-panel>
+
+        <ng-container *ngIf="!loading">
+          <div
+            class="application-controls pt-4"
+            *ngIf="isStaffDesk && !isFieldOfficer"
+          >
+            <div class="actions">
+              <button
+                mat-raised-button
+                class="bg-green-500 text-white"
+                (click)="action('approve')"
+              >
+                {{ !isApprover ? "Pass For Approval" : isFAD ? "Accept" : "Approve" }}
+              </button>
+              <button mat-raised-button color="warn" (click)="action('sendBack')">
+                Send Back
+              </button>
+  
+              <!-- <button
+                mat-stroked-button
+                color="primary"
+                (click)="action('assignApplication')"
+              >
+                Delegate Application
+              </button> -->
+            </div>
+          </div>
+        </ng-container>
       </div>
 
-      <ng-container *ngIf="!loading">
-        <div
-          class="application-controls"
-          *ngIf="isStaffDesk && !isFieldOfficer"
-        >
-          <div class="actions">
-            <button
-              mat-raised-button
-              class="bg-green-500 text-white"
-              (click)="action('approve')"
-            >
-              {{ !isApprover ? "Pass For Approval" : "Approve" }}
-            </button>
-            <button mat-raised-button color="warn" (click)="action('sendBack')">
-              Send Back
-            </button>
-
-            <!-- <button
-              mat-stroked-button
-              color="primary"
-              (click)="action('assignApplication')"
-            >
-              Delegate Application
-            </button> -->
-          </div>
-        </div>
-      </ng-container>
     </div>
   </div>
 

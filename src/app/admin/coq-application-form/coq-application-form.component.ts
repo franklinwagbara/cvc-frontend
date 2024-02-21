@@ -297,7 +297,7 @@ export class CoqApplicationFormComponent
   }
 
   fetchRequirement(depotId: number): void {
-    this.spinner.show('Fetching requirement data...');
+    this.spinner.show('Loading requirement data...');
     this.fetchingRequirement = true;
     this.appId = this.isProcessingPlant ? null : this.appId;
     this.allSubscriptions.add(

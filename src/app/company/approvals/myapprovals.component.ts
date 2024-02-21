@@ -63,6 +63,7 @@ export class MyapprovalsComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.popup.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();
@@ -83,6 +84,6 @@ export class MyapprovalsComponent implements OnInit {
   }
 
   viewDebitNotes(row: any) {
-    this.router.navigateByUrl(`/company/approvals/${row.id}/debit-notes`);
+    this.router.navigateByUrl(`/company/approvals/${row.applicationId}/debit-notes`);
   }
 }

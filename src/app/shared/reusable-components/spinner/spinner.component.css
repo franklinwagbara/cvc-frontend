@@ -7,6 +7,11 @@
   gap: -2px;
 }
 
+.loader-wrapper {
+  border-radius: 8px;
+  @apply flex flex-col justify-center items-center bg-[#EDF5F9] p-4;
+}
+
 .cradle {
   --uib-size: 50px;
   --uib-speed: 1.2s;

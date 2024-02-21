@@ -24,6 +24,14 @@ export class PaymentService {
   }
 
   getAllDebitNotes(id: number): Observable<any> {
-    return this.http.get<any>(`${API}/get-debit-botes-by-appid`, { params: { id }});
+    return this.http.get<any>(`${API}/get-debit-notes-by-appid`, { params: { id }});
+  }
+
+  getDebitNotePaymentSummary(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/get-pending-payments-by-id`, { params: { id }});
+  }
+
+  createDebitNoteRRR(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/create-debit-note-rrr`, {params: { id }});
   }
 }

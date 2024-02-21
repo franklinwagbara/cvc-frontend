@@ -94,7 +94,7 @@ export class CvcApplicationsComponent implements OnInit {
         }
       },
       error: (error: unknown) => {
-        //todo: display error dialog
+        console.error(error);
         this.progressbar.close();
         this.spinner.close();
         this.cd.markForCheck();
@@ -123,9 +123,11 @@ export class CvcApplicationsComponent implements OnInit {
         }
       },
       error: (error: unknown) => {
-        this.popUp.open('RRR generation failed!', 'error');
+        console.error(error);
         this.progressbar.close();
         this.spinner.close();
+        this.popUp.open('RRR generation failed!', 'error');
+        this.router.navigate(['/company/paymentsum/' + app.id]);
         this.cd.markForCheck();
       },
     });
@@ -143,12 +145,10 @@ export class CvcApplicationsComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        this.snackBar.open(
-          'Payment confirmation not successfull. Please contact support or proceed to pay online.',
-          null,
-          {
-            panelClass: ['error'],
-          }
+        console.error(error);
+        this.popUp.open(
+          'Payment confirmation not successful. Please contact support or proceed to pay online.',
+          'error'
         );
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();

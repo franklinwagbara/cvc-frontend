@@ -52,7 +52,7 @@
         [disabled]="form.invalid"
         *ngIf="!isLoading"
       >
-        {{ !isCOQProcessor && !isApprover ? "Pass For Approval" : "Approve" }}
+        {{ !isCOQProcessor && !isApprover ? "Pass For Approval" : isFAD ? "Accept" : "Approve" }}
       </button>
       <a
         *ngIf="isLoading"

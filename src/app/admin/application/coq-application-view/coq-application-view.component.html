@@ -9,7 +9,7 @@
       {{ isProcessingPlant ? ppCoq?.reference : application?.reference }}
     </h2>
 
-    <div mat-dialog-content class="content !overflow-x-auto">
+    <div class="content !overflow-x-auto">
       <div class="application-view flex-1">
         <ng-container *ngIf="isPPCOQ">
           <app-ppcoq-application-view-table>
@@ -107,24 +107,24 @@
             </div>
           </div>
         </mat-expansion-panel>
-      </div>
-
-      <ng-container *ngIf="appLoaded">
-        <div class="application-controls" *ngIf="isStaffDesk">
-          <div class="actions">
-            <button
-              mat-raised-button
-              class="bg-green-500 text-white"
-              (click)="action('approve')"
-            >
-              Approve
-            </button>
-            <button mat-raised-button color="warn" (click)="action('sendBack')">
-              Send Back
-            </button>
+        
+        <ng-container *ngIf="appLoaded">
+          <div class="application-controls pt-4" *ngIf="isStaffDesk">
+            <div class="actions">
+              <button
+                mat-raised-button
+                class="bg-green-500 text-white"
+                (click)="action('approve')"
+              >
+                {{ isFAD ? 'Accept' : 'Approve' }}
+              </button>
+              <button mat-raised-button color="warn" (click)="action('sendBack')">
+                Send Back
+              </button>
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
 
       <!-- <div class="application-controls" *ngIf="isStaffDesk && isFAD">
         <div class="actions">
