@@ -20,6 +20,10 @@
   justify-content: space-evenly;
 }
 
+.btns a {
+  @apply mb-4;
+}
+
 .pay-color {
   background-color: rgb(31, 180, 130);
   color: white;

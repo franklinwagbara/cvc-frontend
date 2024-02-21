@@ -21,86 +21,90 @@
                 <i><b>Please note that payment is non-refundable.</b></i>
               </li>
             </ol>
+            <hr />
           </div>
-          <hr />
+          
           <div *ngIf="paymentSummary?.status !== 'PaymentCompleted'">
             <h3 class="sub-title">Payment Description</h3>
-            <div style="font-family: candara">
-              <p>{{ paymentSummary?.description }}</p>
-            </div>
+            <ol style="font-family: candara">
+              <li>{{ paymentSummary?.description }}</li>
+            </ol>
+            <hr />
           </div>
-          <hr />
+
           <div class="payment-details__table-container">
             <h3 class="sub-title">Payment Details</h3>
-            <div class="payment-details__table-wrapper">
-              <table class="table" cellspacing="0">
-                <tbody>
-                  <tr *ngIf="paymentSummary?.depotName">
-                    <td class="col-title">Depot Name</td>
-                    <td class="font-bold">
-                      {{ paymentSummary?.depotName }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="paymentSummary?.rrr">
-                    <td class="col-title">RRR</td>
-                    <td class="font-bold">
-                      {{ paymentSummary?.rrr }}
-                    </td>
-                  </tr>
-                
-                  <tr *ngIf="paymentSummary?.amount">
-                    <td class="col-title">Total Amount</td>
-                    <td class="font-bold">
-                      {{ paymentSummary?.amount | currency : "NGN" }}
-                    </td>
-                  </tr>
-                  <tr *ngIf="paymentSummary?.status">
-                    <td class="col-title">Payment Status</td>
-                    <td
-                      class="font-bold"
-                      [ngClass]="
-                        paymentSummary?.status === 'PaymentCompleted'
-                          ? '!text-green-800'
-                          : '!text-red-800'
-                      "
-                    >
-                      {{
-                        paymentSummary?.status === "PaymentCompleted"
-                          ? "Payment Completed"
-                          : "Payment Pending"
-                      }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-
-              <div class="pl-6" *ngIf="demandNotices?.length">
-                <h3 id="demand-notices-heading" class="nested-subtitle">Demand Notice(s)</h3>
-                <table class="table table-striped" aria-describedby="demand-notices-heading">
-                  <thead>
-                    <tr>
-                      <th>Payment Type</th>
-                      <th>Issued Date</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
+            <ol class="payment-details__table-wrapper pt-2">
+              <li>
+                <table class="table" cellspacing="0">
                   <tbody>
-                    <tr *ngFor="let dn of demandNotices">
-                      <td>{{ dn?.paymentType }}</td>
-                      <td>{{ dn?.createdDate }}</td>
-                      <td>{{ dn?.amount }}</td>
+                    <tr *ngIf="paymentSummary?.depotName">
+                      <td class="col-title">Depot Name</td>
+                      <td class="font-bold">
+                        {{ paymentSummary?.depotName }}
+                      </td>
+                    </tr>
+                    <tr *ngIf="paymentSummary?.rrr">
+                      <td class="col-title">RRR</td>
+                      <td class="font-bold">
+                        {{ paymentSummary?.rrr }}
+                      </td>
+                    </tr>
+                  
+                    <tr *ngIf="paymentSummary?.totalAmount">
+                      <td class="col-title">Total Amount</td>
+                      <td class="font-bold">
+                        {{ paymentSummary?.totalAmount | currency : "NGN" }}
+                      </td>
+                    </tr>
+                    <tr *ngIf="paymentSummary?.status">
+                      <td class="col-title">Payment Status</td>
+                      <td
+                        class="font-bold"
+                        [ngClass]="
+                          paymentSummary?.status === 'PaymentCompleted'
+                            ? '!text-green-800'
+                            : '!text-red-800'
+                        "
+                      >
+                        {{
+                          paymentSummary?.status === "PaymentCompleted"
+                            ? "Payment Completed"
+                            : "Payment Pending"
+                        }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
+  
+                <div *ngIf="demandNotices?.length">
+                  <h3 id="demand-notices-heading" class="nested-subtitle">Demand Notice(s)</h3>
+                  <table class="table table-striped" aria-describedby="demand-notices-heading">
+                    <thead>
+                      <tr>
+                        <th>Payment Type</th>
+                        <th>Issued Date</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let dn of demandNotices">
+                        <td>{{ dn?.paymentType }}</td>
+                        <td>{{ dn?.createdDate }}</td>
+                        <td>{{ dn?.amount }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </li>
+            </ol>
+            <hr />
           </div>
         </div>
       </div>
     </mat-card-content>
-    <mat-divider></mat-divider>
+    
     <mat-card-actions class="btns">
-      <!-- <a mat-flat-button class="neutral" (click)="back()">Go Back</a> -->
       <a
         mat-flat-button
         *ngIf="(isPaymentNotComfirmed$ | async) === true"
