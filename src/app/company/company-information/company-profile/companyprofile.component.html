@@ -63,17 +63,16 @@
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
             >
               <select
-                [value]="pepp"
                 id="operatingFacilityId"
                 class="w-full h-full"
                 style="background: none"
                 (change)="onChangeOperatingFacility($event)"
+                formControlName="operatingFacilityId"
               >
-                <option
-                  *ngFor="let a of OperatingFacilities"
-                  [selected]="a.name == pepp"
-                  [value]="a.name"
-                >
+                <option selected disabled [value]="''">
+                  --Select facility--
+                </option>
+                <option *ngFor="let a of operatingFacilities" [value]="a.value">
                   {{ a.name }}
                 </option>
               </select>

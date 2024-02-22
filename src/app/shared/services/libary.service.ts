@@ -80,4 +80,8 @@ export class LibaryService {
   public getAllJetty() {
     return this.http.get<any>(`${api}/all-jetty`);
   }
+
+  public getOperatingFacilities() {
+    return this.http.get<any>(`${api}/get-operating-name-types`);
+  }
 }
