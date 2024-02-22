@@ -72,8 +72,8 @@ export class CompanyProfileComponent implements OnInit {
       contact_LastName: ['', [Validators.required]],
       contact_Phone: ['', [Validators.required]],
       nationality: ['', [Validators.required]],
-      registered_Address_Id: ['', [Validators.required]],
-      operational_Address_Id: ['', [Validators.required]],
+      registered_Address_Id: [''],
+      operational_Address_Id: [''],
       email: ['', [Validators.required]],
       operatingFacilityId: ['', [Validators.required]],
       business_Type: ['', [Validators.required]],
@@ -149,12 +149,12 @@ export class CompanyProfileComponent implements OnInit {
         next: (res) => {
           this.operatingFacility = res.data;
           this.spinner.close();
-          this.popupService.open('Record updated successfully', 'success');
+          // this.popupService.open('Record updated successfully', 'success');
           this.cd.markForCheck();
         },
         error: (error: any) => {
           this.spinner.close();
-          this.popupService.open('Unable to update profile', 'error');
+          // this.popupService.open('Unable to update record', 'error');
           this.cd.markForCheck();
         },
       });
@@ -184,8 +184,8 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   save() {
-    //this.isSubmitted = true;
-    //if (this.profileForm.invalid) return;
+    // this.isSubmitted = true;
+    if (this.profileForm.invalid) return;
     this.spinner.show('Saving company profile');
     const userData = {
       ...this.profileForm.value,

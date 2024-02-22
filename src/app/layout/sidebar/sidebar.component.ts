@@ -15,7 +15,6 @@ import { LoginModel } from 'src/app/shared/models/login-model';
 import { AuthenticationService } from 'src/app/shared/services';
 import { LOCATION } from 'src/app/shared/constants/location';
 
-
 export interface SubRouteInfo {
   id: number;
   title: string;
@@ -119,7 +118,7 @@ const ROUTES: RouteInfo[] = [
         title: 'CoQ Applications',
         url: '/admin/coq/coq-applications-by-depot',
       },
-    ]
+    ],
   },
   {
     id: 7,
@@ -381,20 +380,26 @@ export class SidebarComponent implements OnInit, OnChanges {
       this.menuItems = this.menuItems.filter((el) => el.title !== 'CoQ');
     }
 
-    if (this.auth.isDssriStaff || !this.auth.currentUser.directorate) {
-      this.menuItems = this.menuItems.filter((item) => item.title !== 'PROCESSING PLANT');
+    if (this.auth?.isDssriStaff || !this.auth.currentUser?.directorate) {
+      this.menuItems = this.menuItems.filter(
+        (item) => item.title !== 'PROCESSING PLANT'
+      );
     }
 
     if (this.auth.isHppitiStaff) {
-      let allApprovalsNav = this.menuItems.find((el) => el.title === 'ALL APPROVALS');
+      let allApprovalsNav = this.menuItems.find(
+        (el) => el.title === 'ALL APPROVALS'
+      );
       allApprovalsNav.subRoutes = allApprovalsNav.subRoutes.filter((el) => {
-        return el.title !== 'NoA CLEARANCES'
-      })
-      let applicationsNav = this.menuItems.find((item) => item.title === 'APPLICATIONS');
+        return el.title !== 'NoA CLEARANCES';
+      });
+      let applicationsNav = this.menuItems.find(
+        (item) => item.title === 'APPLICATIONS'
+      );
       if (applicationsNav) {
         applicationsNav.subRoutes = applicationsNav.subRoutes.filter((el) => {
           return el.title === 'CoQ APPLICATIONS';
-        })
+        });
       }
     }
 
