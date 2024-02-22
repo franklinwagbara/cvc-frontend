@@ -25,12 +25,12 @@ export const FIELD_OFFICER_NOA_KEYS_MAPPED_TO_HEADERS = {
 };
 
 export const COQ_KEYS_MAPPED_TO_HEADERS = {
-  companyEmail: 'Company Email',
+  companyName: 'Company Name',
   vesselName: 'Vessel Name',
   depotName: 'Depot Name',
-  mT_VAC: 'MT VAC',
-  dateOfVesselArrival: 'Date of Arrival',
-  dateOfSTAfterDischarge: 'Date of Discharge',
+  volume: 'Volume (Litres)',
+  dateOfArrival: 'Date of Arrival',
+  dischargeDate: 'Date of Discharge',
   depotPrice: 'Depot Price',
   submittedDate: 'Date Submitted',
   status: 'Status',

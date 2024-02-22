@@ -31,7 +31,6 @@ export class ApplicationReportComponent implements OnInit {
     companyEmail: 'Company Email',
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
-    capacity: 'Capacity',
     status: 'Status',
     createdDate: 'Date',
   };

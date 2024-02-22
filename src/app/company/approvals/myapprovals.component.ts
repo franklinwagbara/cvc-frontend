@@ -80,7 +80,7 @@ export class MyapprovalsComponent implements OnInit {
   }
 
   viewCoQCerts(row: any) {
-    this.router.navigateByUrl(`/company/approvals/${row.id}/coqs`);
+    this.router.navigateByUrl(`/company/approvals/${row.applicationId}/coqs`);
   }
 
   viewDebitNotes(row: any) {

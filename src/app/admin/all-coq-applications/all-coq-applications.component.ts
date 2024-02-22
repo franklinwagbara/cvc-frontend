@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { AuthenticationService } from 'src/app/shared/services';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { ProcessingPlantCOQService } from 'src/app/shared/services/processing-plant-coq/processing-plant-coq.service';
@@ -14,6 +15,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 export class AllCoqApplicationsComponent implements OnInit {
   coqs: any[];
   ppCoqs: any[];
+  isHppitiStaff: boolean;
 
   coqKeysMappedToHeaders = {
     importName: 'Importer Name',
@@ -41,12 +43,15 @@ export class AllCoqApplicationsComponent implements OnInit {
   }
 
   constructor(
+    private auth: AuthenticationService,
     private router: Router,
     private coqService: CoqService,
     private spinner: SpinnerService,
     private popUp: PopupService,
     private ppCoqService: ProcessingPlantCOQService
-  ) {}
+  ) {
+    this.isHppitiStaff = auth.isHppitiStaff;
+  }
 
   ngOnInit(): void {
     this.fetchAllCoqs();

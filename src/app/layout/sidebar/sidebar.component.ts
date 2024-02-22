@@ -266,7 +266,7 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 8,
-        title: 'FIELD OFFICER/JETTY',
+        title: 'FIELD OFFICER / JETTY',
         url: '/admin/settings/field-officer-jetty',
       },
       {

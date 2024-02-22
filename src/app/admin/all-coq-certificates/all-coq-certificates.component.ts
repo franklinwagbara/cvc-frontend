@@ -12,10 +12,22 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./all-coq-certificates.component.css']
 })
 export class AllCoqCertificatesComponent implements OnInit {
-  certificates: any[]
+  depotCoQs: any[];
+  ppCoQs: any[];
+  isHppitiStaff: boolean;
 
-  certificateKeysMappedToHeaders = {
-    certifcateNo: 'Certificate No',
+  depotCoQKeysMappedToHeaders = {
+    companyName: 'Company Name',
+    licenseNo: 'Certificate No',
+    vesselName: 'Vessel Name',
+    depotName: 'Depot Name',
+    issuedDate: 'Issued Date',
+  }
+  
+  ppCoQKeysMappedToHeaders = {
+    companyName: 'Company Name',
+    licenseNo: 'Certificate No',
+    plantName: 'Plant Name',
     issuedDate: 'Issued Date',
   }
 
@@ -25,7 +37,9 @@ export class AllCoqCertificatesComponent implements OnInit {
     private popUp: PopupService,
     private dialog: MatDialog,
     private auth: AuthenticationService
-  ) {}
+  ) {
+    this.isHppitiStaff = auth.isHppitiStaff;
+  }
 
   ngOnInit(): void {
     this.spinner.open();
@@ -35,12 +49,8 @@ export class AllCoqCertificatesComponent implements OnInit {
   fetchData() {
     this.coqService.getAllCoQCerts().subscribe({
       next: (res: any) => {
-        this.certificates = res?.data;
-        if (this.auth.currentUser.directorate) {
-          this.certificates = this.certificates.filter((item) => !item.certifcateNo?.includes(
-            (this.auth.isHppitiStaff && 'DSSRI') || (this.auth.isDssriStaff && 'HPPITI'))
-          );
-        }
+        this.depotCoQs = res.data?.depotCOQList;
+        this.ppCoQs = res.data?.ppCoQList;
         this.spinner.close();
       },
       error: (error: unknown) => {
