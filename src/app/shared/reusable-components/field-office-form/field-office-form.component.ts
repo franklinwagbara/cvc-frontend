@@ -30,6 +30,7 @@ export class FieldOfficeFormComponent implements OnInit {
   public stateList: State[];
   public location: string[] = ['HQ', 'ZO', 'FO'];
   public office: any;
+  editMode: boolean;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -43,15 +44,14 @@ export class FieldOfficeFormComponent implements OnInit {
   ) {
     this.stateList = data.data.stateList;
     this.office = data?.data?.office;
+    this.editMode = data?.editMode;
 
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
-      // stateName: ['', Validators.required], // shouldn't be
       stateId: ['', Validators.required],
-      // address: ['', Validators.required],
-      // office: ['', Validators.required],
     });
   }
+
   ngOnInit(): void {
     if (this.data.data.action === 'EDIT') {
       this.form.get('name').setValue(this.office?.name);
@@ -69,7 +69,7 @@ export class FieldOfficeFormComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.popup.open('Office created successfully!', 'success');
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
 
         this.spinner.close();
@@ -90,7 +90,7 @@ export class FieldOfficeFormComponent implements OnInit {
       next: (res) => {
         if (res.success) {
           this.popup.open('Office modified successfully!', 'success');
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
 
         this.spinner.close();

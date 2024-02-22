@@ -1,18 +1,36 @@
 <div class="setting-desk">
   <h2 class="page-title bg-yellow-500 text-yellow-800">ALL CoQ CERTIFICATES</h2>
-  <div>
+  <div *ngIf="!isHppitiStaff">
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
-          [table_title]="'CoQ Certificates'"
+          [table_title]="'Depot CoQ'"
           [title-color]="'green'"
-          [table_keysMappedToHeaders]="certificateKeysMappedToHeaders"
-          [table_content]="certificates"
+          [table_keysMappedToHeaders]="depotCoQKeysMappedToHeaders"
+          [table_content]="depotCoQs"
           [EnableViewCertificateControl]="true"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
-          [noTitle]="true"
+          (onViewData)="onViewData($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'Processing Plant CoQ'"
+          [title-color]="'green'"
+          [table_keysMappedToHeaders]="ppCoQKeysMappedToHeaders"
+          [table_content]="ppCoQs"
+          [EnableViewCertificateControl]="true"
+          [noAddOrDeleteButton]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
           (onViewData)="onViewData($event)"
         >
         </generic-table>

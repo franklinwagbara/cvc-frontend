@@ -78,45 +78,11 @@ export class DischargeClearanceFormComponent implements OnInit {
     // this.getAppDepots();
   }
 
-  // public getAppDepots() {
-  //   this.spinner.open();
-  //   this.libService.getAllDepotByNoaAppId(this.noaApp.id).subscribe({
-  //     next: (res) => {
-  //       this.depots = res.data;
-  //       this.spinner.close();
-  //       this.cd.markForCheck();
-  //     },
-  //     error: (e) => {
-  //       this.popUp.open(e.message, 'error');
-  //       this.spinner.close();
-  //       this.cd.markForCheck();
-  //     },
-  //   });
-  // }
 
   @HostListener('keydown', ['$event'])
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
     Util.blockSpecialNonNumerics(evt);
   }
-
-  // getProduct() {
-  //   this.adminService.getproducts().subscribe({
-  //     next: (res) => {
-  //       this.products = res.data;
-  //       this.cd.markForCheck();
-  //     },
-  //     error: (error) => {},
-  //   });
-  // }
-
-  // filterProducts() {
-  //   this.form.get('product').valueChanges.subscribe((res) => {
-  //     console.log(res);
-  //     this.products = this.products.filter((a) => a.productType == res);
-  //     console.log(this.products);
-  //   });
-  //   this.cd.markForCheck();
-  // }
 
   submit() {
     this.submitting = true;
@@ -136,7 +102,7 @@ export class DischargeClearanceFormComponent implements OnInit {
           next: (res: any) => {
             this.submitting = false;
             if (res?.success) {
-              this.popUp.open('Form submitted successfully!', 'success');
+              this.popUp.open('Vessel cleared successfully!', 'success');
               this.dialogRef.close({ submitted: true });
             } else {
               this.errorMessage = 'An error occurred: ' + res?.message;
@@ -144,7 +110,7 @@ export class DischargeClearanceFormComponent implements OnInit {
             this.cd.markForCheck();
           },
           error: (error: any) => {
-            console.log(error);
+            console.error(error);
             this.submitting = false;
             this.errorMessage =
               'Something went wrong while submitting clearance';
@@ -154,11 +120,25 @@ export class DischargeClearanceFormComponent implements OnInit {
     } else {
       setTimeout(() => {
         this.submitting = false;
-        this.dialogRef.close({ submitted: true });
-        this.popUp.open(
-          'A notification has been sent to Supervisor(s)',
-          'success'
-        );
+        this.dischargeClearance.disallowVesselDischarge(formData)
+          .subscribe({
+            next: (res: any) => {
+              if (res?.success) {
+                this.popUp.open('Clearance disallowed successfully!', 'success');
+                this.dialogRef.close({ submitted: true });
+              } else {
+                this.errorMessage = 'An error occurred: ' + res?.message;
+              }
+              this.cd.markForCheck();
+            },
+            error: (error:any) => {
+              console.error(error);
+              this.submitting = false;
+              this.errorMessage =
+                'Something went wrong while disallowing clearance';
+              this.cd.markForCheck();
+            }
+        })
       }, 3000);
     }
   }

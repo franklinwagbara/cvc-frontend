@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>Add New Field Office</h1>
+<h1 mat-dialog-title>{{editMode ? 'Edit' : 'Add New' }} Field Office</h1>
 <div mat-dialog-content class="modal-width">
   <form [formGroup]="form" (ngSubmit)="createOffice()">
     <div class="fomr-group" style="margin-bottom: 10px">

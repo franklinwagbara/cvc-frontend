@@ -71,7 +71,7 @@ export class NoaApplicationsByDepotComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.popUp.open('Something went wrong while retrieving data', 'error');
         this.spinner.close();
         this.progressBar.close();

@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
+import { AppException } from 'src/app/shared/exceptions/AppException';
 
 @Component({
   selector: 'app-field-zonal-office',
@@ -31,7 +32,7 @@ export class FieldZonalOfficeComponent implements OnInit {
 
   public fieldOfficeKeysMappedToHeaders = {
     name: 'Name',
-    stateName: 'State',
+    state: 'State',
     // address: 'Address',
   };
 
@@ -47,7 +48,6 @@ export class FieldZonalOfficeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // this.progressBarService.open();
     this.spinner.open();
 
     forkJoin([
@@ -60,11 +60,19 @@ export class FieldZonalOfficeComponent implements OnInit {
         }
 
         if (res[1].success) this.stateList = res[1].data;
+
+        if (res[0].success && res[1].success) {
+          this.offices = this.offices.map((el) => ({
+            ...el,
+            state: this.stateList.find(s => s.id === el.stateId)?.name 
+          }))
+        }
         // this.progressBarService.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -73,7 +81,6 @@ export class FieldZonalOfficeComponent implements OnInit {
           }
         );
 
-        // this.progressBarService.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -91,16 +98,19 @@ export class FieldZonalOfficeComponent implements OnInit {
     const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
+        editMode: false
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.progressBarService.open();
-      this.adminHttpService.getOffices().subscribe((result) => {
-        this.offices = result.data.data;
-
-        this.progressBarService.close();
-      });
+    dialogRef.afterClosed().subscribe((result: 'submitted') => {
+      if (result) {
+        this.progressBarService.open();
+        this.adminHttpService.getOffices().subscribe((res) => {
+          this.offices = res.data;
+  
+          this.progressBarService.close();
+        });
+      }
     });
   }
 
@@ -145,7 +155,8 @@ export class FieldZonalOfficeComponent implements OnInit {
         }
         this.progressBarService.close();
       },
-      error: (error: unknown) => {
+      error: (error: AppException) => {
+        console.error(error);
         this.snackBar.open('Something went wrong while deleting data!', null, {
           panelClass: ['error'],
         });
@@ -153,6 +164,7 @@ export class FieldZonalOfficeComponent implements OnInit {
       },
     });
   }
+
   onEditData(event: any, type: string) {
     const operationConfiguration = {
       fieldOffices: {
@@ -164,15 +176,15 @@ export class FieldZonalOfficeComponent implements OnInit {
     const dialogRef = this.dialog.open(operationConfiguration[type].form, {
       data: {
         data: operationConfiguration[type].data,
+        editMode: true
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      //this.progressBarService.open();
-
-      this.ngOnInit();
-      //this.progressBarService.close();
-      this.cd.markForCheck();
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.ngOnInit();
+        this.cd.markForCheck();
+      }
     });
   }
 }

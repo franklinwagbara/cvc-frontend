@@ -13,12 +13,12 @@ export class AllNoaClearancesComponent implements OnInit {
   clearances: any[];
 
   clearanceKeysMappedToHeaders = {
-    licenseNo: 'Clearance ID',
+    licenseNo: 'Clearance No',
     issuedDate: 'Issue Date',
     companyName: 'Company Name',
+    email: 'Company Email',
     vesselName: 'Vessel Name',
     vesselTypeType: 'Vessel Type',
-    email: 'Company Email',
   };
 
   constructor(

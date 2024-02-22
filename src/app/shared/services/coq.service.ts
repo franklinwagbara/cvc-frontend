@@ -62,6 +62,10 @@ export class CoqService {
     return this.http.get<any>(`${API}/coq_by_appId/${id}`);
   }
 
+  getCoqCerts(id: number): Observable<any> {
+    return this.http.get<any>(`${API}/get-coq-certs/${id}`);
+  }
+
   createGasProductCoq(payload: any): Observable<any> {
     return this.http.post<any>(`${API}/create-coq-gas`, payload);
   }

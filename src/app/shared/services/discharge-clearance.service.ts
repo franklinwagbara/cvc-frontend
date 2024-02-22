@@ -18,6 +18,10 @@ export class DischargeClearanceService {
     return this.http.post<any>(`${API}/create-vessel-discharge-clearance`, data);
   }
 
+  disallowVesselDischarge(data: any): Observable<any> {
+    return this.http.post<any>(`${API}/disallow-vessel-discharge-clearance`, data);
+  }
+
   getVesselDischargeClearance(id: number): Observable<any> {
     return this.http.get<any>(`${API}/vessel-discharge-clearance/${id}`);
   }

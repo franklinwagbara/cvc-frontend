@@ -4,6 +4,7 @@ import { CoqService } from '../../shared/services/coq.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { environment } from 'src/environments/environment';
+import { AppException } from 'src/app/shared/exceptions/AppException';
 
 
 @Component({
@@ -16,10 +17,10 @@ export class ViewCoqCertsComponent implements OnInit {
   appId: number;
 
   coqsKeysMappedToHeaders = {
-    reference: 'Reference',
-    certifcateNo: 'Clearance ID',
+    licenseNo: 'Certificate No',
+    vesselName: 'Vessel Name',
+    depotName: 'Depot',
     issuedDate: 'Issued Date',
-    expireDate: 'Expiry Date'
   }
 
   constructor(
@@ -37,14 +38,18 @@ export class ViewCoqCertsComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.open();
-    this.coqService.getCoqsByAppId(this.appId).subscribe({
+    this.coqService.getCoqCerts(this.appId).subscribe({
       next: (res: any) => {
+        if (res.success) {
+          this.coqs = (res.data || []).map((coq) => ({
+            ...coq, coqId: parseInt(coq?.licenseNo.split('/')[4]) || null
+          }));
+        }
         this.spinner.close();
-        this.coqs = res.data;
         this.cd.markForCheck();
       },
-      error: (error: any) => {
-        console.log(error);
+      error: (error: AppException) => {
+        console.error(error);
         this.spinner.close();
         this.popUp.open('Something went wrong while retrieving data', 'error');
         this.cd.markForCheck();
@@ -53,7 +58,7 @@ export class ViewCoqCertsComponent implements OnInit {
   }
 
   viewCoQCert(row: any) {
-    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${row.id}`, '_blank');
+    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${row.coqId || row.id}`, '_blank');
   }
 
 }
