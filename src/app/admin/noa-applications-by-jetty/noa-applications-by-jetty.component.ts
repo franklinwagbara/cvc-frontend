@@ -32,9 +32,7 @@ export class NoaApplicationsByJettyComponent implements OnInit, OnDestroy {
     vesselName: 'Vessel Name',
     vesselType: 'Vessel Type',
     jetty: 'Jetty',
-    capacity: 'Capacity',
     status: 'Status',
-    rrr: 'RRR',
     createdDate: 'Initiated Date',
   };
 

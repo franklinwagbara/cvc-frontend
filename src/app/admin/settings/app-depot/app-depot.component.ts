@@ -30,7 +30,7 @@ export class AppDepotComponent implements OnInit {
 
   public depotsKeysMappedToHeaders = {
     name: 'Depot Name',
-    stateName: 'State',
+    state: 'State',
     capacity: 'Depot Capacity',
   };
 

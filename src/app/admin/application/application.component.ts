@@ -34,10 +34,8 @@ export class ApplicationComponent implements OnInit, AfterViewInit {
   public applicationKeysMappedToHeaders = {
     reference: 'Reference Number',
     companyName: 'Company Name',
-    // appType: 'Application Type',
     vesselName: 'Vessel Name',
     createdDate: 'Initiation Date',
-    capacity: 'Capacity',
     status: 'Status',
   };
 

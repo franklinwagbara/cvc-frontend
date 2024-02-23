@@ -172,8 +172,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
             item.status !== 'Completed'
           )
             return 'uploadDocument_control';
-          else if (item.rrr && item.paymentStatus !== 'Payment confirmed' 
-            && !['PaymentCompleted', 'Payment confirmed'].includes(item?.status)
+          else if (item.rrr && !item?.status?.toLowerCase()?.includes('completed')
+            && !item?.paymentStatus?.toLowerCase()?.includes('confirmed')
           )
             return 'confirmPayment_control';
           else if (!item.rrr) return 'rrr_control';
