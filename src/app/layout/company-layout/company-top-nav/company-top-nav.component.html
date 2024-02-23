@@ -4,7 +4,9 @@
     <span class="pl-2" style="font-size: large">{{
       currentUser?.operationFacility === OperatingFacility.ProcessingPlant
         ? "Processing Plant"
-        : "CVC"
+        : currentUser?.operationFacility === OperatingFacility.CVC
+        ? "CVC"
+        : "VCPP"
     }}</span>
   </div>
 
