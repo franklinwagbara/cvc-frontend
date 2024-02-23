@@ -206,9 +206,9 @@
             <table class="table table-auto data-table">
               <thead>
                 <tr>
-                  <th>Depot Name</th>
+                  <th>Depot</th>
                   <th>Volume</th>
-                  <th>Product Name</th>
+                  <th>Product</th>
                 </tr>
               </thead>
 
@@ -262,7 +262,7 @@
                 <tr>
                   <th 
                     scope="col" 
-                    *ngFor="let key of ['Imo Number', 'Vessel Name', 'Mother Vessel', 'Loading Port', 'Jetty', 'ETA']"
+                    *ngFor="let key of ['Imo Number', 'Vessel', 'Mother Vessel', 'Loading Port', 'Jetty', 'ETA']"
                   >{{ key }}</th>
                 </tr>
                 <tr>
@@ -281,7 +281,7 @@
                 <tr>
                   <th 
                     scope="col" 
-                    *ngFor="let key of ['Vessel Name', 'Volume', 'Product Name']"
+                    *ngFor="let key of ['Vessel', 'Volume', 'Product']"
                   >{{ key }}</th>
                 </tr>
                 <tr *ngFor="let data of selectedAppDepots">

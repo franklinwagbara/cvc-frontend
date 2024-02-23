@@ -68,6 +68,7 @@ export class ApplicationProcessFormComponent implements OnInit {
   public vesselTypes: IVessel[];
   public editMode: boolean = false;
   public loading = false;
+  public directorates: any[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -89,6 +90,7 @@ export class ApplicationProcessFormComponent implements OnInit {
     this.facilityTypes = data.data?.facilityTypes;
     this.applicationTypes = data.data?.applicationTypes;
     this.locations = data.data?.locations;
+    this.directorates = data.data?.directorates;
 
     this.form = this.formBuilder.group({
       vesselTypeId: [
@@ -130,6 +132,11 @@ export class ApplicationProcessFormComponent implements OnInit {
           ? this.applicationProccess.toLocationId
           : 'none',
         Validators.required,
+      ],
+      directorate: [
+        this.applicationProccess
+          ? this.applicationProccess.directorate
+          : ''
       ],
       status: [
         this.applicationProccess ? this.applicationProccess.status : 'none',

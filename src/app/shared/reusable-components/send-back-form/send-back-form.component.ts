@@ -87,7 +87,7 @@ export class SendBackFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
-          this.snackBar.open('Operation was successful!', null, {
+          this.snackBar.open('Application was sent back successfully!', null, {
             panelClass: ['success'],
           });
 
