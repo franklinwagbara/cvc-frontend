@@ -110,10 +110,13 @@ export class ApproveFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
+          const fadPredicate = this.isFAD
+            ? 'Application accepted successfully'
+            : 'Application passed successfully!'
           this.popup.open(
             this.isApprover
               ? 'Application approved successfully!'
-              : 'Operation was successful!',
+              : fadPredicate,
             'success'
           );
           this.dialogRef.close();

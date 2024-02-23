@@ -137,7 +137,7 @@ export class CvcApplicationsComponent implements OnInit {
     this.progressbar.open();
     this.spinner.open();
 
-    this.applicationServer.confirmPayment(app.id).subscribe({
+    this.applicationServer.confirmPayment(app?.paymentId).subscribe({
       next: (res) => {
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();
@@ -195,9 +195,10 @@ export interface Application {
   applicationDocs: any[];
   totalAmount?: string;
   jetty?: string;
-
+  
   createdDate: string;
   paymnetDate: string;
+  paymentId: number;
   paymnetStatus: string;
   paymentStatus: string;
   paymentDescription: string;

@@ -4,7 +4,6 @@ import { CoqService } from '../../shared/services/coq.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { environment } from 'src/environments/environment';
-import { AppException } from 'src/app/shared/exceptions/AppException';
 
 
 @Component({
@@ -41,24 +40,22 @@ export class ViewCoqCertsComponent implements OnInit {
     this.coqService.getCoqCerts(this.appId).subscribe({
       next: (res: any) => {
         if (res.success) {
-          this.coqs = (res.data || []).map((coq) => ({
-            ...coq, coqId: parseInt(coq?.licenseNo.split('/')[4]) || null
-          }));
+          this.coqs = res.data
         }
         this.spinner.close();
         this.cd.markForCheck();
       },
-      error: (error: AppException) => {
+      error: (error: unknown) => {
         console.error(error);
         this.spinner.close();
-        this.popUp.open('Something went wrong while retrieving data', 'error');
+        this.popUp.open('No certificate found for this CVC', 'error');
         this.cd.markForCheck();
       }
     })
   }
 
   viewCoQCert(row: any) {
-    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${row.coqId || row.id}`, '_blank');
+    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${row.coqId}`, '_blank');
   }
 
 }

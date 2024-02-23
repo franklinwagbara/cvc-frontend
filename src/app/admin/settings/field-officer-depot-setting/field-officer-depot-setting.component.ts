@@ -122,7 +122,7 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
           this.refreshMappings();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
           this.progressBar.close();
           this.popUp.open('Something went wrong while deleting mapping!', 'error');
         },

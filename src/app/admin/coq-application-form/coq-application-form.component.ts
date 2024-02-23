@@ -214,7 +214,8 @@ export class CoqApplicationFormComponent
           this.spinner.close();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
+          this.noPlantFetched = true;
           this.spinner.close();
           this.popUp.open(
             'Something went wrong while fetching all data',

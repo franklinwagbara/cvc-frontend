@@ -207,7 +207,7 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+          appHistory: this.application.appHistories,
         },
       },
       schedules: {

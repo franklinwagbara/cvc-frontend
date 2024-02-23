@@ -72,7 +72,7 @@ export class ViewDebitNotesComponent implements OnInit {
     this.progressBar.open();
     this.spinner.open();
 
-    this.paymentService.confirmDebitNotePayment(this.appId, event.orderId).subscribe({
+    this.paymentService.confirmPayment(event.id || event.paymentId).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.popUp.open('Payment Confirmed Successfully', 'success');
@@ -83,7 +83,7 @@ export class ViewDebitNotesComponent implements OnInit {
             'Payment confirmation not successful. Please contact support or proceed to pay online.',
             'error'
           );
-          this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id}`]);
+          this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id || event.paymentId}`]);
         }
         this.progressBar.close();
         this.spinner.close();
@@ -95,7 +95,7 @@ export class ViewDebitNotesComponent implements OnInit {
           'Payment confirmation not successful. Please contact support or proceed to pay online.',
           'error'
         );
-        this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id}`]);
+        this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id || event.paymentId}`]);
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();

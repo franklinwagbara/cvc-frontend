@@ -155,6 +155,30 @@
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Directorate</label>
+      <select
+        name="directorate"
+        formControlName="directorate"
+        class="form-control"
+      >
+        <option value="none" selected disabled hidden>
+          --Select from options --
+        </option>
+        <option *ngFor="let dir of directorates" [ngValue]="dir.value">
+          {{ dir.value }}
+        </option>
+        <option 
+          [ngValue]="applicationProccess?.directorate" 
+          [selected]="applicationProccess?.directorate"
+        >
+          {{ applicationProccess.directorate }}
+        </option>
+        <option value="DSSRI">DSSRI</option>
+        <option value="HPPITI">HPPITI</option>
+      </select>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
       <label>Action</label>
       <select name="action" formControlName="action" class="form-control">
         <option value="none" selected disabled hidden>

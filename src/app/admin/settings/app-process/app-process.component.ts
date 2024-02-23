@@ -33,6 +33,7 @@ export class AppProcessComponent implements OnInit {
   public statuses: string[];
   public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
+  public directorates: any[];
 
   public tableTitles = {
     branches: 'APPLICATION PROCESS',
@@ -73,6 +74,7 @@ export class AppProcessComponent implements OnInit {
       this.libraryService.getFacilityTypes(),
       this.libraryService.getApplicationTypes(),
       this.libraryService.getAllLocations(),
+      this.adminHttpService.getDirectorate(),
       // this.adminHttpService.getBranches(),
       // this.adminHttpService.getPhaseCategories(),
     ]).subscribe({
@@ -92,6 +94,9 @@ export class AppProcessComponent implements OnInit {
         if (res[5].success) this.applicationTypes = res[5].data;
 
         if (res[6].success) this.locations = res[6].data;
+
+        if (res[7].success) this.directorates = res[7].data;
+        console.log('Directorates ===============> ', this.directorates);
 
         // if (res[4].success) this.permitStages = res[4].data.data.permitStages;
         // if (res[1].success) this.branches = res[1].data.data;
@@ -125,6 +130,7 @@ export class AppProcessComponent implements OnInit {
           actions: this.actions,
           statuses: this.statuses,
           locations: this.locations,
+          directorates: this.directorates,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
         },
@@ -212,6 +218,7 @@ export class AppProcessComponent implements OnInit {
           actions: this.actions,
           statuses: this.statuses,
           locations: this.locations,
+          directorates: this.directorates,
           applicationProcess: event,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
