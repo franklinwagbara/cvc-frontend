@@ -208,13 +208,15 @@ export class CompanyProfileComponent implements OnInit {
         this.currentUser.profileComplete = data?.profileComplete;
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        if (returnUrl) {
-          window.location.assign(returnUrl);
-          // } else if (this.registeredAddress == null) {
-          //   window.location.assign('company/companyinformation/companyaddress');
-        } else {
-          window.location.reload();
-        }
+        setTimeout(() => {
+          if (returnUrl) {
+            window.location.assign(returnUrl);
+            // } else if (this.registeredAddress == null) {
+            //   window.location.assign('company/companyinformation/companyaddress');
+          } else {
+            window.location.reload();
+          }
+        }, 1000);
 
         this.cd.markForCheck();
       },
