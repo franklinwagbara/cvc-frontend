@@ -47,7 +47,7 @@
           </mat-expansion-panel-header>
           <div
             class="card-list"
-            *ngFor="let history of application?.appHistories | firstN : 4"
+            *ngFor="let history of appHistories | firstN : 4"
           >
             <div class="card-item">
               <div class="item-title">Initiator</div>
@@ -56,6 +56,10 @@
             <div class="card-item">
               <div class="item-title">Recipient</div>
               <div class="item-content">{{ history.targetedTo }}</div>
+            </div>
+            <div class="card-item">
+              <div class="item-title">Action</div>
+              <div class="item-content">{{ history.action }}</div>
             </div>
             <div class="card-item">
               <div class="item-title">Remark</div>

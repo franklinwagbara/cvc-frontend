@@ -150,7 +150,7 @@ export class ViewApplicationInFullComponent implements OnInit {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+          appHistory: this.application.appHistories,
         },
       },
       schedules: {

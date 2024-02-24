@@ -54,6 +54,7 @@ export class MyDeskComponent implements OnInit {
   public branches: IBranch[];
   isLoading = true;
   currentUser: LoginModel;
+  isCoQProcessor: boolean;
 
   public tableTitles = {
     applications: 'All Applications',
@@ -85,11 +86,12 @@ export class MyDeskComponent implements OnInit {
         this.applications = app;
       });
     });
+    this.isCoQProcessor = auth.isCOQProcessor;
     this.currentUser = this.auth.currentUser as LoginModel;
   }
 
   ngOnInit(): void {
-    this.spinner.open();
+    this.spinner.show('Loading desk...');
 
     (
       this.isDssriFieldOfficer
@@ -104,6 +106,7 @@ export class MyDeskComponent implements OnInit {
             this.processingPlantCOQs = res.data?.processingPlantCOQ;
           } else {
             this.appType$.next('NOA');
+            console.log('Response data type ======> ', typeof(res.data));
             this.applications = res.data;
           }
           if (this.isDssriFieldOfficer) {
@@ -111,12 +114,14 @@ export class MyDeskComponent implements OnInit {
               ?.filter((app) => app.status === 'Completed')
           }
           this.applications$.next(this.applications);
-        } 
+        } else {
+          this.appType$.next((this.isDssriFieldOfficer || !this.isCoQProcessor) ? 'NOA' : 'COQ');
+        }
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
