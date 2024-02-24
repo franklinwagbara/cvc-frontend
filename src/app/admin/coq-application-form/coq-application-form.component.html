@@ -560,19 +560,37 @@
                 </div>
 
                 <div class="md:col-span-3 form-group">
-                  <label for="coq-liquid-product-shrinkageFactor"
-                    >Shrinkage Factor <sup class="text-red-700">*</sup></label
+                  <label for="coq-liquid-product-shrinkageFactorLiquid"
+                    >Shrinkage Factor Liquid<sup class="text-red-700">*</sup></label
                   >
                   <input
                     type="number"
-                    name="shrinkageFactor"
-                    formControlName="shrinkageFactor"
-                    id="coq-liquid-product-shrinkageFactor"
+                    name="shrinkageFactorLiquid"
+                    formControlName="shrinkageFactorLiquid"
+                    id="coq-liquid-product-shrinkageFactorLiquid"
                     class="form-field form-control"
                     [ngClass]="{
                       'is-invalid':
-                        form?.controls['shrinkageFactor'].touched &&
-                        form?.controls['shrinkageFactor'].invalid
+                        form?.controls['shrinkageFactorLiquid'].touched &&
+                        form?.controls['shrinkageFactorLiquid'].invalid
+                    }"
+                  />
+                </div>
+
+                <div class="md:col-span-3 form-group">
+                  <label for="coq-liquid-product-shrinkageFactorVapour"
+                    >Shrinkage Factor Vapour<sup class="text-red-700">*</sup></label
+                  >
+                  <input
+                    type="number"
+                    name="shrinkageFactorVapour"
+                    formControlName="shrinkageFactorVapour"
+                    id="coq-liquid-product-shrinkageFactorVapour"
+                    class="form-field form-control"
+                    [ngClass]="{
+                      'is-invalid':
+                        form?.controls['shrinkageFactorVapour'].touched &&
+                        form?.controls['shrinkageFactorVapour'].invalid
                     }"
                   />
                 </div>

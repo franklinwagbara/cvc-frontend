@@ -36,6 +36,7 @@ export class CoqApplicationViewComponent implements OnInit {
   public coqId: number;
   public documents: any;
   public tanksList: any[];
+  public appHistories: any[];
 
   public isPPCOQ = false;
   public PPCOQId: number;
@@ -140,6 +141,7 @@ export class CoqApplicationViewComponent implements OnInit {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
           this.documents = res.data.docs;
+          this.appHistories = res.data.appHistories;
           this.appLoaded = true;
         }
         this.isProcessingPlant = this.isPPCOQ;
@@ -240,7 +242,7 @@ export class CoqApplicationViewComponent implements OnInit {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+          appHistory: this.appHistories,
         },
       },
       schedules: {

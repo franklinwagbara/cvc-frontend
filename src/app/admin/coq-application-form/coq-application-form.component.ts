@@ -370,7 +370,8 @@ export class CoqApplicationFormComponent
       tapeCorrection: ['', [Validators.required]],
       liquidTemperature: ['', [Validators.required]],
       observedLiquidVolume: ['', [Validators.required]],
-      shrinkageFactor: ['', [Validators.required]],
+      shrinkageFactorLiquid: ['', [Validators.required]],
+      shrinkageFactorVapour: ['', [Validators.required]],
       vcf: ['', [Validators.required]],
       tankVolume: ['', [Validators.required]],
       vapourTemperature: ['', [Validators.required]],
@@ -730,7 +731,7 @@ export class CoqApplicationFormComponent
       },
       error: (error: unknown) => {
         this.isSubmitting = false;
-        console.log(error);
+        console.error(error);
         this.spinner.close();
         this.popUp.open('CoQ Application Creation Failed', 'error');
         this.cd.markForCheck();
@@ -824,9 +825,10 @@ export class CoqApplicationFormComponent
       tapeCorrection,
       liquidTemperature,
       observedLiquidVolume,
-      shrinkageFactor: shrinkageFactorLiquid,
+      shrinkageFactorLiquid,
+      shrinkageFactorVapour,
       tankVolume,
-      vapourFactor: shrinkageFactorVapour,
+      vapourFactor,
       vapourTemperature,
       vapourPressure,
       molecularWeight,
@@ -842,9 +844,10 @@ export class CoqApplicationFormComponent
         liquidTemperature,
         observedLiquidVolume,
         shrinkageFactorLiquid,
+        shrinkageFactorVapour,
         vcf,
         tankVolume,
-        shrinkageFactorVapour,
+        vapourFactor,
         vapourTemperature,
         vapourPressure,
         molecularWeight,
@@ -861,7 +864,7 @@ export class CoqApplicationFormComponent
       waterVolume,
       floatRoofCorr,
       gov,
-      temp,
+      temperature,
       density,
       vcf,
     } = data;
@@ -875,7 +878,7 @@ export class CoqApplicationFormComponent
         waterVolume,
         floatRoofCorr,
         gov,
-        temp,
+        temperature,
         density,
         vcf,
       },
@@ -1018,21 +1021,21 @@ export interface IVesselDetail {
 
 export interface GasTankReading {
   id: number;
+  vcf: number;
   tank: string;
   status: string;
+  tankVolume: number;
+  vapourFactor: number;
+  tapeCorrection: number;
+  vapourPressure: number;
+  molecularWeight: number;
   liquidDensityVac: number;
   observedSounding: number;
-  tapeCorrection: number;
+  vapourTemperature: number;
   liquidTemperature: number;
   observedLiquidVolume: number;
   shrinkageFactorLiquid: number;
-  vcf: number;
-  tankVolume: number;
   shrinkageFactorVapour: number;
-  vapourTemperature: number;
-  vapourPressure: number;
-  molecularWeight: number;
-  vapourFactor: number;
 }
 
 export interface LiquidTankReading {

@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CoqService } from '../../../../src/app/shared/services/coq.service';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { PaymentService } from 'src/app/shared/services/payment.service';
@@ -49,7 +48,8 @@ export class ViewDebitNotesComponent implements OnInit {
       next: (res: any) => {
         this.debitNotes = (res?.data || [])
           .map((el: any) => ({ 
-            ...el, 
+            ...el,
+            amount: parseFloat(el.amount).toFixed(2),
             status: el.status === 'PaymentPending' ? 'Payment Pending'
               : el.status === 'PaymentCompleted' ? 'Payment Completed'
               : el.status 
@@ -62,7 +62,7 @@ export class ViewDebitNotesComponent implements OnInit {
         console.error(error);
         this.progressBar.close();
         this.spinner.close();
-        this.popUp.open('Something went wrong. Failed to fetch debit notes.', 'error');
+        this.popUp.open('No debit notes found for the CVC', 'error');
         this.cd.markForCheck();
       }
     });
@@ -72,7 +72,7 @@ export class ViewDebitNotesComponent implements OnInit {
     this.progressBar.open();
     this.spinner.open();
 
-    this.paymentService.confirmPayment(event.id || event.paymentId).subscribe({
+    this.paymentService.confirmPayment(event.paymentId).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.popUp.open('Payment Confirmed Successfully', 'success');
@@ -83,7 +83,7 @@ export class ViewDebitNotesComponent implements OnInit {
             'Payment confirmation not successful. Please contact support or proceed to pay online.',
             'error'
           );
-          this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id || event.paymentId}`]);
+          this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.paymentId}`]);
         }
         this.progressBar.close();
         this.spinner.close();
@@ -95,7 +95,7 @@ export class ViewDebitNotesComponent implements OnInit {
           'Payment confirmation not successful. Please contact support or proceed to pay online.',
           'error'
         );
-        this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.id || event.paymentId}`]);
+        this.router.navigate([`/company/approvals/${this.appId}/debit-notes/${event.paymentId}`]);
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
