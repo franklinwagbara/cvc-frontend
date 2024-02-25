@@ -270,13 +270,7 @@ export class AllStaffComponent implements OnInit {
   refreshUsers(dialogRef: any): void {
     dialogRef.afterClosed().subscribe((res: 'submitted') => {
       if (res) {
-        this.progressBar.open();
-        this.adminHttpService.getAllStaff().subscribe((res) => {
-          this.users = res.data;
-  
-          this.progressBar.close();
-          this.cd.markForCheck();
-        });
+        this.ngOnInit();
       }
     });
   }
