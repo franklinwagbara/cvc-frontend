@@ -64,15 +64,7 @@ export class NoaApplicationsByJettyComponent implements OnInit, OnDestroy {
     this.allSubscriptions.add(
       this.applicationService.viewAppByJettyOfficer().subscribe({
         next: (res: any) => {
-          // get apps and add allowDischarge prop to each one
-          this.applications = res?.data;
-          // .map((el) => ({...el, allowDischarge: false }));
-          this.applications = (this.applications || [])
-            .map((el) => ({
-              ...el,
-              createdDate: new Date(el?.createdDate).toLocaleDateString(),
-            }))
-            .filter((app) => app.status == 'Completed')
+          this.applications = res?.data; 
           this.spinner.close();
           this.progressBar.close();
           this.cdr.markForCheck();

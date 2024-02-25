@@ -17,6 +17,7 @@ import { AppSource } from 'src/app/shared/constants/appSource';
 })
 export class NoaApplicationsByDepotComponent implements OnInit {
   public applications: IApplication[];
+  public rejectedCoQs: any[];
   products: any[];
   currentUser: any;
 
@@ -97,6 +98,20 @@ export class NoaApplicationsByDepotComponent implements OnInit {
       this.progressBar.open();
       this.getApplicationByDepot();
     }
+  }
+
+  viewRejectedCoQ(event: any) {
+    this.router.navigate(['admin/coq/coq-applications-by-depot/', event.id]);
+  }
+
+  reSubmitCoQ(event: any) {
+    this.router.navigate([
+      'admin',
+      'coq',
+      'coq-applications-by-depot',
+      event.id,
+      'edit-application',
+    ])
   }
 
   initiateCoQ(event: any) {

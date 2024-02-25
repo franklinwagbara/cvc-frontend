@@ -375,21 +375,17 @@ export class SidebarComponent implements OnInit, OnChanges {
       );
     }
 
-    // Show CoQ nav only to Staffs in Field Officers
-    if (this.currentUser?.userRoles !== UserRole.FIELDOFFICER) {
+    // Show CoQ nav only to DSSRI Field Officers
+    if (!(auth.isDssriStaff && auth.isFieldOfficer)) {
       this.menuItems = this.menuItems.filter((el) => el.title !== 'CoQ');
     }
 
-    if (this.auth?.isDssriStaff || !this.auth.currentUser?.directorate) {
-      this.menuItems = this.menuItems.filter(
-        (item) => item.title !== 'PROCESSING PLANT'
-      );
+    if (auth.isDssriStaff || !auth.currentUser.directorate) {
+      this.menuItems = this.menuItems.filter((item) => item.title !== 'PROCESSING PLANT');
     }
 
-    if (this.auth.isHppitiStaff) {
-      let allApprovalsNav = this.menuItems.find(
-        (el) => el.title === 'ALL APPROVALS'
-      );
+    if (auth.isHppitiStaff) {
+      let allApprovalsNav = this.menuItems.find((el) => el.title === 'ALL APPROVALS');
       allApprovalsNav.subRoutes = allApprovalsNav.subRoutes.filter((el) => {
         return el.title !== 'NoA CLEARANCES';
       });
@@ -402,16 +398,6 @@ export class SidebarComponent implements OnInit, OnChanges {
         });
       }
     }
-
-    // If not SuperAdmin or HQ staff, remove NoA & CoQ Applications navitems
-    // if (this.currentUser.location !== LOCATION.HQ
-    //   && this.currentUser.userRoles !== UserRole.SUPERADMIN)
-    // {
-    //   let applicationsNav = this.menuItems.find((el) => el.title === 'APPLICATIONS');
-    //   applicationsNav.subRoutes = applicationsNav.subRoutes.filter((sub) => {
-    //     return sub.title !== 'NoA APPLICATIONS' && sub.title !== 'CoQ APPLICATIONS'
-    //   })
-    // }
 
     // Show settings if SuperAdmin
     if (this.currentUser?.userRoles !== UserRole.SUPERADMIN) {

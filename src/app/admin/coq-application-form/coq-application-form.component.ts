@@ -37,11 +37,7 @@ import { LibaryService } from '../../../../src/app/shared/services/libary.servic
 import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
 import { MatStepper } from '@angular/material/stepper';
 import { ICoqRequirement } from '../../../../src/app/shared/interfaces/ICoqRequirement';
-import { ApplicationTerm } from '../../../../src/app/shared/constants/applicationTerm';
-import { PlantService } from '../../../../src/app/shared/services/plant.service';
 import { IPlant } from 'src/app/shared/interfaces/IPlant';
-import { ITank } from 'src/app/shared/interfaces/ITank';
-import { ProductService } from 'src/app/shared/services/product.service';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
@@ -64,13 +60,9 @@ export class CoqApplicationFormComponent
 {
   private allSubscriptions = new Subscription();
 
-  depotSelection = new FormControl('', Validators.required);
-  plantSelection = new FormControl('', Validators.required);
-  productSelection = new FormControl('', Validators.required);
-  configuredTank = this.fb.group({
-    id: ['', [Validators.required, this.isUniqueTank()]],
-    name: ['', [Validators.required]],
-  });
+  isEditMode = false;
+  depotSelection: FormControl;
+  configuredTank: FormGroup;
   tankLiqInfoForm: FormGroup;
   tankGasInfoForm: FormGroup;
   tankLiqBeforeInfoForm: FormGroup;
@@ -90,19 +82,17 @@ export class CoqApplicationFormComponent
   depots: IPlant[];
   products: IProduct[];
   processingPlants: IPlant[];
-  plantTanks: ITank[] = [];
+  
   fetchingRequirement = false;
   requirement: ICoqRequirement;
   coqId: number;
-  coq: ICOQ;
-  noaApplication: any;
+  existingCoq: IExistingCoQ;
+  application: any;
 
   isSubmitted = false;
   isSubmitting = false;
 
   isGasProduct: boolean | null = null;
-
-  isProcessingPlant = false;
 
   noPlantFetched: boolean | null = null;
   noTankConfigured: boolean | null = null;
@@ -133,8 +123,6 @@ export class CoqApplicationFormComponent
     private route: ActivatedRoute,
     private popup: PopupService,
     private libService: LibaryService,
-    private productService: ProductService,
-    private plantService: PlantService,
     private cd: ChangeDetectorRef,
     public coqFormService: CoqAppFormService,
     private popUp: PopupService,
@@ -144,12 +132,8 @@ export class CoqApplicationFormComponent
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
-    });
-
-    this.route.data.subscribe((val) => {
-      if (val['type'] === ApplicationTerm.PROCESSINGPLANT) {
-        this.isProcessingPlant = true;
-      }
+      this.coqId = parseInt(params['coqId']);
+      this.isEditMode = !isNaN(this.coqId);
     });
   }
 
@@ -197,20 +181,68 @@ export class CoqApplicationFormComponent
 
   public fetchAllData(): void {
     this.spinner.open();
-    if (!this.isProcessingPlant) {
+
+    if (this.isEditMode) {
+      localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+      this.coqService.viewCoqApplication(this.coqId).subscribe({
+        next: (res: any) => {
+          this.existingCoq = res.data;
+          this.documents$.next([this.existingCoq.docs]);
+          this.application = res.data?.coq;
+          
+          this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
+          const tankList: any[] = res.data?.tankList || [];
+
+          const coqData: CoQData[] = tankList.map((el: any) => {
+            let beforeReading = el?.tankMeasurement.find((r: any) => {
+              return r?.measurementType === 'Before'
+            });
+            beforeReading = { 
+              ...beforeReading, 
+              id: el?.tankId, 
+              tank: el?.tankName, 
+              status: 'before' 
+            };
+            let afterReading = el?.tankMeasurement.find((r: any) => {
+              return r?.measurementType === 'After'
+            });
+            afterReading = { 
+              ...afterReading, 
+              id: el?.tankId, 
+              tank: el?.tankName, 
+              status: 'after' 
+            };
+            delete beforeReading.tankName;
+            delete beforeReading.measurementType;
+            delete afterReading.tankName;
+            delete afterReading.measurementType;
+            return { before: beforeReading, after: afterReading };
+          })
+
+          localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqData));
+          this.restoreReviewData();
+
+          this.spinner.close();
+        },
+        error: (err: unknown) => {
+          console.error(err);
+          this.spinner.close();
+          this.popUp.open(
+            'Something went wrong while fetching all data',
+            'error'
+          );
+        }
+      })
+    } else {
       forkJoin([
         this.applicationService.viewApplication(this.appId),
         this.libService.getAllDepotByNoaAppId(this.appId),
-        // this.applicationService.getUploadDocuments(this.appId)
       ]).subscribe({
         next: (res: any[]) => {
-          this.noaApplication = res[0]?.data;
+          this.application = res[0]?.data;
           this.depots = res[1]?.data;
           this.noPlantFetched = !this.depots.length;
-          // this.documents$.next((res[2]?.data?.docs as any[]).map((el, i) => {
-          //   return { ...el, success: null, docIndex: i, percentProgress: 0 }
-          // }));
-          // console.log('Uploaded Documents ============> ', res[2]?.data.docs);
+          
           this.spinner.close();
         },
         error: (error: unknown) => {
@@ -223,53 +255,23 @@ export class CoqApplicationFormComponent
           );
         },
       });
-    } else {
-      forkJoin([
-        this.productService.getAllProducts(),
-        this.plantService.getAllProcessingPlants(),
-      ]).subscribe({
-        next: (res: any[]) => {
-          this.products = res[0]?.data;
-          this.processingPlants = res[1]?.data;
-          this.processingPlants.forEach((plant) => {
-            if (plant?.tanks.length) {
-              this.plantTanks.push(...plant.tanks);
-            }
-          });
-          this.noPlantFetched = !this.processingPlants.length;
-          this.spinner.close();
-        },
-        error: (error: unknown) => {
-          console.log(error);
-          this.spinner.close();
-          this.popUp.open('Something went wrong while fetching data', 'error');
-        },
-      });
     }
   }
 
-  subscribeProductSelection(): void {
-    this.allSubscriptions.add(
-      this.productSelection.valueChanges.subscribe((val) => {
-        this.isGasProduct =
-          this.products
-            .find((p) => p?.id === parseInt(val))
-            ?.productType.toLowerCase() === 'gas';
-        this.restoreReviewData();
-      })
-    );
-  }
-
-  subscribePlantSelection(): void {
-    this.allSubscriptions.add(
-      this.plantSelection.valueChanges.subscribe((val) => {
-        this.noTankConfigured = !this.plantTanks.length;
-        this.fetchRequirement(parseInt(val));
-      })
-    );
-  }
-
   public initForms() {
+    this.depotSelection = new FormControl(
+      { 
+        value: this.isEditMode ? this.existingCoq?.coq?.plantId : '', 
+        disabled: this.isEditMode
+      }, 
+      Validators.required
+    );
+
+    this.configuredTank = this.fb.group({
+      id: ['', [Validators.required, this.isUniqueTank()]],
+      name: ['', [Validators.required]],
+    });
+
     this.vesselLiqInfoForm = this.fb.group({
       dateOfVesselArrival: ['', [Validators.required, Validators.max]],
       dateOfVesselUllage: ['', [Validators.required]],
@@ -291,8 +293,6 @@ export class CoqApplicationFormComponent
     this.initTemplateFormContexts();
     this.subscribeTankSelection();
     this.subscribeDepotSelection();
-    this.subscribeProductSelection();
-    this.subscribePlantSelection();
 
     this.cd.markForCheck();
   }
@@ -300,18 +300,14 @@ export class CoqApplicationFormComponent
   fetchRequirement(depotId: number): void {
     this.spinner.show('Loading requirement data...');
     this.fetchingRequirement = true;
-    this.appId = this.isProcessingPlant ? null : this.appId;
     this.allSubscriptions.add(
       this.coqService.getCoqRequirement(this.appId, depotId).subscribe({
         next: (res: any) => {
           this.requirement = res?.data;
-          this.noTankConfigured = this.isProcessingPlant
-            ? !this.plantTanks.length
-            : !this.requirement.tanks.length;
-          if (!this.isProcessingPlant) {
-            this.isGasProduct =
-              this.requirement?.productType.toLowerCase() === 'gas';
-          }
+          this.noTankConfigured = !this.requirement.tanks.length;
+          
+          this.isGasProduct =
+            this.requirement?.productType.toLowerCase() === 'gas';
 
           if (this.noTankConfigured) {
             this.popUp.open(
@@ -417,14 +413,8 @@ export class CoqApplicationFormComponent
     this.allSubscriptions.add(
       this.configuredTank.controls['id'].valueChanges.subscribe((val) => {
         // Populate tankName control
-        const tank = (
-          (this.isProcessingPlant ? this.plantTanks : this.requirement.tanks) ||
-          []
-        ).find(
-          (t) =>
-            (this.isProcessingPlant ? t?.plantTankId : t?.id) === parseInt(val)
-        );
-        const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
+        const tank = (this.requirement.tanks || []).find((t) => t?.id === parseInt(val));
+        const tankName = tank?.name;
         this.configuredTank.controls['name'].setValue(tankName || '');
         if (!this.isGasProduct) {
           this.tankLiqBeforeInfoForm.controls['tank'].setValue(tankName);
@@ -688,8 +678,6 @@ export class CoqApplicationFormComponent
         this.vesselLiqInfoForm.reset();
       }
       this.depotSelection.reset();
-      this.productSelection.reset();
-      this.plantSelection.reset();
       this.documents = [];
       this.uploadedDocInfo = [];
     }
@@ -742,16 +730,14 @@ export class CoqApplicationFormComponent
   constructPayload(): any {
     let payload: any;
     const reference = {
-      plantId: this.isProcessingPlant
-        ? this.plantSelection.value
-        : this.depotSelection.value,
+      plantId: this.depotSelection.value,
       noaAppId: this.appId,
     };
 
     if (this.isGasProduct) {
       payload = {
         ...reference,
-        productId: this.isProcessingPlant ? this.productSelection.value : null,
+        productId: null,
         quauntityReflectedOnBill:
           this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
         arrivalShipFigure:
@@ -781,7 +767,7 @@ export class CoqApplicationFormComponent
     } else {
       payload = {
         ...reference,
-        productId: this.isProcessingPlant ? this.productSelection.value : null,
+        productId: null,
         dateOfVesselArrival:
           this.vesselLiqInfoForm.controls[
             'dateOfVesselArrival'
@@ -911,15 +897,10 @@ export class CoqApplicationFormComponent
 
   isUniqueTank(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const tank = (
-        (this.isProcessingPlant ? this.plantTanks : this.requirement?.tanks) ||
-        []
-      ).find(
-        (t) =>
-          (this.isProcessingPlant ? t.plantTankId : t.id) ===
-          parseInt(control.value)
+      const tank = (this.requirement?.tanks || []).find(
+        (t) => t.id === parseInt(control.value)
       );
-      const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
+      const tankName = tank?.name;
       if (this.isGasProduct !== null && !this.isGasProduct) {
         return !this.coqFormService.liquidProductReviewData.some(
           (val) => val.before.tank === tankName
@@ -994,6 +975,13 @@ export class CoqApplicationFormComponent
   blockSpecialNonNumerics(evt: KeyboardEvent): void {
     Util.blockSpecialNonNumerics(evt);
   }
+}
+
+interface IExistingCoQ {
+  coq?: any;
+  tankList: any[];
+  docs: DocumentInfo;
+  appHistories?: any;
 }
 
 export interface CoQData {

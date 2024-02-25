@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../src/environments/environment';
 import { Observable } from 'rxjs';
@@ -42,12 +42,6 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/all-applications`);
   }
 
-  // viewApplicationByDepot(depotId: number): Observable<any> {
-  //   return this.http.get<any>(`${API}/view-application-by-depot`, {
-  //     params: { id: depotId },
-  //   });
-  // }
-
   viewApplicationByDepot(): Observable<any> {
     return this.http.get<any>(`${API}/view-application-By-Depot-Officer`, {});
   }
@@ -56,6 +50,7 @@ export class ApplicationService {
     return this.http.get<any>(`${API}/view-application-By-Jetty-Officer`, {});
   }
 
+  // This endpoint fetches applications on DSSRI fieldOfficer's desk
   viewApplicationByDepotOfficer(officerId: number): Observable<any> {
     return this.http.get<any>(`${API}/view-application-by-depot-officer`, {
       params: { id: officerId },

@@ -98,13 +98,11 @@ export class AppProcessComponent implements OnInit {
         if (res[7].success) this.directorates = res[7].data;
         console.log('Directorates ===============> ', this.directorates);
 
-        // if (res[4].success) this.permitStages = res[4].data.data.permitStages;
-        // if (res[1].success) this.branches = res[1].data.data;
-        // this.progressBarService.close();
         this.spinner.close();
       },
 
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -130,6 +128,7 @@ export class AppProcessComponent implements OnInit {
           actions: this.actions,
           statuses: this.statuses,
           locations: this.locations,
+          applicationProcess: null,
           directorates: this.directorates,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
@@ -144,14 +143,16 @@ export class AppProcessComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 
@@ -233,14 +234,16 @@ export class AppProcessComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 }

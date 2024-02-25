@@ -57,7 +57,7 @@ export class MyapprovalsComponent implements OnInit {
 
     forkJoin([this.licenceService.getCompanyLicences()]).subscribe({
       next: (res) => {
-        if (res[0].success) this.approvals = res[0].data.reverse();
+        if (res[0].success) this.approvals = res[0].data;
 
         this.spinner.close();
         this.cd.markForCheck();

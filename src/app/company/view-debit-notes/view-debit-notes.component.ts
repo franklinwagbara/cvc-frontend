@@ -5,6 +5,7 @@ import { SpinnerService } from '../../../../src/app/shared/services/spinner.serv
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { environment } from 'src/environments/environment';
 import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-view-debit-notes',
@@ -14,6 +15,7 @@ import { ProgressBarService } from 'src/app/shared/services/progress-bar.service
 export class ViewDebitNotesComponent implements OnInit {
   debitNotes: any[];
   appId: number;
+  rrr$ = new Subject<string>();
 
   debitNoteKeysMappedToHeaders = {
     orderId: "CoQ Reference",
@@ -103,17 +105,44 @@ export class ViewDebitNotesComponent implements OnInit {
     });
   }
 
+  generateRRR(event: any) {
+    this.progressBar.open();
+    this.spinner.open();
+    this.paymentService.createDebitNoteRRR(event.paymentId).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.rrr$.next(res.data.rrr);
+          this.router.navigate([`/company/approvals/${this.appId}/debit-notes/` + event.paymentId]);
+
+          this.popUp.open('RRR was generated successfully!', 'success');
+          this.progressBar.close();
+          this.spinner.close();
+          this.cd.markForCheck();
+        }
+      },
+      error: (error: unknown) => {
+        console.error(error);
+        this.progressBar.close();
+        this.spinner.close();
+        this.popUp.open('RRR generation failed!', 'error');
+        this.router.navigate([`/company/approvals/${this.appId}/debit-notes/` + event.paymentId]);
+        this.cd.markForCheck();
+      },
+    });
+  }
+
+
   viewPaymentSummary(event: any) {
     this.router.navigate([
       'company',
       'approvals', 
       this.appId,
       'debit-notes',
-      event?.id
+      event.paymentId
     ])
   }
 
   viewDebitNote(row: any) {
-    window.open(`${environment.apiUrl}/CoQ/debit_note/${row.id}`);
+    window.open(`${environment.apiUrl}/CoQ/debit_note/${row.paymentId}`);
   }
 }

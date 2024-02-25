@@ -55,7 +55,7 @@ export class PaymentSumComponent implements OnInit {
     this.progressbar.open();
     this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
       next: (res) => {
-        if (res.success) {
+        if (res?.success) {
           this.paymentSummary = res.data;
           this.rrr$.next(this.paymentSummary?.rrr);
           this.applicationStatus$.next(this.paymentSummary?.paymentStatus);

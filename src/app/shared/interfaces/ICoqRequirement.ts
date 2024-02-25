@@ -3,7 +3,7 @@ import { ITank } from "./ITank";
 export interface ICoqRequirement {
   productName: string;
   productType: string;
-  tanks: [ITank];
+  tanks: ITank[];
   requiredDocuments: [
     {
       id: number;

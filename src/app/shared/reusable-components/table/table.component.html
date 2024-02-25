@@ -95,6 +95,7 @@
               column.cell(row) === "view_certificate_control" ||
               column.cell(row) === "view_schedule_control" ||
               column.cell(row) === "rrr_control" ||
+              column.cell(row) === "resubmit_control" ||
               column.cell(row) === "uploadDocument_control" ||
               column.cell(row) === "confirmPayment_control" ||
               column.cell(row) === "moveApplication_control" ||
@@ -156,6 +157,16 @@
                 (click)="viewData(row)"
               >
                 View Application
+              </button>
+
+              <button
+                mat-flat-button
+                color="primary"
+                class="view-button"
+                *ngIf="column.cell(row) === 'resubmit_control'"
+                (click)="resubmitData(row)"
+              >
+                Resubmit
               </button>
 
               <button

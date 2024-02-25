@@ -77,6 +77,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewRecipientControl') enableViewRecipientControl?: boolean =
     false;
+  @Input('EnableResubmit') enableResubmit?: boolean =
+    false;
+  
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
@@ -100,6 +103,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onSelect = new EventEmitter<any>();
   @Output() allowDischarge = new EventEmitter<boolean>();
   @Output() onGenDebitNote = new EventEmitter<boolean>();
+  @Output() onResubmit = new EventEmitter<boolean>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -204,6 +208,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_control',
       });
+    }
+
+    if (this.enableResubmit) {
+      this.columns.push({
+        columnDef: 'resubmit_control',
+        header: '',
+        cell: (item) => 'resubmit_control'
+      })
     }
 
     if (this.enableViewDebitNotePaymentSummary) {
@@ -380,6 +392,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   genDebitNote(row: any) {
     this.onGenDebitNote.emit(row);
+  }
+
+  resubmitData(row: any) {
+    this.onResubmit.emit(row);
   }
 
   onDischargeClearance(row: any, allow: boolean): void {

@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <div class="form-group col-span-3">
+      <!-- <div class="form-group col-span-3">
         <label>Loading Port <sup class="tex-red-500">*</sup></label>
         <input
           formControlName="vesselPort"
@@ -46,29 +46,6 @@
           class="alert alert-danger mt-2 p-2"
         >
           Loading port is required!
-        </div>
-      </div>
-
-      <!-- <div class="fomr-group col-span-3">
-        <label>Depot <sup class="tex-red-500">*</sup></label>
-        <select
-          formControlName="depotId"
-          class="form-control"
-          [ngClass]="{
-            'is-invalid':
-              form.get('depotId')?.dirty && form.get('depotId')?.invalid
-          }"
-        >
-          <option value="" [selected]="true">-- Select Depot --</option>
-          <option *ngFor="let depot of depots" [ngValue]="depot.id">
-            {{ depot.name }}
-          </option>
-        </select>
-        <div
-          *ngIf="form.get('depotId')?.dirty && form.get('depotId')?.invalid"
-          class="alert alert-danger mt-2 p-2"
-        >
-          Depot is required!
         </div>
       </div> -->
 

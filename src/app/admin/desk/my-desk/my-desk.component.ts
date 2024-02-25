@@ -28,6 +28,7 @@ import {
   DN_KEYS_MAPPED_TO_HEADERS,
   FIELD_OFFICER_NOA_KEYS_MAPPED_TO_HEADERS,
   PP_COQ_KEYS_MAPPED_TO_HEADERS,
+  REJECTED_COQ_KEYS_MAPPED_TO_HEADERS,
 } from './mappings';
 
 @Component({
@@ -37,14 +38,16 @@ import {
 })
 export class MyDeskComponent implements OnInit {
   public applications: IApplication[];
+  public clearedNoaApps: IApplication[];
   public processingPlantCOQs: any[];
-  public applications$ = new Subject<IApplication[]>();
+  public clearedNoaApps$ = new Subject<IApplication[]>();
+  public rejectedCoQs: any[];
   public categories: Category[] = [];
   public categories$ = new Subject<Category[]>();
 
   public appType$ = new BehaviorSubject<'NOA' | 'COQ' | null>(null);
 
-  public coqApplications: ICOQ[];
+  public coqApplications: any[];
 
   public users: Staff[];
   public userDetail: any;
@@ -66,6 +69,7 @@ export class MyDeskComponent implements OnInit {
   public coqKeysMappedToHeaders = COQ_KEYS_MAPPED_TO_HEADERS;
   public PPCoqKeysMappedToHeaders = PP_COQ_KEYS_MAPPED_TO_HEADERS;
   public dnKeysMappedToHeaders = DN_KEYS_MAPPED_TO_HEADERS;
+  public rejectedCoQKeysMappedToHeaders = REJECTED_COQ_KEYS_MAPPED_TO_HEADERS
 
   constructor(
     private adminService: AdminService,
@@ -82,8 +86,8 @@ export class MyDeskComponent implements OnInit {
   ) {
     this.categories$.subscribe((data) => {
       this.categories = [...data];
-      this.applications$.subscribe((app) => {
-        this.applications = app;
+      this.clearedNoaApps$.subscribe((app) => {
+        this.clearedNoaApps = app;
       });
     });
     this.isCoQProcessor = auth.isCOQProcessor;
@@ -102,18 +106,23 @@ export class MyDeskComponent implements OnInit {
         if (res.success) {
           if (res.data?.coQ) {
             this.appType$.next('COQ');
-            this.applications = res.data.coQ;
+            this.coqApplications = res.data.coQ;
             this.processingPlantCOQs = res.data?.processingPlantCOQ;
           } else {
             this.appType$.next('NOA');
-            console.log('Response data type ======> ', typeof(res.data));
-            this.applications = res.data;
+            
+            if (this.isDssriFieldOfficer) {
+              this.clearedNoaApps = res.data?.clearedNOAs;
+              this.rejectedCoQs = res.data?.rejectedCoQs;
+            } else {
+              this.applications = res.data;
+            }
           }
           if (this.isDssriFieldOfficer) {
-            this.applications = this.applications
+            this.clearedNoaApps = this.clearedNoaApps
               ?.filter((app) => app.status === 'Completed')
           }
-          this.applications$.next(this.applications);
+          this.clearedNoaApps$.next(this.clearedNoaApps);
         } else {
           this.appType$.next((this.isDssriFieldOfficer || !this.isCoQProcessor) ? 'NOA' : 'COQ');
         }
@@ -136,10 +145,7 @@ export class MyDeskComponent implements OnInit {
   }
 
   get isDssriFieldOfficer(): boolean {
-    return (
-      this.currentUser.userRoles === UserRole.FIELDOFFICER &&
-      this.currentUser.directorate === Directorate.DSSRI
-    );
+    return this.auth.isDssriStaff && this.auth.isFieldOfficer;
   }
 
   get isHppitiFieldOfficer(): boolean {
@@ -178,6 +184,18 @@ export class MyDeskComponent implements OnInit {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
       });
     }
+  }
+
+  onViewRejectedCoQ(event: any) {
+    this.router.navigate(['admin/coq/coq-applications-by-depot/', event.id]);
+  }
+
+  onResubmitCoQ(event: any) {
+    this.router.navigate([
+      'admin/coq/coq-applications-by-depot/', 
+      event.id, 
+      'edit-application'
+    ]);
   }
 
   onViewCoqCert(event: any) {
@@ -242,7 +260,7 @@ export class MyDeskComponent implements OnInit {
     const operationConfiguration = {
       users: {
         data: {
-          applications: this.applications,
+          applications: this.clearedNoaApps,
           staffs: this.users,
           roles: this.roles,
           offices: this.offices,

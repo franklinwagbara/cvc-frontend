@@ -1,3 +1,5 @@
+import { string } from "@amcharts/amcharts4/core";
+
 export const APPLICATION_KEYS_MAPPED_TO_HEADERS = {
   reference: 'Reference Number',
   // importName: 'Import Name',
@@ -23,6 +25,22 @@ export const FIELD_OFFICER_NOA_KEYS_MAPPED_TO_HEADERS = {
   // rrr: 'RRR',
   createdDate: 'Initiated Date',
 };
+
+export const REJECTED_COQ_KEYS_MAPPED_TO_HEADERS = {
+  reference: "Reference",
+  companyName: "Company Name",
+  companyEmail: "Company Email",
+  vesselName: "Vessel Name",
+  vesselType: "Vessel Type",
+  jetty: "Jetty",
+  status: "Status",
+  createdDate: "Initiated Date",
+  submittewdDate: "Submitted Date"
+}
+
+export const REJECT_PPCOQ_KEYS_MAPPED_TO_HEADERS = {
+  
+}
 
 export const COQ_KEYS_MAPPED_TO_HEADERS = {
   companyName: 'Company Name',
