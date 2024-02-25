@@ -20,6 +20,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { OperatingFacility } from '../../company.component';
 import { forkJoin } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
+import { LibaryService } from 'src/app/shared/services/libary.service';
 
 @Component({
   templateUrl: 'companyprofile.component.html',
@@ -31,19 +32,13 @@ export class CompanyProfileComponent implements OnInit {
   public currentUser: LoginModel;
   private email = '';
 
-  public OperatingFacilities = [
-    { name: 'CVC', value: 0 },
-    { name: 'ProcessingPlant', value: 1 },
-    { name: 'Both', value: 2 },
-  ];
+  public operatingFacilities: IoperatingFacility[];
 
   countries: any;
   currentValue: any;
   companyProfile: companyProfile = new companyProfile();
   registeredAddress: any;
-  operatingFacility: any = { name: 'None' };
-
-  pepp = 'CVC';
+  operatingFacility: any;
 
   constructor(
     private companyService: CompanyService,
@@ -53,7 +48,8 @@ export class CompanyProfileComponent implements OnInit {
     private formBuilder: FormBuilder,
     private spinner: SpinnerService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private libaryService: LibaryService
   ) {
     this.currentUser = this.auth.currentUser;
     this.email = this.currentUser.userId;
@@ -62,8 +58,9 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getOperatingFacilities();
     this.getCompanyProfile(this.email);
-    this.getOperatingFacility();
+    this.getMyOperatingFacility();
     this.cd.markForCheck();
   }
 
@@ -75,8 +72,8 @@ export class CompanyProfileComponent implements OnInit {
       contact_LastName: ['', [Validators.required]],
       contact_Phone: ['', [Validators.required]],
       nationality: ['', [Validators.required]],
-      registered_Address_Id: ['', [Validators.required]],
-      operational_Address_Id: ['', [Validators.required]],
+      registered_Address_Id: [''],
+      operational_Address_Id: [''],
       email: ['', [Validators.required]],
       operatingFacilityId: ['', [Validators.required]],
       business_Type: ['', [Validators.required]],
@@ -100,33 +97,48 @@ export class CompanyProfileComponent implements OnInit {
     });
   }
 
-  getOperatingFacility() {
-    this.companyService.getOperatingFacility(this.email).subscribe({
+  getOperatingFacilities() {
+    this.libaryService.getOperatingFacilities().subscribe({
       next: (res) => {
-        this.operatingFacility = res.data;
-
-        var tag = document.getElementById('operatingFacilityId');
-
-        var selectedOF = this.OperatingFacilities.find(
-          (x) => x.name == this.operatingFacility?.name
-        );
-
-        this.OperatingFacilities.forEach((o) => {
-          if (
-            (tag as HTMLSelectElement).options.item(o.value).value ==
-            selectedOF?.name
-          )
-            (tag as HTMLSelectElement).options.item(o.value).selected = true;
-        });
+        this.operatingFacilities = res.data;
+        if (this.currentUser.operationFacility) {
+          const getOperatingFacilityId = this.operatingFacilities.find(
+            (x) => x.name === this.currentUser.operationFacility
+          );
+          this.profileForm
+            .get('operatingFacilityId')
+            .setValue(getOperatingFacilityId.value);
+        }
+        this.cd.markForCheck();
       },
     });
+  }
+
+  getMyOperatingFacility() {
+    // this.companyService.getOperatingFacility(this.email).subscribe({
+    //   next: (res) => {
+    //     this.operatingFacility = res.data;
+    //     var tag = document.getElementById('operatingFacilityId');
+    //     var selectedOF = this.operatingFacilities.find(
+    //       (x) => x.name == this.operatingFacility?.name
+    //     );
+    //     this.operatingFacilities.forEach((o) => {
+    //       if (
+    //         (tag as HTMLSelectElement).options.item(o.value).value ==
+    //         selectedOF?.name
+    //       )
+    //         (tag as HTMLSelectElement).options.item(o.value).selected = true;
+    //     });
+    //   },
+    // });
   }
 
   onChangeOperatingFacility(event) {
     this.createOperationFacility(event.target.value);
   }
+
   createOperationFacility(value) {
-    this.spinner.open();
+    // this.spinner.open();
     this.companyService
       .createOperatingFacilities({
         id: 0,
@@ -137,12 +149,12 @@ export class CompanyProfileComponent implements OnInit {
         next: (res) => {
           this.operatingFacility = res.data;
           this.spinner.close();
-          this.popupService.open('Record updated successfully', 'success');
+          // this.popupService.open('Record updated successfully', 'success');
           this.cd.markForCheck();
         },
         error: (error: any) => {
           this.spinner.close();
-          this.popupService.open('Unable to update profile', 'error');
+          // this.popupService.open('Unable to update record', 'error');
           this.cd.markForCheck();
         },
       });
@@ -172,8 +184,8 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   save() {
-    //this.isSubmitted = true;
-    //if (this.profileForm.invalid) return;
+    // this.isSubmitted = true;
+    if (this.profileForm.invalid) return;
     this.spinner.show('Saving company profile');
     const userData = {
       ...this.profileForm.value,
@@ -185,7 +197,7 @@ export class CompanyProfileComponent implements OnInit {
       this.companyService.createOperatingFacilities({
         id: 0,
         companyEmail: this.email,
-        name: this.operatingFacility.name,
+        name: this.profileForm.get('operatingFacilityId').value,
       }),
     ]).subscribe({
       next: (res) => {
@@ -196,13 +208,16 @@ export class CompanyProfileComponent implements OnInit {
         this.currentUser.profileComplete = data?.profileComplete;
         localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
         const returnUrl = this.route.snapshot.queryParams['returnUrl'];
-        if (returnUrl) {
-          window.location.assign(returnUrl);
-          // } else if (this.registeredAddress == null) {
-          //   window.location.assign('company/companyinformation/companyaddress');
-        } else {
-          window.location.reload();
-        }
+        setTimeout(() => {
+          if (returnUrl) {
+            window.location.assign(returnUrl);
+            // } else if (this.registeredAddress == null) {
+            //   window.location.assign('company/companyinformation/companyaddress');
+          } else {
+            window.location.reload();
+          }
+        }, 1000);
+
         this.cd.markForCheck();
       },
       error: (error: any) => {
@@ -213,4 +228,9 @@ export class CompanyProfileComponent implements OnInit {
       },
     });
   }
+}
+
+class IoperatingFacility {
+  name: string;
+  value: number;
 }

@@ -63,17 +63,16 @@
               class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1"
             >
               <select
-                [value]="pepp"
                 id="operatingFacilityId"
                 class="w-full h-full"
                 style="background: none"
                 (change)="onChangeOperatingFacility($event)"
+                formControlName="operatingFacilityId"
               >
-                <option
-                  *ngFor="let a of OperatingFacilities"
-                  [selected]="a.name == pepp"
-                  [value]="a.name"
-                >
+                <option selected disabled [value]="''">
+                  --Select facility--
+                </option>
+                <option *ngFor="let a of operatingFacilities" [value]="a.value">
                   {{ a.name }}
                 </option>
               </select>
@@ -253,6 +252,7 @@
           <div class="md:col-span-7 text-right">
             <div class="inline-flex items-end">
               <button
+                [disabled]="profileForm.invalid"
                 (click)="save()"
                 class="bg-green-800 hover:bg-green-900 text-white font-bold py-2 px-4 rounded my-2 mb-4"
               >
