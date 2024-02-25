@@ -33,7 +33,7 @@ export class ViewCoqTankComponent implements OnInit {
     waterVolume: 'WATER VOLUME',
     floatRoofCorr: 'CORR',
     gov: 'GOV',
-    tempearture: 'TEMPERATURE',
+    temperature: 'TEMPERATURE',
     density: 'DENSITY',
     vcf: 'VCF',
   };

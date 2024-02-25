@@ -321,6 +321,7 @@ export class DocumentInfo {
   docName?: string;
   docSource?: string;
   applicationId?: number;
+  applicationTypeId?: number;
   source?: string;
   fileId?: string;
   available?: string;

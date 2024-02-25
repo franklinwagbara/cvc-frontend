@@ -112,10 +112,6 @@ export class CvcApplicationsComponent implements OnInit {
 
           this.router.navigate(['/company/paymentsum/' + app.id]);
 
-          this.snackBar.open('RRR was generated successfully!', null, {
-            panelClass: ['success'],
-          });
-
           this.popUp.open('RRR was generated successfully!', 'success');
           this.progressbar.close();
           this.spinner.close();

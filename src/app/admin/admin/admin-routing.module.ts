@@ -46,6 +46,7 @@ import { StsApplicationsComponent } from '../sts-applications/sts-applications.c
 import { HppitiFieldofficerGuard } from 'src/app/shared/guards/hppiti-fieldofficer.guard';
 import { AllPpcoqApplicationsComponent } from '../all-ppcoq-applications/all-ppcoq-applications.component';
 import { HppitiCoqGuard } from 'src/app/shared/guards/hppiti-coq.guard';
+import { DssriCoqGuard } from 'src/app/shared/guards/dssri-coq.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -330,21 +331,28 @@ const routes: Routes = [
     path: 'coq/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Depot-Filtered CoQ Applications | CVC & CoQ Portal'
   },
   {
     path: 'coq/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Depot-Filtered CoQ Application View | CVC & CoQ Portal'
+  },
+  {
+    path: 'coq/coq-applications-by-depot/:coqId/edit-application',
+    component: CoqApplicationFormComponent,
+    pathMatch: 'full',
+    canActivate: [DssriCoqGuard],
+    title: 'Edit CoQ Application | CVC & CoQ Portal',
   },
   {
     path: 'coq/noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Apply for Depot CoQ | CVC & CoQ Portal'
   },
   {

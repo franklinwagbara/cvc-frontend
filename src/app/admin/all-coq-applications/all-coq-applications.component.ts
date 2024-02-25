@@ -16,6 +16,7 @@ export class AllCoqApplicationsComponent implements OnInit {
   coqs: any[];
   ppCoqs: any[];
   isHppitiStaff: boolean;
+  isDssriStaff: boolean;
 
   coqKeysMappedToHeaders = {
     importName: 'Importer Name',
@@ -51,6 +52,7 @@ export class AllCoqApplicationsComponent implements OnInit {
     private ppCoqService: ProcessingPlantCOQService
   ) {
     this.isHppitiStaff = auth.isHppitiStaff;
+    this.isDssriStaff = auth.isDssriStaff;
   }
 
   ngOnInit(): void {

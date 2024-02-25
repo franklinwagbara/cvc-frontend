@@ -1,17 +1,15 @@
 <div class="setting-desk">
   <h2 class="page-title bg-red-500 text-red-800">MY DESK</h2>
 
-  <div *ngIf="(appType$ | async) === 'NOA'">
+  <ng-container *ngIf="(appType$ | async) === 'NOA'">
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
           [table_title]="'NoA Applications'"
           [table_keysMappedToHeaders]="getColumnHeaders"
-          [table_content]="applications"
+          [table_content]="isDssriFieldOfficer ? clearedNoaApps : applications"
           [EnableViewControl]="true"
-          [EnableViewCoQCertControl]="false"
           [EnableInitiateCoQControl]="isDssriFieldOfficer"
-          [EnableGenDebitNoteControl]="false"
           [noAddOrDeleteButton]="true"
           [noCheckControls]="true"
           [noEditControl]="true"
@@ -23,7 +21,25 @@
         </generic-table>
       </div>
     </div>
-  </div>
+
+    <div *ngIf="isDssriFieldOfficer" class="table-group">
+      <div class="table-wrapper">
+        <generic-table
+          [table_title]="'Rejected CoQ Applications'"
+          [table_keysMappedToHeaders]="rejectedCoQKeysMappedToHeaders"
+          [table_content]="rejectedCoQs"
+          [EnableViewControl]="true"
+          [noAddOrDeleteButton]="true"
+          [EnableResubmit]="true"
+          [noCheckControls]="true"
+          [noEditControl]="true"
+          (onViewData)="onViewRejectedCoQ($event)"
+          (onResubmit)="onResubmitCoQ($event)"
+        >
+        </generic-table>
+      </div>
+    </div>
+  </ng-container>
 
   <ng-container *ngIf="(appType$ | async) === 'COQ'">
     <div>
@@ -32,7 +48,7 @@
           <generic-table
             [table_title]="'Depot CoQ'"
             [table_keysMappedToHeaders]="getColumnHeaders"
-            [table_content]="applications"
+            [table_content]="coqApplications"
             [EnableViewControl]="true"
             [EnableViewCoQCertControl]="false"
             [EnableInitiateCoQControl]="isDssriFieldOfficer"

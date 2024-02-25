@@ -54,7 +54,7 @@ export class AllCoqCertificatesComponent implements OnInit {
         this.spinner.close();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.spinner.close();
         this.popUp.open('Something went wrong while retreiving data', 'error');
       }
@@ -62,7 +62,7 @@ export class AllCoqCertificatesComponent implements OnInit {
   }
 
   onViewData(event: any): void {
-    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${event.id}`);
+    window.open(`${environment.apiUrl}/coq/view_coq_cert?id=${event.coqId}`);
   }
 
 }
