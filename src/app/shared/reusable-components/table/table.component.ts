@@ -54,6 +54,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noDeleteButton?: boolean = false;
   @Input() noCheckControls?: boolean = false;
   @Input() noEditControl?: boolean = false;
+  @Input() columnDataAlign: 'center' | 'left' | 'right' | 'none' = 'none';
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableDischargeClearanceControls')
