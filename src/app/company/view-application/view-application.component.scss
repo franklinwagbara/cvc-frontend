@@ -3,6 +3,7 @@
 }
 
 .view-application-container {
+  min-height: 100vh;
   @apply m-2 shadow-md bg-slate-100 p-5;
 }
 
@@ -22,7 +23,7 @@
 }
 
 .content {
-  @apply flex flex-col lg:flex-row w-full mt-9 gap-4;
+  @apply flex flex-col lg:flex-row w-full mt-3 gap-4;
 }
 
 .application-view {
@@ -34,7 +35,7 @@
 }
 
 .actions {
-  @apply flex flex-col mt-8 gap-4 px-8;
+  @apply flex gap-4 pb-2 pr-6 justify-end items-center;
 }
 
 .actions button {

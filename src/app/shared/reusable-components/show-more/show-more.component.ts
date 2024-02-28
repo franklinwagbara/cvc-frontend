@@ -26,6 +26,7 @@ export class ShowMoreComponent implements OnInit {
   appHistoryKeysMappedToHeaders = {
     triggeredBy: 'Action By',
     targetedTo: 'Action To',
+    action: 'Action',
     comment: 'Remark',
     date: 'Date',
   };
@@ -57,7 +58,7 @@ export class ShowMoreComponent implements OnInit {
 
   applicationDocsKeysMappedToHeaders = {
     docSource: 'Source',
-    docName: 'Action To',
+    docName: 'Document Name',
   };
 
   constructor(

@@ -15,7 +15,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LayoutModule } from '../layout/layout.module';
@@ -114,6 +114,8 @@ import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-p
     RecipientsViewComponent,
     DebitnotePaymentsumComponent,
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },
+  ],
 })
 export class CompanyModule {}

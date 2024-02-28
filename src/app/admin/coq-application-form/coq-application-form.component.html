@@ -1,4 +1,4 @@
-<div>
+<div #container>
   <button (click)="goBack()" class="m-4 mb-2" mat-button>
     <mat-icon>keyboard_backspace</mat-icon>&nbsp;Go Back
   </button>
@@ -67,47 +67,40 @@
       </div>
       <hr class="w-full my-1" />
       <h5 
-        class="text-center font-medium bg-green-700 text-white w-full my-0 p-4"
-        style="font-size: x-large"
-      > {{ isEditMode ? 'Edit' : 'New' }} Application</h5>
+        class="form-info"
+      > {{ isEditMode ? 'Edit & Resubmit' : 'Submit New' }} Application</h5>
       <hr class="w-full my-1" />
 
-      <mat-vertical-stepper class="pl-3 pr-2" linear #coqstepper>
+      <mat-vertical-stepper class="pl-3 pr-2" linear #coqStepper>
         <ng-template matStepperIcon="done">
           <mat-icon>check</mat-icon>
         </ng-template>
 
         <mat-step
           [stepControl]="depotSelection"
-          [label]="'Select Depot'"
+          [label]="(isEditMode ? 'Selected ' : 'Select ') + 'Depot'"
         >
           <mat-form-field appearance="fill" style="min-width: fit-content">
             <mat-label>Depot</mat-label>
             <mat-select
-              *ngIf="isEditMode"
               [formControl]="depotSelection"
+              [value]="selectedDepotId"
             >
-              <option
-                [value]="existingCoq?.coq?.plantId"
-                [selected]="existingCoq?.coq?.plantId"
-              >
-                {{ existingCoq?.coq?.plant }}
-              </option>
-            </mat-select>
-            <mat-select
-              *ngIf="!isEditMode"
-              [formControl]="depotSelection"
-            >
+            <mat-option *ngIf="isEditMode" [value]="selectedDepotId">
+              {{ existingCoq?.coq.plant }}
+            </mat-option>
+            <ng-container *ngIf="!isEditMode">
               <mat-option
                 *ngFor="let depot of depots"
                 [value]="depot?.id"
               >
                 {{ depot?.name }}
               </mat-option>
+            </ng-container>
             </mat-select>
           </mat-form-field>
           <mat-error 
-            *ngIf="noPlantFetched !== null && noPlantFetched"
+            *ngIf="noPlantFetched !== null && noPlantFetched && !isEditMode"
           >
             No depot available for this application
           </mat-error>
@@ -119,7 +112,7 @@
               [disabled]="
                 !depotSelection.valid ||
                 fetchingRequirement ||
-                !requirement?.tanks.length
+                (!isEditMode && !requirement?.tanks.length)
               "
             >
               Next
@@ -155,7 +148,7 @@
                     noTankConfigured !== null && noTankConfigured
                       ? "No tanks configured for the selected depot and you may not proceed"
                       : !!configuredTank?.controls["id"].hasError("duplicate")
-                      ? "Tank readings already exist"
+                      ? "Readings for this tank already exist"
                       : ""
                   }}
                 </mat-error>
@@ -1041,7 +1034,7 @@
         </ng-template>
 
         <mat-step label="Document(s) Upload">
-          <div class="w-[90%] mb-4 p-0">
+          <div *ngIf="documents?.length; else noRequiredDocsWarn" class="w-[90%] mb-4 p-0">
             <div class="guidelines">
               <h4>Please Note</h4>
               <ul class="guidelines-list">
@@ -1069,9 +1062,7 @@
 
             <div class="table-container mat-elevation-z8">
               <div class="table-title">REQUIRED DOCUMENTS</div>
-              <h4 *ngIf="spinner.isOpen" class="text-center">Loading....</h4>
               <table
-                *ngIf="!spinner.isOpen"
                 mat-table
                 [dataSource]="dataSource"
                 aria-describedby="coq_doc_upload_table_description"
@@ -1164,7 +1155,8 @@
                             success:
                               documents?.length > 0 && documents[i]?.success,
                             failed:
-                              documents?.length > 0 && !documents[i]?.success
+                              documents?.length > 0 && documents[i].success !== null 
+                              && !documents[i]?.success
                           }"
                         >
                         </mat-progress-bar>
@@ -1183,6 +1175,13 @@
                   *matRowDef="let row; columns: displayedColumns"
                 ></tr>
               </table>
+
+              <mat-paginator
+                #paginator
+                [pageSize]="pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                aria-label="Select page"
+              ></mat-paginator>
             </div>
 
             <div
@@ -1205,7 +1204,7 @@
                 class="action bg-green-500 hover:bg-green-600"
                 [disabled]="isSubmitting"
               >
-                Submit
+                {{ isEditMode ? 'Resubmit' : 'Submit' }}
               </button>
             </div>
           </div>

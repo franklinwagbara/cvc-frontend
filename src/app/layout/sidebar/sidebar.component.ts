@@ -207,7 +207,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 2,
         title: 'CLEARANCE REPORT',
-        url: '#',
+        url: '/admin/reports/clearance-report',
       },
       {
         id: 3,

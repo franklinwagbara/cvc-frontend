@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>
-  {{ this.data.data.action === "EDIT" ? "Edit Product" : "Add New Product" }}
+  {{ this.data.data.action === "EDIT" ? "Edit " : "Add New " }} Product
 </h1>
 <div mat-dialog-content class="min-w-[500px]">
   <form [formGroup]="form">
@@ -21,7 +21,7 @@
     <div class="form-group" style="margin-bottom: 10px">
       <label>Product Type</label>
       <select formControlName="productType" class="form-control">
-        <option selected disabled>--Select from options --</option>
+        <option selected disabled value="">--Select from options --</option>
         <option
           *ngFor="let productType of productTypes"
           [ngValue]="productType"
@@ -39,13 +39,49 @@
       </div>
     </div>
 
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Revenue Code</label>
+      <input
+        name="revenueCode"
+        type="text"
+        formControlName="revenueCode"
+        class="form-control"
+      />
+      <div
+        *ngIf="(f['revenueCode'].touched || isSubmitted) 
+          && f['revenueCode']?.invalid"
+        class="alert alert-danger"
+      >
+        Revenue Code is required!
+      </div>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Revenue Code Description</label>
+      <textarea
+        name="revenueCodeDescription"
+        type="text"
+        formControlName="revenueCodeDescription"
+        class="form-control"
+        cols="10"
+        rows="10"
+      ></textarea>
+      <div
+        *ngIf="(f['revenueCodeDescription'].touched || isSubmitted) 
+          && f['revenueCodeDescription']?.invalid"
+        class="alert alert-danger"
+      >
+        Revenue Code Description is required!
+      </div>
+    </div>
+
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>Close</button>
       <div class="">
         <button
           mat-raised-button
           (click)="
-            this.data.data.action === 'EDIT' ? EditProduct() : createProduct()
+            this.data.data.action === 'EDIT' ? editProduct() : createProduct()
           "
           [disabled]="form.invalid"
           *ngIf="!isLoading"

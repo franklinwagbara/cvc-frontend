@@ -165,7 +165,7 @@ export class AppProcessComponent implements OnInit {
     };
 
     const listOfDataToDelete = [...event];
-
+    
     const requests = listOfDataToDelete.map((req) => {
       return this.processFlow.deleteApplicationProcess(
         req[typeToModelMapper[type].id]

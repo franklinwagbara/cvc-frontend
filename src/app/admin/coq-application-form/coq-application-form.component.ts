@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -35,7 +36,7 @@ import { ApplicationService } from '../../../../src/app/shared/services/applicat
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { LibaryService } from '../../../../src/app/shared/services/libary.service';
 import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStep, MatStepper } from '@angular/material/stepper';
 import { ICoqRequirement } from '../../../../src/app/shared/interfaces/ICoqRequirement';
 import { IPlant } from 'src/app/shared/interfaces/IPlant';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
@@ -43,6 +44,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 import { Location } from '@angular/common';
 import { Util } from 'src/app/shared/lib/Util';
+import { GenericService } from 'src/app/shared/services';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -56,7 +59,7 @@ import { Util } from 'src/app/shared/lib/Util';
   ],
 })
 export class CoqApplicationFormComponent
-  implements OnInit, AfterViewInit, OnDestroy
+  implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
   private allSubscriptions = new Subscription();
 
@@ -87,6 +90,7 @@ export class CoqApplicationFormComponent
   requirement: ICoqRequirement;
   coqId: number;
   existingCoq: IExistingCoQ;
+  selectedDepotId: number;
   application: any;
 
   isSubmitted = false;
@@ -97,8 +101,14 @@ export class CoqApplicationFormComponent
   noPlantFetched: boolean | null = null;
   noTankConfigured: boolean | null = null;
 
-  @ViewChild('coqstepper') coqStepper: MatStepper;
+  public pageSizeOptions = [5, 10, 15, 20, 30];
+  public pageSize = 10;
+
+  @ViewChild('container') container: ElementRef;
+  @ViewChild('coqStepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
+  @ViewChild('paginator', { read: MatPaginator }) paginator!: MatPaginator;
+  // public dataSource = new MatTableDataSource<any>();
 
   tankLiqBeforeFormTempCtx: any;
   tankLiqAfterFormTempCtx: any;
@@ -128,7 +138,8 @@ export class CoqApplicationFormComponent
     private popUp: PopupService,
     private dialog: MatDialog,
     private applicationService: ApplicationService,
-    private location: Location
+    private location: Location,
+    private generic: GenericService,
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
@@ -139,9 +150,7 @@ export class CoqApplicationFormComponent
 
   ngOnInit(): void {
     this.initForms();
-
-    this.dataSource = new MatTableDataSource<any>([]);
-
+    
     this.documents$.subscribe((res: any[]) => {
       if (Array.isArray(res) && res.length) {
         res.forEach((el) => {
@@ -175,6 +184,10 @@ export class CoqApplicationFormComponent
     this.fetchAllData();
   }
 
+  ngAfterViewChecked(): void {
+    this.container.nativeElement.scrollTop = this.container.nativeElement?.scrollHeight;
+  }
+
   goBack(): void {
     this.location.back();
   }
@@ -186,43 +199,16 @@ export class CoqApplicationFormComponent
       localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
       this.coqService.viewCoqApplication(this.coqId).subscribe({
         next: (res: any) => {
-          this.existingCoq = res.data;
-          this.documents$.next([this.existingCoq.docs]);
-          this.application = res.data?.coq;
-          
-          this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
-          const tankList: any[] = res.data?.tankList || [];
-
-          const coqData: CoQData[] = tankList.map((el: any) => {
-            let beforeReading = el?.tankMeasurement.find((r: any) => {
-              return r?.measurementType === 'Before'
-            });
-            beforeReading = { 
-              ...beforeReading, 
-              id: el?.tankId, 
-              tank: el?.tankName, 
-              status: 'before' 
-            };
-            let afterReading = el?.tankMeasurement.find((r: any) => {
-              return r?.measurementType === 'After'
-            });
-            afterReading = { 
-              ...afterReading, 
-              id: el?.tankId, 
-              tank: el?.tankName, 
-              status: 'after' 
-            };
-            delete beforeReading.tankName;
-            delete beforeReading.measurementType;
-            delete afterReading.tankName;
-            delete afterReading.measurementType;
-            return { before: beforeReading, after: afterReading };
-          })
-
-          localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqData));
+          this.populateEditForms(res);
+          this.spinner.close();
           this.restoreReviewData();
 
-          this.spinner.close();
+          // Advance to the last step and scroll into view
+          for (let i =0; i < 4; i++) {
+            this.coqStepper.next();
+          }
+
+          this.cd.markForCheck();
         },
         error: (err: unknown) => {
           console.error(err);
@@ -258,12 +244,76 @@ export class CoqApplicationFormComponent
     }
   }
 
+  private populateEditForms(res: any): void {
+    this.existingCoq = res.data;
+    this.documents$.next([this.existingCoq.docs]);
+    this.application = res.data?.coq;
+    
+    this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
+  
+    // Populate depot
+    this.selectedDepotId = this.existingCoq?.coq.plantId;
+    this.depotSelection.setValue(this.existingCoq?.coq?.plantId);
+
+    const tankList: any[] = res.data?.tankList || [];
+
+    const coqData: CoQData[] = tankList.map((el: any) => {
+      let beforeReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'Before'
+      });
+      beforeReading = { 
+        ...beforeReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'before' 
+      };
+      let afterReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'After'
+      });
+      afterReading = { 
+        ...afterReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'after' 
+      };
+      delete beforeReading.tankName;
+      delete beforeReading.measurementType;
+      delete afterReading.tankName;
+      delete afterReading.measurementType;
+      return { before: beforeReading, after: afterReading };
+    })
+
+    // Populate Shore Tank Ullage Details
+    if (this.isGasProduct) {
+      const vesselDetailsMap = {
+        vesselArrivalDate: "dateOfVesselArrival",
+        prodDischargeCommenceDate: "dateOfVesselUllage",
+        prodDischargeCompletionDate: "dateOfSTAfterDischarge",
+        qtyBillLadingMtAir: "quauntityReflectedOnBill",
+        arrivalShipMtAir: "arrivalShipFigure",
+        shipDischargedMtAir: "dischargeShipFigure",
+        nameConsignee: "nameConsignee",
+        depotPrice: "depotPrice"
+      }
+      for (let key in this.vesselGasInfoForm.controls) {
+        this.vesselGasInfoForm.controls[key].patchValue(
+          this.existingCoq?.coq[vesselDetailsMap[key]]
+        )
+      }
+    } else {
+      for (let key in this.vesselLiqInfoForm.controls) {
+        this.vesselLiqInfoForm.controls[key].patchValue(
+          this.existingCoq?.coq[key]
+        )
+      }
+    }
+
+    localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqData));
+  }
+
   public initForms() {
     this.depotSelection = new FormControl(
-      { 
-        value: this.isEditMode ? this.existingCoq?.coq?.plantId : '', 
-        disabled: this.isEditMode
-      }, 
+      this.isEditMode ? this.selectedDepotId : '', 
       Validators.required
     );
 
@@ -314,6 +364,7 @@ export class CoqApplicationFormComponent
               'No tanks configured for this depot. You may not proceed to the next step.',
               'error'
             );
+            localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
           } else {
             this.restoreReviewData();
           }
@@ -327,7 +378,7 @@ export class CoqApplicationFormComponent
           this.spinner.close();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
           this.fetchingRequirement = false;
           this.popUp.open(
             'Something went wrong while fetching requirement data.',
@@ -402,7 +453,7 @@ export class CoqApplicationFormComponent
   subscribeDepotSelection(): void {
     this.allSubscriptions.add(
       this.depotSelection.valueChanges.subscribe((val: string) => {
-        if (val) {
+        if (val && !this.isEditMode) {
           this.fetchRequirement(parseInt(val));
         }
       })
@@ -435,6 +486,8 @@ export class CoqApplicationFormComponent
     this.allSubscriptions.add(
       this.fileUpload.uploadResponses$.subscribe((val) => {
         if (Array.isArray(val) && val.length) {
+          // Remove invalid upload responses with FileId < 1
+          val = val.filter((r) => r?.FileId > 0 && r?.name);
           console.log('Uploaded Responses =============> ', val);
           this.uploadedDocInfo = val;
           val.forEach((el) => {
@@ -488,6 +541,7 @@ export class CoqApplicationFormComponent
 
   private setDataSource() {
     this.dataSource = new MatTableDataSource(this.documents);
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {
@@ -504,7 +558,7 @@ export class CoqApplicationFormComponent
   onFileSelected(evt: Event, index: number): void {
     const file = (evt.target as any).files[0];
     if (file) {
-      if (!this.isValidFile) return;
+      if (!this.generic.isValidFile(file)) return;
 
       const fileSizeInKb = file.size / 1024;
 
@@ -533,23 +587,6 @@ export class CoqApplicationFormComponent
     }
   }
 
-  public isValidFile(file: File): boolean {
-    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
-    if (!isAccepted) {
-      this.snackBar.open(`Invalid file (${file.name}) format`);
-      return false;
-    }
-
-    const fileSizeInBytes = file.size;
-    const fileSizeInKb = fileSizeInBytes / 1024;
-    const fileSizeInMB = fileSizeInKb / 1024;
-    if (fileSizeInMB > 20) {
-      this.popUp.open(`File ${file.name} size too large`, 'error');
-      return false;
-    }
-    return true;
-  }
-
   /**
    *
    * @param file
@@ -573,23 +610,27 @@ export class CoqApplicationFormComponent
       url = `${environment.elpsBase}/api/Facility/UploadFile/${docTypeId}/${compId}/${facilityId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
     }
 
+    // Reinitialize upload progress
+    this.documents = this.documents.map(
+      (d) => d?.docIndex === docIndex ? ({...d, percentProgress: 0}) : d
+    )
+
     this.allSubscriptions.add(
       this.fileUpload.uploadFile(file, url, docIndex).subscribe({
         next: (val: number) => {
           // Update file upload progress
           this.documents = this.documents.map((el, i) => {
             if (i === docIndex) {
-              console.log('File upload in progress ==========> ', {
-                ...el,
-                docIndex,
-                percentProgress: val,
-                success: val === 100 || null,
-              });
+              console.log('FileId =======> ', el?.fileId);
+              const uploadFailed = val === 100 && el?.fileId < 0 ? false : null
+              if (uploadFailed === false) {
+                this.popUp.open(`Failed to upload file (${file.name})`, 'error');
+              }
               return {
                 ...el,
                 docIndex,
                 percentProgress: val,
-                success: val === 100 || null,
+                success: val === 100 && el?.fileId >= 0 ? true : uploadFailed
               };
             }
             return el;
@@ -598,7 +639,7 @@ export class CoqApplicationFormComponent
           this.cd.markForCheck();
         },
         error: (error: any) => {
-          console.log(error);
+          console.error(error);
           this.documents = this.documents.map((el, i) => {
             if (i === docIndex) {
               return { ...el, success: false };
@@ -647,7 +688,13 @@ export class CoqApplicationFormComponent
         ? this.vesselGasInfoForm.controls['depotPrice'].value
         : this.vesselLiqInfoForm.controls['depotPrice'].value,
       documents: this.documents,
-      productName: this.requirement.productName,
+      productName: this.isEditMode 
+        ? this.existingCoq?.coq?.productName 
+        : this.requirement.productName,
+      vesselName: this.application.vessel.name,
+      motherVessel: this.application.motherVessel,
+      loadingPort: this.application.loadingPort,
+      jetty: this.application.jetty,
     };
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
@@ -877,20 +924,30 @@ export class CoqApplicationFormComponent
    * there will be a high chance of eventually submitting some COQ data set (before & after) with empty readings.
    */
   restoreReviewData(): void {
-    const localFormReviewData = JSON.parse(
+    let reviewData = JSON.parse(
       localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA)
     );
-    if (Array.isArray(localFormReviewData) && localFormReviewData.length) {
-      if (this.isGasProduct !== null && !this.isGasProduct) {
-        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.liquidProductProps)) {
-          this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+    if (Array.isArray(reviewData) && reviewData.length) { 
+      if (!this.isEditMode && this.requirement?.tanks?.length) {
+        // Remove previously stored readings for tanks not configured for current depot
+        reviewData = reviewData.filter(
+          (d) => this.requirement.tanks.some((t) => t.id === parseInt(d.before.id))
+        )
+        localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(reviewData));
+      }
+
+      if (this.isGasProduct !== null && reviewData.length) {
+        if (!this.isGasProduct 
+          && Util.hasProperties(reviewData[0]?.before, this.coqFormService.liquidProductProps)) 
+        {
+          this.coqFormService.liquidProductReviewData$.next(reviewData);
+        } else if (this.isGasProduct 
+          && Util.hasProperties(reviewData[0]?.before, this.coqFormService.gasProductProps)) 
+        {
+          this.coqFormService.gasProductReviewData$.next(reviewData);
+        } else {
+          localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
         }
-      } else if (this.isGasProduct !== null && this.isGasProduct) {
-        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.gasProductProps)) {
-          this.coqFormService.gasProductReviewData$.next(localFormReviewData);
-        }
-      } else {
-        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
       }
     }
   }
@@ -900,16 +957,15 @@ export class CoqApplicationFormComponent
       const tank = (this.requirement?.tanks || []).find(
         (t) => t.id === parseInt(control.value)
       );
-      const tankName = tank?.name;
       if (this.isGasProduct !== null && !this.isGasProduct) {
         return !this.coqFormService.liquidProductReviewData.some(
-          (val) => val.before.tank === tankName
+          (val) => val.before.id === parseInt(control.value)
         )
           ? null
           : { duplicate: control.value };
       } else if (this.isGasProduct !== null && this.isGasProduct) {
         return !this.coqFormService.gasProductReviewData.some(
-          (val) => val.before.tank === tankName
+          (val) => val.before.id === parseInt(control.value)
         )
           ? null
           : { duplicate: control.value };

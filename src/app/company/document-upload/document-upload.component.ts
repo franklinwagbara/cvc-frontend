@@ -9,6 +9,7 @@ import { ApplicationService } from '../../../../src/app/shared/services/applicat
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { GenericService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-document-upload',
@@ -40,7 +41,8 @@ export class DocumentUploadComponent implements OnInit {
     private popUp: PopupService,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private generic: GenericService,
   ) {}
 
   ngOnInit(): void {
@@ -93,7 +95,7 @@ export class DocumentUploadComponent implements OnInit {
     const fileEvent = data.file;
     let file = fileEvent.target.files[0];
 
-    if (!this.isValidFile(file)) {
+    if (!this.generic.isValidFile(file)) {
       return;
     }
 
@@ -155,28 +157,12 @@ export class DocumentUploadComponent implements OnInit {
       });
   }
 
-  isValidFile(file: File): boolean {
-    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
-    if (!isAccepted) {
-      this.popUp.open(`Invalid file format`, 'error');
-      return false;
-    }
-
-    const fileSizeInBytes = file.size;
-    const fileSizeInKb = fileSizeInBytes / 1024;
-    const fileSizeInMB = fileSizeInKb / 1024;
-    if (fileSizeInMB > 20) {
-      this.popUp.open(`File ${file.name} size too large`, 'error');
-      return false;
-    }
-    return true;
-  }
 
   uploadAdditionalFile(data) {
     const fileEvent = data.file;
     const file = fileEvent.target.files[0];
 
-    if (!this.isValidFile(file)) {
+    if (!this.generic.isValidFile(file)) {
       return;
     }
 
@@ -323,7 +309,7 @@ export class DocumentInfo {
   applicationId?: number;
   applicationTypeId?: number;
   source?: string;
-  fileId?: string;
+  fileId?: number;
   available?: string;
   docType?: string;
   company?: string;

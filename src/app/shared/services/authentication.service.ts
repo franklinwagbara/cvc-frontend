@@ -86,8 +86,7 @@ export class AuthenticationService {
   }
 
   public get isCOQProcessor() {
-    return (this.currentUser as LoginModel)?.userRoles === UserRole.CONTROLLER
-      || (this.currentUser as LoginModel)?.userRoles === UserRole.FAD;
+    return this.isFieldOfficer || this.isController || this.isFAD;
   }
 
   public get isFO() {
@@ -96,6 +95,10 @@ export class AuthenticationService {
 
   public get isApprover() {
     return (this.currentUser as LoginModel)?.userRoles === UserRole.APPROVER;
+  }
+
+  public get isController() {
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.CONTROLLER;
   }
 
   public get isFieldOfficer() {

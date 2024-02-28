@@ -33,7 +33,7 @@
 }
 
 .actions {
-  @apply flex flex-col  gap-4 px-8;
+  @apply flex gap-4 pb-2 pr-6 justify-end items-center;
 }
 
 .actions button {

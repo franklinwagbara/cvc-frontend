@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +25,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestroy {
   public application: Application;
   public appActions: any;
   public appId: number;
@@ -35,6 +35,10 @@ export class ViewApplicationComponent implements OnInit {
   isPDF = Util.isPDF;
   isIMG = Util.isIMG;
   loading = true;
+
+  public continueUrl: string;
+  public canContinueApp = false;
+  showFloatingAppAction = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -65,6 +69,27 @@ export class ViewApplicationComponent implements OnInit {
     this.currentUser = this.auth.currentUser;
   }
 
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+      } else {
+        body = document.documentElement;
+      }
+      let element = body.querySelector('#continue-app-btn-container');
+      if (element) {
+        let clientRect = element.getBoundingClientRect();
+        this.showFloatingAppAction = clientRect.top < 75;
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
+  }
+
+  ngOnDestroy(): void {
+    document.removeAllListeners('scroll');
+  }
+
   public get isSupervisor() {
     return this.currentUser.userRoles === UserRole.SUPERVISOR;
   }
@@ -83,11 +108,18 @@ export class ViewApplicationComponent implements OnInit {
           this.application = res.data;
         }
 
+        this.canContinueApp = ['Rejected', 'Initiated'].includes(this.application?.status)
+          || this.application.paymnetStatus !== 'Payment confirmed';
+        this.continueUrl = this.application.paymnetStatus !== 'Payment confirmed'
+          ? `/company/paymentsum/${this.appId}`
+          : `/company/upload-document/${this.appId}`
+
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.loading = false;
         this.popUp.open(
           'Something went wrong while retrieving data.',

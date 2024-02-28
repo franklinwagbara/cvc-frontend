@@ -119,7 +119,7 @@ export class FieldOfficerJettySettingComponent implements OnInit, OnDestroy {
         return s.appCount === 0;
       });
 
-      const requests = (listOfDataToDelete as any[]).map((req) => {
+      const requests = listOfDataToDelete.map((req) => {
         return this.adminService.deleteStaff(req.id);
       });
 
