@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthenticationService } from '../../services';
 
 @Component({
   selector: 'app-noa-application-preview',
@@ -9,16 +10,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NoaApplicationPreviewComponent implements OnInit {
   noaInfo: any;
   comment: string;
+  userInfo: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<NoaApplicationPreviewComponent>
-  ) {}
+    private dialogRef: MatDialogRef<NoaApplicationPreviewComponent>,
+    private auth: AuthenticationService
+  ) {
+    this.userInfo = auth.currentUser;
+  }
 
   ngOnInit(): void {
     this.noaInfo = this.data?.application;
     this.comment = this.data?.remark;
-    console.log('Preview Dialog Data ===========> ', this.data);
   }
 
   print() {

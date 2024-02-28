@@ -36,7 +36,7 @@ export class AllNoaClearancesComponent implements OnInit {
     this.spinner.show('Loading clearances...');
     this.licenseService.getLicences().subscribe({
       next: (res: any) => {
-        this.clearances = res?.data.reverse();
+        this.clearances = res?.data;
         this.spinner.close();
         this.cd.markForCheck();
       },

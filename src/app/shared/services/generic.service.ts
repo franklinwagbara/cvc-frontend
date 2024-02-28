@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpEventType, HttpParams } from '@angular/common/http';
+import { PopupService } from './popup.service';
 
 @Injectable({ providedIn: 'root' })
 export class GenericService {
@@ -19,7 +19,9 @@ export class GenericService {
   upload: string;
   phaseShortName: string;
 
-  getExpDoc(value: string, type: string) {
+  constructor(private popUp: PopupService) {}
+
+  public getExpDoc(value: string, type: string) {
     let ext;
     switch (type) {
       case 'application/pdf':
@@ -41,5 +43,22 @@ export class GenericService {
       Math.floor(Math.random() * 100) +
       ext
     );
+  }
+
+  public isValidFile(file: File): boolean {
+    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
+    if (!isAccepted) {
+      this.popUp.open(`Invalid file format: (${file.name})`, 'error');
+      return false;
+    }
+
+    const fileSizeInBytes = file.size;
+    const fileSizeInKb = fileSizeInBytes / 1024;
+    const fileSizeInMB = fileSizeInKb / 1024;
+    if (fileSizeInMB > 20) {
+      this.popUp.open(`File ${file.name} size too large`, 'error');
+      return false;
+    }
+    return true;
   }
 }

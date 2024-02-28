@@ -64,6 +64,7 @@ import { NoaApplicationPreviewComponent } from './reusable-components/noa-applic
 import { ViewDepotsComponent } from './reusable-components/view-application-in-full/view-depots/view-depots.component';
 import { JettyOfficerFormComponent } from './reusable-components/jetty-officer-form/jetty-officer-form.component';
 import { CapsuleCardComponent } from './reusable-components/capsule-card/capsule-card.component';
+import { ComingSoonComponent } from './reusable-components/coming-soon/coming-soon.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { CapsuleCardComponent } from './reusable-components/capsule-card/capsule
     ViewDepotsComponent,
     JettyOfficerFormComponent,
     CapsuleCardComponent,
+    ComingSoonComponent,
   ],
   imports: [
     CommonModule,

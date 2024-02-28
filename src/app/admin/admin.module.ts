@@ -125,6 +125,7 @@ import { PpcoqGasAppViewTableComponent } from './application/coq-application-vie
 import { PpcoqCondensateAppViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-condensate-app-view-table/ppcoq-condensate-app-view-table.component';
 import { ReadingsModalComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-liquid-app-view-table/readings-modal/readings-modal.component';
 import { PpcoqApplicationViewTableComponent } from './application/coq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -247,6 +248,7 @@ import { PpcoqApplicationViewTableComponent } from './application/coq-applicatio
     MatDatepickerModule,
     MatNativeDateModule,
     MatProgressBarModule,
+    MatPaginatorModule,
     MatStepperModule,
     MatProgressSpinnerModule,
     NgxMatTimepickerModule,

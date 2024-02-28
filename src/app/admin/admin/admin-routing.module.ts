@@ -47,6 +47,7 @@ import { HppitiFieldofficerGuard } from 'src/app/shared/guards/hppiti-fieldoffic
 import { AllPpcoqApplicationsComponent } from '../all-ppcoq-applications/all-ppcoq-applications.component';
 import { HppitiCoqGuard } from 'src/app/shared/guards/hppiti-coq.guard';
 import { DssriCoqGuard } from 'src/app/shared/guards/dssri-coq.guard';
+import { ComingSoonGuard } from 'src/app/shared/guards/coming-soon.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -237,13 +238,22 @@ const routes: Routes = [
     path: 'reports/application-report',
     component: ApplicationReportComponent,
     pathMatch: 'full',
-    title: 'Application Report | CVC & CoQ Portal'
+    title: 'Application Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
+  },
+  {
+    path: 'reports/clearance-report',
+    component: ApplicationReportComponent,
+    pathMatch: 'full',
+    title: 'Clearance Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   {
     path: 'reports/payment-report',
     component: PaymentReportComponent,
     pathMatch: 'full',
-    title: 'Payment Report | CVC & CoQ Portal'
+    title: 'Payment Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   {
     path: 'certificates',
@@ -280,7 +290,8 @@ const routes: Routes = [
     path: 'payments/all-payments',
     component: PaymentComponent,
     pathMatch: 'full',
-    title: 'Payments | CVC & CoQ Portal'
+    title: 'Payments | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   { 
     path: 'payment/:id', 

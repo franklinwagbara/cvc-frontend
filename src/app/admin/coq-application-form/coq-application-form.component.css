@@ -6,6 +6,11 @@
   @apply text-slate-500 font-bold;
 }
 
+.form-info {
+  font-size: larger;
+  @apply text-center font-medium bg-green-700 text-white w-full my-0 p-4;
+}
+
 .form-wrapper {
   @apply bg-[#f4f4f4] flex flex-col items-center shadow-lg border-none rounded-md w-[90%] justify-center border-2 rounded-md m-3 px-0 py-4 pt-4;
 }
@@ -76,7 +81,6 @@ label {
 
 .table-container {
   min-height: fit-content;
-  margin: 10px;
   @apply rounded-lg bg-white overflow-x-auto w-full;
 }
 

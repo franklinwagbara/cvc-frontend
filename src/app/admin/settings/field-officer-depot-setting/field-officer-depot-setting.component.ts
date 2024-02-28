@@ -99,7 +99,6 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
   deleteData(selected: any[]) {
     if (selected?.length) {
       const requests = selected.map((req) => {
-        console.log('Selected DepotOfficer Mappings ==========> ', req);
         return this.depotOfficerService.deleteMapping(req?.plantFieldOfficerID);
       });
       
