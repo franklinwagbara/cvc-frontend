@@ -89,8 +89,16 @@ export class AuthenticationService {
     return this.isFieldOfficer || this.isController || this.isFAD;
   }
 
+  public get isNOAProcessor() {
+    return this.isReviewer || this.isSupervisor || this.isApprover;
+  }
+
   public get isFO() {
     return (this.currentUser as LoginModel).location === LOCATION.FO;
+  }
+
+  public get isReviewer() {
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.REVIEWER;
   }
 
   public get isApprover() {
