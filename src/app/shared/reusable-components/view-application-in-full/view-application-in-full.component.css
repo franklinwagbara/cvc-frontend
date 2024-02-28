@@ -10,6 +10,14 @@
   @apply text-[#3e4e50] mb-4;
 }
 
+h3 {
+  font-size: x-large;
+}
+
+h5 {
+  font-size: large;
+}
+
 hr {
   @apply mt-1;
 }
