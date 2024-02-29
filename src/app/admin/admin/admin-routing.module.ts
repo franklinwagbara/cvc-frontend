@@ -26,7 +26,6 @@ import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/co
 import { FieldOfficerDepotSettingComponent } from '../settings/field-officer-depot-setting/field-officer-depot-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
-import { ApplicationsGuard } from '../../shared/guards/applications.guard';
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
@@ -96,7 +95,7 @@ const routes: Routes = [
     path: 'applications/processing-plant/coq-applications/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
+    canActivate: [HppitiCoqGuard],
     title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal'
   },
   {
@@ -258,7 +257,6 @@ const routes: Routes = [
   {
     path: 'certificates',
     component: CertificatesComponent,
-    canActivate: [ApplicationsGuard],
     pathMatch: 'full',
     title: 'Approvals | CVC & CoQ Portal'
   },

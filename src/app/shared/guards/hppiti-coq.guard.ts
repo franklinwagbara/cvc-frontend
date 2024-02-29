@@ -14,7 +14,7 @@ export class HppitiCoqGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    if (this.auth.isHppitiStaff && (this.auth.isFieldOfficer || this.auth.isFOLocation)) {
+    if (this.auth.isHppitiStaff || this.auth.isCOQProcessor || this.auth.isSuperAdmin) {
       return true;
     }
     return false;
