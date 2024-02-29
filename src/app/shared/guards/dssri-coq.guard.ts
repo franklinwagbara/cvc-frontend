@@ -17,7 +17,7 @@ export class DssriCoqGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     
-    if (this.auth.isDssriStaff && this.auth.isFieldOfficer) {
+    if (this.auth.isDssriStaff || this.auth.isCOQProcessor || this.auth.isSuperAdmin) {
       return true;
     } else {
       this.popUp.open('Access Denied!', 'error');

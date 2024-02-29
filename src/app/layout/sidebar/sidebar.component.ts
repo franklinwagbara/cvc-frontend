@@ -50,7 +50,7 @@ const ROUTES: RouteInfo[] = [
       {
         id: 1,
         title: 'DASHBOARD',
-        url: '/admin',
+        url: '/admin/dashboard',
       },
     ],
   },
