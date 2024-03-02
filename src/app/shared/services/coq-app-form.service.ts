@@ -51,12 +51,11 @@ export class CoqAppFormService {
   ]
 
   constructor(public dialog: MatDialog) {
-    this.liquidProductReviewData$.subscribe((value: LiquidProductReviewData[]) => {
+    this.liquidProductReviewData$.subscribe((value: any[]) => {
       this.liquidProductReviewData = value;
     })
-    this.gasProductReviewData$.subscribe((value: GasProductReviewData[]) => {
+    this.gasProductReviewData$.subscribe((value: any[]) => {
       this.gasProductReviewData = value;
-      console.log('Gas Product Review Data =======> ', this.gasProductReviewData);
     })
   }
 

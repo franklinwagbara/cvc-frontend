@@ -44,6 +44,7 @@ export class ViewApplicationComponent implements OnInit, OnDestroy, AfterViewIni
   isIMG = Util.isIMG;
 
   showFloatingStaffActions = false;
+  showFloatingBackBtn = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -94,10 +95,20 @@ export class ViewApplicationComponent implements OnInit, OnDestroy, AfterViewIni
       } else {
         body = document.documentElement;
       }
-      let element = body.querySelector('#staff-actions-container');
-      if (element) {
-        let clientRect = element.getBoundingClientRect();
+      let element1 = body.querySelector('#staff-actions-container');
+      let element2 = body.querySelector('#back-to-view-all-btn');
+      if (element1) {
+        let clientRect = element1.getBoundingClientRect();
         this.showFloatingStaffActions = clientRect.top < 70;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 70;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
       }
     }
     document.addEventListener('scroll', scrollListener);

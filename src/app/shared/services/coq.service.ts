@@ -20,10 +20,6 @@ export class CoqService {
     return this.http.get<any>(`${API}/all_coqs`);
   }
 
-  createCoQ(data: ICoQApplication): Observable<any> {
-    return this.http.post<any>(`${API}/createCoQ`, data);
-  }
-
   viewCoqApplication(id: number): Observable<any> {
     return this.http.get<any>(`${API}/coq_details/${id}`);
   }
@@ -66,12 +62,32 @@ export class CoqService {
     return this.http.get<any>(`${API}/get-coq-certs/${id}`);
   }
 
-  createGasProductCoq(payload: any): Observable<any> {
+  createCoQ(isGasProduct: boolean, payload: any): Observable<any> {
+    return isGasProduct 
+      ? this.createGasProductCoQ(payload)
+      : this.createLiqProductCoQ(payload)
+  }
+
+  createGasProductCoQ(payload: any): Observable<any> {
     return this.http.post<any>(`${API}/create-coq-gas`, payload);
   }
 
-  createLiqProductCoq(payload: any): Observable<any> {
+  createLiqProductCoQ(payload: any): Observable<any> {
     return this.http.post<any>(`${API}/create-coq-liquid`, payload);
+  }
+
+  editCoQ(isGasProduct: boolean, id: number, payload: any): Observable<any> {
+    return isGasProduct
+      ? this.editGasProductCoQ(id, payload)
+      : this.editLiqProductCoQ(id, payload)
+  }
+
+  editLiqProductCoQ(id: number, payload: any): Observable<any> {
+    return this.http.post<any>(`${API}/edit-coq-liquid`, payload, {params: {id}});
+  }
+
+  editGasProductCoQ(id: number, payload: any): Observable<any> {
+    return this.http.post<any>(`${API}/edit-coq-gas`, payload, {params: {id}});
   }
 
   getCoqRequirement(appId: number, depotId: number): Observable<any> {

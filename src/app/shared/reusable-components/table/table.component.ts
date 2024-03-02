@@ -23,7 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
-import { ProductService } from '../../services/product.service';
+import { LibaryService } from '../../services/libary.service';
 
 interface IColumn {
   columnDef: string;
@@ -129,7 +129,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
     private dialog: MatDialog,
     private progressBar: ProgressBarService,
-    private productService: ProductService,
+    private libraryService: LibaryService,
     private popUp: PopupService
   ) {}
 
@@ -401,12 +401,12 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   onDischargeClearance(row: any, allow: boolean): void {
     this.progressBar.open();
-    this.productService.getAllProductTypes().subscribe({
+    this.libraryService.getProducts().subscribe({
       next: (res: any) => {
-        const productTypes = res?.data;
+        const products = res?.data;
         this.progressBar.close();
         const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
-          data: { productTypes, noaApp: row, allowDischarge: allow },
+          data: { products, noaApp: row, allowDischarge: allow },
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
@@ -416,7 +416,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         });
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.progressBar.close();
         this.popUp.open('Failed to initiate discharge clearance', 'error');
       },

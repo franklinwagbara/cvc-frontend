@@ -49,7 +49,10 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   isCOQProcessor: boolean;
   isFO: boolean;
   isProcessingPlant: boolean;
-  showFloatingStaffActions: boolean;
+  showFloatingBackBtn = false;
+  showFloatingStaffActions = false;
+
+
   isIMG = Util.isIMG;
   isPDF = Util.isPDF;
 
@@ -100,9 +103,19 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
         body = document.documentElement;
       }
       let element = body.querySelector('#staff-actions-container');
+      let element2 = body.querySelector('#back-to-view-all-btn');
       if (element) {
         let clientRect = element.getBoundingClientRect();
         this.showFloatingStaffActions = clientRect.top < 70;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 70;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
       }
     }
     document.addEventListener('scroll', scrollListener);
@@ -325,7 +338,7 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
       },
       applicationDocs: {
         data: {
-          applicationDocs: this.application.applicationDocs,
+          applicationDocs: this.documents,
         },
       },
     };
