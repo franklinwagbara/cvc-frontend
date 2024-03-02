@@ -85,18 +85,19 @@
             <mat-select
               [formControl]="depotSelection"
               [value]="selectedDepotId"
+              [ngClass]="{'hidden': isEditMode}"
             >
-            <mat-option *ngIf="isEditMode" [value]="selectedDepotId">
-              {{ existingCoq?.coq.plant }}
-            </mat-option>
-            <ng-container *ngIf="!isEditMode">
-              <mat-option
-                *ngFor="let depot of depots"
-                [value]="depot?.id"
-              >
-                {{ depot?.name }}
+              <mat-option *ngIf="isEditMode" [value]="selectedDepotId">
+                {{ existingCoq?.coq.plant }}
               </mat-option>
-            </ng-container>
+              <ng-container *ngIf="!isEditMode">
+                <mat-option
+                  *ngFor="let depot of depots"
+                  [value]="depot?.id"
+                >
+                  {{ depot?.name }}
+                </mat-option>
+              </ng-container>
             </mat-select>
           </mat-form-field>
           <mat-error 
@@ -667,7 +668,7 @@
           <div class="mt-4 overflow-x-auto">
             <h4 class="text-slate-600 font-medium">Review & Proceed</h4>
             <hr />
-            <ng-container *ngIf="!isGasProduct">
+            <ng-container *ngIf="isGasProduct !== null && !isGasProduct">
               <div
                 *ngIf="
                   coqFormService?.liquidProductReviewData.length;
@@ -679,7 +680,7 @@
                 ></app-coq-form-review>
               </div>
             </ng-container>
-            <ng-container *ngIf="isGasProduct">
+            <ng-container *ngIf="isGasProduct !== null && isGasProduct">
               <div
                 *ngIf="
                   coqFormService?.gasProductReviewData.length;
@@ -699,9 +700,11 @@
                 color="primary"
                 matStepperNext
                 [disabled]="
-                  !isGasProduct
-                    ? !coqFormService?.liquidProductReviewData.length
-                    : !coqFormService.gasProductReviewData.length
+                  isGasProduct === null
+                    ? true 
+                    : isGasProduct
+                    ? !coqFormService.gasProductReviewData.length
+                    : !coqFormService?.liquidProductReviewData.length
                 "
               >
                 Proceed
@@ -1062,6 +1065,21 @@
 
             <div class="table-container mat-elevation-z8">
               <div class="table-title">REQUIRED DOCUMENTS</div>
+              <div
+                class="pl-3"
+              >
+                <mat-form-field appearance="standard">
+                  <mat-label>Filter</mat-label>
+                  <input
+                    matInput
+                    (keyup)="applyFilter($event)"
+                    placeholder="Type something..."
+                    width="100px"
+                    #input
+                  />
+                </mat-form-field>
+              </div>
+
               <table
                 mat-table
                 [dataSource]="dataSource"
@@ -1119,10 +1137,14 @@
                           target="_blank"
                           download
                           ><img
-                            src="../../../assets/image/pdfIcon.png"
+                            [src]="isIMG(element?.docSource)
+                              ? '../../../assets/image/imgIcon.png'
+                              : isPDF(element?.docSource)
+                              ? '../../../assets/image/pdfIcon.png'
+                              : '../../../assets/image/otherFileType.png'"
                             width="30"
                             height="30"
-                            alt="Facility Document"
+                            alt="Source Icon"
                         /></a>
                       </div>
                     </ng-container>

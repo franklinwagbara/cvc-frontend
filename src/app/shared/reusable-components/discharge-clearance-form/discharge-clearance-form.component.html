@@ -50,7 +50,7 @@
       </div> -->
 
       <div class="fomr-group col-span-3">
-        <label>Product Type <sup class="tex-red-500">*</sup></label>
+        <label>Product<sup class="tex-red-500">*</sup></label>
         <select
           formControlName="product"
           class="form-control"
@@ -59,16 +59,16 @@
               form.get('product')?.dirty && form.get('product')?.invalid
           }"
         >
-          <option value="" [selected]="true">-- Select Product Type --</option>
-          <option *ngFor="let pType of data.productTypes" [ngValue]="pType">
-            {{ pType }}
+          <option value="" [selected]="true">-- Select Product --</option>
+          <option *ngFor="let prod of data.products" [ngValue]="prod?.name">
+            {{ prod?.name }}
           </option>
         </select>
         <div
           *ngIf="form.get('product')?.dirty && form.get('product')?.invalid"
           class="alert alert-danger mt-2 p-2"
         >
-          Product type is required!
+          Product is required!
         </div>
       </div>
 

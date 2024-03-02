@@ -104,6 +104,9 @@ export class CoqApplicationFormComponent
   public pageSizeOptions = [5, 10, 15, 20, 30];
   public pageSize = 10;
 
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
+
   @ViewChild('container') container: ElementRef;
   @ViewChild('coqStepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
@@ -246,7 +249,7 @@ export class CoqApplicationFormComponent
 
   private populateEditForms(res: any): void {
     this.existingCoq = res.data;
-    this.documents$.next([this.existingCoq.docs]);
+    this.documents$.next((this.existingCoq.docs as DocumentInfo[]));
     this.application = res.data?.coq;
     
     this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
@@ -355,27 +358,28 @@ export class CoqApplicationFormComponent
         next: (res: any) => {
           this.requirement = res?.data;
           this.noTankConfigured = !this.requirement.tanks.length;
+          this.spinner.close();
           
           this.isGasProduct =
-            this.requirement?.productType.toLowerCase() === 'gas';
-
+          this.requirement?.productType.toLowerCase() === 'gas';
+          
           if (this.noTankConfigured) {
             this.popUp.open(
               'No tanks configured for this depot. You may not proceed to the next step.',
               'error'
             );
             localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
-          } else {
-            this.restoreReviewData();
           }
-
+          
+          this.restoreReviewData();
+          
           this.documents$.next(
             this.requirement.requiredDocuments.map((el) => {
               return { ...el, success: null, percentProgress: 0 };
             })
           );
           this.fetchingRequirement = false;
-          this.spinner.close();
+          this.cd.markForCheck();
         },
         error: (error: unknown) => {
           console.error(error);
@@ -385,6 +389,7 @@ export class CoqApplicationFormComponent
             'error'
           );
           this.spinner.close();
+          this.cd.markForCheck();
         },
       })
     );
@@ -580,10 +585,21 @@ export class CoqApplicationFormComponent
         apiHash: this.requirement?.apiData.apiHash,
         docName: this.documents[index].docName,
         uniqueid: '',
-        facilityId: this.requirement?.apiData?.facilityElpsId,
+        facilityId: this.isEditMode 
+          ? this.existingCoq?.apiData?.facilityElpsId 
+          : this.requirement?.apiData?.facilityElpsId,
       };
 
       this.uploadFacilityDocAndReportProgress(file, uploadParams, index);
+    }
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
   }
 
@@ -735,50 +751,77 @@ export class CoqApplicationFormComponent
     this.isSubmitting = true;
     this.spinner.show('Submitting CoQ Application...');
 
-    (this.isGasProduct
-      ? this.coqService.createGasProductCoq(payload)
-      : this.coqService.createLiqProductCoq(payload)
-    ).subscribe({
-      next: (res: any) => {
-        this.isSubmitting = false;
-        this.isSubmitted = true;
-        this.spinner.close();
-        if (res?.success) {
-          this.snackBar.open(
-            'CoQ Application Created Successfully. Redirecting...',
-            null,
-            { panelClass: ['success'], duration: 2500 }
-          );
-          localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+    if (this.isEditMode) {
+      this.coqService.editCoQ(this.isGasProduct, this.coqId, payload).subscribe({
+        next: (res: any) => {
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.spinner.close();
+          if (res?.success) {
+            this.popUp.open(
+              'CoQ Application Updated Successfully. Redirecting...',
+              'success'
+            );
+          }
           this.resetFormOnSubmitted();
-
-          this.restoreReviewData();
           this.coqStepper.selectedIndex = 0;
           this.router.navigate([
             'admin',
             'coq',
             'coq-applications-by-depot',
+            this.coqId
           ]);
-        } else {
-          this.popUp.open('CoQ Application Creation Failed', 'error');
+        },
+        error: (error: unknown) => {
+          this.isSubmitting = false;
+          console.error(error);
+          this.spinner.close();
+          this.popUp.open('CoQ Application Update Failed', 'error');
+          this.cd.markForCheck();
         }
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.isSubmitting = false;
-        console.error(error);
-        this.spinner.close();
-        this.popUp.open('CoQ Application Creation Failed', 'error');
-        this.cd.markForCheck();
-      },
-    });
+      })
+    } else {
+      this.coqService.createCoQ(this.isGasProduct, payload).subscribe({
+        next: (res: any) => {
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.spinner.close();
+          if (res?.success) {
+            this.popUp.open(
+              'CoQ Application Created Successfully. Redirecting...',
+              'success'
+            );
+            localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+            this.resetFormOnSubmitted();
+  
+            this.restoreReviewData();
+            this.coqStepper.selectedIndex = 0;
+            this.router.navigate([
+              'admin',
+              'coq',
+              'coq-applications-by-depot',
+            ]);
+          } else {
+            this.popUp.open('CoQ Application Creation Failed', 'error');
+          }
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          this.isSubmitting = false;
+          console.error(error);
+          this.spinner.close();
+          this.popUp.open('CoQ Application Creation Failed', 'error');
+          this.cd.markForCheck();
+        },
+      });
+    }
   }
 
   constructPayload(): any {
     let payload: any;
     const reference = {
       plantId: this.depotSelection.value,
-      noaAppId: this.appId,
+      noaAppId: this.isEditMode ? this.existingCoq.coq.appId : this.appId,
     };
 
     if (this.isGasProduct) {
@@ -815,18 +858,15 @@ export class CoqApplicationFormComponent
       payload = {
         ...reference,
         productId: null,
-        dateOfVesselArrival:
-          this.vesselLiqInfoForm.controls[
-            'dateOfVesselArrival'
-          ].value.toISOString(),
-        dateOfVesselUllage:
-          this.vesselLiqInfoForm.controls[
-            'dateOfVesselUllage'
-          ].value.toISOString(),
-        dateOfSTAfterDischarge:
-          this.vesselLiqInfoForm.controls[
-            'dateOfSTAfterDischarge'
-          ].value.toISOString(),
+        dateOfVesselArrival: new Date(
+          this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value
+        ).toISOString(),
+        dateOfVesselUllage: new Date(
+          this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value
+        ).toISOString(),
+        dateOfSTAfterDischarge: new Date(
+          this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value
+        ).toISOString(),
         depotPrice: this.vesselLiqInfoForm.controls['depotPrice'].value,
         tankBeforeReadings: [],
         tankAfterReadings: [],
@@ -941,22 +981,29 @@ export class CoqApplicationFormComponent
           && Util.hasProperties(reviewData[0]?.before, this.coqFormService.liquidProductProps)) 
         {
           this.coqFormService.liquidProductReviewData$.next(reviewData);
+          this.coqFormService.gasProductReviewData$.next([]);
         } else if (this.isGasProduct 
           && Util.hasProperties(reviewData[0]?.before, this.coqFormService.gasProductProps)) 
         {
           this.coqFormService.gasProductReviewData$.next(reviewData);
+          this.coqFormService.liquidProductReviewData$.next([]);
         } else {
-          localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+          this.clearReviewData();
         }
+      } else if (this.isGasProduct !== null && !reviewData.length) {
+        this.clearReviewData();
       }
     }
   }
 
+  private clearReviewData(): void {
+    this.coqFormService.liquidProductReviewData$.next([]);
+    this.coqFormService.gasProductReviewData$.next([]);
+    localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+  }
+
   isUniqueTank(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const tank = (this.requirement?.tanks || []).find(
-        (t) => t.id === parseInt(control.value)
-      );
       if (this.isGasProduct !== null && !this.isGasProduct) {
         return !this.coqFormService.liquidProductReviewData.some(
           (val) => val.before.id === parseInt(control.value)
@@ -1038,6 +1085,7 @@ interface IExistingCoQ {
   tankList: any[];
   docs: DocumentInfo;
   appHistories?: any;
+  apiData: any;
 }
 
 export interface CoQData {

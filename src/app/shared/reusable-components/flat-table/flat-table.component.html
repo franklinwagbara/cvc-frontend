@@ -173,9 +173,9 @@
               </button>
 
               <input
-                *ngIf="column.header === 'ACTION'"
+                *ngIf="column.header === 'File Action'"
                 type="file"
-                accept=".pdf, .doc, .docx"
+                accept=".pdf,.jpeg,.jpg,.png"
                 (change)="fileUpload($event, row)"
               />
             </div>

@@ -179,8 +179,8 @@ export class ApproveFormComponent implements OnInit {
         if (res.success) {
           this.popup.open(
             this.isFAD
-              ? 'Application approved successfully!'
-              : 'Operation was successful!',
+              ? 'Application accepted successfully!'
+              : 'Application approved successfully',
             'success'
           );
           this.dialogRef.close();

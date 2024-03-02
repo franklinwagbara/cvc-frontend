@@ -2,21 +2,21 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class Util {
 
-  public static adminRoles = ['Admin', 'SuperAdmin'];
+  public static adminRoles = ['SuperAdmin'];
 
   public static isPDF(filePath: string) {
     if (!filePath) return false;
 
-    const fileType = filePath.split('.').slice(-1)[0];
+    const fileType = filePath.split('.').slice(-1)[0].toLowerCase();
 
-    return fileType == 'pdf';
+    return fileType === 'pdf';
   }
 
   public static isIMG(filePath) {
     if (!filePath) return false;
     const imageTypes = ['png', 'jpg', 'jpeg', 'tiff'];
 
-    const fileType = filePath.split('.').slice(-1)[0];
+    const fileType = filePath.split('.').slice(-1)[0].toLowerCase();
 
     return imageTypes.includes(fileType);
   }

@@ -17,15 +17,26 @@
     </div>
   </ng-container>
 
-  <button (click)="location.back()" class="my-4" mat-button>
-    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
-  </button>
+  <ng-container *ngIf="showFloatingBackBtn">
+    <button 
+      (click)="location.back()"
+      class="fixed top-[70px] z-50 text-white bg-slate-500 p-2 pb-3 font-bold"
+      style="border-radius: 4px; font-size: small;"
+    >
+      <mat-icon class="pt-2">keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
+    </button>
+  </ng-container>
 
-  <div *ngIf="application; else noData" class="view-application">
-    <h2 mat-dialog-title class="text-center page-title">
-      APPLICATION REFERENCE :
-      {{ isProcessingPlant ? ppCoq?.reference : application?.reference }}
-    </h2>
+  <div class="flex justify-between">
+    <button 
+      id="back-to-view-all-btn"
+      (click)="location.back()" 
+      class="my-4"
+      [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
+      mat-button
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
+    </button>
 
     <ng-container *ngIf="appLoaded">
       <div 
@@ -46,6 +57,14 @@
         </button>
       </div>
     </ng-container>
+  </div>
+
+  <div *ngIf="application; else noData" class="view-application">
+    <h2 mat-dialog-title class="text-center page-title">
+      APPLICATION REFERENCE :
+      {{ isProcessingPlant ? ppCoq?.reference : application?.reference }}
+    </h2>
+
 
     <div class="content !overflow-x-auto">
       <div class="application-view flex-1">

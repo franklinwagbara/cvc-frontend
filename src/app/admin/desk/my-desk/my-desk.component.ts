@@ -131,12 +131,9 @@ export class MyDeskComponent implements OnInit {
       },
       error: (error: unknown) => {
         console.error(error);
-        this.snackBar.open(
+        this.popUp.open(
           'Something went wrong while retrieving data.',
-          null,
-          {
-            panelClass: ['error'],
-          }
+          'error'
         );
 
         this.spinner.close();

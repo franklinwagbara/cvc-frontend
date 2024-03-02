@@ -1,6 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppSource } from '../../../../src/app/shared/constants/appSource';
@@ -8,7 +7,6 @@ import { AddScheduleFormComponent } from '../../../../src/app/shared/reusable-co
 import { ApproveFormComponent } from '../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from '../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from '../../../../src/app/shared/services';
-import { ApplyService } from '../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../src/app/shared/services/application.service';
@@ -41,15 +39,12 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
   showFloatingAppAction = false;
 
   constructor(
-    private snackBar: MatSnackBar,
     private auth: AuthenticationService,
-    private appService: ApplyService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
     private spinner: SpinnerService,
     public route: ActivatedRoute,
-    private router: Router,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
     public location: Location,

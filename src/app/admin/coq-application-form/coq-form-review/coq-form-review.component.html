@@ -13,7 +13,11 @@
         mat-table 
         [dataSource]="dSource" 
         id="coq-form-data-review-table" 
-        *ngIf="!isGasProduct ? coqFormService?.liquidProductReviewData.length : coqFormService?.gasProductReviewData.length" 
+        *ngIf="isGasProduct === null
+          ? false
+          : isGasProduct 
+          ? coqFormService?.gasProductReviewData.length 
+          : coqFormService?.liquidProductReviewData.length" 
         class="table table-responsive table-striped"
         aria-describedby="coq-form-data-table-review-title"
         matSort
@@ -26,7 +30,7 @@
             <ng-container *ngIf="coqFormService.hasKgPerL(column)">{{ column | uppercase }}(Kg/L)</ng-container>
             <ng-container *ngIf="coqFormService.hasTempUnit(column)">{{ column | uppercase }}(<sup>0</sup>C)</ng-container>
           </th>
-          <td mat-cell *matCellDef="let element; let i = index">
+          <td mat-cell *matCellDef="let element; let i = index" class="text-center">
             <ng-container *ngIf="objNotEmpty(element)">
               <ng-container *ngIf="column !== 'actions' && column !== 'status'">{{ element[column] }}</ng-container>
               <ng-container *ngIf="column !== 'actions' && column === 'status'">{{ element[column] | uppercase }}</ng-container>
