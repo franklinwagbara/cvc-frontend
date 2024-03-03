@@ -47,6 +47,7 @@ import { AllPpcoqApplicationsComponent } from '../all-ppcoq-applications/all-ppc
 import { HppitiCoqGuard } from 'src/app/shared/guards/hppiti-coq.guard';
 import { DssriCoqGuard } from 'src/app/shared/guards/dssri-coq.guard';
 import { ComingSoonGuard } from 'src/app/shared/guards/coming-soon.guard';
+import { PpcoqApplicationViewComponent } from '../application/ppcoq-application-view/ppcoq-application-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -92,10 +93,10 @@ const routes: Routes = [
     title: 'CoQ Application View | CVC & CoQ Portal'
   },
   {
-    path: 'applications/processing-plant/coq-applications/:id',
-    component: CoqApplicationViewComponent,
+    path: 'applications/ppcoq-applications/:id',
+    component: PpcoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [HppitiCoqGuard],
+    canActivate: [ComingSoonGuard],
     title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal'
   },
   {
@@ -202,6 +203,13 @@ const routes: Routes = [
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
     title: 'Desk - CoQ Application View | CVC & CoQ Portal'
+  },
+  {
+    path: 'desk/view-ppcoq-application/:id',
+    component: CoqApplicationViewComponent,
+    pathMatch: 'full',
+    canActivate: [ComingSoonGuard],
+    title: 'Desk - Processing Plant CoQ Application View | CVC & CoQ Portal'
   },
   {
     path: 'vessel-clearance',

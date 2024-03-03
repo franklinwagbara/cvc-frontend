@@ -115,7 +115,7 @@ const ROUTES: RouteInfo[] = [
     subRoutes: [
       {
         id: 1,
-        title: 'CoQ Applications',
+        title: 'My Depot(s) CoQs',
         url: '/admin/coq/coq-applications-by-depot',
       },
     ],
@@ -162,7 +162,7 @@ const ROUTES: RouteInfo[] = [
       },
       {
         id: 1,
-        title: 'CoQ Applications',
+        title: 'My CoQ Applications',
         url: '/admin/processing-plant/certificate-of-quantity/applications',
       },
     ],
@@ -378,6 +378,11 @@ export class SidebarComponent implements OnInit, OnChanges {
     // Show CoQ nav only to DSSRI Field Officers
     if (!(auth.isDssriStaff && auth.isFieldOfficer)) {
       this.menuItems = this.menuItems.filter((el) => el.title !== 'CoQ');
+    }
+
+    // Show Processing Plant nav only HPPITI Field Officers
+    if (!(auth.isHppitiStaff && auth.isFieldOfficer)) {
+      this.menuItems = this.menuItems.filter((el) => el.title !== 'PROCESSING PLANT');
     }
 
     if (auth.isDssriStaff || !auth.currentUser.directorate) {

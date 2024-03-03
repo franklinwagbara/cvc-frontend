@@ -80,7 +80,11 @@
           [stepControl]="depotSelection"
           [label]="(isEditMode ? 'Selected ' : 'Select ') + 'Depot'"
         >
-          <mat-form-field appearance="fill" style="min-width: fit-content">
+          <mat-form-field 
+            appearance="fill" 
+            style="min-width: fit-content;"
+            [ngClass]="{'hidden': isEditMode}"
+          >
             <mat-label>Depot</mat-label>
             <mat-select
               [formControl]="depotSelection"
@@ -100,6 +104,11 @@
               </ng-container>
             </mat-select>
           </mat-form-field>
+
+          <ng-container *ngIf="isEditMode">
+            <span class="p-2 border-2 border-black ml-2">{{existingCoq?.coq.plant}}</span>
+          </ng-container>
+
           <mat-error 
             *ngIf="noPlantFetched !== null && noPlantFetched && !isEditMode"
           >

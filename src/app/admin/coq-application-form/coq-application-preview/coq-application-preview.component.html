@@ -247,7 +247,7 @@
       >
         <thead>
           <tr>
-            <th style="text-align: left">Tank No.</th>
+            <th style="text-align: left">Tank Identification</th>
             <ng-container
               *ngFor="
                 let reading of tankData;
@@ -382,25 +382,7 @@
               </td>
             </ng-container>
           </tr>
-          <tr>
-            <th style="text-align: left; font-size: 14px" scope="row">
-              Gross Standard Volume (m<sup>3</sup>)
-            </th>
-            <ng-container
-              *ngFor="
-                let reading of tankData;
-                trackBy: trackByFn;
-                let i = index
-              "
-            >
-              <td style="text-align: left; font-size: 12px">
-                {{ reading.before?.grossStandardVolume }}
-              </td>
-              <td style="text-align: left; font-size: 12px">
-                {{ reading.after?.grossStandardVolume }}
-              </td>
-            </ng-container>
-          </tr>
+          
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
               Observed Liquid Volume (m<sup>3</sup>)
@@ -455,6 +437,66 @@
               </td>
               <td style="text-align: left; font-size: 12px">
                 {{ reading.after?.vcf }}
+              </td>
+            </ng-container>
+          </tr>
+          
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Gross Standard Volume (m<sup>3</sup>)
+            </th>
+            <ng-container
+              *ngFor="
+                let reading of tankData;
+                trackBy: trackByFn;
+                let i = index
+              "
+            >
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.before?.grossStandardVolume }}
+              </td>
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.after?.grossStandardVolume }}
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Liquid Weight (MT Vac)
+            </th>
+            <ng-container
+              *ngFor="
+                let reading of tankData;
+                trackBy: trackByFn;
+                let i = index
+              "
+            >
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.before?.liquidWeightVac }}
+              </td>
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.after?.liquidWeightVac }}
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Liquid Weight (MT Air)
+            </th>
+            <ng-container
+              *ngFor="
+                let reading of tankData;
+                trackBy: trackByFn;
+                let i = index
+              "
+            >
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.before?.liquidWeightAir }}
+              </td>
+              <td style="text-align: left; font-size: 12px">
+                {{ reading.calc.after?.liquidWeightAir }}
               </td>
             </ng-container>
           </tr>
@@ -536,11 +578,6 @@
             </ng-container>
           </tr>
           
-          <tr style="border: none">
-            <th style="text-align: left; font-size: 14px" scope="row">
-              VAPOUR PHASE
-            </th>
-          </tr>
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
               Vapour Temperature (<sup>0</sup>C)
@@ -773,117 +810,91 @@
           
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
-              Corrected Density (Table 56)
+              Total Weight (MT Vac)
             </th>
-            <ng-container
-              *ngFor="
-                let reading of tankData;
-                trackBy: trackByFn;
-                let i = index
-              "
-            >
-              <td style="text-align: left; font-size: 12px">
-                {{ reading?.calc?.before?.correctedDensity }}
-              </td>
-              <td style="text-align: left; font-size: 12px">
-                {{ reading?.calc?.after?.correctedDensity }}
-              </td>
-            </ng-container>
+            <td style="text-align: left; font-size: 12px">
+              {{ dischargeData.sumOfTotalWtVacB4 }}
+            </td>
+            <td style="text-align: left; font-size: 12px">
+              {{ dischargeData.sumOfTotalWtVacAft }}
+            </td>
+          </tr>
+
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Total Weight (MT Air)
+            </th>
+            <td style="text-align: left; font-size: 12px">
+              {{ dischargeData.sumOfTotalWtAirB4 }}
+            </td>
+            <td style="text-align: left; font-size: 12px">
+              {{ dischargeData.sumOfTotalWtAirAft }}
+            </td>
           </tr>
           
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
-              Received Qty.(Liq+Vap) Air.
+              Grand Total Weight (MT Vac)
             </th>
-            <ng-container
-              *ngFor="
-                let reading of tankData;
-                trackBy: trackByFn;
-                let i = index
-              "
-            >
-              <td colspan="2" style="text-align: left; font-size: 12px">
-                {{ reading?.calc?.receivedQtyAir }}
-              </td>
-            </ng-container>
+            <td colspan="2" style="text-align: center; font-size: 12px">
+              {{ dischargeData.grandTotalWeightVac }}
+            </td>
+          </tr>
+
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Grand Total Weight (MT Air)
+            </th>
+            <td colspan="2" style="text-align: center; font-size: 12px">
+              {{ dischargeData.grandTotalWeightAir }}
+            </td>
           </tr>
         </tbody>
       </table>
-      <div style="font-size: 14px">
-        ALL CALCULATIONS ARE BASED ON ASTM/IP 201/64
-      </div>
+      
       <br />
-      <div id="lpg-weight-certification-qty-summary" class="text-center">
-        SUMMARY OF QUANTITIES
+      <div id="lpg-weight-certification-vessel-info" class="text-center hidden">
+        Vessel Information
       </div>
       <table
-        class="table table-borderd"
-        aria-describedby="lpg-weight-certification-qty-summary"
+        class="table table-bordered"
+        aria-describedby="lpg-weight-certification-vessel-info"
       >
-        <thead>
-          <tr>
-            <th style="text-align: left; font-size: 14px" scope="col"></th>
-            <th style="text-align: left; font-size: 14px" scope="col">
-              QTY. BEFORE RECEIPT
-            </th>
-            <th style="text-align: left; font-size: 14px" scope="col">
-              QTY. AFTER RECEIPT
-            </th>
-            <th style="text-align: left; font-size: 14px" scope="col">
-              QTY. RECEIVED
-            </th>
-          </tr>
-        </thead>
         <tbody>
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
-              M/TON VAC
+              Quantity Reflected on Bill of  (MT Air)
             </th>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.sumOfTotalWtVacB4 }}
-            </td>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.sumOfTotalWtVacAft }}
-            </td>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.totalReceivedQtyVac }}
+            <td style="text-align: left; font-size: 14px">
+              {{ dischargeData?.quauntityReflectedOnBill }}
             </td>
           </tr>
           <tr>
             <th style="text-align: left; font-size: 14px" scope="row">
-              M/TON AIR
+              Arrival SHIP Figure (MT Air)
             </th>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.sumOfTotalWtAirB4 }}
+            <td style="text-align: left; font-size: 14px">
+              {{ dischargeData?.arrivalShipFigure }}
             </td>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.sumOfTotalWtAirAft }}
+          </tr>
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              SHIP Figure (DISCHARGED) (MT Air)
+            </th>
+            <td style="text-align: left; font-size: 14px">
+              {{ dischargeData?.dischargeShipFigure }}
             </td>
-            <td style="text-align: left; font-size: 12px">
-              {{ dischargeData?.totalReceivedQtyAir }}
+          </tr>
+          <tr>
+            <th style="text-align: left; font-size: 14px" scope="row">
+              Name of Consignor/Consignee
+            </th>
+            <td style="text-align: left; font-size: 14px">
+              {{ dischargeData.nameConsignee }}
             </td>
           </tr>
         </tbody>
       </table>
-
-      <div class="flex justify-center">
-        <table class="table table-bordered">
-          <tbody>
-            <tr>
-              <th style="text-align: left; font-size: 14px" scope="row">GOV</th>
-              <td style="text-align: left; font-size: 12px">
-                {{ dischargeData?.govSummary }}
-              </td>
-            </tr>
-            <tr>
-              <th style="text-align: left; font-size: 14px" scope="row">GSV</th>
-              <td style="text-align: left; font-size: 12px">
-                {{ dischargeData?.gsvSummary }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
     <br />

@@ -1,31 +1,28 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Location } from '@angular/common';
-import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
-import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
-import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
-import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { AuthenticationService } from '../../../../../src/app/shared/services';
-import { AppSource } from '../../../../../src/app/shared/constants/appSource';
-import { LoginModel } from '../../../../../src/app/shared/models/login-model';
+import { AppSource } from 'src/app/shared/constants/appSource';
+import { Util } from 'src/app/shared/lib/Util';
+import { LoginModel } from 'src/app/shared/models/login-model';
+import { AddScheduleFormComponent } from 'src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
+import { ApproveFormComponent } from 'src/app/shared/reusable-components/approve-form/approve-form.component';
+import { SendBackFormComponent } from 'src/app/shared/reusable-components/send-back-form/send-back-form.component';
+import { ShowMoreComponent } from 'src/app/shared/reusable-components/show-more/show-more.component';
+import { AuthenticationService } from 'src/app/shared/services';
 import { CoqService } from 'src/app/shared/services/coq.service';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
-import { Util } from 'src/app/shared/lib/Util';
-import { CoQData } from '../../coq-application-form/coq-application-form.component';
-
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
+import { SpinnerService } from 'src/app/shared/services/spinner.service';
 
 @Component({
-  selector: 'app-coq-application-view',
-  templateUrl: './coq-application-view.component.html',
-  styleUrls: ['./coq-application-view.component.scss'],
+  selector: 'app-ppcoq-application-view',
+  templateUrl: './ppcoq-application-view.component.html',
+  styleUrls: ['./ppcoq-application-view.component.css']
 })
-export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
+export class PpcoqApplicationViewComponent {
   public application: any;
-  public ppCoq: any;
   public appActions: any;
   public appId: number;
   public appSource: AppSource;
@@ -45,7 +42,7 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   isSupervisor: boolean;
   isCOQProcessor: boolean;
   isFO: boolean;
-  isProcessingPlant: boolean;
+
   showFloatingBackBtn = false;
   showFloatingStaffActions = false;
 
@@ -64,17 +61,10 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
     public location: Location,
     private paymentService: PaymentService,
     private popUp: PopupService,
-    private router: Router
+    private router: Router,
   ) {
-    this.route.params.subscribe((param) => {
-      this.appId = parseInt(param['id']);
-      this.coqId = parseInt(param['id']);
-      this.PPCOQId = parseInt(param['id']);
-    });
-
     this.route.queryParams.subscribe((params) => {
       this.spinner.show('Loading application...');
-      this.isPPCOQ = params['isPPCOQ'] === 'true';
       this.appSource = params['appSource'];
       this.getApplication();
     });
@@ -157,26 +147,15 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   }
 
   getApplication() {
-    console.log('isPPCOQ =============> ', this.isPPCOQ);
     this.loading = true;
-    (!this.isPPCOQ
-      ? this.coqService.viewCoqApplication(this.appId)
-      : this.coqService.viewPPCoqApplication(this.PPCOQId)
-    ).subscribe({
+    
+    this.coqService.viewPPCoqApplication(this.PPCOQId).subscribe({
       next: (res) => {
         this.loading = false;
-        if (res.success && this.isPPCOQ) {
-          this.ppCoq = res.data;
-          this.appLoaded = true;
-        } else if (res.success) {
-          this.application = res.data.coq;
-          this.tanksList = res.data.tankList;
-          this.documents = (res.data.docs as any[]);
-          this.appHistories = res.data.appHistories;
+        if (res.success) {
+          this.application = res.data;
           this.appLoaded = true;
         }
-        this.isProcessingPlant = this.isPPCOQ;
-        console.log('isPPCOQ =========> ', this.isPPCOQ);
         
         this.progressBar.close();
         this.spinner.close();
@@ -199,89 +178,20 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   }
 
   action(type: string, param = null) {
-    let vesselData = {
-      dateOfArrival: this.application?.dateOfVesselArrival,
-      dateOfUllage: this.application?.dateOfVesselUllage,
-      dateOfShoreTank: this.application?.dateOfSTAfterDischarge,
-      depotPrice: this.application?.depotPrice,
-      nameConsignee: this.application?.nameConsignee,
-      motherVessel: this.application?.motherVessel,
-      vesselName: this.application?.vessel?.name,
-      jetty: this.application?.jetty,
-      documents: this.documents,
-    };
-
-    const isGasProduct = this.application?.productType.toLowerCase() === 'gas';
-
-    const coqData: CoQData[] = this.tanksList.map((el: any) => {
-      let beforeReading = el?.tankMeasurement.find((r: any) => {
-        return r?.measurementType === 'Before'
-      });
-      beforeReading = { 
-        ...beforeReading, 
-        id: el?.tankId, 
-        tank: el?.tankName, 
-        status: 'before' 
-      };
-      let afterReading = el?.tankMeasurement.find((r: any) => {
-        return r?.measurementType === 'After'
-      });
-      afterReading = { 
-        ...afterReading, 
-        id: el?.tankId, 
-        tank: el?.tankName, 
-        status: 'after' 
-      };
-      delete beforeReading.tankName;
-      delete beforeReading.measurementType;
-      delete afterReading.tankName;
-      delete afterReading.measurementType;
-      return { before: beforeReading, after: afterReading };
-    })
-
     const operationConfiguration = {
       approve: {
         data: {
-          tankData: coqData,
-          isGasProduct,
-          vesselDischargeData: isGasProduct
-            ? {
-                ...vesselData,
-                quauntityReflectedOnBill:
-                  this.application?.quauntityReflectedOnBill,
-                arrivalShipFigure: this.application?.arrivalShipFigure,
-                dischargeShipFigure: this.application?.dischargeShipFigure,
-                vesselName: this.application?.vessel?.name,
-                jetty: this.application?.jetty,
-              }
-            : vesselData,
-          application: !this.isPPCOQ ? this.application : this.ppCoq,
+          application: this.application,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: !this.isPPCOQ ? this.coqId : this.PPCOQId,
-          isPPCOQ: this.isPPCOQ,
         },
         form: ApproveFormComponent,
       },
       sendBack: {
         data: {
-          tankData: coqData,
-          isGasProduct,
-          vesselDischargeData: isGasProduct
-            ? {
-                ...vesselData,
-                quauntityReflectedOnBill:
-                  this.application?.quauntityReflectedOnBill,
-                arrivalShipFigure: this.application?.arrivalShipFigure,
-                dischargeShipFigure: this.application?.dischargeShipFigure,
-              }
-            : vesselData,
-          documents: this.documents,
-          application: !this.isPPCOQ ? this.application : this.ppCoq,
+          application: this.application,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
-          coqId: !this.isPPCOQ ? this.coqId : this.PPCOQId,
-          isPPCOQ: this.isPPCOQ,
         },
         form: SendBackFormComponent,
       },
@@ -345,4 +255,5 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
       },
     });
   }
+
 }

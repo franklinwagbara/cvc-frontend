@@ -5,7 +5,7 @@
     <div class="table-group">
       <div class="table-wrapper">
         <generic-table
-          [table_title]="'NoA Applications'"
+          [table_title]="(isDssriFieldOfficer ? 'Cleared' : '') + ' NoA Applications'"
           [table_keysMappedToHeaders]="getColumnHeaders"
           [table_content]="isDssriFieldOfficer ? clearedNoaApps : applications"
           [EnableViewControl]="true"
