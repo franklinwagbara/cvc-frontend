@@ -727,6 +727,7 @@ export class CoqApplicationFormComponent
                 this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
               dischargeShipFigure:
                 this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
+              nameConsignee: this.vesselGasInfoForm.controls['nameConsignee'].value
             }
           : vesselData,
       },

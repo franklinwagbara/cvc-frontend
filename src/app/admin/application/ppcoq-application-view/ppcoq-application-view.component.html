@@ -68,14 +68,9 @@
 
     <div class="content !overflow-x-auto">
       <div class="application-view flex-1">
-        <app-coq-application-view-table
-          [application]="application"
-          [appId]="coqId"
-          [appSource]="appSource"
-          [tankList]="tanksList"
-          [isCoqProcessor]="isCOQProcessor"
-          [isProcessingPlant]="isProcessingPlant"
-        ></app-coq-application-view-table>
+        <app-ppcoq-application-view-table
+          
+        ></app-ppcoq-application-view-table>
       </div>
       <div class="application-controls">
         <mat-expansion-panel [expanded]="true">
@@ -83,11 +78,7 @@
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
           <p>
-            {{
-              isProcessingPlant
-                ? ppCoq?.currentDeskName + " (" + ppCoq?.currentDeskEmail + ")"
-                : application?.currentDesk
-            }}
+            {{ application?.currentDesk }}
           </p>
         </mat-expansion-panel>
 

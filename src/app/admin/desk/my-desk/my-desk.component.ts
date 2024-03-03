@@ -106,7 +106,7 @@ export class MyDeskComponent implements OnInit {
         if (res.success) {
           if (res.data?.coQ) {
             this.appType$.next('COQ');
-            this.coqApplications = res.data.coQ;
+            this.coqApplications = (res.data.coQ || []).reverse();
             this.processingPlantCOQs = res.data?.processingPlantCOQ;
           } else {
             this.appType$.next('NOA');
@@ -158,22 +158,29 @@ export class MyDeskComponent implements OnInit {
 
   onViewData(event: any, type?: 'PPCOQ' | 'COQ') {
     if (this.appType$.value === AppType.COQ || this.isFAD) {
-      this.router.navigate(
-        [
-          '/admin/desk/view-coq-application/',
-          event.id ?? event.processingPlantCOQId
-        ],
-        {
-          queryParams: {
-            id: event.appId ?? event.processingPlantCOQId,
-            appSource: AppSource.MyDesk,
-            depotId: event.depotId,
-            coqId: event.id,
-            isPPCOQ: type === 'PPCOQ',
-            PPCOQId: event.processingPlantCOQId,
-          },
-        }
-      );
+      if (type === 'PPCOQ') {
+        this.router.navigate([
+          '/admin/desk/view-ppcoq-application/', 
+          event.processingPlantCOQId,
+        ])
+      } else {
+        this.router.navigate(
+          [
+            '/admin/desk/view-coq-application/',
+            event.id ?? event.processingPlantCOQId
+          ],
+          {
+            queryParams: {
+              id: event.appId ?? event.processingPlantCOQId,
+              appSource: AppSource.MyDesk,
+              depotId: event.depotId,
+              coqId: event.id,
+              isPPCOQ: false,
+              PPCOQId: event.processingPlantCOQId,
+            },
+          }
+        );
+      }
     } else if (
       this.isDssriFieldOfficer || this.appType$.value === AppType.NOA
     ) {
