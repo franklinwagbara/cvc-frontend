@@ -14,80 +14,93 @@
 
       <br>
 
-      <div id="MyFacilityTable_wrapper" class="dataTables_wrapper no-footer">
+      <div id="Company-messages-table_wrapper" class="dataTables_wrapper no-footer">
         <div class="dt-buttons flex gap-2"> 
-          <button class="dt-button buttons-collection buttons-page-length" tabindex="0"
-              aria-controls="MyFacilityTable" aria-haspopup="true"><span>Show 1000 rows</span>
-          </button>
-          <button class="dt-button buttons-copy buttons-html5" tabindex="0"
-              aria-controls="MyFacilityTable"><span>Copy</span>
+          <button
+            class="dt-button buttons-csv buttons-html5" tabindex="0"
+            aria-controls="Company-messages-table"
+            (click)="exportTable('csv', 'company-messages-table')"
+          >
+              <span>CSV</span>
           </button> 
           <button
-              class="dt-button buttons-csv buttons-html5" tabindex="0"
-              aria-controls="MyFacilityTable"><span>CSV</span>
+            class="dt-button buttons-excel buttons-html5" tabindex="0"
+            aria-controls="Company-messages-table"
+            (click)="exportTable('excel', 'company-messages-table')"
+          >
+            <span>Excel</span>
           </button> 
           <button
-              class="dt-button buttons-excel buttons-html5" tabindex="0"
-              aria-controls="MyFacilityTable"><span>Excel</span>
+            class="dt-button buttons-pdf buttons-html5" tabindex="0"
+            aria-controls="company-messages-table"
+            (click)="exportTable('pdf', 'company-messages-table')"
+          >
+            <span>PDF</span>
           </button> 
           <button
-              class="dt-button buttons-pdf buttons-html5" tabindex="0"
-              aria-controls="MyFacilityTable"><span>PDF</span>
+            class="dt-button buttons-print" 
+            tabindex="0" 
+            aria-controls="company-messages-table"
+            (click)="printTable()"
+          >
+            <span>Print</span>
           </button> 
-          <button
-              class="dt-button buttons-print" tabindex="0" aria-controls="MyFacilityTable"><span>Print
-                  all</span>
-          </button> 
-          <button class="dt-button buttons-collection buttons-colvis" tabindex="0"
-              aria-controls="MyFacilityTable" aria-haspopup="true"><span>Change columns</span>
-          </button> 
+         
         </div>
-        <div id="MyFacilityTable_filter" class="dataTables_filter">
+        <div id="Company-messages-table_filter" class="dataTables_filter">
           <label for="facility-table-search">
-            <input id="facility-table-search" type="search" class="table-search" placeholder="Search by subject" aria-controls="MyFacilityTable" (input)="applyFilter($event)" />
+            <input 
+              id="facility-table-search" 
+              type="search" 
+              class="table-search" 
+              placeholder="Search by subject" 
+              aria-controls="Company-messages-table" 
+              (input)="applyFilter($event)" 
+            />
           </label>
         </div>
-        <div id="MyFacilityTable_processing" class="dataTables_processing" style="display: none;">Processing...
+        <div 
+          id="company-messages-table_processing" 
+          class="dataTables_processing" 
+          style="display: none;"
+        >Processing...
         </div>
         <br />
         <br />
-        <table mat-table [dataSource]="dataSource" class="table table-striped" id="MyFacilityTable"
-            aria-describedby="MyFacilityTable_info">
+        <table 
+          mat-table 
+          [dataSource]="dataSource" 
+          class="table table-striped" 
+          id="company-messages-table"
+          aria-describedby="company-messages-table_info"
+        >
+          <thead>
             <!-- Seen Column -->
-          <ng-container matColumnDef="seen">
-            <th mat-header-cell *matHeaderCellDef class="text-bold"> Seen </th>
-            <td mat-cell *matCellDef="let element">
-              <i class='fas' [ngClass]="{'fa-envelope-open': element.seen, 'fa-envelope': !element.seen}"></i>
-            </td>
-          </ng-container>
+            <ng-container matColumnDef="seen">
+              <th mat-header-cell *matHeaderCellDef class="text-bold"> Seen </th>
+              <td mat-cell *matCellDef="let element">
+                <i class='fas' [ngClass]="{'fa-envelope-open': element.seen, 'fa-envelope': !element.seen}"></i>
+              </td>
+            </ng-container>
 
-          <!-- MessageSubject Column -->
-          <ng-container matColumnDef="messageSubject">
-            <th mat-header-cell *matHeaderCellDef> Subject </th>
-            <td mat-cell *matCellDef="let element"> {{element.messageSubject}} </td>
-          </ng-container>
+            <!-- MessageSubject Column -->
+            <ng-container matColumnDef="subject">
+              <th mat-header-cell *matHeaderCellDef> Subject </th>
+              <td mat-cell *matCellDef="let element"> {{element.subject}} </td>
+            </ng-container>
 
-          <!-- Date Column -->
-          <ng-container matColumnDef="date">
-            <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-          </ng-container>
-
-          <!-- Link Column -->
-          <ng-container matColumnDef="link">
-            <th mat-header-cell *matHeaderCellDef> Action </th>
-            <td mat-cell *matCellDef="let element">
-              <a class="btn btn-primary btn-sm" target="_blank"
-                  [href]="element.link"> <i class="fa fa-eye"> </i> View Message
-              </a>
-            </td>
-          </ng-container>
+            <!-- Date Column -->
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef> Date </th>
+              <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+            </ng-container>
+          </thead>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{'row-stripe': row.id % 2 !== 0}"></tr>
           
         </table>
-        <div *ngIf="dataSource.paginator" class="dataTables_info" id="MyFacilityTable_info" role="status" aria-live="polite">
+        <div *ngIf="dataSource.paginator" class="dataTables_info" id="Company-messages-table_info" role="status" aria-live="polite">
           {{ 'Showing ' + (dataSource.paginator.pageIndex * dataSource.paginator.pageSize + (dataSource.filteredData.length > 0 ? 1 : 0)) + ' to ' + (dataSource.paginator.hasNextPage() ? (dataSource.paginator.pageIndex + 1) * 
           (dataSource.paginator.pageSize >= dataSource.filteredData.length ? dataSource.filteredData.length : dataSource.paginator.pageSize) : dataSource.filteredData.length) + ' of ' + dataSource.filteredData.length }} entries
         </div>
