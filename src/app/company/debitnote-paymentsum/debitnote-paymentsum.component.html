@@ -77,8 +77,8 @@
                   </tbody>
                 </table>
   
-                <div *ngIf="demandNotices?.length">
-                  <h3 id="demand-notices-heading" class="nested-subtitle">Demand Notice(s)</h3>
+                <div *ngIf="paymentDetails?.length">
+                  <h3 id="payment-breakdown-heading" class="sub-title">Payment Breakdown</h3>
                   <table class="table table-striped" aria-describedby="demand-notices-heading">
                     <thead>
                       <tr>
@@ -88,10 +88,10 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let dn of demandNotices">
+                      <tr *ngFor="let dn of paymentDetails">
                         <td>{{ dn?.paymentType }}</td>
                         <td>{{ dn?.createdDate }}</td>
-                        <td>{{ dn?.amount }}</td>
+                        <td>{{ dn?.amount | currency: 'NGN' }}</td>
                       </tr>
                     </tbody>
                   </table>

@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
   public OperatingFacility = OperatingFacility;
 
   public NavigatePath = {
-    applications: 'myapplication',
+    applications: 'cvc-applications',
     processing: 'processing',
     approvals: 'approvals',
   };

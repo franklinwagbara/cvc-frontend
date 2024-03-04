@@ -32,7 +32,7 @@ export class MyapprovalsComponent implements OnInit {
     // email: 'Company Email',
     vesselName: 'Vessel Name',
     vesselTypeType: 'Vessel Type',
-    licenseNo: 'Licence Number',
+    licenseNo: 'Clearance No',
     issuedDate: 'Issued Date',
     expiryDate: 'Expiry Date',
   };

@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CoQData } from '../coq-application-form.component';
 import { AuthenticationService } from 'src/app/shared/services';
 import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-preview',
@@ -131,17 +132,7 @@ export class CoqApplicationPreviewComponent implements OnInit {
       ).style.display = 'block';
     }, 2000);
 
-    const printContents = document.getElementById('coq-data-preview-content');
-    const windowPrt = window.open(
-      '',
-      '',
-      'left=0,top=0,width=1000,height=1000,toolbar=0,scrollbars=0,status=0'
-    );
-    windowPrt.document.write(printContents.innerHTML);
-    windowPrt.document.close();
-    windowPrt.focus();
-    windowPrt.print();
-    windowPrt.close();
+    Util.printHtml('coq-data-preview-content');
   }
 
   public close() {
