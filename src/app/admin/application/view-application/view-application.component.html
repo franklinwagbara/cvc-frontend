@@ -22,10 +22,11 @@
   <ng-container *ngIf="showFloatingBackBtn">
     <button 
       (click)="location.back()"
-      class="fixed top-[70px] z-50 text-white bg-slate-500 p-2 pb-3 font-bold"
-      style="border-radius: 4px; font-size: small;"
+      class="fixed top-[75px] z-50 text-white bg-slate-500 p-1 px-2 flex justify-center items-center font-bold"
+      style="border-radius: 4px; font-size: x-small;"
     >
-      <mat-icon class="pt-2">keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;
+      <span>Back to View All</span>
     </button>
   </ng-container>
 
