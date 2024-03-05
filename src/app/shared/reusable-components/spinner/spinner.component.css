@@ -2,7 +2,8 @@
   background-color: #0314368a;
   width: 100vw;
   height: 100vh;
-  @apply fixed z-50 overflow-hidden flex flex-col justify-center items-center 
+  z-index: 99999999;
+  @apply fixed overflow-hidden flex flex-col justify-center items-center 
     p-0 top-0 left-0 bottom-0 right-0;
   gap: -2px;
 }
