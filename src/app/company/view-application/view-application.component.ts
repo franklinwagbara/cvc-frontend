@@ -71,9 +71,11 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
       let body: HTMLElement;
       if (document.body) {
         body = document.body;
+        // Enables the scroll event to propagate to the company layout div
         body.click();
       } else {
         body = document.documentElement;
+        // Enables the scroll event to propagate to the company layout div
         body.click();
       }
       const element = body.querySelector('#continue-app-btn-container');
