@@ -1,7 +1,7 @@
 <div class="view-application-container">
   <ng-container *ngIf="showFloatingBackBtn">
     <button 
-      (click)="location.back()"
+      [routerLink]="'/company/cvc-applications'"
       class="fixed top-[75px] z-50 text-white bg-slate-500 p-1 px-2 flex justify-center items-center font-bold"
       style="border-radius: 4px; font-size: x-small;"
     >
@@ -28,7 +28,7 @@
   <div class="flex justify-between">
     <button
       id="back-to-view-all-btn"
-      (click)="location.back()"
+      [routerLink]="'/company/cvc-applications'"
       class="my-4"
       [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
       mat-button
