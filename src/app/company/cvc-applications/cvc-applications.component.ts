@@ -28,12 +28,12 @@ export class CvcApplicationsComponent implements OnInit {
   public applicationStatus$ = new Subject<string>();
   private rrr: string;
   public applications$ = new Subject<Application[]>();
-  private queryParamValue: string = null;
+  private processingParam: string = null;
 
   applications: Application[];
 
   tableTitles = {
-    app: 'My Applications',
+    app: 'CVC Applications',
   };
 
   applicationTableKeysMappedToHeaders = {
@@ -65,7 +65,7 @@ export class CvcApplicationsComponent implements OnInit {
     });
 
     this.route.queryParamMap.subscribe((q) => {
-      this.queryParamValue = q.get('processing');
+      this.processingParam = q.get('processing');
       this.cd.markForCheck();
     });
   }
@@ -80,9 +80,9 @@ export class CvcApplicationsComponent implements OnInit {
     this.applicationService.getApplicationsOnDesk().subscribe({
       next: (res) => {
         if (res.success) {
-          if (this.queryParamValue)
+          if (this.processingParam === 'true')
             res.data = (res.data as Application[]).filter(
-              (x) => x.status.toLowerCase() == 'processing'
+              (x) => x.status.toLowerCase() === 'processing'
             );
           this.applications = res.data;
           this.applications$.next(this.applications);
@@ -112,10 +112,6 @@ export class CvcApplicationsComponent implements OnInit {
 
           this.router.navigate(['/company/paymentsum/' + app.id]);
 
-          this.snackBar.open('RRR was generated successfully!', null, {
-            panelClass: ['success'],
-          });
-
           this.popUp.open('RRR was generated successfully!', 'success');
           this.progressbar.close();
           this.spinner.close();
@@ -137,7 +133,7 @@ export class CvcApplicationsComponent implements OnInit {
     this.progressbar.open();
     this.spinner.open();
 
-    this.applicationServer.confirmPayment(app.id).subscribe({
+    this.applicationServer.confirmPayment(app?.paymentId).subscribe({
       next: (res) => {
         this.router.navigate(['/company/paymentsum/' + app.id]);
         this.progressbar.close();
@@ -195,9 +191,10 @@ export interface Application {
   applicationDocs: any[];
   totalAmount?: string;
   jetty?: string;
-
+  
   createdDate: string;
   paymnetDate: string;
+  paymentId: number;
   paymnetStatus: string;
   paymentStatus: string;
   paymentDescription: string;

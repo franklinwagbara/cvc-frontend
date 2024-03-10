@@ -6,7 +6,7 @@ import {
 } from '../../../../../src/app/shared/services';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { environment } from '../../../../../src/environments/environment';
-import { forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -18,6 +18,8 @@ export class DashboardComponent implements OnInit {
   processingForThreeWeeks: IProcessingForThreeWeeks[] = [];
   onStaffDeskForFiveDays: IOnStaffDeskForFiveDays[] = [];
   messages: IMessages[] = [];
+  isNOAProcessor: boolean;
+  isCOQProcessor: boolean;
 
   tableTitles = {
     messages: 'Messages',
@@ -55,7 +57,10 @@ export class DashboardComponent implements OnInit {
     private spinner: SpinnerService,
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar
-  ) {}
+  ) {
+    this.isNOAProcessor = auth.isNOAProcessor;
+    this.isCOQProcessor = auth.isCOQProcessor;
+  }
 
   ngOnInit(): void {
     this.spinner.show('Loading dashboard...');

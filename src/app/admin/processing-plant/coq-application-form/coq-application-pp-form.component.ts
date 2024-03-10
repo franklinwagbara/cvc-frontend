@@ -59,6 +59,7 @@ import { ExtractPayload } from './helpers/ExtractPayload';
 import { ProcessingPlantCOQService } from 'src/app/shared/services/processing-plant-coq/processing-plant-coq.service';
 import { IPayloadParams, ISubmitDocument } from './helpers/Types';
 import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { GenericService } from 'src/app/shared/services';
 
 @Component({
   selector: 'app-coq-application-pp-form',
@@ -184,6 +185,7 @@ export class CoqApplicationPPFormComponent
     private route: ActivatedRoute,
     private popup: PopupService,
     private libService: LibaryService,
+    private generic: GenericService,
     private productService: ProductService,
     private plantService: PlantService,
     private cd: ChangeDetectorRef,
@@ -451,7 +453,7 @@ export class CoqApplicationPPFormComponent
   onFileSelected(evt: Event, index: number): void {
     const file = (evt.target as any).files[0];
     if (file) {
-      if (!this.isValidFile) return;
+      if (!this.generic.isValidFile(file)) return;
 
       const fileSizeInKb = file.size / 1024;
 
@@ -478,23 +480,6 @@ export class CoqApplicationPPFormComponent
 
       this.uploadFacilityDocAndReportProgress(file, uploadParams, index);
     }
-  }
-
-  public isValidFile(file: File): boolean {
-    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
-    if (!isAccepted) {
-      this.snackBar.open(`Invalid file (${file.name}) format`);
-      return false;
-    }
-
-    const fileSizeInBytes = file.size;
-    const fileSizeInKb = fileSizeInBytes / 1024;
-    const fileSizeInMB = fileSizeInKb / 1024;
-    if (fileSizeInMB > 20) {
-      this.popUp.open(`File ${file.name} size too large`, 'error');
-      return false;
-    }
-    return true;
   }
 
   /**

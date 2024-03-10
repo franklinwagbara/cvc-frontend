@@ -126,7 +126,7 @@ export class ProcessingPlantComponent implements OnInit {
       },
     };
     const listOfDataToDelete = [...event];
-    const requests = (listOfDataToDelete as any[]).map((req) => {
+    const requests = listOfDataToDelete.map((req) => {
       if (type === 'pp') {
         return this.companyService.deletePlant(req[typeToModelMapper[type].id]);
       } else {

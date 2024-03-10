@@ -19,7 +19,7 @@
 }
 
 .actions {
-  @apply flex flex-col gap-4 px-8;
+  @apply flex gap-4 pb-2 pr-6 justify-end items-center;
 }
 
 .actions button {
@@ -47,7 +47,7 @@
 }
 
 .show-more {
-  @apply bg-slate-400 text-xs text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
+  @apply bg-slate-400 text-sm text-center text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
 }
 
 mat-expansion-panel {

@@ -28,10 +28,14 @@
 }
 
 .vessel-info {
-  @apply flex justify-evenly items-center;
+  @apply flex justify-evenly items-center w-full max-w-full;
 }
 
 .print-btn {
   display: inline !important;
   @apply bg-slate-400 hover:bg-slate-500 text-white;
+}
+
+.liquid, .gas, .documents {
+  @apply w-full max-w-full;
 }

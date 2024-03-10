@@ -12,16 +12,20 @@ import { LocalDataKey } from '../coq-application-form.component';
   styleUrls: ['./coq-form-review.component.css']
 })
 export class CoqFormReviewComponent implements OnInit {
-  liqProductColumns = ['tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVolume', 'floatRoofCorr', 'gov', 'temperature', 'density', 'vcf', 'actions'];
+  liqProductColumns = [
+    'tank', 'status', 'dip', 'waterDIP', 'tov', 'waterVolume', 'floatRoofCorr', 'gov', 
+    'temperature', 'density', 'vcf', 'actions'
+  ];
   gasProductColumns = [
-    'tank', 'status', 'liquidDensityVac', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 'observedLiquidVolume',
-    'shrinkageFactor', 'vcf', 'tankVolume', 'vapourTemperature', 'vapourPressure', 'molecularWeight', 'vapourFactor', 'actions'
+    'tank', 'status', 'liquidDensityVac', 'observedSounding', 'tapeCorrection', 'liquidTemperature', 
+    'observedLiquidVolume', 'shrinkageFactorLiquid', 'shrinkageFactorVapour', 'vcf', 'tankVolume', 
+    'vapourTemperature', 'vapourPressure', 'molecularWeight', 'vapourFactor', 'actions'
   ]
   displayedColumns: string[];
   localDataKey = LocalDataKey.COQFORMREVIEWDATA;
   dataSources: MatTableDataSource<any[]>[] = [];
   formData: any[] = [];
-  @Input() isGasProduct: boolean | null;
+  @Input() isGasProduct: boolean | null = null;
 
   objNotEmpty = Util.objNotEmpty;
 
@@ -32,14 +36,16 @@ export class CoqFormReviewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.isGasProduct !== null && this.isGasProduct) {
-      this.coqFormService.gasProductReviewData$.subscribe((val) => {
-        this.setFormData(val);
-      })  
-    } else if (this.isGasProduct !== null && !this.isGasProduct) {
-      this.coqFormService.liquidProductReviewData$.subscribe((val) => {
-        this.setFormData(val);
-      })
+    if (this.isGasProduct !== null) {
+      if (this.isGasProduct) {
+        this.coqFormService.gasProductReviewData$.subscribe((val) => {
+          this.setFormData(val);
+        })  
+      } else {
+        this.coqFormService.liquidProductReviewData$.subscribe((val) => {
+          this.setFormData(val);
+        })
+      }
     }
 
     this.displayedColumns = this.isGasProduct ? this.gasProductColumns : this.liqProductColumns;

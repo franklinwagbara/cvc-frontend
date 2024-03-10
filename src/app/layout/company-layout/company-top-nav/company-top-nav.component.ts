@@ -69,11 +69,11 @@ export class CompanyTopNavComponent implements OnInit {
       subMenu: null,
     },
 
-    {
-      name: 'My Schedule',
-      url: 'company/myschedule',
-      subMenu: null,
-    },
+    // {
+    //   name: 'My Schedule',
+    //   url: 'company/myschedule',
+    //   subMenu: null,
+    // },
   ];
 
   public templateMenuItems = [

@@ -53,6 +53,7 @@ export class FileuploadWithProgressService {
             }
           },
           error: error => {
+            console.error(error);
             observer.error(error);
           }}
         )});

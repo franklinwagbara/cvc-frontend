@@ -84,8 +84,9 @@ export class UserFormComponent implements OnInit {
     //Appending an additional name field to allow interfacing with the ngmultiple-select textField
     this.usersFromElps = this.usersFromElps?.map((user) => {
       user.name = `${user?.lastName}, ${user?.firstName} (${user?.email})`;
-      if (this.currentValue && user.email === this.currentValue.email)
+      if (this.currentValue && user.email === this.currentValue.email) {
         currentUserId = user.id;
+      }
       return user;
     });
 
@@ -204,13 +205,12 @@ export class UserFormComponent implements OnInit {
   updateUser() {
     //this.progressBar.open();
     this.isLoading = true;
-    this.form.controls['elpsId'].setValue(this.selectedUserFromElps.id);
 
     const formDataToSubmit = new FormData();
 
     const formKeys = [
-      'id', 'firstName', 'lastName', 'email', 'phone', 'userType', 
-      'locationId', 'isActive', 'directorate',
+      'id', 'elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 
+      'locationId', 'officeId', 'isActive', 'directorate',
     ];
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);

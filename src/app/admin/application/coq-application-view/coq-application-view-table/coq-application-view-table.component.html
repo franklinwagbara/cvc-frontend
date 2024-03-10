@@ -5,7 +5,7 @@
       <td>{{ application?.reference }}</td>
     </tr>
 
-    <ng-container *ngIf="isCoqProcessor">
+    <ng-container>
       <tr *ngIf="application?.productType">
         <th>Product Type</th>
         <td>{{ application?.productType }}</td>
@@ -71,7 +71,7 @@
         <th>Name of Consignee</th>
         <td>{{ application?.nameConsignee }}</td>
       </tr>
-      <tr *ngIf="application?.nominatedSurveyor && isCoqProcessor">
+      <tr *ngIf="application?.nominatedSurveyor">
         <th>Nominated Surveyor</th>
         <td>{{ application?.nominatedSurveyor }}</td>
       </tr>
@@ -91,7 +91,7 @@
       <td>{{ application?.dateCreated | date }}</td>
     </tr>
 
-    <ng-container *ngIf="!isCoqProcessor">
+    <ng-container>
       <tr *ngIf="application?.marketerName">
         <th>Marketer Name</th>
         <td>{{ application?.marketerName }}</td>
@@ -105,11 +105,6 @@
       <tr *ngIf="application?.status">
         <th>Status</th>
         <td>{{ application?.status }}</td>
-      </tr>
-
-      <tr *ngIf="application?.depotPrice">
-        <th>Depot Price</th>
-        <td>{{ application?.depotPrice | currency:'NGN' }}</td>
       </tr>
 
       <tr *ngIf="application?.gsv">
@@ -128,7 +123,7 @@
       </tr>
     </ng-container>
 
-    <tr *ngIf="isCoqProcessor">
+    <tr>
       <th>Tanks</th>
       <td class="text-center">
         <button

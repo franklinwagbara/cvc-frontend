@@ -26,7 +26,6 @@ import { CoqApplicationsByDepotComponent } from '../coq-applications-by-depot/co
 import { FieldOfficerDepotSettingComponent } from '../settings/field-officer-depot-setting/field-officer-depot-setting.component';
 import { JettySettingComponent } from '../settings/jetty-setting/jetty-setting.component';
 import { NominatedSurveyorSettingComponent } from '../settings/nominated-surveyor-setting/nominated-surveyor-setting.component';
-import { ApplicationsGuard } from '../../shared/guards/applications.guard';
 import { ProductsComponent } from '../settings/products/products.component';
 import { CoqApplicationViewComponent } from '../application/coq-application-view/coq-application-view.component';
 import { ApplicationTerm } from 'src/app/shared/constants/applicationTerm';
@@ -46,6 +45,9 @@ import { StsApplicationsComponent } from '../sts-applications/sts-applications.c
 import { HppitiFieldofficerGuard } from 'src/app/shared/guards/hppiti-fieldofficer.guard';
 import { AllPpcoqApplicationsComponent } from '../all-ppcoq-applications/all-ppcoq-applications.component';
 import { HppitiCoqGuard } from 'src/app/shared/guards/hppiti-coq.guard';
+import { DssriCoqGuard } from 'src/app/shared/guards/dssri-coq.guard';
+import { ComingSoonGuard } from 'src/app/shared/guards/coming-soon.guard';
+import { PpcoqApplicationViewComponent } from '../application/ppcoq-application-view/ppcoq-application-view.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -91,10 +93,10 @@ const routes: Routes = [
     title: 'CoQ Application View | CVC & CoQ Portal'
   },
   {
-    path: 'applications/processing-plant/coq-applications/:id',
-    component: CoqApplicationViewComponent,
+    path: 'applications/ppcoq-applications/:id',
+    component: PpcoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [ApplicationsGuard],
+    canActivate: [ComingSoonGuard],
     title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal'
   },
   {
@@ -203,6 +205,13 @@ const routes: Routes = [
     title: 'Desk - CoQ Application View | CVC & CoQ Portal'
   },
   {
+    path: 'desk/view-ppcoq-application/:id',
+    component: CoqApplicationViewComponent,
+    pathMatch: 'full',
+    canActivate: [ComingSoonGuard],
+    title: 'Desk - Processing Plant CoQ Application View | CVC & CoQ Portal'
+  },
+  {
     path: 'vessel-clearance',
     redirectTo: 'vessel-clearance/noa-applications-by-jetty-officer',
     pathMatch: 'full',
@@ -236,18 +245,26 @@ const routes: Routes = [
     path: 'reports/application-report',
     component: ApplicationReportComponent,
     pathMatch: 'full',
-    title: 'Application Report | CVC & CoQ Portal'
+    title: 'Application Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
+  },
+  {
+    path: 'reports/clearance-report',
+    component: ApplicationReportComponent,
+    pathMatch: 'full',
+    title: 'Clearance Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   {
     path: 'reports/payment-report',
     component: PaymentReportComponent,
     pathMatch: 'full',
-    title: 'Payment Report | CVC & CoQ Portal'
+    title: 'Payment Report | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   {
     path: 'certificates',
     component: CertificatesComponent,
-    canActivate: [ApplicationsGuard],
     pathMatch: 'full',
     title: 'Approvals | CVC & CoQ Portal'
   },
@@ -279,7 +296,8 @@ const routes: Routes = [
     path: 'payments/all-payments',
     component: PaymentComponent,
     pathMatch: 'full',
-    title: 'Payments | CVC & CoQ Portal'
+    title: 'Payments | CVC & CoQ Portal',
+    canActivate: [ComingSoonGuard]
   },
   { 
     path: 'payment/:id', 
@@ -330,21 +348,28 @@ const routes: Routes = [
     path: 'coq/coq-applications-by-depot',
     component: CoqApplicationsByDepotComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Depot-Filtered CoQ Applications | CVC & CoQ Portal'
   },
   {
     path: 'coq/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Depot-Filtered CoQ Application View | CVC & CoQ Portal'
+  },
+  {
+    path: 'coq/coq-applications-by-depot/:coqId/edit-application',
+    component: CoqApplicationFormComponent,
+    pathMatch: 'full',
+    canActivate: [DssriCoqGuard],
+    title: 'Edit CoQ Application | CVC & CoQ Portal',
   },
   {
     path: 'coq/noa-applications-by-depot/:id/certificate-of-quantity/new-application',
     component: CoqApplicationFormComponent,
     pathMatch: 'full',
-    canActivate: [FieldOfficerGuard],
+    canActivate: [DssriCoqGuard],
     title: 'Apply for Depot CoQ | CVC & CoQ Portal'
   },
   {

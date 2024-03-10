@@ -25,7 +25,7 @@
 
   <form [formGroup]="form" (ngSubmit)="approve()">
     <div class="fomr-group" style="margin-bottom: 10px" *ngIf="!isApprover">
-      <label>Remark</label>
+      <label class="font-bold pb-2 pt-4">Remark</label>
       <textarea
         formControlName="comment"
         class="form-control"
@@ -34,7 +34,7 @@
       ></textarea>
       <div
         *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
-        class="alert alert-danger my-2"
+        class="alert alert-danger my-2 p-2"
       >
         Comment is required!
       </div>

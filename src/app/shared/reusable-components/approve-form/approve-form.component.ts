@@ -9,15 +9,13 @@ import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services';
 import { ProgressBarService } from '../../services/progress-bar.service';
-import { IApplication } from '../../interfaces/IApplication';
 import { ApplyService } from '../../services/apply.service';
 import { ApplicationActionType } from '../../constants/applicationActions';
 import { PopupService } from '../../services/popup.service';
 import { CoqService } from '../../services/coq.service';
-import { LoginModel } from '../../models/login-model';
-import { UserRole } from '../../constants/userRole';
 import { NoaApplicationPreviewComponent } from '../noa-application-preview/noa-application-preview.component';
 import { CoqApplicationPreviewComponent } from 'src/app/admin/coq-application-form/coq-application-preview/coq-application-preview.component';
+import { CoQData } from 'src/app/admin/coq-application-form/coq-application-form.component';
 
 @Component({
   selector: 'app-approve-form',
@@ -32,6 +30,9 @@ export class ApproveFormComponent implements OnInit {
   public isFAD: boolean;
   public isApprover: boolean;
   public isCOQProcessor: boolean;
+  public tankData: CoQData[];
+  public vesselData: any;
+  public documents: any[];
   public coqId: number;
   public isLoading = false;
 
@@ -52,7 +53,10 @@ export class ApproveFormComponent implements OnInit {
   ) {
     this.isFAD = auth.isFAD;
     this.isApprover = auth.isApprover;
-    this.application = data?.data?.application;
+    this.application = data.data?.application;
+    this.tankData = data.data?.tankData;
+    this.documents = data.data?.documents;
+    this.vesselData = data.data?.vesselDischargeData;
     this.isFO = data.data.isFO;
     this.coqId = data.data.coqId;
     this.isCOQProcessor = auth.isCOQProcessor;
@@ -80,7 +84,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.popup.open('Failed to fetch user information!', 'error');
         this.progressBarService.close();
       },
@@ -92,11 +96,11 @@ export class ApproveFormComponent implements OnInit {
   }
 
   public approve() {
-    if (this.isCOQProcessor || this.isPPCOQ) this.approveFO();
-    else this.approveOther();
+    if (this.isCOQProcessor || this.isPPCOQ) this.approveCOQ();
+    else this.approveNOA();
   }
 
-  private approveOther() {
+  private approveNOA() {
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
@@ -110,10 +114,13 @@ export class ApproveFormComponent implements OnInit {
     this.appService.processApplication(model).subscribe({
       next: (res) => {
         if (res.success) {
+          const fadPredicate = this.isFAD
+            ? 'Application accepted successfully'
+            : 'Application passed successfully!'
           this.popup.open(
             this.isApprover
               ? 'Application approved successfully!'
-              : 'Operation was successful!',
+              : fadPredicate,
             'success'
           );
           this.dialogRef.close();
@@ -125,7 +132,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: any) => {
-        console.log(error);
+        console.error(error);
         this.popup.open('Failed to process application', 'error');
 
         this.progressBarService.close();
@@ -139,9 +146,11 @@ export class ApproveFormComponent implements OnInit {
     if (this.isCOQProcessor) {
       this.dialog.open(CoqApplicationPreviewComponent, {
         data: {
-          vesselDischargeData: this.application,
+          tankData: this.tankData,
+          vesselDischargeData: this.vesselData,
           remark: this.form.controls['comment'].value,
           previewSource: 'submitted-coq-view',
+          documents: this.documents,
           isGasProduct: this.application?.productType === 'Gas',
         },
       });
@@ -156,7 +165,7 @@ export class ApproveFormComponent implements OnInit {
     }
   }
 
-  private approveFO() {
+  private approveCOQ() {
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
@@ -170,8 +179,8 @@ export class ApproveFormComponent implements OnInit {
         if (res.success) {
           this.popup.open(
             this.isFAD
-              ? 'Application approved successfully!'
-              : 'Operation was successful!',
+              ? 'Application accepted successfully!'
+              : 'Application approved successfully',
             'success'
           );
           this.dialogRef.close();
@@ -183,6 +192,7 @@ export class ApproveFormComponent implements OnInit {
       },
 
       error: (error: unknown) => {
+        console.error(error);
         this.popup.open('Failed to process application', 'error');
         this.isLoading = false;
         this.progressBarService.close();

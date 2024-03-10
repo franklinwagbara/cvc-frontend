@@ -20,6 +20,7 @@ import { MatSort } from '@angular/material/sort';
 import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 
+
 interface IColumn {
   columnDef: string;
   header: string;
@@ -87,6 +88,7 @@ export class FlatTableComponent implements OnInit, OnChanges, AfterViewInit {
 
   public dataSource = new MatTableDataSource<any>(this.items);
   public selection = new SelectionModel<any>(true, []);
+
 
   ngOnInit(): void {
     this.headers = Object.values(this.keysMappedToHeaders);

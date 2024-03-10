@@ -1,17 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AddScheduleFormComponent } from '../../../../../src/app/shared/reusable-components/add-schedule-form/add-schedule-form.component';
-import { CoqApplicationPreviewComponent } from '../../coq-application-form/coq-application-preview/coq-application-preview.component';
 import { SendBackFormComponent } from '../../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { ApproveFormComponent } from '../../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { ShowMoreComponent } from '../../../shared/reusable-components/show-more/show-more.component';
-import { Application } from '../../../company/cvc-applications/cvc-applications.component';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
-import { LicenceService } from '../../../../../src/app/shared/services/licence.service';
 import { AuthenticationService } from '../../../../../src/app/shared/services';
 import { AppSource } from '../../../../../src/app/shared/constants/appSource';
 import { LoginModel } from '../../../../../src/app/shared/models/login-model';
@@ -19,14 +15,16 @@ import { CoqService } from 'src/app/shared/services/coq.service';
 import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { Util } from 'src/app/shared/lib/Util';
+import { CoQData } from '../../coq-application-form/coq-application-form.component';
+
 
 @Component({
   selector: 'app-coq-application-view',
   templateUrl: './coq-application-view.component.html',
   styleUrls: ['./coq-application-view.component.scss'],
 })
-export class CoqApplicationViewComponent implements OnInit {
-  public application: Application | any;
+export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
+  public application: any;
   public ppCoq: any;
   public appActions: any;
   public appId: number;
@@ -34,8 +32,9 @@ export class CoqApplicationViewComponent implements OnInit {
   public licence: any;
   public currentUser: LoginModel;
   public coqId: number;
-  public documents: any;
+  public documents: any[];
   public tanksList: any[];
+  public appHistories: any[];
 
   public isPPCOQ = false;
   public PPCOQId: number;
@@ -47,11 +46,14 @@ export class CoqApplicationViewComponent implements OnInit {
   isCOQProcessor: boolean;
   isFO: boolean;
   isProcessingPlant: boolean;
+  showFloatingBackBtn = false;
+  showFloatingStaffActions = false;
+
+
   isIMG = Util.isIMG;
   isPDF = Util.isPDF;
 
   constructor(
-    private snackBar: MatSnackBar,
     private auth: AuthenticationService,
     private coqService: CoqService,
     public dialog: MatDialog,
@@ -59,7 +61,6 @@ export class CoqApplicationViewComponent implements OnInit {
     private spinner: SpinnerService,
     public route: ActivatedRoute,
     private cd: ChangeDetectorRef,
-    private licenceService: LicenceService,
     public location: Location,
     private paymentService: PaymentService,
     private popUp: PopupService,
@@ -86,6 +87,37 @@ export class CoqApplicationViewComponent implements OnInit {
     this.isFO = this.auth.isFO;
 
     this.currentUser = this.auth.currentUser as LoginModel;
+  }
+
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+      } else {
+        body = document.documentElement;
+      }
+      let element = body.querySelector('#staff-actions-container');
+      let element2 = body.querySelector('#back-to-view-all-btn');
+      if (element) {
+        let clientRect = element.getBoundingClientRect();
+        this.showFloatingStaffActions = clientRect.top < 70;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 70;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
+  }
+
+  ngOnDestroy(): void {
+    document.removeAllListeners('scroll');
   }
 
   isCreatedByMe(scheduleBy: string) {
@@ -139,11 +171,13 @@ export class CoqApplicationViewComponent implements OnInit {
         } else if (res.success) {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
-          this.documents = res.data.docs;
+          this.documents = (res.data.docs as any[]);
+          this.appHistories = res.data.appHistories;
           this.appLoaded = true;
         }
         this.isProcessingPlant = this.isPPCOQ;
-
+        console.log('isPPCOQ =========> ', this.isPPCOQ);
+        
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
@@ -165,9 +199,62 @@ export class CoqApplicationViewComponent implements OnInit {
   }
 
   action(type: string, param = null) {
+    let vesselData = {
+      dateOfArrival: this.application?.dateOfVesselArrival,
+      dateOfUllage: this.application?.dateOfVesselUllage,
+      dateOfShoreTank: this.application?.dateOfSTAfterDischarge,
+      depotPrice: this.application?.depotPrice,
+      nameConsignee: this.application?.nameConsignee,
+      motherVessel: this.application?.motherVessel,
+      vesselName: this.application?.vessel?.name,
+      jetty: this.application?.jetty,
+      documents: this.documents,
+    };
+
+    const isGasProduct = this.application?.productType.toLowerCase() === 'gas';
+
+    const coqData: CoQData[] = this.tanksList.map((el: any) => {
+      let beforeReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'Before'
+      });
+      beforeReading = { 
+        ...beforeReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'before' 
+      };
+      let afterReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'After'
+      });
+      afterReading = { 
+        ...afterReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'after' 
+      };
+      delete beforeReading.tankName;
+      delete beforeReading.measurementType;
+      delete afterReading.tankName;
+      delete afterReading.measurementType;
+      return { before: beforeReading, after: afterReading };
+    })
+
     const operationConfiguration = {
       approve: {
         data: {
+          tankData: coqData,
+          isGasProduct,
+          vesselDischargeData: isGasProduct
+            ? {
+                ...vesselData,
+                quauntityReflectedOnBill:
+                  this.application?.quauntityReflectedOnBill,
+                arrivalShipFigure: this.application?.arrivalShipFigure,
+                dischargeShipFigure: this.application?.dischargeShipFigure,
+                vesselName: this.application?.vessel?.name,
+                jetty: this.application?.jetty,
+              }
+            : vesselData,
           application: !this.isPPCOQ ? this.application : this.ppCoq,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
@@ -178,6 +265,18 @@ export class CoqApplicationViewComponent implements OnInit {
       },
       sendBack: {
         data: {
+          tankData: coqData,
+          isGasProduct,
+          vesselDischargeData: isGasProduct
+            ? {
+                ...vesselData,
+                quauntityReflectedOnBill:
+                  this.application?.quauntityReflectedOnBill,
+                arrivalShipFigure: this.application?.arrivalShipFigure,
+                dischargeShipFigure: this.application?.dischargeShipFigure,
+              }
+            : vesselData,
+          documents: this.documents,
           application: !this.isPPCOQ ? this.application : this.ppCoq,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
@@ -211,36 +310,11 @@ export class CoqApplicationViewComponent implements OnInit {
     });
   }
 
-  previewDetails(): void {
-    const vesselData = {
-      dateOfArrival: this.application?.DateOfVesselArrival,
-      dateOfUllage: this.application?.DateOfVesselUllage,
-      dateOfShoreTank: this.application?.DateOfSTAfterDischarge,
-      depotPrice: this.application?.DepotPrice,
-    };
-    const isGasProduct = this.application?.ProductType.toLowerCase() === 'gas';
-    this.dialog.open(CoqApplicationPreviewComponent, {
-      data: {
-        tankData: {},
-        isGasProduct,
-        vesselDischargeData: isGasProduct
-          ? {
-              ...vesselData,
-              quauntityReflectedOnBill:
-                this.application?.QuauntityReflectedOnBill,
-              arrivalShipFigure: this.application?.ArrivalShipFigure,
-              dischargeShipFigure: this.application?.DischargeShipFigure,
-            }
-          : vesselData,
-      },
-    });
-  }
-
   showMore(type: string) {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+         appHistory: this.appHistories,
         },
       },
       schedules: {
@@ -260,7 +334,7 @@ export class CoqApplicationViewComponent implements OnInit {
       },
       applicationDocs: {
         data: {
-          applicationDocs: this.application.applicationDocs,
+          applicationDocs: this.documents,
         },
       },
     };

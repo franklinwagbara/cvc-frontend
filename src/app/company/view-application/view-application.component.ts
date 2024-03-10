@@ -1,6 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AppSource } from '../../../../src/app/shared/constants/appSource';
@@ -8,7 +7,6 @@ import { AddScheduleFormComponent } from '../../../../src/app/shared/reusable-co
 import { ApproveFormComponent } from '../../../../src/app/shared/reusable-components/approve-form/approve-form.component';
 import { SendBackFormComponent } from '../../../../src/app/shared/reusable-components/send-back-form/send-back-form.component';
 import { AuthenticationService } from '../../../../src/app/shared/services';
-import { ApplyService } from '../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
 import { ApplicationService } from '../../../../src/app/shared/services/application.service';
@@ -25,7 +23,7 @@ import { PopupService } from 'src/app/shared/services/popup.service';
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestroy {
   public application: Application;
   public appActions: any;
   public appId: number;
@@ -36,10 +34,13 @@ export class ViewApplicationComponent implements OnInit {
   isIMG = Util.isIMG;
   loading = true;
 
+  public continueUrl: string;
+  public canContinueApp = false;
+  showFloatingAppAction = false;
+  showFloatingBackBtn = false;
+
   constructor(
-    private snackBar: MatSnackBar,
     private auth: AuthenticationService,
-    private appService: ApplyService,
     private applicationService: ApplicationService,
     public dialog: MatDialog,
     public progressBar: ProgressBarService,
@@ -65,6 +66,41 @@ export class ViewApplicationComponent implements OnInit {
     this.currentUser = this.auth.currentUser;
   }
 
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      } else {
+        body = document.documentElement;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      }
+      const element = body.querySelector('#continue-app-btn-container');
+      const element2 = body.querySelector('#back-to-view-all-btn');
+      if (element) {
+        let clientRect = element.getBoundingClientRect();
+        this.showFloatingAppAction = clientRect.top < 75;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 75;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
+  }
+
+  ngOnDestroy(): void {
+    document.removeAllListeners('scroll');
+  }
+
   public get isSupervisor() {
     return this.currentUser.userRoles === UserRole.SUPERVISOR;
   }
@@ -83,11 +119,18 @@ export class ViewApplicationComponent implements OnInit {
           this.application = res.data;
         }
 
+        this.canContinueApp = ['Rejected', 'Initiated'].includes(this.application?.status)
+          || this.application.paymnetStatus !== 'Payment confirmed';
+        this.continueUrl = this.application.paymnetStatus !== 'Payment confirmed'
+          ? `/company/paymentsum/${this.appId}`
+          : `/company/upload-document/${this.appId}`
+
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.loading = false;
         this.popUp.open(
           'Something went wrong while retrieving data.',
@@ -171,11 +214,15 @@ export class ViewApplicationComponent implements OnInit {
     });
   }
 
+  continueApp() {
+    this.router.navigate([this.continueUrl]);
+  }
+
   showMore(type: string) {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+          appHistory: this.application.appHistories,
         },
       },
       schedules: {
@@ -195,7 +242,7 @@ export class ViewApplicationComponent implements OnInit {
       },
       applicationDocs: {
         data: {
-          applicationDocs: this.application.applicationDocs,
+          applicationDocs: this.application.documents,
         },
       },
     };

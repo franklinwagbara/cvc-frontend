@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +25,7 @@ import { Util } from 'src/app/shared/lib/Util';
   templateUrl: './view-application.component.html',
   styleUrls: ['./view-application.component.scss'],
 })
-export class ViewApplicationComponent implements OnInit, OnDestroy {
+export class ViewApplicationComponent implements OnInit, OnDestroy, AfterViewInit {
   public application: Application;
   public appActions: any;
   public appId: number;
@@ -42,6 +42,9 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
   isSupervisor: boolean;
   isPDF = Util.isPDF;
   isIMG = Util.isIMG;
+
+  showFloatingStaffActions = false;
+  showFloatingBackBtn = false;
 
   constructor(
     private snackBar: MatSnackBar,
@@ -84,7 +87,35 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+      } else {
+        body = document.documentElement;
+      }
+      let element1 = body.querySelector('#staff-actions-container');
+      let element2 = body.querySelector('#back-to-view-all-btn');
+      if (element1) {
+        let clientRect = element1.getBoundingClientRect();
+        this.showFloatingStaffActions = clientRect.top < 70;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 70;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
+  }
+
   ngOnDestroy(): void {
+    document.removeAllListeners('scroll');
     this.destroy.next();
     this.destroy.complete();
   }
@@ -207,7 +238,7 @@ export class ViewApplicationComponent implements OnInit, OnDestroy {
     const operationConfiguration = {
       appHistory: {
         data: {
-          appHistory: this.application.appHistory,
+          appHistory: this.application.appHistories,
         },
       },
       schedules: {

@@ -8,6 +8,7 @@ import { PopupService } from '../../services/popup.service';
 import { Staff } from '../../../../../src/app/admin/settings/all-staff/all-staff.component';
 import { DepotOfficerService } from '../../services/depot-officer/depot-officer.service';
 import { IPlant } from '../../interfaces/IPlant';
+import { Directorate } from '../../constants/userRole';
 
 @Component({
   selector: 'app-depot-officer-form',
@@ -34,7 +35,7 @@ export class DepotOfficerFormComponent {
     this.selectedData = data.data?.currentData;
     this.editMode = data.data?.editMode;
     this.staffList = this.staffList.filter(
-      (s) => s.role.toLowerCase() == 'field_officer'
+      (s) => s.role.toLowerCase() == 'field_officer' && s.directorate === Directorate.DSSRI
     );
 
     this.form = this.formBuilder.group({

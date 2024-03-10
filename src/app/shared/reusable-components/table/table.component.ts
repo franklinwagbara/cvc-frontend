@@ -23,7 +23,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DischargeClearanceFormComponent } from '../discharge-clearance-form/discharge-clearance-form.component';
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
-import { ProductService } from '../../services/product.service';
+import { LibaryService } from '../../services/libary.service';
 
 interface IColumn {
   columnDef: string;
@@ -54,6 +54,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() noDeleteButton?: boolean = false;
   @Input() noCheckControls?: boolean = false;
   @Input() noEditControl?: boolean = false;
+  @Input() columnDataAlign: 'center' | 'left' | 'right' | 'none' = 'none';
   @Input('EnableViewControl') enableViewControl?: boolean = false;
   @Input('EnableInitiateCoQControl') enableInitiateCoQControl?: boolean = false;
   @Input('EnableDischargeClearanceControls')
@@ -77,6 +78,9 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewRecipientControl') enableViewRecipientControl?: boolean =
     false;
+  @Input('EnableResubmit') enableResubmit?: boolean =
+    false;
+  
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
@@ -100,6 +104,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onSelect = new EventEmitter<any>();
   @Output() allowDischarge = new EventEmitter<boolean>();
   @Output() onGenDebitNote = new EventEmitter<boolean>();
+  @Output() onResubmit = new EventEmitter<boolean>();
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -124,7 +129,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   constructor(
     private dialog: MatDialog,
     private progressBar: ProgressBarService,
-    private productService: ProductService,
+    private libraryService: LibaryService,
     private popUp: PopupService
   ) {}
 
@@ -204,6 +209,14 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         header: '',
         cell: (item) => 'view_control',
       });
+    }
+
+    if (this.enableResubmit) {
+      this.columns.push({
+        columnDef: 'resubmit_control',
+        header: '',
+        cell: (item) => 'resubmit_control'
+      })
     }
 
     if (this.enableViewDebitNotePaymentSummary) {
@@ -382,14 +395,18 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     this.onGenDebitNote.emit(row);
   }
 
+  resubmitData(row: any) {
+    this.onResubmit.emit(row);
+  }
+
   onDischargeClearance(row: any, allow: boolean): void {
     this.progressBar.open();
-    this.productService.getAllProductTypes().subscribe({
+    this.libraryService.getProducts().subscribe({
       next: (res: any) => {
-        const productTypes = res?.data;
+        const products = res?.data;
         this.progressBar.close();
         const dialogRef = this.dialog.open(DischargeClearanceFormComponent, {
-          data: { productTypes, noaApp: row, allowDischarge: allow },
+          data: { products, noaApp: row, allowDischarge: allow },
           disableClose: true,
         });
         dialogRef.afterClosed().subscribe((result: { submitted: boolean }) => {
@@ -399,7 +416,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         });
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.progressBar.close();
         this.popUp.open('Failed to initiate discharge clearance', 'error');
       },

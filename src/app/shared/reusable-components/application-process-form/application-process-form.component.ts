@@ -68,6 +68,7 @@ export class ApplicationProcessFormComponent implements OnInit {
   public vesselTypes: IVessel[];
   public editMode: boolean = false;
   public loading = false;
+  public directorates: any[];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -89,58 +90,64 @@ export class ApplicationProcessFormComponent implements OnInit {
     this.facilityTypes = data.data?.facilityTypes;
     this.applicationTypes = data.data?.applicationTypes;
     this.locations = data.data?.locations;
+    this.directorates = data.data?.directorates;
 
     this.form = this.formBuilder.group({
       vesselTypeId: [
         this.applicationProccess
           ? this.applicationProccess.vesselTypeId
-          : 'none',
+          : '',
         Validators.required,
       ],
       applicationTypeId: [
         this.applicationProccess
           ? this.applicationProccess.applicationTypeId
-          : 'none',
+          : '',
         Validators.required,
       ],
       triggeredByRoleId: [
         this.applicationProccess
           ? this.applicationProccess.triggeredByRoleId
-          : 'none',
+          : '',
         Validators.required,
       ],
       action: [
-        this.applicationProccess ? this.applicationProccess.action : 'none',
+        this.applicationProccess ? this.applicationProccess.action : '',
         Validators.required,
       ],
       targetRoleId: [
         this.applicationProccess
           ? this.applicationProccess.targetRoleId
-          : 'none',
+          : '',
         Validators.required,
       ],
       fromLocationId: [
         this.applicationProccess
           ? this.applicationProccess.fromLocationId
-          : 'none',
+          : '',
         Validators.required,
       ],
       toLocationId: [
         this.applicationProccess
           ? this.applicationProccess.toLocationId
-          : 'none',
+          : '',
         Validators.required,
       ],
+      directorate: [
+        this.applicationProccess
+          ? this.applicationProccess.directorate
+          : ''
+      ],
       status: [
-        this.applicationProccess ? this.applicationProccess.status : 'none',
+        this.applicationProccess ? this.applicationProccess.status : '',
         Validators.required,
       ],
       rate: [
-        this.applicationProccess ? this.applicationProccess.rate : 'none',
+        this.applicationProccess ? this.applicationProccess.rate : '',
         Validators.required,
       ],
       isArchived: [
-        this.applicationProccess ? this.applicationProccess.isArchived : 'none',
+        this.applicationProccess ? this.applicationProccess.isArchived : '',
         Validators.required,
       ],
     });
@@ -180,7 +187,7 @@ export class ApplicationProcessFormComponent implements OnInit {
             'Application Process was created successfully!', 
             'success'
           );
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
 
         this.progressBar.close();
@@ -202,7 +209,7 @@ export class ApplicationProcessFormComponent implements OnInit {
         this.loading = false;
         if (res.success) {
           this.popUp.open('Application process updated successfully', 'success');
-          this.dialogRef.close();
+          this.dialogRef.close('submitted');
         }
         this.progressBar.close();
       },

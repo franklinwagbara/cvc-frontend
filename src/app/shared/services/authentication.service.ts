@@ -69,37 +69,48 @@ export class AuthenticationService {
 
   public get isCompany() {
     const user = this.currentUser as LoginModel;
-    if (user.userRoles == UserRole.COMPANY) return true;
+    if (user?.userRoles == UserRole.COMPANY) return true;
     else return false;
   }
 
   public get isSupervisor() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.SUPERVISOR;
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.SUPERVISOR;
   }
 
   public get isSuperAdmin() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.SUPERADMIN;
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.SUPERADMIN;
   }
 
   public get isFAD() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.FAD;
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.FAD;
   }
 
   public get isCOQProcessor() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.CONTROLLER
-      || (this.currentUser as LoginModel).userRoles === UserRole.FAD;
+    return this.isFieldOfficer || this.isController || this.isFAD;
+  }
+
+  public get isNOAProcessor() {
+    return this.isReviewer || this.isSupervisor || this.isApprover;
   }
 
   public get isFO() {
     return (this.currentUser as LoginModel).location === LOCATION.FO;
   }
 
+  public get isReviewer() {
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.REVIEWER;
+  }
+
   public get isApprover() {
-    return (this.currentUser as LoginModel).userRoles === UserRole.APPROVER;
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.APPROVER;
+  }
+
+  public get isController() {
+    return (this.currentUser as LoginModel)?.userRoles === UserRole.CONTROLLER;
   }
 
   public get isFieldOfficer() {
-    return (this.currentUser as LoginModel).userRoles == UserRole.FIELDOFFICER;
+    return (this.currentUser as LoginModel)?.userRoles == UserRole.FIELDOFFICER;
   }
 
   public get isHppitiStaff() {

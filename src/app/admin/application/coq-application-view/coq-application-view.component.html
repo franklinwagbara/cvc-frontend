@@ -1,34 +1,85 @@
 <div class="view-application-container">
-  <button (click)="location.back()" class="my-4" mat-button>
-    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
-  </button>
+  <ng-container *ngIf="appLoaded && showFloatingStaffActions">
+    <div 
+      class="fixed top-[70px] right-[20px] z-50" 
+      *ngIf="isStaffDesk"
+    >
+      <button
+        mat-raised-button
+        class="bg-green-500 text-white"
+        (click)="action('approve')"
+      >
+        {{ isFAD ? 'Accept' : 'Approve' }}
+      </button>&nbsp;&nbsp;
+      <button mat-raised-button color="warn" (click)="action('sendBack')">
+        Send Back
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="showFloatingBackBtn">
+    <button 
+      (click)="location.back()"
+      class="fixed top-[75px] z-50 text-white bg-slate-500 p-1 px-2 flex justify-center items-center font-bold"
+      style="border-radius: 4px; font-size: x-small;"
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;
+      <span>Back to View All</span>
+    </button>
+  </ng-container>
+
+  <div class="flex justify-between">
+    <button 
+      id="back-to-view-all-btn"
+      (click)="location.back()" 
+      class="my-4"
+      [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
+      mat-button
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
+    </button>
+
+    <ng-container *ngIf="appLoaded">
+      <div 
+        id="staff-actions-container" 
+        class="actions"
+        [ngClass]="{'hidden': showFloatingStaffActions, 'flex': !showFloatingStaffActions}"
+        *ngIf="isStaffDesk"
+      >
+        <button
+          mat-raised-button
+          class="bg-green-500 text-white"
+          (click)="action('approve')"
+        >
+          {{ isFAD ? 'Accept' : 'Approve' }}
+        </button>
+        <button mat-raised-button color="warn" (click)="action('sendBack')">
+          Send Back
+        </button>
+      </div>
+    </ng-container>
+  </div>
 
   <div *ngIf="application; else noData" class="view-application">
     <h2 mat-dialog-title class="text-center page-title">
       APPLICATION REFERENCE :
-      {{ isProcessingPlant ? ppCoq?.reference : application?.reference }}
+      {{ application?.reference }}
     </h2>
+
 
     <div class="content !overflow-x-auto">
       <div class="application-view flex-1">
-        <ng-container *ngIf="isPPCOQ">
-          <app-ppcoq-application-view-table>
-
-          </app-ppcoq-application-view-table>
-        </ng-container>
-        <ng-container *ngIf="!isPPCOQ">
-          <app-coq-application-view-table
-            [application]="application"
-            [appId]="coqId"
-            [appSource]="appSource"
-            [tankList]="tanksList"
-            [isCoqProcessor]="isCOQProcessor"
-            [isProcessingPlant]="isProcessingPlant"
-          ></app-coq-application-view-table>
-        </ng-container>
+        <app-coq-application-view-table
+          [application]="application"
+          [appId]="coqId"
+          [appSource]="appSource"
+          [tankList]="tanksList"
+          [isCoqProcessor]="isCOQProcessor"
+          [isProcessingPlant]="isProcessingPlant"
+        ></app-coq-application-view-table>
       </div>
       <div class="application-controls">
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
@@ -41,58 +92,67 @@
           </p>
         </mat-expansion-panel>
 
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
           </mat-expansion-panel-header>
-          <div
-            class="card-list"
-            *ngFor="let history of application?.appHistories | firstN : 4"
-          >
-            <div class="card-item">
-              <div class="item-title">Initiator</div>
-              <div class="item-content">{{ history.triggeredBy }}</div>
+          <ng-container *ngIf="appHistories?.length; else noInfo">
+            <div
+              class="card-list"
+              *ngFor="let history of appHistories | firstN : 3"
+            >
+              <div class="card-item">
+                <div class="item-title">Initiator</div>
+                <div class="item-content">{{ history.triggeredBy }}</div>
+              </div>
+              <div class="card-item">
+                <div class="item-title">Recipient</div>
+                <div class="item-content">{{ history.targetedTo }}</div>
+              </div>
+              <div class="card-item">
+                <div class="item-title">Action</div>
+                <div class="item-content">{{ history.action }}</div>
+              </div>
+              <div class="card-item">
+                <div class="item-title">Remark</div>
+                <div class="item-content">{{ history.comment }}</div>
+              </div>
+              <div class="card-item">
+                <div class="item-title">Date</div>
+                <div class="item-content">{{ history.date }}</div>
+              </div>
             </div>
-            <div class="card-item">
-              <div class="item-title">Recipient</div>
-              <div class="item-content">{{ history.targetedTo }}</div>
-            </div>
-            <div class="card-item">
-              <div class="item-title">Remark</div>
-              <div class="item-content">{{ history.comment }}</div>
-            </div>
-            <div class="card-item">
-              <div class="item-title">Date</div>
-              <div class="item-content">{{ history.date }}</div>
-            </div>
-          </div>
-          <p class="show-more" (click)="showMore('appHistory')">Show more</p>
+            <p class="show-more" (click)="showMore('appHistory')">Show All</p>
+          </ng-container>
         </mat-expansion-panel>
 
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
           </mat-expansion-panel-header>
-          <div *ngIf="documents" class="card-list">
-            <div class="card-item">
+          <div *ngIf="documents?.length; else noInfo" class="card-list">
+            <div 
+              class="card-item" 
+              *ngFor="let doc of documents"
+            >
               <div class="item-title">
-                <a [href]="documents?.docSource" target="_blank">
+                <a [href]="doc?.docSource" target="_blank">
                   <img
-                    *ngIf="isPDF(documents?.docSource)"
+                    *ngIf="isPDF(doc?.docSource)"
                     src="../../../../assets/image/pdfIcon.png"
                     alt="open file"
                   />
 
                   <img
-                    *ngIf="isIMG(documents?.docSource)"
+                    *ngIf="isIMG(doc?.docSource)"
                     src="../../../../assets/image/imageIcon.png"
                     alt="open file"
                   />
 
                   <img
                     *ngIf="
-                      !isIMG(documents?.docSource) &&
-                      !isPDF(documents?.docSource)
+                      !isIMG(doc?.docSource) &&
+                      !isPDF(doc?.docSource)
                     "
                     src="../../../../assets/image/otherFileType.png"
                     alt="open file"
@@ -100,52 +160,23 @@
                 </a>
               </div>
               <div class="item-content">
-                <a [href]="documents?.docSource" target="_blank">
-                  {{ documents?.docName }}
+                <a [href]="doc?.docSource" target="_blank">
+                  {{ doc?.docName }}
                 </a>
               </div>
             </div>
+            <p class="show-more" (click)="showMore('applicationDocs')">
+              Show All
+            </p>
           </div>
         </mat-expansion-panel>
-        
-        <ng-container *ngIf="appLoaded">
-          <div class="application-controls pt-4" *ngIf="isStaffDesk">
-            <div class="actions">
-              <button
-                mat-raised-button
-                class="bg-green-500 text-white"
-                (click)="action('approve')"
-              >
-                {{ isFAD ? 'Accept' : 'Approve' }}
-              </button>
-              <button mat-raised-button color="warn" (click)="action('sendBack')">
-                Send Back
-              </button>
-            </div>
-          </div>
-        </ng-container>
       </div>
-
-      <!-- <div class="application-controls" *ngIf="isStaffDesk && isFAD">
-        <div class="actions">
-          <button
-            mat-raised-button
-            class="bg-yellow-500 text-white"
-            (click)="previewDebitNote()"
-          >
-            Preview Debit Note
-          </button>
-          <button
-            mat-raised-button
-            class="bg-green-500 text-white"
-            (click)="generateDebitNote()"
-          >
-            Generate Debit Note
-          </button>
-        </div>
-      </div> -->
     </div>
   </div>
+
+  <ng-template #noInfo>
+    <div class="flex justify-center font-bold">No Data</div>
+  </ng-template>
 
   <ng-template #noData>
     <div class="flex justify-center items-center">

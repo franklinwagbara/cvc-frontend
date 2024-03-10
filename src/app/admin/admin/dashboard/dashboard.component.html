@@ -24,7 +24,13 @@
       <div class="card-title">MY DESK</div>
     </div>
 
-    <div class="card card-green">
+    <div 
+      class="card card-green" 
+      [routerLink]="isNOAProcessor ? '/admin/all-approvals/noa-clearances' 
+        : isCOQProcessor 
+        ? '/admin/all-approvals/coq-certificates'
+        : '/admin/all-approvals/noa-clearances'"
+    >
       <div class="card-data">
         <span>{{
           dashboardInfo?.tApproved
@@ -51,7 +57,13 @@
       <div class="card-title">TOTAL APPLICATIONS APPROVED</div>
     </div>
 
-    <div class="card card-blue">
+    <div 
+      class="card card-blue"
+      [routerLink]="isNOAProcessor ? '/admin/applications/noa-applications' 
+        : isCOQProcessor 
+        ? '/admin/applications/coq-applications'
+        : '/admin/applications/noa-applications'"
+    >
       <div class="card-data">
         <span>{{
           dashboardInfo?.tProcessing
@@ -74,7 +86,7 @@
       </div>
       <div class="card-title">TOTAL APPLICATIONS IN PROCESS</div>
     </div>
-    <div class="card card-red">
+    <div class="card card-red" routerLink="/admin/desk">
       <div class="card-data">
         <span>{{
           dashboardInfo?.tRejected
@@ -101,9 +113,13 @@
       <div class="card-title">TOTAL APPLICATIONS DECLINED</div>
     </div>
   </div>
+
   <div class="content">
     <app-bar-chart></app-bar-chart>
-    <div class="row-container">
+    
+    <!-- To be uncommented after corresponding backend implementation -->
+
+    <!-- <div class="row-container">
       <div class="table-group flex-1 w-full">
         <div class="table-wrapper w-full">
           <div class="chart-title">
@@ -166,6 +182,6 @@
         >
         </generic-table>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>

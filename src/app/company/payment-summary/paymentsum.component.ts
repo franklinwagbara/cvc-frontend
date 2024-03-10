@@ -16,7 +16,7 @@ import { ApplicationService } from '../../../../src/app/shared/services/applicat
 })
 export class PaymentSumComponent implements OnInit {
   genk: GenericService;
-  application_id: number = null;
+  appid: number = null;
   paymentSummary: PaymentSummary;
   public rrr$ = new Subject<string>();
   public applicationStatus$ = new Subject<string>();
@@ -44,7 +44,7 @@ export class PaymentSumComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.application_id = params['id'];
+      this.appid = params['id'];
       this.getPaymentSummary();
       this.cd.markForCheck();
     });
@@ -53,9 +53,9 @@ export class PaymentSumComponent implements OnInit {
   getPaymentSummary() {
     this.spinner.show('Fetching payment details');
     this.progressbar.open();
-    this.applicationServer.getpaymentbyappId(this.application_id).subscribe({
+    this.applicationServer.getpaymentbyappId(this.appid).subscribe({
       next: (res) => {
-        if (res.success) {
+        if (res?.success) {
           this.paymentSummary = res.data;
           this.rrr$.next(this.paymentSummary?.rrr);
           this.applicationStatus$.next(this.paymentSummary?.paymentStatus);
@@ -90,9 +90,9 @@ export class PaymentSumComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.progressbar.open();
       this.spinner.show('Generating RRR');
-      this.application_id = params['id'];
+      this.appid = params['id'];
 
-      this.applicationServer.createPayment_RRR(this.application_id).subscribe({
+      this.applicationServer.createPayment_RRR(this.appid).subscribe({
         next: (res) => {
           if (res.success) {
             this.rrr$.next(res.data.rrr);
@@ -126,7 +126,7 @@ export class PaymentSumComponent implements OnInit {
   }
 
   uploadDocument() {
-    this.router.navigate([`/company/upload-document/${this.application_id}`]);
+    this.router.navigate([`/company/upload-document/${this.appid}`]);
   }
 
   back() {

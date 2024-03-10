@@ -35,7 +35,7 @@ export class PaymentService {
     return this.http.get<any>(`${API}/create-debit-note-rrr`, {params: { id }});
   }
 
-  confirmDebitNotePayment(id: number, orderId: number): Observable<any> {
-    return this.http.get<any>(`${API}/confirm-payment`, { params: { id, orderId }});
+  confirmPayment(paymentId: number): Observable<any> {
+    return this.http.get<any>(`${API}/confirm-payment`, { params: { id: paymentId }});
   }
 }

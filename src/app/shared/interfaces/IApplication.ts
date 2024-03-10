@@ -14,6 +14,13 @@ export interface IApplication {
   capacity?: number;
   status?: string;
   vessel?: any;
+  appJetty?: { 
+    id: number; 
+    name: string; 
+    isDeleted: boolean, 
+    deletedAt: string, 
+    deletedBy: string; 
+  }
   loadingPort?: string | null;
   dischargePort?: string | null;
   marketerName?: string | null;

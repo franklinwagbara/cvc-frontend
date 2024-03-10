@@ -16,6 +16,7 @@ export class AllCoqApplicationsComponent implements OnInit {
   coqs: any[];
   ppCoqs: any[];
   isHppitiStaff: boolean;
+  isDssriStaff: boolean;
 
   coqKeysMappedToHeaders = {
     importName: 'Importer Name',
@@ -51,6 +52,7 @@ export class AllCoqApplicationsComponent implements OnInit {
     private ppCoqService: ProcessingPlantCOQService
   ) {
     this.isHppitiStaff = auth.isHppitiStaff;
+    this.isDssriStaff = auth.isDssriStaff;
   }
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class AllCoqApplicationsComponent implements OnInit {
       this.router.navigate(['admin', 'applications', 'coq-applications', event.id]);
     } else {
       this.router.navigate(
-        ['admin', 'applications', 'processing-plant', 'coq-applications', event.id],
+        ['admin', 'applications', 'ppcoq-applications', event.id],
         {
           queryParams: {
             id: event.id,

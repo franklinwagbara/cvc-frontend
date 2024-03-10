@@ -10,9 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { PopupService } from '../../services/popup.service';
 import { DischargeClearanceService } from '../../services/discharge-clearance.service';
 import { Util } from '../../lib/Util';
-import { AdminService } from '../../services/admin.service';
 import { IProduct } from '../../interfaces/IProduct';
-import { error } from 'console';
 import { LibaryService } from '../../services/libary.service';
 import { SpinnerService } from '../../services/spinner.service';
 
@@ -33,13 +31,12 @@ export class DischargeClearanceFormComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { productTypes: any[]; noaApp: any; allowDischarge: boolean },
+    public data: { products: any[]; noaApp: any; allowDischarge: boolean },
     public dialogRef: MatDialogRef<DischargeClearanceFormComponent>,
     private popUp: PopupService,
     private formBuilder: FormBuilder,
     private cd: ChangeDetectorRef,
     private dischargeClearance: DischargeClearanceService,
-    private adminService: AdminService,
     private libService: LibaryService,
     private spinner: SpinnerService
   ) {
@@ -118,28 +115,31 @@ export class DischargeClearanceFormComponent implements OnInit {
           },
         });
     } else {
-      setTimeout(() => {
-        this.submitting = false;
-        this.dischargeClearance.disallowVesselDischarge(formData)
-          .subscribe({
-            next: (res: any) => {
-              if (res?.success) {
-                this.popUp.open('Clearance disallowed successfully!', 'success');
-                this.dialogRef.close({ submitted: true });
-              } else {
-                this.errorMessage = 'An error occurred: ' + res?.message;
-              }
-              this.cd.markForCheck();
-            },
-            error: (error:any) => {
-              console.error(error);
-              this.submitting = false;
-              this.errorMessage =
-                'Something went wrong while disallowing clearance';
-              this.cd.markForCheck();
+      const data = {
+        id: this.noaApp.id,
+        comment: this.form.get('comment').value
+      }
+      this.submitting = true;
+      this.dischargeClearance.disallowVesselDischarge(data)
+        .subscribe({
+          next: (res: any) => {
+            this.submitting = false;
+            if (res?.success) {
+              this.popUp.open('Clearance disallowed successfully!', 'success');
+              this.dialogRef.close({ submitted: true });
+            } else {
+              this.errorMessage = 'An error occurred: ' + res?.message;
             }
-        })
-      }, 3000);
+            this.cd.markForCheck();
+          },
+          error: (error:any) => {
+            console.error(error);
+            this.submitting = false;
+            this.errorMessage =
+              'Something went wrong while disallowing clearance';
+            this.cd.markForCheck();
+          }
+      })
     }
   }
 }

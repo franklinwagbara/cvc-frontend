@@ -33,7 +33,6 @@ export class CoqApplicationsByDepotComponent implements OnInit {
     private auth: AuthenticationService,
     private ppCoqService: ProcessingPlantCOQService,
   ) {
-    this.pageTitle = auth.isHppitiStaff ? 'CoQ APPLICATIONS' : 'CoQ APPLICATIONS BY DEPOT';
     this.coqKeysMappedToHeaders = auth.isHppitiStaff
       ?  {
           plantPrice: 'Plant Price',

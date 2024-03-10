@@ -22,7 +22,7 @@
 
 .nav-item-active {
   width: 280px;
-  @apply bg-slate-50  rounded-tl-full rounded-bl-full text-black fill-black;
+  @apply bg-slate-50 rounded-tl-full rounded-bl-full text-black fill-black bg-yellow-100;
 
   & .arrow {
     @apply absolute right-0 mr-6;

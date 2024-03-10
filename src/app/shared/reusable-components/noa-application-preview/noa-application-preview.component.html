@@ -6,7 +6,7 @@
       >close</i
     >
   </div>
-  <div mat-dialog-content id="noa-application-preview" class="!h-screen">
+  <div id="noa-application-preview" class="!h-screen">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -40,7 +40,7 @@
         <tr>
           <td>{{ noaInfo?.reference }}</td>
           <td>{{ noaInfo?.appType }}</td>
-          <td>{{ noaInfo?.applicationStatus }}</td>
+          <td>{{ noaInfo?.status }}</td>
           <td>{{ noaInfo?.createdDate }}</td>
           <td>{{ noaInfo?.submittedDate }}</td>
         </tr>
@@ -66,16 +66,12 @@
           <th scope="col" style="text-align: left; font-size: 14px">
             Company Email
           </th>
-          <th scope="col" style="text-align: left; font-size: 14px">
-            Marketer's Name
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>{{ noaInfo?.companyName }}</td>
           <td>{{ noaInfo?.email }}</td>
-          <td>{{ noaInfo?.marketersName }}</td>
         </tr>
       </tbody>
     </table>
@@ -151,7 +147,7 @@
       </thead>
       <tbody>
         <tr>
-          <td>{{ noaInfo?.status }}</td>
+          <td>{{ noaInfo?.paymnetStatus }}</td>
           <td>{{ noaInfo?.paymentDescription }}</td>
           <td>{{ noaInfo?.rrr }}</td>
           <td>{{ noaInfo?.totalAmount }}</td>
@@ -190,11 +186,31 @@
           "
         >
           <td>{{ doc?.docName || doc?.name }}</td>
-          <td>{{ doc?.source || doc?.docSource }}</td>
+          <td>
+            <a 
+              [href]="doc?.source || doc?.docSource"
+              target="_blank"
+            >{{ doc?.source || doc?.docSource }}</a>
+          </td>
+        </tr>
+        <tr style="text-align: center;">
+          <td colspan="2" style="text-align: center; font-weight: bolder;">Processing Officer</td>
+        </tr>
+        <tr>
+          <th style="text-align: left; font-size: 14px" scope="row">Name</th>
+          <td style="text-align: left; font-size: 12px">
+            {{ userInfo?.firstName + " " + userInfo?.lastName }}
+          </td>
+        </tr>
+        <tr>
+          <th style="text-align: left; font-size: 14px" scope="row">Role</th>
+          <td style="text-align: left; font-size: 12px">
+            {{ userInfo?.userRoles }}
+          </td>
         </tr>
         <tr>
           <th scope="row" style="text-align: left; font-size: 14px">
-            Processing Officer's Remark
+            Remark
           </th>
           <td>{{ comment }}</td>
         </tr>
@@ -202,36 +218,26 @@
     </table>
 
     <br />
-    <!-- <table class="">
-      <tr>
-        <th scope="row" style="text-align: left; font-size: 14px">
-          Processing Officer's Remark
-        </th>
-        <td>{{ comment }}</td>
-      </tr>
-    </table> -->
-  </div>
-  <div
-    mat-dialog-actions
-    id="coq-preview-print-wrapper"
-    class="flex justify-end"
-  >
-    <button
-      mat-button
-      class="print-btn"
-      style="display: hidden"
-      (click)="close()"
+    
+    <div
+      id="coq-preview-print-wrapper"
+      class="flex justify-end py-4 gap-2"
     >
-      Close
-    </button>
-
-    <button
-      mat-button
-      class="print-btn"
-      style="display: hidden"
-      (click)="print()"
-    >
-      Print
-    </button>
+      <button
+        mat-raised-button
+        class="print-btn text-red-500"
+        (click)="close()"
+      >
+        Close
+      </button>
+  
+      <button
+        mat-raised-button
+        class="print-btn"
+        (click)="print()"
+      >
+        Print
+      </button>
+    </div>
   </div>
 </div>

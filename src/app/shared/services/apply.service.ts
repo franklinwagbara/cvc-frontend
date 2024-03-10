@@ -167,9 +167,9 @@ export class ApplyService {
       .pipe();
   }
 
-  confirmPayment(appId: string) {
+  confirmPayment(paymentId: number) {
     return this.http.get<any>(`${environment.apiUrl}/payment/confirm-payment`, {
-      params: { id: appId },
+      params: { id: paymentId },
     });
   }
 

@@ -8,7 +8,7 @@
         formControlName="vesselTypeId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option
@@ -35,7 +35,7 @@
         formControlName="applicationTypeId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option
@@ -63,7 +63,7 @@
         formControlName="triggeredByRoleId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let role of roles" [ngValue]="role.id">
@@ -88,7 +88,7 @@
         formControlName="targetRoleId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let role of roles" [ngValue]="role.id">
@@ -112,7 +112,7 @@
         formControlName="fromLocationId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let location of locations" [ngValue]="location.id">
@@ -137,7 +137,7 @@
         formControlName="toLocationId"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let location of locations" [ngValue]="location.id">
@@ -155,9 +155,34 @@
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Directorate</label>
+      <select
+        name="directorate"
+        formControlName="directorate"
+        class="form-control"
+      >
+        <option value="" selected>
+          --Select from options --
+        </option>
+        <option 
+          *ngIf="applicationProccess?.directorate"
+          [ngValue]="applicationProccess?.directorate" 
+          [selected]="applicationProccess?.directorate"
+        >
+          {{ applicationProccess?.directorate }}
+        </option>
+        <option value="DSSRI">DSSRI</option>
+        <option value="HPPITI">HPPITI</option>
+        <option *ngFor="let dir of directorates" [ngValue]="dir.value">
+          {{ dir.value }}
+        </option>
+      </select>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
       <label>Action</label>
       <select name="action" formControlName="action" class="form-control">
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let action of actions" [ngValue]="action">
@@ -175,7 +200,7 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>Status</label>
       <select name="status" formControlName="status" class="form-control">
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let status of statuses" [ngValue]="status">
@@ -197,7 +222,7 @@
         formControlName="isArchived"
         class="form-control"
       >
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option [ngValue]="false">No</option>
@@ -216,7 +241,7 @@
     <div class="fomr-group" style="margin-bottom: 10px">
       <label>State</label>
       <select name="rate" formControlName="rate" class="form-control">
-        <option value="none" selected disabled hidden>
+        <option value="" selected>
           --Select from options --
         </option>
         <option *ngFor="let rate of rates" [ngValue]="rate">
@@ -235,7 +260,7 @@
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close (click)="onClose()">Close</button>
   <button
-    *ngIf="!editMode && !loading"
+    *ngIf="!editMode && !loading && form.valid"
     mat-raised-button
     (click)="createProcessFlow()"
     [disabled]="form.invalid"
@@ -244,7 +269,7 @@
   </button>
 
   <button
-    *ngIf="editMode && !loading"
+    *ngIf="editMode && !loading && form.valid"
     mat-raised-button
     (click)="editProcessFlow()"
     [disabled]="form.invalid"

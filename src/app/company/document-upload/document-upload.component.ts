@@ -9,6 +9,8 @@ import { ApplicationService } from '../../../../src/app/shared/services/applicat
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
+import { GenericService } from 'src/app/shared/services';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-document-upload',
@@ -23,11 +25,14 @@ export class DocumentUploadComponent implements OnInit {
   public additionalDocuments$ = new Subject<DocumentInfo[]>();
   public additionalDocuments: DocumentInfo[] = [];
 
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
+
   applicationTableKeysMappedToHeaders = {
     docName: 'Document Name',
     source: 'Source',
     available: 'Available',
-    action: 'ACTION',
+    action: 'File Action',
   };
 
   constructor(
@@ -40,7 +45,8 @@ export class DocumentUploadComponent implements OnInit {
     private popUp: PopupService,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private spinner: SpinnerService
+    private spinner: SpinnerService,
+    private generic: GenericService,
   ) {}
 
   ngOnInit(): void {
@@ -54,6 +60,18 @@ export class DocumentUploadComponent implements OnInit {
     });
   }
 
+  private docSourcePredicate(docSource: string) {
+    return docSource
+      ? `<a href="${docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/otherFileType.png" /></a>`
+      : `<img width="20" ../../../../src="assets/image/no-document.png" />`; 
+  } 
+
+  private imgDocSourcePredicate(docSource: string) {
+    return docSource && this.isIMG(docSource)
+    ? `<a href="${docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/imageIcon.png" /></a>`
+    : this.docSourcePredicate(docSource)
+  } 
+
   getUploadDocuments() {
     this.progressBar.open();
     this.spinner.open();
@@ -61,10 +79,11 @@ export class DocumentUploadComponent implements OnInit {
     this.appService.getUploadDocuments(this.application_id).subscribe({
       next: (res) => {
         this.documents = res.data.docs;
+
         this.documents = this.documents.map((d) => {
-          d.source = d.docSource
+          d.source = d.docSource && this.isPDF(d.docSource)
             ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-            : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
+            : this.imgDocSourcePredicate(d.docSource);
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
@@ -93,7 +112,7 @@ export class DocumentUploadComponent implements OnInit {
     const fileEvent = data.file;
     let file = fileEvent.target.files[0];
 
-    if (!this.isValidFile(file)) {
+    if (!this.generic.isValidFile(file)) {
       return;
     }
 
@@ -127,9 +146,9 @@ export class DocumentUploadComponent implements OnInit {
               d.docSource = res?.FileId > 0 && !!res?.name ? res.source : null;
               d.fileId = res?.FileId;
               d.available = 'Document Uploaded';
-              d.source = d.docSource
+              d.source = d.docSource && this.isPDF(d.docSource)
                 ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-                : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
+                : this.imgDocSourcePredicate(d.docSource);
             }
 
             return d;
@@ -155,28 +174,12 @@ export class DocumentUploadComponent implements OnInit {
       });
   }
 
-  isValidFile(file: File): boolean {
-    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
-    if (!isAccepted) {
-      this.popUp.open(`Invalid file format`, 'error');
-      return false;
-    }
-
-    const fileSizeInBytes = file.size;
-    const fileSizeInKb = fileSizeInBytes / 1024;
-    const fileSizeInMB = fileSizeInKb / 1024;
-    if (fileSizeInMB > 20) {
-      this.popUp.open(`File ${file.name} size too large`, 'error');
-      return false;
-    }
-    return true;
-  }
 
   uploadAdditionalFile(data) {
     const fileEvent = data.file;
     const file = fileEvent.target.files[0];
 
-    if (!this.isValidFile(file)) {
+    if (!this.generic.isValidFile(file)) {
       return;
     }
 
@@ -321,8 +324,9 @@ export class DocumentInfo {
   docName?: string;
   docSource?: string;
   applicationId?: number;
+  applicationTypeId?: number;
   source?: string;
-  fileId?: string;
+  fileId?: number;
   available?: string;
   docType?: string;
   company?: string;

@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+h2 {
+  font-size: x-large;
+}
+
 .container {
   max-width: 700px;
   padding: 1rem;

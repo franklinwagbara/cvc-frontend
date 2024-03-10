@@ -64,11 +64,6 @@
   border-radius: 5px;
 }
 
-.nested-subtitle {
-  @extend .sub-title;
-  background-color: rgb(205, 75, 75);
-}
-
 .col-title {
   background-color: rgb(64, 97, 92);
   color: white;

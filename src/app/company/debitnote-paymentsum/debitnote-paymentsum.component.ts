@@ -18,7 +18,7 @@ export class DebitnotePaymentsumComponent {
   genk: GenericService;
   debitNoteId: number;
   paymentSummary: PaymentSummary;
-  demandNotices: any[];
+  paymentDetails: any[];
   public rrr$ = new Subject<string>();
   public applicationStatus$ = new Subject<string>();
   private rrr: string;
@@ -43,13 +43,13 @@ export class DebitnotePaymentsumComponent {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.debitNoteId = params['id'];
+      this.spinner.show('Fetching payment details...');
       this.getPaymentSummary();
       this.cd.markForCheck();
     });
   }
 
   getPaymentSummary() {
-    this.spinner.show('Fetching payment details...');
     this.progressbar.open();
     this.paymentService.getDebitNotePaymentSummary(this.debitNoteId).subscribe({
       next: (res) => {
@@ -59,8 +59,8 @@ export class DebitnotePaymentsumComponent {
           
           this.paymentSummary = { ...res.data, totalAmount };
           this.rrr$.next(this.paymentSummary?.rrr);
-          this.demandNotices = (res.data?.paymentTypes || [])
-            .filter((d: any) => d.paymentType === 'DemandNotice');
+          this.paymentDetails = (res.data?.paymentTypes || [])
+            .filter((d: any) => d.paymentType !== 'ToTal Amount');
 
           this.applicationStatus$.next(this.paymentSummary?.status);
 
@@ -106,6 +106,8 @@ export class DebitnotePaymentsumComponent {
             );
 
             this.popUp.open('RRR was generated successfully!', 'success');
+            this.progressbar.open();
+            this.getPaymentSummary();
             this.spinner.close();
             this.cd.markForCheck();
           }

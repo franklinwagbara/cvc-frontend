@@ -1,4 +1,5 @@
 import {
+  AfterViewChecked,
   AfterViewInit,
   ChangeDetectorRef,
   Component,
@@ -35,18 +36,16 @@ import { ApplicationService } from '../../../../src/app/shared/services/applicat
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { LibaryService } from '../../../../src/app/shared/services/libary.service';
 import { CoqAppFormService } from '../../../../src/app/shared/services/coq-app-form.service';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStep, MatStepper } from '@angular/material/stepper';
 import { ICoqRequirement } from '../../../../src/app/shared/interfaces/ICoqRequirement';
-import { ApplicationTerm } from '../../../../src/app/shared/constants/applicationTerm';
-import { PlantService } from '../../../../src/app/shared/services/plant.service';
 import { IPlant } from 'src/app/shared/interfaces/IPlant';
-import { ITank } from 'src/app/shared/interfaces/ITank';
-import { ProductService } from 'src/app/shared/services/product.service';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { MatDialog } from '@angular/material/dialog';
 import { CoqApplicationPreviewComponent } from './coq-application-preview/coq-application-preview.component';
 import { Location } from '@angular/common';
 import { Util } from 'src/app/shared/lib/Util';
+import { GenericService } from 'src/app/shared/services';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-coq-application-form',
@@ -60,17 +59,13 @@ import { Util } from 'src/app/shared/lib/Util';
   ],
 })
 export class CoqApplicationFormComponent
-  implements OnInit, AfterViewInit, OnDestroy
+  implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy
 {
   private allSubscriptions = new Subscription();
 
-  depotSelection = new FormControl('', Validators.required);
-  plantSelection = new FormControl('', Validators.required);
-  productSelection = new FormControl('', Validators.required);
-  configuredTank = this.fb.group({
-    id: ['', [Validators.required, this.isUniqueTank()]],
-    name: ['', [Validators.required]],
-  });
+  isEditMode = false;
+  depotSelection: FormControl;
+  configuredTank: FormGroup;
   tankLiqInfoForm: FormGroup;
   tankGasInfoForm: FormGroup;
   tankLiqBeforeInfoForm: FormGroup;
@@ -90,25 +85,33 @@ export class CoqApplicationFormComponent
   depots: IPlant[];
   products: IProduct[];
   processingPlants: IPlant[];
-  plantTanks: ITank[] = [];
+  
   fetchingRequirement = false;
   requirement: ICoqRequirement;
   coqId: number;
-  coq: ICOQ;
-  noaApplication: any;
+  existingCoq: IExistingCoQ;
+  selectedDepotId: number;
+  application: any;
 
   isSubmitted = false;
   isSubmitting = false;
 
   isGasProduct: boolean | null = null;
 
-  isProcessingPlant = false;
-
   noPlantFetched: boolean | null = null;
   noTankConfigured: boolean | null = null;
 
-  @ViewChild('coqstepper') coqStepper: MatStepper;
+  public pageSizeOptions = [5, 10, 15, 20, 30];
+  public pageSize = 10;
+
+  isPDF = Util.isPDF;
+  isIMG = Util.isIMG;
+
+  @ViewChild('container') container: ElementRef;
+  @ViewChild('coqStepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
+  @ViewChild('paginator', { read: MatPaginator }) paginator!: MatPaginator;
+  // public dataSource = new MatTableDataSource<any>();
 
   tankLiqBeforeFormTempCtx: any;
   tankLiqAfterFormTempCtx: any;
@@ -133,31 +136,24 @@ export class CoqApplicationFormComponent
     private route: ActivatedRoute,
     private popup: PopupService,
     private libService: LibaryService,
-    private productService: ProductService,
-    private plantService: PlantService,
     private cd: ChangeDetectorRef,
     public coqFormService: CoqAppFormService,
     private popUp: PopupService,
     private dialog: MatDialog,
     private applicationService: ApplicationService,
-    private location: Location
+    private location: Location,
+    private generic: GenericService,
   ) {
     this.route.params.subscribe((params: Params) => {
       this.appId = parseInt(params['id']);
-    });
-
-    this.route.data.subscribe((val) => {
-      if (val['type'] === ApplicationTerm.PROCESSINGPLANT) {
-        this.isProcessingPlant = true;
-      }
+      this.coqId = parseInt(params['coqId']);
+      this.isEditMode = !isNaN(this.coqId);
     });
   }
 
   ngOnInit(): void {
     this.initForms();
-
-    this.dataSource = new MatTableDataSource<any>([]);
-
+    
     this.documents$.subscribe((res: any[]) => {
       if (Array.isArray(res) && res.length) {
         res.forEach((el) => {
@@ -191,30 +187,56 @@ export class CoqApplicationFormComponent
     this.fetchAllData();
   }
 
+  ngAfterViewChecked(): void {
+    this.container.nativeElement.scrollTop = this.container.nativeElement?.scrollHeight;
+  }
+
   goBack(): void {
     this.location.back();
   }
 
   public fetchAllData(): void {
     this.spinner.open();
-    if (!this.isProcessingPlant) {
+
+    if (this.isEditMode) {
+      localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+      this.coqService.viewCoqApplication(this.coqId).subscribe({
+        next: (res: any) => {
+          this.populateEditForms(res);
+          this.spinner.close();
+          this.restoreReviewData();
+
+          // Advance to the last step and scroll into view
+          for (let i =0; i < 4; i++) {
+            this.coqStepper.next();
+          }
+
+          this.cd.markForCheck();
+        },
+        error: (err: unknown) => {
+          console.error(err);
+          this.spinner.close();
+          this.popUp.open(
+            'Something went wrong while fetching all data',
+            'error'
+          );
+        }
+      })
+    } else {
       forkJoin([
         this.applicationService.viewApplication(this.appId),
         this.libService.getAllDepotByNoaAppId(this.appId),
-        // this.applicationService.getUploadDocuments(this.appId)
       ]).subscribe({
         next: (res: any[]) => {
-          this.noaApplication = res[0]?.data;
+          this.application = res[0]?.data;
           this.depots = res[1]?.data;
           this.noPlantFetched = !this.depots.length;
-          // this.documents$.next((res[2]?.data?.docs as any[]).map((el, i) => {
-          //   return { ...el, success: null, docIndex: i, percentProgress: 0 }
-          // }));
-          // console.log('Uploaded Documents ============> ', res[2]?.data.docs);
+          
           this.spinner.close();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
+          this.noPlantFetched = true;
           this.spinner.close();
           this.popUp.open(
             'Something went wrong while fetching all data',
@@ -222,53 +244,88 @@ export class CoqApplicationFormComponent
           );
         },
       });
-    } else {
-      forkJoin([
-        this.productService.getAllProducts(),
-        this.plantService.getAllProcessingPlants(),
-      ]).subscribe({
-        next: (res: any[]) => {
-          this.products = res[0]?.data;
-          this.processingPlants = res[1]?.data;
-          this.processingPlants.forEach((plant) => {
-            if (plant?.tanks.length) {
-              this.plantTanks.push(...plant.tanks);
-            }
-          });
-          this.noPlantFetched = !this.processingPlants.length;
-          this.spinner.close();
-        },
-        error: (error: unknown) => {
-          console.log(error);
-          this.spinner.close();
-          this.popUp.open('Something went wrong while fetching data', 'error');
-        },
-      });
     }
   }
 
-  subscribeProductSelection(): void {
-    this.allSubscriptions.add(
-      this.productSelection.valueChanges.subscribe((val) => {
-        this.isGasProduct =
-          this.products
-            .find((p) => p?.id === parseInt(val))
-            ?.productType.toLowerCase() === 'gas';
-        this.restoreReviewData();
-      })
-    );
-  }
+  private populateEditForms(res: any): void {
+    this.existingCoq = res.data;
+    this.application = res.data?.coq;
+    this.documents$.next((this.existingCoq.docs as DocumentInfo[]));
+    this.setDataSource();
+    
+    this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
+  
+    // Populate depot
+    this.selectedDepotId = this.existingCoq?.coq.plantId;
+    this.depotSelection.setValue(this.existingCoq?.coq?.plantId);
 
-  subscribePlantSelection(): void {
-    this.allSubscriptions.add(
-      this.plantSelection.valueChanges.subscribe((val) => {
-        this.noTankConfigured = !this.plantTanks.length;
-        this.fetchRequirement(parseInt(val));
-      })
-    );
+    const tankList: any[] = res.data?.tankList || [];
+
+    const coqData: CoQData[] = tankList.map((el: any) => {
+      let beforeReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'Before'
+      });
+      beforeReading = { 
+        ...beforeReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'before' 
+      };
+      let afterReading = el?.tankMeasurement.find((r: any) => {
+        return r?.measurementType === 'After'
+      });
+      afterReading = { 
+        ...afterReading, 
+        id: el?.tankId, 
+        tank: el?.tankName, 
+        status: 'after' 
+      };
+      delete beforeReading.tankName;
+      delete beforeReading.measurementType;
+      delete afterReading.tankName;
+      delete afterReading.measurementType;
+      return { before: beforeReading, after: afterReading };
+    })
+
+    // Populate Shore Tank Ullage Details
+    if (this.isGasProduct) {
+      const vesselDetailsMap = {
+        vesselArrivalDate: "dateOfVesselArrival",
+        prodDischargeCommenceDate: "dateOfVesselUllage",
+        prodDischargeCompletionDate: "dateOfSTAfterDischarge",
+        qtyBillLadingMtAir: "quauntityReflectedOnBill",
+        arrivalShipMtAir: "arrivalShipFigure",
+        shipDischargedMtAir: "dischargeShipFigure",
+        nameConsignee: "nameConsignee",
+        depotPrice: "depotPrice"
+      }
+      for (let key in this.vesselGasInfoForm.controls) {
+        this.vesselGasInfoForm.controls[key].patchValue(
+          this.existingCoq?.coq[vesselDetailsMap[key]]
+        )
+      }
+    } else {
+      for (let key in this.vesselLiqInfoForm.controls) {
+        this.vesselLiqInfoForm.controls[key].patchValue(
+          this.existingCoq?.coq[key]
+        )
+      }
+    }
+
+    localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(coqData));
   }
 
   public initForms() {
+    this.depotSelection = new FormControl(
+      this.isEditMode ? this.selectedDepotId : '', 
+      Validators.required
+    );
+
+    this.configuredTank = this.fb.group({
+      id: ['', [Validators.required, this.isUniqueTank()]],
+      name: ['', [Validators.required]],
+    });
+
     this.vesselLiqInfoForm = this.fb.group({
       dateOfVesselArrival: ['', [Validators.required, Validators.max]],
       dateOfVesselUllage: ['', [Validators.required]],
@@ -290,8 +347,6 @@ export class CoqApplicationFormComponent
     this.initTemplateFormContexts();
     this.subscribeTankSelection();
     this.subscribeDepotSelection();
-    this.subscribeProductSelection();
-    this.subscribePlantSelection();
 
     this.cd.markForCheck();
   }
@@ -299,44 +354,42 @@ export class CoqApplicationFormComponent
   fetchRequirement(depotId: number): void {
     this.spinner.show('Loading requirement data...');
     this.fetchingRequirement = true;
-    this.appId = this.isProcessingPlant ? null : this.appId;
     this.allSubscriptions.add(
       this.coqService.getCoqRequirement(this.appId, depotId).subscribe({
         next: (res: any) => {
           this.requirement = res?.data;
-          this.noTankConfigured = this.isProcessingPlant
-            ? !this.plantTanks.length
-            : !this.requirement.tanks.length;
-          if (!this.isProcessingPlant) {
-            this.isGasProduct =
-              this.requirement?.productType.toLowerCase() === 'gas';
-          }
-
+          this.noTankConfigured = !this.requirement.tanks.length;
+          this.spinner.close();
+          
+          this.isGasProduct = this.requirement?.productType.toLowerCase() === 'gas';
+          
           if (this.noTankConfigured) {
             this.popUp.open(
               'No tanks configured for this depot. You may not proceed to the next step.',
               'error'
             );
-          } else {
-            this.restoreReviewData();
+            localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
           }
-
+          
+          this.restoreReviewData();
+          
           this.documents$.next(
             this.requirement.requiredDocuments.map((el) => {
               return { ...el, success: null, percentProgress: 0 };
             })
           );
           this.fetchingRequirement = false;
-          this.spinner.close();
+          this.cd.markForCheck();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
           this.fetchingRequirement = false;
           this.popUp.open(
             'Something went wrong while fetching requirement data.',
             'error'
           );
           this.spinner.close();
+          this.cd.markForCheck();
         },
       })
     );
@@ -369,7 +422,8 @@ export class CoqApplicationFormComponent
       tapeCorrection: ['', [Validators.required]],
       liquidTemperature: ['', [Validators.required]],
       observedLiquidVolume: ['', [Validators.required]],
-      shrinkageFactor: ['', [Validators.required]],
+      shrinkageFactorLiquid: ['', [Validators.required]],
+      shrinkageFactorVapour: ['', [Validators.required]],
       vcf: ['', [Validators.required]],
       tankVolume: ['', [Validators.required]],
       vapourTemperature: ['', [Validators.required]],
@@ -404,7 +458,7 @@ export class CoqApplicationFormComponent
   subscribeDepotSelection(): void {
     this.allSubscriptions.add(
       this.depotSelection.valueChanges.subscribe((val: string) => {
-        if (val) {
+        if (val && !this.isEditMode) {
           this.fetchRequirement(parseInt(val));
         }
       })
@@ -415,14 +469,8 @@ export class CoqApplicationFormComponent
     this.allSubscriptions.add(
       this.configuredTank.controls['id'].valueChanges.subscribe((val) => {
         // Populate tankName control
-        const tank = (
-          (this.isProcessingPlant ? this.plantTanks : this.requirement.tanks) ||
-          []
-        ).find(
-          (t) =>
-            (this.isProcessingPlant ? t?.plantTankId : t?.id) === parseInt(val)
-        );
-        const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
+        const tank = (this.requirement.tanks || []).find((t) => t?.id === parseInt(val));
+        const tankName = tank?.name;
         this.configuredTank.controls['name'].setValue(tankName || '');
         if (!this.isGasProduct) {
           this.tankLiqBeforeInfoForm.controls['tank'].setValue(tankName);
@@ -443,6 +491,8 @@ export class CoqApplicationFormComponent
     this.allSubscriptions.add(
       this.fileUpload.uploadResponses$.subscribe((val) => {
         if (Array.isArray(val) && val.length) {
+          // Remove invalid upload responses with FileId < 1
+          val = val.filter((r) => r?.FileId > 0 && r?.name);
           console.log('Uploaded Responses =============> ', val);
           this.uploadedDocInfo = val;
           val.forEach((el) => {
@@ -496,6 +546,7 @@ export class CoqApplicationFormComponent
 
   private setDataSource() {
     this.dataSource = new MatTableDataSource(this.documents);
+    this.dataSource.paginator = this.paginator;
   }
 
   ngOnDestroy(): void {
@@ -512,7 +563,7 @@ export class CoqApplicationFormComponent
   onFileSelected(evt: Event, index: number): void {
     const file = (evt.target as any).files[0];
     if (file) {
-      if (!this.isValidFile) return;
+      if (!this.generic.isValidFile(file)) return;
 
       const fileSizeInKb = file.size / 1024;
 
@@ -534,28 +585,22 @@ export class CoqApplicationFormComponent
         apiHash: this.requirement?.apiData.apiHash,
         docName: this.documents[index].docName,
         uniqueid: '',
-        facilityId: this.requirement?.apiData?.facilityElpsId,
+        facilityId: this.isEditMode 
+          ? this.existingCoq?.apiData?.facilityElpsId 
+          : this.requirement?.apiData?.facilityElpsId,
       };
 
       this.uploadFacilityDocAndReportProgress(file, uploadParams, index);
     }
   }
 
-  public isValidFile(file: File): boolean {
-    let isAccepted = /(\.png|\.jpg|\.jpeg|\.pdf)$/i.test(file.name);
-    if (!isAccepted) {
-      this.snackBar.open(`Invalid file (${file.name}) format`);
-      return false;
-    }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-    const fileSizeInBytes = file.size;
-    const fileSizeInKb = fileSizeInBytes / 1024;
-    const fileSizeInMB = fileSizeInKb / 1024;
-    if (fileSizeInMB > 20) {
-      this.popUp.open(`File ${file.name} size too large`, 'error');
-      return false;
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
-    return true;
   }
 
   /**
@@ -581,23 +626,27 @@ export class CoqApplicationFormComponent
       url = `${environment.elpsBase}/api/Facility/UploadFile/${docTypeId}/${compId}/${facilityId}/${email}/${apiHash}?docName=${docName}&uniqueid=${uniqueid}`;
     }
 
+    // Reinitialize upload progress
+    this.documents = this.documents.map(
+      (d) => d?.docIndex === docIndex ? ({...d, percentProgress: 0}) : d
+    )
+
     this.allSubscriptions.add(
       this.fileUpload.uploadFile(file, url, docIndex).subscribe({
         next: (val: number) => {
           // Update file upload progress
           this.documents = this.documents.map((el, i) => {
             if (i === docIndex) {
-              console.log('File upload in progress ==========> ', {
-                ...el,
-                docIndex,
-                percentProgress: val,
-                success: val === 100 || null,
-              });
+              console.log('FileId =======> ', el?.fileId);
+              const uploadFailed = val === 100 && el?.fileId < 0 ? false : null
+              if (uploadFailed === false) {
+                this.popUp.open(`Failed to upload file (${file.name})`, 'error');
+              }
               return {
                 ...el,
                 docIndex,
                 percentProgress: val,
-                success: val === 100 || null,
+                success: val === 100 && el?.fileId >= 0 ? true : uploadFailed
               };
             }
             return el;
@@ -606,7 +655,7 @@ export class CoqApplicationFormComponent
           this.cd.markForCheck();
         },
         error: (error: any) => {
-          console.log(error);
+          console.error(error);
           this.documents = this.documents.map((el, i) => {
             if (i === docIndex) {
               return { ...el, success: false };
@@ -655,7 +704,13 @@ export class CoqApplicationFormComponent
         ? this.vesselGasInfoForm.controls['depotPrice'].value
         : this.vesselLiqInfoForm.controls['depotPrice'].value,
       documents: this.documents,
-      productName: this.requirement.productName,
+      productName: this.isEditMode 
+        ? this.existingCoq?.coq?.productName 
+        : this.requirement.productName,
+      vesselName: this.application.vessel.name,
+      motherVessel: this.application.motherVessel,
+      loadingPort: this.application.loadingPort,
+      jetty: this.application.jetty,
     };
     this.dialog.open(CoqApplicationPreviewComponent, {
       data: {
@@ -672,6 +727,7 @@ export class CoqApplicationFormComponent
                 this.vesselGasInfoForm.controls['arrivalShipMtAir'].value,
               dischargeShipFigure:
                 this.vesselGasInfoForm.controls['shipDischargedMtAir'].value,
+              nameConsignee: this.vesselGasInfoForm.controls['nameConsignee'].value
             }
           : vesselData,
       },
@@ -686,8 +742,6 @@ export class CoqApplicationFormComponent
         this.vesselLiqInfoForm.reset();
       }
       this.depotSelection.reset();
-      this.productSelection.reset();
-      this.plantSelection.reset();
       this.documents = [];
       this.uploadedDocInfo = [];
     }
@@ -698,58 +752,83 @@ export class CoqApplicationFormComponent
     this.isSubmitting = true;
     this.spinner.show('Submitting CoQ Application...');
 
-    (this.isGasProduct
-      ? this.coqService.createGasProductCoq(payload)
-      : this.coqService.createLiqProductCoq(payload)
-    ).subscribe({
-      next: (res: any) => {
-        this.isSubmitting = false;
-        this.isSubmitted = true;
-        this.spinner.close();
-        if (res?.success) {
-          this.snackBar.open(
-            'CoQ Application Created Successfully. Redirecting...',
-            null,
-            { panelClass: ['success'], duration: 2500 }
-          );
-          localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+    if (this.isEditMode) {
+      this.coqService.editCoQ(this.isGasProduct, this.coqId, payload).subscribe({
+        next: (res: any) => {
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.spinner.close();
+          if (res?.success) {
+            this.popUp.open(
+              'CoQ Application Updated Successfully. Redirecting...',
+              'success'
+            );
+          }
           this.resetFormOnSubmitted();
-
-          this.restoreReviewData();
           this.coqStepper.selectedIndex = 0;
           this.router.navigate([
             'admin',
             'coq',
             'coq-applications-by-depot',
+            this.coqId
           ]);
-        } else {
-          this.popUp.open('CoQ Application Creation Failed', 'error');
+        },
+        error: (error: unknown) => {
+          this.isSubmitting = false;
+          console.error(error);
+          this.spinner.close();
+          this.popUp.open('CoQ Application Update Failed', 'error');
+          this.cd.markForCheck();
         }
-        this.cd.markForCheck();
-      },
-      error: (error: unknown) => {
-        this.isSubmitting = false;
-        console.log(error);
-        this.spinner.close();
-        this.popUp.open('CoQ Application Creation Failed', 'error');
-        this.cd.markForCheck();
-      },
-    });
+      })
+    } else {
+      this.coqService.createCoQ(this.isGasProduct, payload).subscribe({
+        next: (res: any) => {
+          this.isSubmitting = false;
+          this.isSubmitted = true;
+          this.spinner.close();
+          if (res?.success) {
+            this.popUp.open(
+              'CoQ Application Created Successfully. Redirecting...',
+              'success'
+            );
+            localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+            this.resetFormOnSubmitted();
+  
+            this.restoreReviewData();
+            this.coqStepper.selectedIndex = 0;
+            this.router.navigate([
+              'admin',
+              'coq',
+              'coq-applications-by-depot',
+            ]);
+          } else {
+            this.popUp.open('CoQ Application Creation Failed', 'error');
+          }
+          this.cd.markForCheck();
+        },
+        error: (error: unknown) => {
+          this.isSubmitting = false;
+          console.error(error);
+          this.spinner.close();
+          this.popUp.open('CoQ Application Creation Failed', 'error');
+          this.cd.markForCheck();
+        },
+      });
+    }
   }
 
   constructPayload(): any {
     let payload: any;
     const reference = {
-      plantId: this.isProcessingPlant
-        ? this.plantSelection.value
-        : this.depotSelection.value,
-      noaAppId: this.appId,
+      plantId: this.depotSelection.value,
+      noaAppId: this.isEditMode ? this.existingCoq.coq.appId : this.appId,
     };
 
     if (this.isGasProduct) {
       payload = {
         ...reference,
-        productId: this.isProcessingPlant ? this.productSelection.value : null,
+        productId: null,
         quauntityReflectedOnBill:
           this.vesselGasInfoForm.controls['qtyBillLadingMtAir'].value,
         arrivalShipFigure:
@@ -779,19 +858,16 @@ export class CoqApplicationFormComponent
     } else {
       payload = {
         ...reference,
-        productId: this.isProcessingPlant ? this.productSelection.value : null,
-        dateOfVesselArrival:
-          this.vesselLiqInfoForm.controls[
-            'dateOfVesselArrival'
-          ].value.toISOString(),
-        dateOfVesselUllage:
-          this.vesselLiqInfoForm.controls[
-            'dateOfVesselUllage'
-          ].value.toISOString(),
-        dateOfSTAfterDischarge:
-          this.vesselLiqInfoForm.controls[
-            'dateOfSTAfterDischarge'
-          ].value.toISOString(),
+        productId: null,
+        dateOfVesselArrival: new Date(
+          this.vesselLiqInfoForm.controls['dateOfVesselArrival'].value
+        ).toISOString(),
+        dateOfVesselUllage: new Date(
+          this.vesselLiqInfoForm.controls['dateOfVesselUllage'].value
+        ).toISOString(),
+        dateOfSTAfterDischarge: new Date(
+          this.vesselLiqInfoForm.controls['dateOfSTAfterDischarge'].value
+        ).toISOString(),
         depotPrice: this.vesselLiqInfoForm.controls['depotPrice'].value,
         tankBeforeReadings: [],
         tankAfterReadings: [],
@@ -823,9 +899,10 @@ export class CoqApplicationFormComponent
       tapeCorrection,
       liquidTemperature,
       observedLiquidVolume,
-      shrinkageFactor: shrinkageFactorLiquid,
+      shrinkageFactorLiquid,
+      shrinkageFactorVapour,
       tankVolume,
-      vapourFactor: shrinkageFactorVapour,
+      vapourFactor,
       vapourTemperature,
       vapourPressure,
       molecularWeight,
@@ -841,9 +918,10 @@ export class CoqApplicationFormComponent
         liquidTemperature,
         observedLiquidVolume,
         shrinkageFactorLiquid,
+        shrinkageFactorVapour,
         vcf,
         tankVolume,
-        shrinkageFactorVapour,
+        vapourFactor,
         vapourTemperature,
         vapourPressure,
         molecularWeight,
@@ -860,7 +938,7 @@ export class CoqApplicationFormComponent
       waterVolume,
       floatRoofCorr,
       gov,
-      temp,
+      temperature,
       density,
       vcf,
     } = data;
@@ -874,7 +952,7 @@ export class CoqApplicationFormComponent
         waterVolume,
         floatRoofCorr,
         gov,
-        temp,
+        temperature,
         density,
         vcf,
       },
@@ -887,44 +965,55 @@ export class CoqApplicationFormComponent
    * there will be a high chance of eventually submitting some COQ data set (before & after) with empty readings.
    */
   restoreReviewData(): void {
-    const localFormReviewData = JSON.parse(
+    let reviewData = JSON.parse(
       localStorage.getItem(LocalDataKey.COQFORMREVIEWDATA)
     );
-    if (Array.isArray(localFormReviewData) && localFormReviewData.length) {
-      if (this.isGasProduct !== null && !this.isGasProduct) {
-        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.liquidProductProps)) {
-          this.coqFormService.liquidProductReviewData$.next(localFormReviewData);
+    if (Array.isArray(reviewData) && reviewData.length) { 
+      if (!this.isEditMode && this.requirement?.tanks?.length) {
+        // Remove previously stored readings for tanks not configured for current depot
+        reviewData = reviewData.filter(
+          (d) => this.requirement.tanks.some((t) => t.id === parseInt(d.before.id))
+        )
+        localStorage.setItem(LocalDataKey.COQFORMREVIEWDATA, JSON.stringify(reviewData));
+      }
+
+      if (this.isGasProduct !== null && reviewData.length) {
+        if (!this.isGasProduct 
+          && Util.hasProperties(reviewData[0]?.before, this.coqFormService.liquidProductProps)) 
+        {
+          this.coqFormService.liquidProductReviewData$.next(reviewData);
+          this.coqFormService.gasProductReviewData$.next([]);
+        } else if (this.isGasProduct 
+          && Util.hasProperties(reviewData[0]?.before, this.coqFormService.gasProductProps)) 
+        {
+          this.coqFormService.gasProductReviewData$.next(reviewData);
+          this.coqFormService.liquidProductReviewData$.next([]);
+        } else {
+          this.clearReviewData();
         }
-      } else if (this.isGasProduct !== null && this.isGasProduct) {
-        if (Util.hasProperties(localFormReviewData[0]?.before, this.coqFormService.gasProductProps)) {
-          this.coqFormService.gasProductReviewData$.next(localFormReviewData);
-        }
-      } else {
-        localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+      } else if (this.isGasProduct !== null && !reviewData.length) {
+        this.clearReviewData();
       }
     }
   }
 
+  private clearReviewData(): void {
+    this.coqFormService.liquidProductReviewData$.next([]);
+    this.coqFormService.gasProductReviewData$.next([]);
+    localStorage.removeItem(LocalDataKey.COQFORMREVIEWDATA);
+  }
+
   isUniqueTank(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const tank = (
-        (this.isProcessingPlant ? this.plantTanks : this.requirement?.tanks) ||
-        []
-      ).find(
-        (t) =>
-          (this.isProcessingPlant ? t.plantTankId : t.id) ===
-          parseInt(control.value)
-      );
-      const tankName = this.isProcessingPlant ? tank?.tankName : tank?.name;
       if (this.isGasProduct !== null && !this.isGasProduct) {
         return !this.coqFormService.liquidProductReviewData.some(
-          (val) => val.before.tank === tankName
+          (val) => val.before.id === parseInt(control.value)
         )
           ? null
           : { duplicate: control.value };
       } else if (this.isGasProduct !== null && this.isGasProduct) {
         return !this.coqFormService.gasProductReviewData.some(
-          (val) => val.before.tank === tankName
+          (val) => val.before.id === parseInt(control.value)
         )
           ? null
           : { duplicate: control.value };
@@ -992,6 +1081,14 @@ export class CoqApplicationFormComponent
   }
 }
 
+interface IExistingCoQ {
+  coq?: any;
+  tankList: any[];
+  docs: DocumentInfo;
+  appHistories?: any;
+  apiData: any;
+}
+
 export interface CoQData {
   before: any;
   after: any;
@@ -1017,21 +1114,21 @@ export interface IVesselDetail {
 
 export interface GasTankReading {
   id: number;
+  vcf: number;
   tank: string;
   status: string;
+  tankVolume: number;
+  vapourFactor: number;
+  tapeCorrection: number;
+  vapourPressure: number;
+  molecularWeight: number;
   liquidDensityVac: number;
   observedSounding: number;
-  tapeCorrection: number;
+  vapourTemperature: number;
   liquidTemperature: number;
   observedLiquidVolume: number;
   shrinkageFactorLiquid: number;
-  vcf: number;
-  tankVolume: number;
   shrinkageFactorVapour: number;
-  vapourTemperature: number;
-  vapourPressure: number;
-  molecularWeight: number;
-  vapourFactor: number;
 }
 
 export interface LiquidTankReading {

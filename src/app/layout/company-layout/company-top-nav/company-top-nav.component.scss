@@ -5,14 +5,10 @@ $nav-height: 70px;
 $logo-height: 60px;
 
 #company-top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
   min-height: $nav-height;
   flex: 0.2;
-  @apply flex justify-between items-center flex-wrap bg-white shadow-md px-4;
+  @apply fixed top-0 right-0 left-0 z-50 flex justify-between items-center 
+    flex-wrap bg-white shadow-md px-4;
 }
 
 .brand-logo {

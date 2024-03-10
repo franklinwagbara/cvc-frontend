@@ -99,7 +99,6 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
   deleteData(selected: any[]) {
     if (selected?.length) {
       const requests = selected.map((req) => {
-        console.log('Selected DepotOfficer Mappings ==========> ', req);
         return this.depotOfficerService.deleteMapping(req?.plantFieldOfficerID);
       });
       
@@ -122,7 +121,7 @@ export class FieldOfficerDepotSettingComponent implements OnInit {
           this.refreshMappings();
         },
         error: (error: unknown) => {
-          console.log(error);
+          console.error(error);
           this.progressBar.close();
           this.popUp.open('Something went wrong while deleting mapping!', 'error');
         },

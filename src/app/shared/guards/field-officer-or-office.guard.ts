@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from '../services';
-import { decodeFullUserInfo } from '../../helpers/tokenUtils';
 import { PopupService } from '../services/popup.service';
 
 

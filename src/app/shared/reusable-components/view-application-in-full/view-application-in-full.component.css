@@ -10,6 +10,14 @@
   @apply text-[#3e4e50] mb-4;
 }
 
+h3 {
+  font-size: x-large;
+}
+
+h5 {
+  font-size: large;
+}
+
 hr {
   @apply mt-1;
 }
@@ -32,11 +40,11 @@ hr {
 }
 
 .info-wrapper {
-  @apply flex flex-wrap justify-start gap-x-3 gap-y-6;
+  @apply flex flex-wrap gap-2 justify-start w-full;
 }
 
 .info-wrapper > div {
-  @apply w-[32%] flex flex-col;
+  @apply flex flex-col;
 }
 
 .info-wrapper > div > h5 {
@@ -86,7 +94,7 @@ hr {
 }
 
 .show-more {
-  @apply bg-slate-400 text-xs text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
+  @apply bg-slate-400 text-sm text-center text-white px-3 py-1 w-24 cursor-pointer mx-auto mt-2;
 }
 
 .mat-expansion-panel {

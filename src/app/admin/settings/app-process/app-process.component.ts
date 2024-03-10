@@ -33,6 +33,7 @@ export class AppProcessComponent implements OnInit {
   public statuses: string[];
   public facilityTypes: IFacilityType[];
   public applicationTypes: IApplicationType[];
+  public directorates: any[];
 
   public tableTitles = {
     branches: 'APPLICATION PROCESS',
@@ -73,6 +74,7 @@ export class AppProcessComponent implements OnInit {
       this.libraryService.getFacilityTypes(),
       this.libraryService.getApplicationTypes(),
       this.libraryService.getAllLocations(),
+      this.adminHttpService.getDirectorate(),
       // this.adminHttpService.getBranches(),
       // this.adminHttpService.getPhaseCategories(),
     ]).subscribe({
@@ -93,13 +95,14 @@ export class AppProcessComponent implements OnInit {
 
         if (res[6].success) this.locations = res[6].data;
 
-        // if (res[4].success) this.permitStages = res[4].data.data.permitStages;
-        // if (res[1].success) this.branches = res[1].data.data;
-        // this.progressBarService.close();
+        if (res[7].success) this.directorates = res[7].data;
+        console.log('Directorates ===============> ', this.directorates);
+
         this.spinner.close();
       },
 
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while retrieving data.',
           null,
@@ -125,6 +128,8 @@ export class AppProcessComponent implements OnInit {
           actions: this.actions,
           statuses: this.statuses,
           locations: this.locations,
+          applicationProcess: null,
+          directorates: this.directorates,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
         },
@@ -138,14 +143,16 @@ export class AppProcessComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 
@@ -158,7 +165,7 @@ export class AppProcessComponent implements OnInit {
     };
 
     const listOfDataToDelete = [...event];
-
+    
     const requests = listOfDataToDelete.map((req) => {
       return this.processFlow.deleteApplicationProcess(
         req[typeToModelMapper[type].id]
@@ -212,6 +219,7 @@ export class AppProcessComponent implements OnInit {
           actions: this.actions,
           statuses: this.statuses,
           locations: this.locations,
+          directorates: this.directorates,
           applicationProcess: event,
           facilityTypes: this.facilityTypes,
           applicationTypes: this.applicationTypes,
@@ -226,14 +234,16 @@ export class AppProcessComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((res) => {
-      this.progressBarService.open();
-
-      this.processFlow.getApplicationProcesses().subscribe((res) => {
-        this.applicationProcesses = res.data;
-        this.progressBarService.close();
-        this.cd.markForCheck();
-      });
+    dialogRef.afterClosed().subscribe((res: 'submitted') => {
+      if (res) {
+        this.progressBarService.open();
+  
+        this.processFlow.getApplicationProcesses().subscribe((res) => {
+          this.applicationProcesses = res.data;
+          this.progressBarService.close();
+          this.cd.markForCheck();
+        });
+      }
     });
   }
 }

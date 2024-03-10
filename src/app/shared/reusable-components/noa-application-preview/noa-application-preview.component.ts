@@ -1,5 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthenticationService } from '../../services';
+import { Util } from '../../lib/Util';
 
 @Component({
   selector: 'app-noa-application-preview',
@@ -9,16 +11,19 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class NoaApplicationPreviewComponent implements OnInit {
   noaInfo: any;
   comment: string;
+  userInfo: any;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<NoaApplicationPreviewComponent>
-  ) {}
+    private dialogRef: MatDialogRef<NoaApplicationPreviewComponent>,
+    private auth: AuthenticationService
+  ) {
+    this.userInfo = auth.currentUser;
+  }
 
   ngOnInit(): void {
     this.noaInfo = this.data?.application;
     this.comment = this.data?.remark;
-    console.log('Preview Dialog Data ===========> ', this.data);
   }
 
   print() {
@@ -31,17 +36,7 @@ export class NoaApplicationPreviewComponent implements OnInit {
         document.querySelector('#coq-preview-print-wrapper') as HTMLElement
       ).style.display = 'block';
     }, 2000);
-    const printContents = document.querySelector('#noa-application-preview');
-    const windowPrt = window.open(
-      '',
-      '',
-      'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0'
-    );
-    windowPrt.document.write(printContents.innerHTML);
-    windowPrt.document.close();
-    windowPrt.focus();
-    windowPrt.print();
-    windowPrt.close();
+    Util.printHtml('noa-application-preview');
   }
 
   trackByFn(index: number) {

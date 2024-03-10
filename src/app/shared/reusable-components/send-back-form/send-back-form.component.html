@@ -21,7 +21,7 @@
 
   <form [formGroup]="form" (ngSubmit)="sendBack()">
     <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Remark</label>
+      <label class="font-bold pb-2 pt-4">Remark</label>
       <textarea
         name="comment"
         formControlName="comment"
@@ -31,7 +31,7 @@
       ></textarea>
       <div
         *ngIf="form.get('comment')?.touched && form.get('comment')?.invalid"
-        class="alert alert-danger"
+        class="alert alert-danger my-2 p-2"
       >
         Remark is required!
       </div>
@@ -63,6 +63,10 @@
     </div>
   </div>
   <div>
-    <button mat-raised-button class="bg-slate-500 text-white">Preview</button>
+    <button 
+      mat-raised-button 
+      class="bg-slate-500 text-white"
+      (click)="preview()"
+    >Preview</button>
   </div>
 </div>

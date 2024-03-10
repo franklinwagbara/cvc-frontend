@@ -9,6 +9,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BehaviorSubject } from 'rxjs';
 import { CoQData } from '../coq-application-form.component';
 import { AuthenticationService } from 'src/app/shared/services';
+import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
+import { Util } from 'src/app/shared/lib/Util';
 
 @Component({
   selector: 'app-coq-application-preview',
@@ -33,7 +35,8 @@ export class CoqApplicationPreviewComponent implements OnInit {
     'tapeCorrection',
     'liquidTemperature',
     'observedLiquidVolume',
-    'shrinkageFactor',
+    'shrinkageFactorLiquid',
+    'shrinkageFactorVapour',
     'vcf',
     'tankVolume',
     'vapourTemperature',
@@ -44,7 +47,7 @@ export class CoqApplicationPreviewComponent implements OnInit {
   displayedColumns: any[];
   tankData: CoQData[] = [];
   tankData$ = new BehaviorSubject<any[]>([]);
-  vesselDischargeData: any;
+  dischargeData: any;
   isGasProduct: boolean | null;
   grandTotalWeightAir: number;
   grandTotalWeightVac: number;
@@ -57,7 +60,8 @@ export class CoqApplicationPreviewComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: PreviewData,
     private dialogRef: MatDialogRef<CoqApplicationPreviewComponent>,
-    private auth: AuthenticationService
+    private auth: AuthenticationService,
+    private coqFormService: CoqAppFormService,
   ) {}
 
   ngOnInit(): void {
@@ -68,157 +72,43 @@ export class CoqApplicationPreviewComponent implements OnInit {
       : this.liquidColumns;
     this.tankData = this.data?.tankData;
     this.previewSource = this.data?.previewSource;
-    this.vesselDischargeData = this.data?.vesselDischargeData;
+    this.dischargeData = this.data?.vesselDischargeData;
     this.isGasProduct = this.data.isGasProduct;
+
     if (!this.isGasProduct) {
-      this.tankData = this.tankData.map((item) => {
-        item.calc = {
-          dip: parseFloat(item.after.dip) - parseFloat(item.before.dip),
-          waterDIP:
-            parseFloat(item.after.waterDIP) - parseFloat(item.before.waterDIP),
-          tov: parseFloat(item.after.tov) - parseFloat(item.before.tov),
-          waterVolume:
-            parseFloat(item.after.waterVolume) -
-            parseFloat(item.before.waterVolume),
-          floatRoofCorr:
-            parseFloat(item.after.floatRoofCorr) -
-            parseFloat(item.before.floatRoofCorr),
-          gov: parseFloat(item.after.gov) - parseFloat(item.before.gov),
-          temperature:
-            parseFloat(item.after.temperature) -
-            parseFloat(item.before.temperature),
-          density:
-            parseFloat(item.after.density) - parseFloat(item.before.density),
-          vcf: parseFloat(item.after.vcf) - parseFloat(item.before.vcf),
-        };
-        return item;
-      });
+      this.tankData = this.coqFormService.getLiquidCalculatedParams(this.tankData);
     } else {
-      this.tankData = this.tankData.map((item) => {
-        const correctedLiqVolB4 =
-          item.before.observedLiquidVolume + item.before.shrinkageFactor;
-        const correctedLiqVolAft =
-          item.after.observedLiquidVolume + item.after.shrinkageFactor;
-        const grossStdVolB4 = correctedLiqVolB4 * item.before.vcf;
-        const grossStdVolAft = correctedLiqVolAft * item.after.vcf;
-        const vapourVolB4 =
-          item.before.tankVolume - item.before.observedLiquidVolume;
-        const vapourVolAft =
-          item.after.tankVolume - item.after.observedLiquidVolume;
-        const correctedVapVolB4 = vapourVolB4 * item?.before.shrinkageFactor;
-        const correctedVapVolAft = vapourVolAft * item?.after.shrinkageFactor;
-        const vapourWtVacB4 = correctedVapVolB4 * item.before.vapourFactor;
-        const vapourWtVacAft = correctedVapVolAft * item.after.vapourFactor;
-        const liqDensityAirB4 = parseFloat(
-          (item.before?.liquidDensityVac * 0.0011).toFixed(4)
-        );
-        const liqDensityAirAft = parseFloat(
-          (item.after?.liquidDensityVac * 0.0011).toFixed(4)
-        );
-        const vapourWtAirB4 = parseFloat(
-          (
-            (liqDensityAirB4 / item.before.liquidDensityVac) *
-            vapourWtVacB4
-          ).toFixed(4)
-        );
-        const vapourWtAirAft = parseFloat(
-          (
-            (liqDensityAirAft / item.after.liquidDensityVac) *
-            vapourWtVacAft
-          ).toFixed(4)
-        );
-        const totalWtVacB4 = item.before.liquidDensityVac + vapourWtVacB4;
-        const totalWtVacAft = item.after.liquidDensityVac + vapourWtVacAft;
-        const totalWtAirB4 = item.before.liquidDensityAir + vapourWtAirB4;
-        const totalWtAirAft = item.before.liquidDensityAir + vapourWtAirAft;
+      this.tankData = this.coqFormService.getGasCalculatedParams(this.tankData);
 
-        item.calc = {};
-        item.calc.before = {
-          correctedLiquidLevel:
-            item.before.observedSounding + item.before.tapeCorrection,
-          correctedLiquidVolume: correctedLiqVolB4,
-          grossStandardVolume: grossStdVolB4,
-          liquidWeightVac: item.before.liquidDensityVac * grossStdVolB4,
-          liquidWeightAir: item.before.liquidDensityAir * grossStdVolB4,
-          vapourVolume: vapourVolB4,
-          correctedVapourVolume: correctedVapVolB4,
-          vapourWeightVac: vapourWtVacB4,
-          vapourWeightAir: vapourWtAirB4,
-          totalWeightVac: totalWtVacB4,
-          totalWeightAir: totalWtAirB4,
-          molecularWeightCalc: (
-            item.before?.molecularWeight /
-            (22.4 * 1000)
-          ).toFixed(4),
-          temperatureCalc: (
-            273 /
-            (273 + item.before?.vapourTemperature)
-          ).toFixed(4),
-          pressureCalc: ((item.before?.vapourPressure + 1.013) / 1.013).toFixed(
-            4
-          ),
-        };
-        item.calc.after = {
-          correctedLiquidLevel:
-            item.before.observedSounding + item.before.tapeCorrection,
-          correctedLiquidVolume: correctedLiqVolAft,
-          grossStandardVolume: grossStdVolAft,
-          liquidWeightVac: item.after.liquidDensityVac * grossStdVolAft,
-          liquidWeightAir: item.after.liquidDensityAir * grossStdVolAft,
-          vapourVolume: vapourVolAft,
-          correctedVapourVolume: correctedVapVolAft,
-          vapourWeightVac: vapourWtVacAft,
-          vapourWeightAir: vapourWtAirAft,
-          totalWeightVac: totalWtVacAft,
-          totalWeightAir: totalWtAirAft,
-          molecularWeightCalc: (
-            item.after?.molecularWeight /
-            (22.4 * 1000)
-          ).toFixed(4),
-          temperatureCalc: (
-            273 /
-            (273 + item.after?.vapourTemperature)
-          ).toFixed(4),
-          pressureCalc: ((item.after?.vapourPressure + 1.013) / 1.013).toFixed(
-            4
-          ),
-        };
-        item.calc.totalMetricTonsVac =
-          item.calc.after?.liquidWeightVac - item.calc.before?.liquidWeightVac;
-        item.calc.totalMetricTonsAir =
-          item.calc.after?.liquidWeightAir - item.calc.before?.liquidWeightAir;
-        item.calc.receivedQtyVac =
-          item.calc.after?.liquidWeightVac +
-          item.calc.after?.vapourWeightVac -
-          (item.calc.before?.liquidWeightVac +
-            item.calc.before?.vapourWeightVac);
-        item.calc.receivedQtyAir =
-          item.calc.after?.liquidWeightAir +
-          item.calc.after?.vapourWeightAir -
-          (item.calc.before?.liquidWeightAir +
-            item.calc.before?.vapourWeightAir);
-        return item;
-      });
+      this.dischargeData.sumOfTotalWtVacB4 = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc?.totalMetricTonsVac,
+        0
+      );
+      this.dischargeData.sumOfTotalWtVacAft = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc?.totalMetricTonsVac,
+        0
+      );
+      this.dischargeData.totalReceivedQtyVac = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc.receivedQtyVac,
+        0
+      )
+      this.dischargeData.grandTotalWeightVac = 
+        this.dischargeData.sumOfTotalWtVacAft - this.dischargeData.sumOfTotalWtVacB4;
 
-      const sumOfTotalWtVacB4 = this.tankData.reduce(
-        (accum, curr) => accum + curr?.before?.totalWeightVac,
+      this.dischargeData.sumOfTotalWtAirB4 = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc?.totalMetricTonsAir,
         0
       );
-      const sumOfTotalWtVacAft = this.tankData.reduce(
-        (accum, curr) => accum + curr?.after?.totalWeightVac,
+      this.dischargeData.sumOfTotalWtAirAft = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc?.totalMetricTonsAir,
         0
       );
-      this.grandTotalWeightVac = sumOfTotalWtVacAft - sumOfTotalWtVacB4;
-
-      const sumOfTotalWtAirB4 = this.tankData.reduce(
-        (accum, curr) => accum + curr?.before?.totalWeightAir,
+      this.dischargeData.totalReceivedQtyAir = this.tankData.reduce(
+        (accum, curr) => accum + curr.calc.receivedQtyAir,
         0
-      );
-      const sumOfTotalWtAirAft = this.tankData.reduce(
-        (accum, curr) => accum + curr?.after?.totalWeightAft,
-        0
-      );
-      this.grandTotalWeightAir = sumOfTotalWtAirAft - sumOfTotalWtAirB4;
+      )
+      this.dischargeData.grandTotalWeightAir = 
+        this.dischargeData.sumOfTotalWtAirAft - this.dischargeData.sumOfTotalWtAirB4;
 
       this.grandTotalWeightKg = this.grandTotalWeightVac * 1000;
     }
@@ -242,17 +132,7 @@ export class CoqApplicationPreviewComponent implements OnInit {
       ).style.display = 'block';
     }, 2000);
 
-    const printContents = document.getElementById('coq-data-preview-content');
-    const windowPrt = window.open(
-      '',
-      '',
-      'left=0,top=0,width=1000,height=1000,toolbar=0,scrollbars=0,status=0'
-    );
-    windowPrt.document.write(printContents.innerHTML);
-    windowPrt.document.close();
-    windowPrt.focus();
-    windowPrt.print();
-    windowPrt.close();
+    Util.printHtml('coq-data-preview-content');
   }
 
   public close() {
