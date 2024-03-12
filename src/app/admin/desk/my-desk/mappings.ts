@@ -2,7 +2,7 @@ import { string } from "@amcharts/amcharts4/core";
 
 export const APPLICATION_KEYS_MAPPED_TO_HEADERS = {
   reference: 'Reference Number',
-  // importName: 'Import Name',
+  companyName: 'Company Name',
   companyEmail: 'Company Email',
   applicationType: 'Application Type',
   vesselName: 'Vessel Name',
