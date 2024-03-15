@@ -77,7 +77,7 @@ export class Util {
         html2canvas:  { scale: 2 },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      saveAs(html2pdf(table, opt), filename || 'data.pdf')
+      html2pdf(table, opt);
     } else if (format === "csv") {
       let csv = []
       for (const row of Array.from(rows)) {
