@@ -1,7 +1,6 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CoqAppFormService } from 'src/app/shared/services/coq-app-form.service';
 
 @Component({
   selector: 'app-view-coq-tank',
@@ -13,8 +12,7 @@ export class ViewCoqTankComponent implements OnInit {
   public productType: string;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: DialogRef<ViewCoqTankComponent>,
-    private coqFormService: CoqAppFormService,
+    public dialogRef: DialogRef<ViewCoqTankComponent>
   ) {}
 
   ngOnInit(): void {
