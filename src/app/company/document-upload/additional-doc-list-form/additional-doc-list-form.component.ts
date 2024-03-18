@@ -6,7 +6,13 @@ import { AdminService } from '../../../../../src/app/shared/services/admin.servi
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -27,6 +33,7 @@ import { DocumentConfig, DocumentInfo } from '../document-upload.component';
   selector: 'app-additional-doc-list-form',
   templateUrl: './additional-doc-list-form.component.html',
   styleUrls: ['./additional-doc-list-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdditionalDocListFormComponent implements OnInit {
   public form: FormGroup;
@@ -46,7 +53,8 @@ export class AdditionalDocListFormComponent implements OnInit {
     private adminServe: AdminService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private applicationService: ApplyService
+    private applicationService: ApplyService,
+    private cd: ChangeDetectorRef
   ) {
     // this.loading$.next(false);
     // this.modalSize$.next(false);
@@ -73,13 +81,6 @@ export class AdditionalDocListFormComponent implements OnInit {
 
   getListOfDocuments() {
     this.loading$.next(true);
-
-    this.loading$.subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-    });
-
     forkJoin([
       this.applicationService.getAllCompanyDocuments(
         'company',
@@ -102,6 +103,7 @@ export class AdditionalDocListFormComponent implements OnInit {
         this.loading$.next(false);
 
         this.modalSize$.next(true);
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         this.snackBar.open(
@@ -111,6 +113,7 @@ export class AdditionalDocListFormComponent implements OnInit {
             panelClass: ['error'],
           }
         );
+        this.cd.markForCheck();
       },
     });
   }
