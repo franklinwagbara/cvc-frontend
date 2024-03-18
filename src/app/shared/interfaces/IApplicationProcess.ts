@@ -13,7 +13,8 @@ export interface IApplicationProcess {
   fromLocation: string;
   fromLocationId: string;
   status: string;
-  directorate: string;
+  fromDirectorate: string;
+  toDirectorate: string;
   rate: string;
   isArchived: boolean;
   permitStageId?: number;

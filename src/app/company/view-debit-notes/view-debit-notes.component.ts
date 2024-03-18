@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PopupService } from '../../../../src/app/shared/services/popup.service';
 import { SpinnerService } from '../../../../src/app/shared/services/spinner.service';
@@ -12,10 +12,12 @@ import { Subject } from 'rxjs';
   templateUrl: './view-debit-notes.component.html',
   styleUrls: ['./view-debit-notes.component.css']
 })
-export class ViewDebitNotesComponent implements OnInit {
+export class ViewDebitNotesComponent implements OnInit, AfterViewInit {
   debitNotes: any[];
   appId: number;
   rrr$ = new Subject<string>();
+
+  showFloatingBackBtn = false;
 
   debitNoteKeysMappedToHeaders = {
     orderId: "CoQ Reference",
@@ -43,6 +45,33 @@ export class ViewDebitNotesComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.open();
     this.getDebitNotes();
+  }
+
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      } else {
+        body = document.documentElement;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      }
+      const element = body.querySelector('#back-to-clearances');
+     
+      if (element) {
+        let clientRect = element.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 75;
+        if (this.showFloatingBackBtn) {
+          (element as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element as HTMLElement).style.left = '0px';
+        }
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
   }
 
   getDebitNotes(): void {

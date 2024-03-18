@@ -59,7 +59,7 @@ export class CoqAppFormService {
     })
   }
 
-  public hasMeterCubeUnit(colKey: string) {
+  public hasLitresUnit(colKey: string) {
     const cols = ['tov', 'floatRoofCorr', 'gov', 'waterVolume', 'tankVolume', 'observedLiquidVolume'];
     return cols.includes(colKey);
   }

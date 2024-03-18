@@ -6,13 +6,13 @@ import { AdminService } from '../../../../../src/app/shared/services/admin.servi
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
 import { LibaryService } from '../../../../../src/app/shared/services/libary.service';
 import {
-  IDepot,
   IApplicationType,
   IState,
 } from '../../../../../src/app/company/apply/new-application/new-application.component';
 import { LocationService } from '../../../../../src/app/shared/services/location/location.service';
 import { PopupService } from '../../../../../src/app/shared/services/popup.service';
 import { AppDepotFormComponent } from '../../../../../src/app/shared/reusable-components/app-depot-form/app-depot-form.component';
+import { IAppDepot } from 'src/app/shared/interfaces/IAppDepot';
 
 @Component({
   selector: 'app-app-depot',
@@ -20,7 +20,7 @@ import { AppDepotFormComponent } from '../../../../../src/app/shared/reusable-co
   styleUrls: ['./app-depot.component.css'],
 })
 export class AppDepotComponent implements OnInit {
-  public appDepots: IDepot[];
+  public appDepots: IAppDepot[];
   public applicationTypes: IApplicationType[];
   public states: IState[];
 

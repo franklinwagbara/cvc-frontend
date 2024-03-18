@@ -22,7 +22,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>
             <ng-container *ngIf="coqFormService.hasNoUnit(column)">{{ column | uppercase }}</ng-container>
             <ng-container *ngIf="coqFormService.hasMeterUnit(column)">{{ column | uppercase }}(m)</ng-container>
-            <ng-container *ngIf="coqFormService.hasMeterCubeUnit(column)">{{ column | uppercase }}(m<sup>3</sup>)</ng-container>
+            <ng-container *ngIf="coqFormService.hasLitresUnit(column)">{{ column | uppercase }}(Ltr)</ng-container>
             <ng-container *ngIf="coqFormService.hasKgPerL(column)">{{ column | uppercase }}(Kg/L)</ng-container>
             <ng-container *ngIf="coqFormService.hasTempUnit(column)">{{ column | uppercase }}(<sup>0</sup>C)</ng-container>
           </th>
