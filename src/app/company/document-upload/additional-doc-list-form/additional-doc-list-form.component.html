@@ -1,5 +1,5 @@
-<mat-spinner *ngIf="(loading$ | async) === true"></mat-spinner>
-<ng-container *ngIf="(loading$ | async) === false">
+<mat-spinner *ngIf="loading$ | async"></mat-spinner>
+<ng-container *ngIf="!(loading$ | async)">
   <h1 mat-dialog-title>Select Additional Documents Types</h1>
   <div mat-dialog-content [class]="{ 'min-h-[300px]': true }">
     <form [formGroup]="form">
