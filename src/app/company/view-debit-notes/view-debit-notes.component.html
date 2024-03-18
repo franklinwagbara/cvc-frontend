@@ -1,4 +1,25 @@
 <div class="setting-desk">
+  <ng-container *ngIf="showFloatingBackBtn">
+    <button 
+      [routerLink]="'/company/approvals'"
+      class="fixed top-[75px] z-50 text-white bg-slate-500 p-1 px-2 flex justify-center items-center font-bold"
+      style="border-radius: 4px; font-size: small;"
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;
+      <span>Back to Clearances</span>
+    </button>
+  </ng-container>
+
+  <button
+    id="back-to-clearances"
+    [routerLink]="'/company/approvals'"
+    class="mt-2 text-lg"
+    [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
+    mat-button
+  >
+    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to Clearances
+  </button>
+
   <h2 class="page-title bg-yellow-500 text-yellow-800">DEBIT NOTES PER CLEARANCE</h2>
   <div>
     

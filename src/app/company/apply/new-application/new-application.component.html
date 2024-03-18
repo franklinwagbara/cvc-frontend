@@ -76,24 +76,26 @@
 
             <div class="flex flex-col">
               <span class="input-label"> Jetty </span>
-              <select 
-                name="jetty" 
+              <mat-select
+                name="jetty"
                 formControlName="jetty"
-                class="p-2 rounded-r"
+                class="p-2 rounded-r text-left"
                 [ngClass]="{
                   '!border-b border-2 !border !border-red-500':
                     vesselFormControl['jetty'].touched &&
                     vesselFormControl['jetty'].invalid
                 }"
+                placeholder="-- Select Jetty --"
               >
-                <option value="" [selected]="true">-- Select Jetty --</option>
-                <option [value]="jetty?.id" *ngFor="let jetty of jetties">{{ jetty?.name }}</option>
-              </select>
+                <mat-optgroup *ngFor="let grp of jettyGroupings" [label]="grp.groupName">
+                  <mat-option [value]="jetty?.id" *ngFor="let jetty of grp.jetties">{{ jetty?.name }}</mat-option>
+                </mat-optgroup>
+              </mat-select>
             </div>
 
             <div class="flex flex-col">
               <span class="input-label"> Vessel Type </span>
-              <select
+              <mat-select
                 [ngClass]="{
                   'bg-gray-100 cursor-not-allowed ': vesselInfo,
                   ' !border-b border-2 !border !border-red-500':
@@ -101,21 +103,19 @@
                     vesselFormControl['vesselTypeId'].invalid
                 }"
                 type="text"
-                class="rounded-r p-2"
+                class="rounded-r p-2 text-left"
                 formControlName="vesselTypeId"
+                placeholder="-- Select Vessel Type --"
               >
-                <option value="" [selected]="true">
-                  -- Select Vessel Type --
-                </option>
-                <option *ngFor="let vt of vesselTypes" [ngValue]="vt.id">
+                <mat-option *ngFor="let vt of vesselTypes" [value]="vt.id">
                   {{ vt.name }}
-                </option>
-              </select>
+                </mat-option>
+              </mat-select>
             </div>
 
             <div class="flex flex-col">
               <mat-form-field>
-                <span class="input-label">Estimated Time of Arrival (ETA) </span>
+                <span class="input-label">Estimated Time of Arrival (ETA)</span>
                 <div class="flex">
                   <input
                     matInput
@@ -155,20 +155,22 @@
           <h5 class="w-full">Add Destination Depot(s)</h5>
           <div class="flex flex-col">
             <span class="input-label"> Depot Name </span>
-            <select
+            <mat-select
               type="text"
-              class="border border-t border-b rounded-r p-2"
+              class="border border-t border-b rounded-r p-2 text-left"
               formControlName="depotId"
+              placeholder="-- Select Destination Depot --"
             >
-              <option value="" [selected]="true">-- Select Depot --</option>
-              <option *ngFor="let d of depots" [ngValue]="d.id">
-                {{ d.name }}
-              </option>
-            </select>
+              <mat-optgroup *ngFor="let grp of depotGroupings" [label]="grp.state">
+                <mat-option *ngFor="let depot of grp.depots" [value]="depot.id">
+                  {{ depot.name }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
           </div>
 
           <div class="flex flex-col">
-            <span class="input-label"> Volume to Discharge (Litres) </span>
+            <span class="input-label"> Amount to Discharge (MTons) </span>
             <input
               type="number"
               min="0"
@@ -180,16 +182,18 @@
 
           <div class="flex flex-col">
             <span class="input-label"> Product </span>
-            <select
+            <mat-select
               type="text"
-              class="border border-t border-b rounded-r p-2"
+              class="border border-t border-b rounded-r p-2 text-left"
               formControlName="productId"
+              placeholder="-- Select Product --"
             >
-              <option value="" [selected]="true">-- Select Product --</option>
-              <option *ngFor="let p of products" [ngValue]="p.id">
-                {{ p.name }}
-              </option>
-            </select>
+              <mat-optgroup *ngFor="let grp of productGroupings" [label]="grp.type">
+                <mat-option *ngFor="let product of grp.products" [value]="product.id">
+                  {{ product.name }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
           </div>
 
           <button
