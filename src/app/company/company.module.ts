@@ -54,6 +54,7 @@ import { StsApplicationComponent } from './apply/sts-application/sts-application
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
 import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-paymentsum.component';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -74,6 +75,7 @@ import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-p
     MatInputModule,
     MatDividerModule,
     MatListModule,
+    MatSelectModule,
     MatStepperModule,
     MatExpansionModule,
     MatCardModule,

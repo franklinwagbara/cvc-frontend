@@ -133,9 +133,14 @@ export class ApplicationProcessFormComponent implements OnInit {
           : '',
         Validators.required,
       ],
-      directorate: [
+      toDirectorate: [
         this.applicationProccess
-          ? this.applicationProccess.directorate
+          ? this.applicationProccess.toDirectorate
+          : ''
+      ],
+      fromDirectorate: [
+        this.applicationProccess 
+          ? this.applicationProccess.fromDirectorate 
           : ''
       ],
       status: [

@@ -13,6 +13,7 @@ import { IApplicationFormDTO } from 'src/app/shared/interfaces/IApplicationFormD
 import { IAppDepot } from 'src/app/shared/interfaces/IAppDepot';
 import { Util } from 'src/app/shared/lib/Util';
 import { ShipToShipService } from 'src/app/shared/services/ship-to-ship.service';
+import { IProduct } from 'src/app/shared/interfaces/IProduct';
 
 
 @Component({
@@ -30,6 +31,7 @@ export class StsApplicationComponent {
   // public tanks: ITank[];
   public appDepots: IAppDepot[];
   public products: IProduct[];
+  public productGroupings: { type: string; products: IProduct[]}[];
   public depots: IDepot[];
   public jetties: any[];
   // public selectedTanks: ITankDTO[] = [];
@@ -281,6 +283,30 @@ export class StsApplicationComponent {
             a?.name.toLowerCase() < b?.name.toLowerCase ? -1 : aGreaterThanB
           return predicate;
         });
+
+        // Group products by type
+        let typeProductObj = {};
+        this.products.forEach((product) => {
+          if (typeProductObj[product.productType]) {
+            typeProductObj[product.productType].push(product);
+          } else {
+            typeProductObj[product.productType] = [];
+            typeProductObj[product.productType].push(product);
+          }
+        })
+        const typeProductEntries = Object.entries(typeProductObj);
+        this.productGroupings = typeProductEntries
+          .map((entry) => {
+            return { type: entry[0], products: (entry[1] as IProduct[]) }
+          })
+          .sort(
+            (a, b) => a.type.toLowerCase() < b.type.toLowerCase() 
+              ? -1 
+              : a.type.toLowerCase() > b.type.toLowerCase()
+              ? 1
+              : 0
+          );
+
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -402,11 +428,6 @@ export interface ITankDTO {
   product?: string;
   facilityId: number;
   // applicationId?: string;
-}
-
-export interface IProduct {
-  id: number;
-  name: string;
 }
 
 export interface IApplicationType {
