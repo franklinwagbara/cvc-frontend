@@ -29,7 +29,6 @@
     <button
       id="back-to-view-all-btn"
       [routerLink]="'/company/cvc-applications'"
-      class="my-4"
       [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
       mat-button
     >
@@ -68,41 +67,6 @@
         ></app-application-view-table>
       </div>
       <div class="application-controls">
-        <mat-expansion-panel [expanded]="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <ng-container *ngIf="application?.appHistories?.length; else noInfo">
-            <div
-              class="card-list"
-              *ngFor="let history of application?.appHistories | firstN : 3"
-            >
-              <div class="card-item">
-                <div class="item-title">Initiator</div>
-                <div class="item-content">{{ history.triggeredBy }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Recipient</div>
-                <div class="item-content">{{ history.targetedTo }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Action</div>
-                <div class="item-content">{{ history.action }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Remark</div>
-                <div class="item-content">{{ history.comment }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Date</div>
-                <div class="item-content">{{ history.date }}</div>
-              </div>
-            </div>
-            <p class="show-more" (click)="showMore('appHistory')">Show All</p>
-          </ng-container>
-        </mat-expansion-panel>
-
         <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>

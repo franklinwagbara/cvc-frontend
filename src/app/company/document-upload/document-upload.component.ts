@@ -253,7 +253,7 @@ export class DocumentUploadComponent implements OnInit {
       },
     };
 
-    const dialogRef = this.dialog.open(
+    this.dialog.open(
       operationsConfiguration['additionalDocuments'].form,
       {
         data: {
@@ -261,14 +261,6 @@ export class DocumentUploadComponent implements OnInit {
         },
       }
     );
-
-    dialogRef.afterClosed().subscribe((res) => {
-      if (res) {
-        this.progressBar.open();
-
-        this.getUploadDocuments();
-      }
-    });
   }
 
   get hasUploadedAllRequiredDocs(): boolean {
