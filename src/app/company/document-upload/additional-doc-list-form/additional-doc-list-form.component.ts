@@ -4,7 +4,6 @@ import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
 import { AppException } from '../../../../../src/app/shared/exceptions/AppException';
 import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
-import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 
 import {
   ChangeDetectionStrategy,
@@ -28,6 +27,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { DocumentConfig, DocumentInfo } from '../document-upload.component';
+import { PopupService } from 'src/app/shared/services/popup.service';
 
 @Component({
   selector: 'app-additional-doc-list-form',
@@ -49,12 +49,12 @@ export class AdditionalDocListFormComponent implements OnInit {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<AdditionalDocListFormComponent>,
-    private snackBar: MatSnackBar,
     private adminServe: AdminService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private applicationService: ApplyService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {
     // this.loading$.next(false);
     // this.modalSize$.next(false);
@@ -106,12 +106,10 @@ export class AdditionalDocListFormComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
+        console.error(error);
         this.snackBar.open(
           'Something went wrong while trying to add additional documents.',
-          null,
-          {
-            panelClass: ['error'],
-          }
+          'error'
         );
         this.cd.markForCheck();
       },
@@ -148,26 +146,6 @@ export class AdditionalDocListFormComponent implements OnInit {
 
     this.additionalDocuments$.next(additionalDocuments);
     this.dialogRef.close();
-    // this.adminServe.addDocuments(this.form.value).subscribe({
-    //   next: (res) => {
-    //     if (res.success) {
-    //       this.snackBar.open(
-    //         'Permit Stage document was created successfull!',
-    //         null,
-    //         {
-    //           panelClass: ['success'],
-    //         }
-    //       );
-
-    //       this.dialogRef.close();
-    //     }
-    //   },
-    //   error: (error: AppException) => {
-    //     this.snackBar.open(error.message, null, {
-    //       panelClass: ['error'],
-    //     });
-    //   },
-    // });
   }
 
   onItemSelect(event: ListItem) {
