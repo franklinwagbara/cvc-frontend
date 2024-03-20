@@ -55,6 +55,7 @@ import { StsApplicationsComponent } from './sts-applications/sts-applications.co
 import { RecipientsViewComponent } from './sts-applications/recipients-view/recipients-view.component';
 import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-paymentsum.component';
 import { MatSelectModule } from '@angular/material/select';
+import { StsDocumentUploadComponent } from './apply/sts-document-upload/sts-document-upload.component';
 
 @NgModule({
   imports: [
@@ -115,6 +116,7 @@ import { MatSelectModule } from '@angular/material/select';
     StsApplicationsComponent,
     RecipientsViewComponent,
     DebitnotePaymentsumComponent,
+    StsDocumentUploadComponent,
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } },

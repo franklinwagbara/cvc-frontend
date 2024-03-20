@@ -1,0 +1,73 @@
+<section class="mt-6 flex flex-col justify-center">
+  <h2 class="page-title mx-4">UPLOAD APPLICATION DOCUMENTS</h2>
+  <div class="mx-5">
+    <div class="guidlines">
+      <h3>Please Note:</h3>
+      <ul>
+        <li>
+          All documents listed below are required and must be uploaded.
+          Subsequently, other documents may be needed and will be added to this
+          list.
+        </li>
+        <li>
+          The maximum file size allowed is <strong>20MB</strong> per document,
+          any file size greater than this value will not be uploaded.
+        </li>
+        <li>
+          Only <strong>JPEG</strong>, <strong>PNG</strong>,
+          <strong>JPG</strong>, and <strong>PDF</strong> file types are allowed
+          on this platform.
+        </li>
+      </ul>
+    </div>
+
+    <div class="required"><h3>* Required Documents</h3></div>
+    <generic-table
+      [noTitle]="true"
+      [title-color]="'teal'"
+      [table_controls_horizontal]="true"
+      [table_keysMappedToHeaders]="applicationTableKeysMappedToHeaders"
+      [table_content]="documents$ | async"
+      [noEditControl]="true"
+      [noCheckControls]="true"
+      [noAddOrDeleteButton]="true"
+      [pageSize]="30"
+      (onFileUpload)="uploadFile($event)"
+    >
+    </generic-table>
+
+    <!-- <div class="required-blue"><h3>Additional Documents</h3></div> -->
+    <div class="mt-10 ml-3">
+      <button
+        mat-raised-button
+        class="bg-slate-200 p-2 px-3"
+        (click)="getListOfAdditionalDocuments()"
+      >
+        Add Additional Documents
+      </button>
+    </div>
+    <generic-table
+      *ngIf="additionalDocuments$ | async"
+      [noTitle]="true"
+      [title-color]="'teal'"
+      [table_controls_horizontal]="true"
+      [table_keysMappedToHeaders]="applicationTableKeysMappedToHeaders"
+      [table_content]="additionalDocuments"
+      [noEditControl]="true"
+      [noCheckControls]="true"
+      [noAddOrDeleteButton]="true"
+      (onFileUpload)="uploadAdditionalFile($event)"
+    >
+    </generic-table>
+  </div>
+
+  <button
+    [disabled]="!hasUploadedAllRequiredDocs"
+    [routerLink]="['/sts-applications']"
+    mat-raised-button
+    color="primary"
+    class="upload-button"
+  >
+    Done
+  </button>
+</section>

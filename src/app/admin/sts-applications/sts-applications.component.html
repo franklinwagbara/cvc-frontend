@@ -4,6 +4,7 @@
     <div class="table-wrapper">
       <generic-table
         [EnableViewRecipientControl]="true"
+        [enableViewDocumetsControl]="true"
         [title-color]="'teal'"
         [table_controls_horizontal]="true"
         [table_keysMappedToHeaders]="appKeysMappedToHeaders"
@@ -13,6 +14,7 @@
         [noAddOrDeleteButton]="true"
         [noTitle]="true"
         (onViewData)="viewRecipients($event)"
+        (onViewDocuments)="viewdocuments($event)"
         [flat]="true"
       >
       </generic-table>
