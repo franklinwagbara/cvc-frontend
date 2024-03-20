@@ -169,7 +169,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
         columnDef: 'action_controls',
         header: 'Action Controls',
         cell: (item: Application) => {
-          if (item.rrr && item?.paymentStatus.toLowerCase() === 'processing') 
+          if (item.rrr && item?.paymentStatus?.toLowerCase() === 'processing') 
             return '';
           else if (
             item.rrr &&
