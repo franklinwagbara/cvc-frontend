@@ -191,7 +191,7 @@
     <div class="application-controls">
       <h3 class="text-slate-500">Other Information</h3>
 
-      <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel *ngIf="!isCompany" expanded>
         <mat-expansion-panel-header>
           <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
         </mat-expansion-panel-header>
@@ -230,7 +230,7 @@
         </ng-container>
       </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
           <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
         </mat-expansion-panel-header>

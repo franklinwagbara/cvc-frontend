@@ -118,7 +118,8 @@ export class JettySettingComponent implements OnInit {
         selectData: this.states, 
         placeholder: 'Jetty State' 
       },
-      location: { 
+      location: {
+        validator: [Validators.required],
         value: data?.location || '', 
         placeholder: 'Jetty Location' 
       },
@@ -170,12 +171,13 @@ export class JettySettingComponent implements OnInit {
       },
       state: { 
         validator: [Validators.required],
-        value: value.state, 
+        value: value.state,
         select: true,
         selectData: this.states,
         placeholder: 'Jetty State'
       },
-      location: { 
+      location: {
+        validator: [Validators.required],
         value: value.location,
         placeholder: 'Jetty Location'
       },
