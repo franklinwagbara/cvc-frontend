@@ -19,15 +19,11 @@
           [formControlName]="entry[0]"
           class="form-control"
           [ngClass]="{'is-invalid': form.get(entry[0])?.touched && form.get(entry[0])?.invalid}"
+          [selectedIndex]="data.formType === 'Edit' && isNumber(entry[1].value) ? entry[1]?.value : -1"
         >
           <option value="" [selected]="!entry[1].value">-- Select an option --</option>
-          <ng-container *ngIf="data.formType === 'Edit'">
-            <option [selected]="entry[1]?.value" [value]="entry[1]?.value">
-              {{ selectedValue(entry[0], entry[1].value) }}
-            </option>
-          </ng-container>
           <option [value]="val.id" *ngFor="let val of entry[1]?.selectData">
-            {{ val.name | uppercase }}
+            {{ val.name }}
           </option>
         </select>
       </ng-container>

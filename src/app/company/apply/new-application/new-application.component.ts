@@ -106,7 +106,6 @@ export class NewApplicationComponent implements OnInit {
     });
 
     this.vesselForm.controls['jetty'].valueChanges.subscribe((val) => {
-      console.log('Vessel Form Jetty changes ============== ', val);
       if (val) {
         this.vesselForm.controls['jettyName'].setValue(
           this.jetties.find((el) => el.id === parseInt(val))?.name
@@ -138,7 +137,7 @@ export class NewApplicationComponent implements OnInit {
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.spinner.close();
         this.popUp.open('Something went wrong while fetching jetties', 'error');
         this.cd.markForCheck();
