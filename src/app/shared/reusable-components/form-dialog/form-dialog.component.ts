@@ -51,6 +51,10 @@ export class FormDialogComponent implements OnInit {
   trackByFn(index: number) {
     return index;
   }
+
+  isNumber(val: any): boolean {
+    return typeof val === 'number';
+  }
 }
 
 type InputType = 'text' | 'number' | 'email' | 'file' | 'checkbox' | 'radio' | 'password';

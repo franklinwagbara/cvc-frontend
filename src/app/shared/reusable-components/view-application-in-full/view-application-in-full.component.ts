@@ -30,6 +30,7 @@ export class ViewApplicationInFullComponent implements OnInit {
   isPDF = Util.isPDF;
   isIMG = Util.isIMG;
   loading: boolean;
+  isCompany: boolean;
 
   constructor(
     private router: Router,
@@ -43,6 +44,7 @@ export class ViewApplicationInFullComponent implements OnInit {
     private snackBar: MatSnackBar,
     public location: Location
   ) {
+    this.isCompany = auth.isCompany;
     this.route.queryParams.subscribe((value: Params) => {
       this.appId = parseInt(value['id']);
       this.appSource = value['appSource'];
@@ -88,14 +90,6 @@ export class ViewApplicationInFullComponent implements OnInit {
         this.cd.markForCheck();
       },
     });
-  }
-
-  public get isSupervisor() {
-    return (this.currentUser as any).userRoles === 'Supervisor';
-  }
-
-  public get isCompany() {
-    return (this.currentUser as any).userRoles.includes(UserType.Company);
   }
 
   isCreatedByMe(scheduleBy: string) {
