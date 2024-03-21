@@ -56,13 +56,18 @@ export class CompanyAddressComponent implements OnInit {
   }
 
   getCompanyProfile(email) {
-    //this.spinner.show('Loading company address');
+    this.spinner.show('Loading company address...');
     this.companyService.getCompanyProfile(email).subscribe({
       next: (res) => {
         this.spinner.close();
         this.address = res.data.registeredAddress;
         this.countries = res.data.nations;
-        //this.addressForm.get('stateId').setValue(this.address?.countryName);
+        this.addressForm.get('stateId').setValue(this.address?.stateId);
+        this.addressForm.get('country_Id').setValue(this.address?.country_Id);
+        this.addressForm.get('address_1').setValue(this.address?.address_1);
+        this.addressForm.get('address_2').setValue(this.address?.address_2);
+        this.addressForm.get('city').setValue(this.address?.city);
+        this.addressForm.get('postal_code').setValue(this.address?.postal_code);
         this.cd.markForCheck();
       },
       error: (error) => {
@@ -93,19 +98,23 @@ export class CompanyAddressComponent implements OnInit {
   }
 
   save() {
-    //this.isSubmitted = true;
-    //if (this.addressForm.invalid) return;
-    this.spinner.show('Saving profile information');
+    // this.isSubmitted = true;
+    if (this.addressForm.invalid) return;
+    this.spinner.show('Saving profile information...');
     const userData = this.addressForm.value;
+
+    userData.stateId = Number(this.addressForm.get('stateId').value);
     this.companyService.updateCompanyAddress(userData).subscribe({
       next: (res) => {
         this.spinner.close();
         this.popupService.open('Record updated successfully', 'success');
+        this.cd.markForCheck();
       },
       error: (error: any) => {
         this.spinner.close();
         console.log(error);
         this.popupService.open('Unable to update profile', 'error');
+        this.cd.markForCheck();
       },
     });
   }

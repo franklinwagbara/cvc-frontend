@@ -1,0 +1,31 @@
+.upload-heading {
+  box-shadow: 1px 1px 1px 0px teal;
+  color: white;
+  @apply flex items-center justify-center h-32 bg-gradient-to-r from-[#314d64] to-[#0f64aa] mx-5 rounded-lg;
+}
+
+.guidlines {
+  @apply mt-3 mb-10 bg-slate-100 p-8 shadow-md rounded-md;
+}
+
+.guidlines ul {
+  @apply list-disc leading-loose tracking-wider;
+}
+
+.required {
+  box-shadow: 1px 1px 1px 0px #9b4a4a;
+  @apply bg-gradient-to-r from-red-200 to-red-400 w-fit py-1 px-4 ml-2 text-slate-100 rounded-lg;
+}
+
+.required-blue {
+  box-shadow: 1px 1px 1px 0px blue;
+  @apply mt-20 bg-gradient-to-r from-blue-200 to-blue-400 w-fit py-1 px-4 ml-2 text-slate-100 rounded-lg;
+}
+
+h3 {
+  @apply text-lg;
+}
+
+.upload-button {
+  @apply my-5 mx-auto px-5 py-1;
+}

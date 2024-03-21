@@ -24,6 +24,7 @@ import { DischargeClearanceFormComponent } from '../discharge-clearance-form/dis
 import { ProgressBarService } from '../../services/progress-bar.service';
 import { PopupService } from '../../services/popup.service';
 import { LibaryService } from '../../services/libary.service';
+import { GenericService } from '../../services';
 
 interface IColumn {
   columnDef: string;
@@ -44,6 +45,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() enableGenerateRRR = false;
   @Input() enableConfirmPayment = false;
   @Input() enableUploadDocument = false;
+  @Input() enableSTSDocumentUpload = false;
+  @Input() enableViewDocumetsControl = false;
   @Input() enableViewTank: boolean = false;
   @Input('title-color') titleColorProp?: string = 'slate';
   @Input() noTitle = false;
@@ -69,8 +72,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewDebitNotesControl') enableViewDebitNotesControl?: boolean =
     false;
-  @Input('EnableViewDNPaymentSummary') enableViewDebitNotePaymentSummary?: boolean =
-    false;
+  @Input('EnableViewDNPaymentSummary')
+  enableViewDebitNotePaymentSummary?: boolean = false;
   @Input('EnableGenDebitNoteControl') enableGenDebitNoteControl?: boolean =
     false;
   @Input('EnableViewCoQCertControl') enableViewCoQCertControl?: boolean = false;
@@ -78,9 +81,8 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
     false;
   @Input('EnableViewRecipientControl') enableViewRecipientControl?: boolean =
     false;
-  @Input('EnableResubmit') enableResubmit?: boolean =
-    false;
-  
+  @Input('EnableResubmit') enableResubmit?: boolean = false;
+
   @Input('table_keysMappedToHeaders')
   keysMappedToHeaders: ITableKeysMappedToHeaders | any = {};
   @Input() table_controls_horizontal = false;
@@ -91,6 +93,7 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
   @Output() onEditData = new EventEmitter<any>();
   @Output() onInitiateCoQ = new EventEmitter<any>();
   @Output() onViewData = new EventEmitter<any>();
+  @Output() onViewDocuments = new EventEmitter<any>();
   @Output() onViewCoQCerts = new EventEmitter<any>();
   @Output() onViewCoQCert = new EventEmitter<any>();
   @Output() onViewDebitNotes = new EventEmitter<any>();
@@ -177,8 +180,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
             !['processing', 'completed'].includes(item.status.toLowerCase())
           )
             return 'uploadDocument_control';
-          else if (item.rrr && !item?.status?.toLowerCase()?.includes('completed')
-            && !item?.paymentStatus?.toLowerCase()?.includes('confirmed')
+          else if (
+            item.rrr &&
+            !item?.status?.toLowerCase()?.includes('completed') &&
+            !item?.paymentStatus?.toLowerCase()?.includes('confirmed')
           )
             return 'confirmPayment_control';
           else if (!item.rrr) return 'rrr_control';
@@ -203,6 +208,22 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       });
     }
 
+    if (this.enableSTSDocumentUpload) {
+      this.columns.push({
+        columnDef: 'sts_document_upload_control',
+        header: '',
+        cell: (item) => 'sts_document_upload_control',
+      });
+    }
+
+    if (this.enableViewDocumetsControl) {
+      this.columns.push({
+        columnDef: 'document_view_control',
+        header: '',
+        cell: (item) => 'document_view_control',
+      });
+    }
+
     if (this.enableViewControl) {
       this.columns.push({
         columnDef: 'view_control',
@@ -215,16 +236,16 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
       this.columns.push({
         columnDef: 'resubmit_control',
         header: '',
-        cell: (item) => 'resubmit_control'
-      })
+        cell: (item) => 'resubmit_control',
+      });
     }
 
     if (this.enableViewDebitNotePaymentSummary) {
       this.columns.push({
         columnDef: 'view_debit_note_payment_summary',
         header: '',
-        cell: (item) => 'view_debit_note_payment_summary'
-      })
+        cell: (item) => 'view_debit_note_payment_summary',
+      });
     }
 
     if (this.enableGenDebitNoteControl) {
@@ -373,6 +394,10 @@ export class TableComponent implements OnInit, OnChanges, AfterViewInit {
 
   viewData(row: any) {
     this.onViewData.emit(row);
+  }
+
+  viewDocument(row: any) {
+    this.onViewDocuments.emit(row);
   }
 
   viewDebitNotes(row: any) {

@@ -161,7 +161,7 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   getCompanyProfile(email) {
-    //this.spinner.show('Loading company profile');
+    this.spinner.show('Loading company profile...');
     this.companyService.getCompanyProfile(email.toLowerCase()).subscribe({
       next: (res) => {
         this.spinner.close();
@@ -191,6 +191,9 @@ export class CompanyProfileComponent implements OnInit {
       ...this.profileForm.value,
       operatingFacilityId: this.operatingFacility?.id,
     };
+    userData.operatingFacilityId = this.profileForm.get(
+      'operatingFacilityId'
+    ).value;
 
     forkJoin([
       this.companyService.updateCompanyProfile(userData, this.email),
@@ -214,7 +217,7 @@ export class CompanyProfileComponent implements OnInit {
             // } else if (this.registeredAddress == null) {
             //   window.location.assign('company/companyinformation/companyaddress');
           } else {
-            window.location.reload();
+            // window.location.reload();
           }
         }, 1000);
 

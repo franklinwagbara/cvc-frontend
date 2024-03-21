@@ -1,10 +1,17 @@
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ListItem } from 'ng-multiselect-dropdown/multiselect.model';
-import { forkJoin, Subject } from 'rxjs';
+import { BehaviorSubject, forkJoin, Subject } from 'rxjs';
+import { AppException } from '../../../../../src/app/shared/exceptions/AppException';
 import { AdminService } from '../../../../../src/app/shared/services/admin.service';
 import { ApplyService } from '../../../../../src/app/shared/services/apply.service';
 
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -26,17 +33,18 @@ import { PopupService } from 'src/app/shared/services/popup.service';
   selector: 'app-additional-doc-list-form',
   templateUrl: './additional-doc-list-form.component.html',
   styleUrls: ['./additional-doc-list-form.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdditionalDocListFormComponent implements OnInit {
   public form: FormGroup;
-  public docs$ = new Subject<DocumentType[]>();
+  public docs$ = new BehaviorSubject<DocumentType[]>([]);
   public docs: DocumentType[];
   public documentConfig: DocumentConfig;
-  public additionalDocuments$: Subject<DocumentInfo[]>;
+  public additionalDocuments$: BehaviorSubject<DocumentInfo[]>;
   public selectedDocs = [];
   public docsDropdownSettings: IDropdownSettings = {};
-  public loading$ = new Subject<boolean>();
-  public modalSize$ = new Subject<boolean>();
+  public loading$ = new BehaviorSubject<boolean>(false);
+  public modalSize$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -44,11 +52,12 @@ export class AdditionalDocListFormComponent implements OnInit {
     private adminServe: AdminService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private popUp: PopupService,
-    private applicationService: ApplyService
+    private applicationService: ApplyService,
+    private cd: ChangeDetectorRef,
+    private snackBar: MatSnackBar
   ) {
-    this.loading$.next(true);
-    this.modalSize$.next(false);
+    // this.loading$.next(false);
+    // this.modalSize$.next(false);
     this.documentConfig = data.data.documentConfig;
     this.additionalDocuments$ = data.data.additionalDocuments$;
 
@@ -72,7 +81,6 @@ export class AdditionalDocListFormComponent implements OnInit {
 
   getListOfDocuments() {
     this.loading$.next(true);
-
     forkJoin([
       this.applicationService.getAllCompanyDocuments(
         'company',
@@ -93,14 +101,17 @@ export class AdditionalDocListFormComponent implements OnInit {
         this.docs = data;
         this.docs$.next(data);
         this.loading$.next(false);
+
         this.modalSize$.next(true);
+        this.cd.markForCheck();
       },
       error: (error: unknown) => {
         console.error(error);
-        this.popUp.open(
+        this.snackBar.open(
           'Something went wrong while trying to add additional documents.',
           'error'
         );
+        this.cd.markForCheck();
       },
     });
   }
