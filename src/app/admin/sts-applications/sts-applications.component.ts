@@ -8,11 +8,12 @@ import { LibaryService } from 'src/app/shared/services/libary.service';
 import { ShipToShipService } from 'src/app/shared/services/ship-to-ship.service';
 import { IProduct } from 'src/app/shared/interfaces/IProduct';
 import { IVessel } from 'src/app/shared/interfaces/IVessel';
+import { ViewStsDocumentComponent } from './view-sts-document/view-sts-document.component';
 
 @Component({
   selector: 'app-sts-applications',
   templateUrl: './sts-applications.component.html',
-  styleUrls: ['./sts-applications.component.css']
+  styleUrls: ['./sts-applications.component.css'],
 })
 export class StsApplicationsComponent implements OnInit {
   applications: any[];
@@ -25,7 +26,7 @@ export class StsApplicationsComponent implements OnInit {
     loadingPort: 'Loading Port',
     transferDate: 'Transfer Date',
     totalVolume: 'Product Volume',
-  }
+  };
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -39,7 +40,7 @@ export class StsApplicationsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchAllData();
   }
-  
+
   fetchAllData(): void {
     this.spinner.show('Loading applications...');
     this.getApplications();
@@ -57,9 +58,12 @@ export class StsApplicationsComponent implements OnInit {
         console.log(error);
         this.spinner.close();
         this.cdr.markForCheck();
-        this.popUp.open(`Something went wrong while fetching applications`, 'error');
-      }
-    })
+        this.popUp.open(
+          `Something went wrong while fetching applications`,
+          'error'
+        );
+      },
+    });
   }
 
   getProducts(): void {
@@ -78,13 +82,23 @@ export class StsApplicationsComponent implements OnInit {
   }
 
   viewRecipients(row: any) {
-    let recipientVessels = this.applications.find((el) => el.id === row.id)?.transferDetails;
+    let recipientVessels = this.applications.find(
+      (el) => el.id === row.id
+    )?.transferDetails;
     recipientVessels = recipientVessels.map((v: IVessel) => {
-      return { ...v, product: this.products.find((p) => p.id === v.productId)?.name }
-    })
+      return {
+        ...v,
+        product: this.products.find((p) => p.id === v.productId)?.name,
+      };
+    });
     this.dialog.open(RecipientsViewComponent, {
-      data: { vessels: recipientVessels }
+      data: { vessels: recipientVessels },
     });
   }
 
+  viewdocuments(row) {
+    this.dialog.open(ViewStsDocumentComponent, {
+      data: row,
+    });
+  }
 }

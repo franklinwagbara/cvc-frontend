@@ -127,6 +127,7 @@ import { ReadingsModalComponent } from './application/ppcoq-application-view/ppc
 import { PpcoqApplicationViewTableComponent } from './application/ppcoq-application-view/ppcoq-application-view-table/ppcoq-application-view-table.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PpcoqApplicationViewComponent } from './application/ppcoq-application-view/ppcoq-application-view.component';
+import { ViewStsDocumentComponent } from './sts-applications/view-sts-document/view-sts-document.component';
 
 @NgModule({
   declarations: [
@@ -226,6 +227,7 @@ import { PpcoqApplicationViewComponent } from './application/ppcoq-application-v
     ReadingsModalComponent,
     PpcoqApplicationViewTableComponent,
     PpcoqApplicationViewComponent,
+    ViewStsDocumentComponent,
   ],
 
   imports: [

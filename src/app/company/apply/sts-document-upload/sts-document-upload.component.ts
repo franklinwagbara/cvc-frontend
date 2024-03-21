@@ -1,23 +1,24 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ProgressBarService } from '../../../../src/app/shared/services/progress-bar.service';
+import { ProgressBarService } from 'src/app/shared/services/progress-bar.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApplyService } from '../../../../src/app/shared/services/apply.service';
+import { ApplyService } from 'src/app/shared/services/apply.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ApplicationService } from '../../../../src/app/shared/services/application.service';
-import { PopupService } from '../../../../src/app/shared/services/popup.service';
-import { AdditionalDocListFormComponent } from './additional-doc-list-form/additional-doc-list-form.component';
+import { ApplicationService } from 'src/app/shared/services/application.service';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { AdditionalDocListFormComponent } from '../../document-upload/additional-doc-list-form/additional-doc-list-form.component';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { GenericService } from 'src/app/shared/services';
 import { Util } from 'src/app/shared/lib/Util';
+import { ShipToShipService } from 'src/app/shared/services/ship-to-ship.service';
 
 @Component({
-  selector: 'app-document-upload',
-  templateUrl: './document-upload.component.html',
-  styleUrls: ['./document-upload.component.css'],
+  selector: 'app-sts-document-upload',
+  templateUrl: './sts-document-upload.component.html',
+  styleUrls: ['./sts-document-upload.component.css'],
 })
-export class DocumentUploadComponent implements OnInit {
+export class StsDocumentUploadComponent implements OnInit {
   public application_id: number;
   public documentConfig: DocumentConfig;
   public documents$ = new Subject<DocumentInfo[]>();
@@ -44,9 +45,10 @@ export class DocumentUploadComponent implements OnInit {
     public appService: ApplicationService,
     private popUp: PopupService,
     private router: Router,
+    private stsService: ShipToShipService,
     private cd: ChangeDetectorRef,
     private spinner: SpinnerService,
-    private generic: GenericService,
+    private generic: GenericService
   ) {}
 
   ngOnInit(): void {
@@ -63,27 +65,28 @@ export class DocumentUploadComponent implements OnInit {
   private docSourcePredicate(docSource: string) {
     return docSource
       ? `<a href="${docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/otherFileType.png" /></a>`
-      : `<img width="20" ../../../../src="assets/image/no-document.png" />`; 
-  } 
+      : `<img width="20" ../../../../src="assets/image/no-document.png" />`;
+  }
 
   private imgDocSourcePredicate(docSource: string) {
     return docSource && this.isIMG(docSource)
-    ? `<a href="${docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/imageIcon.png" /></a>`
-    : this.docSourcePredicate(docSource)
-  } 
+      ? `<a href="${docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/imageIcon.png" /></a>`
+      : this.docSourcePredicate(docSource);
+  }
 
   getUploadDocuments() {
     this.progressBar.open();
     this.spinner.open();
 
-    this.appService.getUploadDocuments(this.application_id).subscribe({
+    this.stsService.getUploadSTSDocuments(this.application_id).subscribe({
       next: (res) => {
         this.documents = res.data.docs;
 
         this.documents = this.documents.map((d) => {
-          d.source = d.docSource && this.isPDF(d.docSource)
-            ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-            : this.imgDocSourcePredicate(d.docSource);
+          d.source =
+            d.docSource && this.isPDF(d.docSource)
+              ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+              : this.imgDocSourcePredicate(d.docSource);
 
           if (d.docSource) d.available = 'Document Uploaded';
           else d.available = 'Not Uploaded';
@@ -146,9 +149,10 @@ export class DocumentUploadComponent implements OnInit {
               d.docSource = res?.FileId > 0 && !!res?.name ? res.source : null;
               d.fileId = res?.FileId;
               d.available = 'Document Uploaded';
-              d.source = d.docSource && this.isPDF(d.docSource)
-                ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
-                : this.imgDocSourcePredicate(d.docSource);
+              d.source =
+                d.docSource && this.isPDF(d.docSource)
+                  ? `<a href="${d.docSource}" target="_blank" rel="noopener noreferrer"><img width="20" ../../../../src="assets/image/pdfIcon.png" /></a>`
+                  : this.imgDocSourcePredicate(d.docSource);
             }
 
             return d;
@@ -162,7 +166,7 @@ export class DocumentUploadComponent implements OnInit {
           this.spinner.close();
           this.cd.markForCheck();
         },
-        error: (error: unknown) => { 
+        error: (error: unknown) => {
           console.error(error);
           this.progressBar.close();
           this.snackBar.open('File upload was not successfull.', null, {
@@ -173,7 +177,6 @@ export class DocumentUploadComponent implements OnInit {
         },
       });
   }
-
 
   uploadAdditionalFile(data) {
     const fileEvent = data.file;
@@ -206,7 +209,7 @@ export class DocumentUploadComponent implements OnInit {
         doc.docType,
         '',
         formdata,
-        action,
+        action
       )
       .subscribe({
         next: (res) => {
@@ -253,14 +256,11 @@ export class DocumentUploadComponent implements OnInit {
       },
     };
 
-    this.dialog.open(
-      operationsConfiguration['additionalDocuments'].form,
-      {
-        data: {
-          data: operationsConfiguration['additionalDocuments'].data,
-        },
-      }
-    );
+    this.dialog.open(operationsConfiguration['additionalDocuments'].form, {
+      data: {
+        data: operationsConfiguration['additionalDocuments'].data,
+      },
+    });
   }
 
   get hasUploadedAllRequiredDocs(): boolean {
@@ -270,35 +270,7 @@ export class DocumentUploadComponent implements OnInit {
     return false;
   }
 
-  submitApplication() {
-    if (!this.hasUploadedAllRequiredDocs) {
-      this.popUp.open('All Required Documents Must Be Uploaded', 'error');
-      return;
-    }
-
-    this.spinner.show('Submitting application...');
-
-    const payload = {
-      appId: Number(this.application_id),
-      docs: [...this.documents, ...this.additionalDocuments],
-    };
-
-    this.applicationService.submitApplication(payload).subscribe({
-      next: (res) => {
-        this.spinner.close();
-        // this.popUp.open('Document(s) upload was successfull.', 'success');
-        this.popUp.open('Application was submitted successfully', 'success');
-        this.router.navigate(['/company/cvc-applications']);
-        this.cd.markForCheck();
-      },
-      error: (res: unknown) => {
-        this.spinner.close();
-        // this.popUp.open('Document(s) upload failed!', 'error');
-        this.popUp.open('Application submission failed!', 'error');
-        this.cd.markForCheck();
-      },
-    });
-  }
+ 
 }
 
 export class DocumentConfig {

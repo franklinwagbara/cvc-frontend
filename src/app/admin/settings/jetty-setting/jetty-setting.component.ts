@@ -11,6 +11,10 @@ import {
 import { JettyService } from '../../../../../src/app/shared/services/jetty.service';
 import { ProgressBarService } from '../../../../../src/app/shared/services/progress-bar.service';
 import { SpinnerService } from '../../../../../src/app/shared/services/spinner.service';
+import { IJettyGroup } from 'src/app/shared/interfaces/IJettyGroup';
+import { PopupService } from 'src/app/shared/services/popup.service';
+import { LibaryService } from 'src/app/shared/services/libary.service';
+import { IState } from 'src/app/shared/interfaces/IState';
 
 @Component({
   selector: 'app-jetty-setting',
@@ -18,77 +22,137 @@ import { SpinnerService } from '../../../../../src/app/shared/services/spinner.s
   styleUrls: ['./jetty-setting.component.css'],
 })
 export class JettySettingComponent implements OnInit {
-  jettyData: IJetty[];
+  jettyGroupings: IJettyGroup[];
+  jetties: IJetty[];
+  states: IState[];
+
   jettyKeysMappedToHeaders = {
-    id: 'Id',
-    name: 'Name',
+    name: 'Name (Location)',
+    state: 'State',
   };
 
   constructor(
     private dialog: MatDialog,
     private jettyService: JettyService,
     private spinner: SpinnerService,
-    private snackBar: MatSnackBar,
     private cd: ChangeDetectorRef,
-    private progressBar: ProgressBarService
+    private progressBar: ProgressBarService,
+    private popUp: PopupService,
+    private library: LibaryService,
   ) {}
 
   ngOnInit(): void {
     this.spinner.open();
-    this.getAllJetty();
+    this.fetchAllData();
   }
 
   getAllJetty(): void {
     this.jettyService.getAllJetty().subscribe({
       next: (res: any) => {
-        this.jettyData = res?.data;
+        this.jettyGroupings = res?.data;
+        this.jetties = [];
+        this.jettyGroupings.forEach((grp) => {
+          let jetties = grp?.jetties;
+          const state = this.states.find(
+            (s) => s.name.toLowerCase() === grp.groupName.toLowerCase()
+          )?.id;
+          if (jetties?.length) {
+            jetties = jetties.map((el) => ({...el, state}));
+            this.jetties.push(...jetties);
+          }
+        })
         this.spinner.close();
         this.progressBar.close();
       },
       error: (error: unknown) => {
-        console.log(error);
-        this.snackBar.open('Something went wrong while fetching jetty', null, {
-          panelClass: ['error'],
-        });
+        console.error(error);
+        this.popUp.open('Something went wrong while fetching jetty', 'error');
         this.spinner.close();
         this.progressBar.close();
       },
     });
   }
 
+  fetchAllData(): void {
+    forkJoin([
+      this.jettyService.getAllJetty(),
+      this.library.getStates()
+    ]).subscribe({
+      next: (res: any[]) => {
+        this.jettyGroupings = res[0]?.data;
+        this.states = res[1]?.data;
+        this.jetties = [];
+        this.jettyGroupings.forEach((grp) => {
+          let jetties = grp?.jetties;
+          const state = this.states.find(
+            (s) => s.name.toLowerCase() === grp.groupName.toLowerCase()
+          )?.id;
+          if (jetties?.length) {
+            jetties = jetties.map((el) => ({...el, state}));
+            this.jetties.push(...jetties);
+          }
+        });
+        this.spinner.close();
+        this.progressBar.close();
+      },
+      error: (error: unknown) => {
+        console.error(error);
+        this.popUp.open('Something went wrong while fetching page data', 'error');
+        this.spinner.close();
+        this.progressBar.close();
+      },
+    })
+  }
+
   addData(data?: any): void {
     const formData: FormKeysProp = {
-      name: { validator: [Validators.required], value: data?.name || '' },
+      name: { 
+        validator: [Validators.required], 
+        value: data?.name || '', 
+        placeholder: 'Jetty Name', 
+      },
+      state: { 
+        validator: [Validators.required], 
+        value: data?.state || '', 
+        select: true, 
+        selectData: this.states, 
+        placeholder: 'Jetty State' 
+      },
+      location: {
+        validator: [Validators.required],
+        value: data?.location || '', 
+        placeholder: 'Jetty Location' 
+      },
     };
+
     const dialogRef = this.dialog.open(FormDialogComponent, {
       data: { title: 'New Jetty', formData, formType: 'Create' },
     });
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        const { state, name, location } = result;
+        const model = { stateId: state, name, location };
         this.progressBar.open();
-        this.jettyService.createJetty(result).subscribe({
+        this.jettyService.createJetty(model).subscribe({
           next: (val: any) => {
             this.progressBar.close();
             if (!val.success) {
-              this.snackBar.open(
+              this.popUp.open(
                 'Failed to create Jetty. Please try again.',
-                null,
-                { panelClass: ['error'] }
+                'error'
               );
               return;
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open('Jetty created successfully', null, {
-              panelClass: ['success'],
-            });
+            this.popUp.open('Jetty created successfully', 'success');
           },
           error: (error: unknown) => {
             console.log(error);
-            this.snackBar.open(
+            this.popUp.open(
               'Something went wrong while creating jetty',
-              null,
-              { panelClass: ['error'] }
+              'error'
             );
             this.progressBar.close();
             this.addData(result);
@@ -100,36 +164,50 @@ export class JettySettingComponent implements OnInit {
 
   editData(value: any): void {
     const formData: FormKeysProp = {
-      id: { value: value.id, disabled: true },
-      name: { validator: [Validators.required], value: value.name },
+      name: { 
+        validator: [Validators.required], 
+        value: value.name,
+        placeholder: 'Jetty Name'
+      },
+      state: { 
+        validator: [Validators.required],
+        value: value.state,
+        select: true,
+        selectData: this.states,
+        placeholder: 'Jetty State'
+      },
+      location: {
+        validator: [Validators.required],
+        value: value.location,
+        placeholder: 'Jetty Location'
+      },
     };
+
     const dialogRef = this.dialog.open(FormDialogComponent, {
       data: { title: 'Edit Jetty', formData, formType: 'Edit' },
     });
+
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
+        const { state, name, location } = result;
+        const model = { id: value.id, stateId: state, name, location };
         this.progressBar.open();
-        this.jettyService.editJetty(result).subscribe({
+        this.jettyService.editJetty(model).subscribe({
           next: (val: any) => {
             this.progressBar.close();
             if (!val.success) {
-              this.snackBar.open('Failed to edit Jetty.', null, {
-                panelClass: ['error'],
-              });
+              this.popUp.open('Failed to edit Jetty.', 'error');
               return;
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open('Jetty edited successfully', null, {
-              panelClass: ['success'],
-            });
+            this.popUp.open('Jetty edited successfully', 'success');
           },
           error: (error: unknown) => {
-            console.log(error);
-            this.snackBar.open(
+            console.error(error);
+            this.popUp.open(
               'Something went wrong while editing jetty',
-              null,
-              { panelClass: ['error'] }
+              'error'
             );
             this.progressBar.close();
             this.editData(result);
@@ -147,25 +225,22 @@ export class JettySettingComponent implements OnInit {
         next: (responses: any[]) => {
           responses.forEach((res, i) => {
             if (!res?.success) {
-              this.snackBar.open(
+              this.popUp.open(
                 `Failed to delete jetty with id: ${selected[i].id}`,
-                null,
-                { panelClass: ['error'] }
+                'error'
               );
               return;
             }
             this.progressBar.open();
             this.getAllJetty();
-            this.snackBar.open(
-              `Jetty with id: ${selected[i].id} deleted successfully`
+            this.popUp.open(
+              `Jetty with id: ${selected[i].id} deleted successfully`, 'success'
             );
           });
         },
         error: (error: unknown) => {
-          console.log(error);
-          this.snackBar.open('Delete operation could not be processed', null, {
-            panelClass: ['error'],
-          });
+          console.error(error);
+          this.popUp.open('Delete operation could not be processed', 'error');
         },
       });
     }

@@ -155,7 +155,7 @@
     </div>
 
     <div class="fomr-group" style="margin-bottom: 10px">
-      <label>Directorate</label>
+      <label>Trigger Directorate</label>
       <select
         name="directorate"
         formControlName="directorate"
@@ -165,11 +165,36 @@
           --Select from options --
         </option>
         <option 
-          *ngIf="applicationProccess?.directorate"
-          [ngValue]="applicationProccess?.directorate" 
-          [selected]="applicationProccess?.directorate"
+          *ngIf="applicationProccess?.fromDirectorate"
+          [ngValue]="applicationProccess?.fromDirectorate" 
+          [selected]="applicationProccess?.fromDirectorate"
         >
-          {{ applicationProccess?.directorate }}
+          {{ applicationProccess?.fromDirectorate }}
+        </option>
+        <option value="DSSRI">DSSRI</option>
+        <option value="HPPITI">HPPITI</option>
+        <option *ngFor="let dir of directorates" [ngValue]="dir.value">
+          {{ dir.value }}
+        </option>
+      </select>
+    </div>
+
+    <div class="fomr-group" style="margin-bottom: 10px">
+      <label>Target Directorate</label>
+      <select
+        name="directorate"
+        formControlName="directorate"
+        class="form-control"
+      >
+        <option value="" selected>
+          --Select from options --
+        </option>
+        <option 
+          *ngIf="applicationProccess?.toDirectorate"
+          [ngValue]="applicationProccess?.toDirectorate" 
+          [selected]="applicationProccess?.toDirectorate"
+        >
+          {{ applicationProccess?.toDirectorate }}
         </option>
         <option value="DSSRI">DSSRI</option>
         <option value="HPPITI">HPPITI</option>
@@ -278,7 +303,7 @@
   </button>
 
   <button
-    *ngIf="loading"
+    *ngIf="loading" 
     class="!flex !justify-center !items-center"
     mat-mini-fab
     color="disabled"

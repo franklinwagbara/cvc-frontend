@@ -49,7 +49,7 @@ export class homeComponent implements OnInit {
       const user = JSON.parse(localStorage.getItem('currentUser'));
       const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
 
-      if (user?.userRoles.includes(UserType.Company)) {
+      if (user?.userRoles?.includes(UserType.Company)) {
         this.router.navigate([returnUrl || '/company/dashboard']);
       } else this.router.navigate([returnUrl || '/admin']);
       return;

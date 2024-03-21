@@ -204,17 +204,20 @@
 
           <div class="flex flex-col">
             <span class="input-label"> Product </span>
-            <select
+            <mat-select
               type="text"
-              class="border border-t border-b rounded-r p-2"
+              class="border border-t border-b rounded-r p-2 text-left"
               formControlName="productId"
+              placeholder="-- Select Product --"
             >
-              <option value="" [selected]="true">-- Select Product --</option>
-              <option *ngFor="let p of products" [ngValue]="p.id">
-                {{ p.name }}
-              </option>
-            </select>
+              <mat-optgroup *ngFor="let grp of productGroupings" [label]="grp.type">
+                <mat-option *ngFor="let product of grp.products" [value]="product.id">
+                  {{ product.name }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
           </div>
+
 
           <button
             mat-stroked-button
@@ -230,7 +233,7 @@
             <table class="table table-auto data-table">
               <thead>
                 <tr>
-                  <th>Vessel Name</th>
+                  <th>Vessel</th>
                   <th>Imo Number</th>
                   <th>Offtake Volume</th>
                   <th>Product</th>

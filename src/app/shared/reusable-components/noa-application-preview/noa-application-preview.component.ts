@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthenticationService } from '../../services';
+import { Util } from '../../lib/Util';
 
 @Component({
   selector: 'app-noa-application-preview',
@@ -35,17 +36,7 @@ export class NoaApplicationPreviewComponent implements OnInit {
         document.querySelector('#coq-preview-print-wrapper') as HTMLElement
       ).style.display = 'block';
     }, 2000);
-    const printContents = document.querySelector('#noa-application-preview');
-    const windowPrt = window.open(
-      '',
-      '',
-      'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0'
-    );
-    windowPrt.document.write(printContents.innerHTML);
-    windowPrt.document.close();
-    windowPrt.focus();
-    windowPrt.print();
-    windowPrt.close();
+    Util.printHtml('noa-application-preview');
   }
 
   trackByFn(index: number) {

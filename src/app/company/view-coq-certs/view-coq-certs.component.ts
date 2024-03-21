@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoqService } from '../../shared/services/coq.service';
 import { SpinnerService } from '../../shared/services/spinner.service';
@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment';
   templateUrl: './view-coq-certs.component.html',
   styleUrls: ['./view-coq-certs.component.css']
 })
-export class ViewCoqCertsComponent implements OnInit {
+export class ViewCoqCertsComponent implements OnInit, AfterViewInit {
   coqs: any[];
   appId: number;
 
@@ -21,6 +21,8 @@ export class ViewCoqCertsComponent implements OnInit {
     depotName: 'Depot',
     issuedDate: 'Issued Date',
   }
+
+  showFloatingBackBtn = false;
 
   constructor(
     private router: Router,
@@ -48,10 +50,37 @@ export class ViewCoqCertsComponent implements OnInit {
       error: (error: unknown) => {
         console.error(error);
         this.spinner.close();
-        this.popUp.open('No certificate found for this CVC', 'error');
+        this.popUp.open('No CoQ certificates found for this clearance', 'error');
         this.cd.markForCheck();
       }
     })
+  }
+
+  ngAfterViewInit(): void {
+    const scrollListener = () => {
+      let body: HTMLElement;
+      if (document.body) {
+        body = document.body;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      } else {
+        body = document.documentElement;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
+      }
+      const element = body.querySelector('#back-to-clearances');
+     
+      if (element) {
+        let clientRect = element.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 75;
+        if (this.showFloatingBackBtn) {
+          (element as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element as HTMLElement).style.left = '0px';
+        }
+      }
+    }
+    document.addEventListener('scroll', scrollListener);
   }
 
   viewCoQCert(row: any) {

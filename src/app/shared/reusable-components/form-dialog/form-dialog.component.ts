@@ -15,7 +15,7 @@ export class FormDialogComponent implements OnInit {
   formEntries: any[];
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: FormDialogData,
     private dialogRef: MatDialogRef<FormDialogComponent>,
     private fb: FormBuilder
   ) {}
@@ -44,10 +44,27 @@ export class FormDialogComponent implements OnInit {
     }
   }
 
+  selectedValue(formKey: string, selectValue: number): any {
+    return this.data.formData[formKey]?.selectData.find((d: any) => d.id === selectValue)?.name;
+  }
+
   trackByFn(index: number) {
     return index;
+  }
+
+  isNumber(val: any): boolean {
+    return typeof val === 'number';
   }
 }
 
 type InputType = 'text' | 'number' | 'email' | 'file' | 'checkbox' | 'radio' | 'password';
-export type FormKeysProp = {[key: string]: { validator?: ValidatorFn | ValidatorFn[] | null, select?: boolean, inputType?: InputType, value?: any, disabled?: boolean }};
+type FormDialogData = { title: string, formData: any, formType: 'Create' | 'Edit' };
+export type FormKeysProp = {[key: string]: { 
+  validator?: ValidatorFn | ValidatorFn[] | null; 
+  select?: boolean;
+  selectData?: any[]; 
+  inputType?: InputType;
+  value?: any;
+  disabled?: boolean;
+  placeholder?: string;
+}};

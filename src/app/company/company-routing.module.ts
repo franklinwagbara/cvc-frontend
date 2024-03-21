@@ -15,7 +15,6 @@ import { PreviewAppComponent } from './apply/edit-preview/previewapp.component';
 import { PaymentSumComponent } from './payment-summary/paymentsum.component';
 import { DocumentUploadComponent } from './document-upload/document-upload.component';
 import { NewApplicationComponent } from './apply/new-application/new-application.component';
-import { RenewApplicationComponent } from './apply/renew-application/renew-application.component';
 import { ViewApplicationInFullComponent } from '../shared/reusable-components/view-application-in-full/view-application-in-full.component';
 import { ViewCoqCertsComponent } from './view-coq-certs/view-coq-certs.component';
 import { ViewDebitNotesComponent } from './view-debit-notes/view-debit-notes.component';
@@ -24,6 +23,7 @@ import { AuthCompleteProfileGuard } from '../shared/guards/company.guard';
 import { StsApplicationComponent } from './apply/sts-application/sts-application.component';
 import { StsApplicationsComponent } from './sts-applications/sts-applications.component';
 import { DebitnotePaymentsumComponent } from './debitnote-paymentsum/debitnote-paymentsum.component';
+import { StsDocumentUploadComponent } from './apply/sts-document-upload/sts-document-upload.component';
 
 const routes: Routes = [
   {
@@ -73,6 +73,11 @@ const routes: Routes = [
     path: 'sts-applications',
     component: StsApplicationsComponent,
     title: 'CVC & CoQ | Ship-to-Ship Applications',
+  },
+  {
+    path: 'sts-document-upload/:id',
+    component: StsDocumentUploadComponent,
+    title: 'Ship-to-ship Application Document Upload',
   },
   {
     path: 'processing-plant',
@@ -149,7 +154,7 @@ const routes: Routes = [
     path: 'approvals/:appId/debit-notes/:id',
     component: DebitnotePaymentsumComponent,
     // canActivate: [AuthCompleteProfileGuard],
-    title: 'Debit Note Payment Summary | CVC & CoQ Portal'
+    title: 'Debit Note Payment Summary | CVC & CoQ Portal',
   },
   {
     path: 'view-application-in-full/:id',

@@ -37,6 +37,7 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
   public continueUrl: string;
   public canContinueApp = false;
   showFloatingAppAction = false;
+  showFloatingBackBtn = false;
 
   constructor(
     private auth: AuthenticationService,
@@ -45,6 +46,7 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
     public progressBar: ProgressBarService,
     private spinner: SpinnerService,
     public route: ActivatedRoute,
+    private router: Router,
     private cd: ChangeDetectorRef,
     private licenceService: LicenceService,
     public location: Location,
@@ -69,13 +71,27 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
       let body: HTMLElement;
       if (document.body) {
         body = document.body;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
       } else {
         body = document.documentElement;
+        // Enables the scroll event to propagate to the company layout div
+        body.click();
       }
-      let element = body.querySelector('#continue-app-btn-container');
+      const element = body.querySelector('#continue-app-btn-container');
+      const element2 = body.querySelector('#back-to-view-all-btn');
       if (element) {
         let clientRect = element.getBoundingClientRect();
         this.showFloatingAppAction = clientRect.top < 75;
+      }
+      if (element2) {
+        let clientRect = element2.getBoundingClientRect();
+        this.showFloatingBackBtn = clientRect.top < 75;
+        if (this.showFloatingBackBtn) {
+          (element2 as HTMLElement).style.left = clientRect.left + 'px';
+        } else {
+          (element2 as HTMLElement).style.left = '0px';
+        }
       }
     }
     document.addEventListener('scroll', scrollListener);
@@ -196,6 +212,10 @@ export class ViewApplicationComponent implements OnInit, AfterViewInit, OnDestro
 
       this.getApplication();
     });
+  }
+
+  continueApp() {
+    this.router.navigate([this.continueUrl]);
   }
 
   showMore(type: string) {

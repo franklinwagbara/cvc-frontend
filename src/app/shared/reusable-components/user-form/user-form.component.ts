@@ -169,7 +169,7 @@ export class UserFormComponent implements OnInit {
 
     const formKeys = [
       'id', 'elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 
-      'roleId', 'locationId', 'officeId', 'isActive', 'directorate'
+      'roleId', 'locationId', 'officeId', 'isActive', 'fromDirectorate', 'toDirectorate'
     ]
 
     formKeys.forEach((key) => {
@@ -210,7 +210,7 @@ export class UserFormComponent implements OnInit {
 
     const formKeys = [
       'id', 'elpsId', 'firstName', 'lastName', 'email', 'phone', 'userType', 
-      'locationId', 'officeId', 'isActive', 'directorate',
+      'locationId', 'officeId', 'isActive', 'fromDirectorate', 'toDirectorate',
     ];
     formKeys.forEach((key) => {
       formDataToSubmit.append(key, this.form.get(key).value);

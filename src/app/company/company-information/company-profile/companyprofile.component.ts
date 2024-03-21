@@ -77,13 +77,13 @@ export class CompanyProfileComponent implements OnInit {
       email: ['', [Validators.required]],
       operatingFacilityId: ['', [Validators.required]],
       business_Type: ['', [Validators.required]],
-      total_Asset: ['', [Validators.required]],
+      total_Asset: [''],
       rC_Number: ['', [Validators.required]],
       tin_Number: ['', [Validators.required]],
       no_Staff: ['', [Validators.required]],
       year_Incorporated: ['', [Validators.required]],
-      yearly_Revenue: ['', [Validators.required]],
-      no_Expatriate: ['', [Validators.required]],
+      yearly_Revenue: [''],
+      no_Expatriate: [''],
       affiliate: [''],
       accident: [''],
       accident_Report: [''],
@@ -161,7 +161,7 @@ export class CompanyProfileComponent implements OnInit {
   }
 
   getCompanyProfile(email) {
-    //this.spinner.show('Loading company profile');
+    this.spinner.show('Loading company profile...');
     this.companyService.getCompanyProfile(email.toLowerCase()).subscribe({
       next: (res) => {
         this.spinner.close();
@@ -191,6 +191,9 @@ export class CompanyProfileComponent implements OnInit {
       ...this.profileForm.value,
       operatingFacilityId: this.operatingFacility?.id,
     };
+    userData.operatingFacilityId = this.profileForm.get(
+      'operatingFacilityId'
+    ).value;
 
     forkJoin([
       this.companyService.updateCompanyProfile(userData, this.email),
@@ -214,7 +217,7 @@ export class CompanyProfileComponent implements OnInit {
             // } else if (this.registeredAddress == null) {
             //   window.location.assign('company/companyinformation/companyaddress');
           } else {
-            window.location.reload();
+            // window.location.reload();
           }
         }, 1000);
 

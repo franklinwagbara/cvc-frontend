@@ -249,8 +249,9 @@ export class CoqApplicationFormComponent
 
   private populateEditForms(res: any): void {
     this.existingCoq = res.data;
-    this.documents$.next((this.existingCoq.docs as DocumentInfo[]));
     this.application = res.data?.coq;
+    this.documents$.next((this.existingCoq.docs as DocumentInfo[]));
+    this.setDataSource();
     
     this.isGasProduct = res.data?.coq?.productType?.toLowerCase() === 'gas';
   
@@ -360,8 +361,7 @@ export class CoqApplicationFormComponent
           this.noTankConfigured = !this.requirement.tanks.length;
           this.spinner.close();
           
-          this.isGasProduct =
-          this.requirement?.productType.toLowerCase() === 'gas';
+          this.isGasProduct = this.requirement?.productType.toLowerCase() === 'gas';
           
           if (this.noTankConfigured) {
             this.popUp.open(

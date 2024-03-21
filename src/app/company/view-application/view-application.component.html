@@ -1,44 +1,62 @@
 <div class="view-application-container">
+  <ng-container *ngIf="showFloatingBackBtn">
+    <button 
+      [routerLink]="'/company/cvc-applications'"
+      class="fixed top-[75px] z-50 text-white bg-slate-500 p-1 px-2 flex justify-center items-center font-bold"
+      style="border-radius: 4px; font-size: x-small;"
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;&nbsp;
+      <span>Back to View All</span>
+    </button>
+  </ng-container>
+
   <ng-container *ngIf="canContinueApp && showFloatingAppAction">
     <div 
       class="fixed top-[75px] right-[20px] z-50"
       #continueAppContainer
     >
-      <a
+      <button 
         mat-raised-button
-        class="bg-green-600 text-white"
-        [routerLink]="continueUrl"
-      >Continue Application</a>
+        class="bg-green-600 text-white w-full"
+        (click)="continueApp()"
+      >
+        Continue Application
+      </button>
     </div>
   </ng-container>
 
-  <button
-    (click)="location.back()"
-    class="my-4"
-    mat-button
-  >
-    <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
-  </button>
-
-  <div *ngIf="application; else noData" class="view-application">
-    <h2 mat-dialog-title class="page-title text-center">
-      APPLICATION REFERENCE: {{ application?.reference }}
-    </h2>
-
-    <ng-container *ngIf="canContinueApp">
-      <div 
+  <div class="flex justify-between">
+    <button
+      id="back-to-view-all-btn"
+      [routerLink]="'/company/cvc-applications'"
+      [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
+      mat-button
+    >
+      <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
+    </button>
+  
+    <ng-container *ngIf="application && canContinueApp">
+      <div
         id="continue-app-btn-container"
         class="actions"
         [ngClass]="{'hidden': showFloatingAppAction, 'flex': !showFloatingAppAction}"
         #continueAppContainer
       >
-        <a
+        <button 
           mat-raised-button
-          class="bg-green-600 text-white"
-          [routerLink]="continueUrl"
-        >Continue Application</a>
+          class="bg-green-600 text-white w-full"
+          (click)="continueApp()"
+        >
+          Continue Application
+        </button>
       </div>
     </ng-container>
+  </div>
+
+  <div *ngIf="application; else noData" class="view-application">
+    <h2 mat-dialog-title class="page-title text-center">
+      APPLICATION REFERENCE: {{ application?.reference }}
+    </h2>
 
     <div class="content">
       <div class="application-view">
@@ -49,41 +67,6 @@
         ></app-application-view-table>
       </div>
       <div class="application-controls">
-        <mat-expansion-panel [expanded]="true">
-          <mat-expansion-panel-header>
-            <mat-panel-title> APPLICATION HISTORY </mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <ng-container *ngIf="application?.appHistories?.length; else noInfo">
-            <div
-              class="card-list"
-              *ngFor="let history of application?.appHistories | firstN : 3"
-            >
-              <div class="card-item">
-                <div class="item-title">Initiator</div>
-                <div class="item-content">{{ history.triggeredBy }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Recipient</div>
-                <div class="item-content">{{ history.targetedTo }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Action</div>
-                <div class="item-content">{{ history.action }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Remark</div>
-                <div class="item-content">{{ history.comment }}</div>
-              </div>
-              <div class="card-item">
-                <div class="item-title">Date</div>
-                <div class="item-content">{{ history.date }}</div>
-              </div>
-            </div>
-            <p class="show-more" (click)="showMore('appHistory')">Show All</p>
-          </ng-container>
-        </mat-expansion-panel>
-
         <mat-expansion-panel [expanded]="true">
           <mat-expansion-panel-header>
             <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>

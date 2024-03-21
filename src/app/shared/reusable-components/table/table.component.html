@@ -83,6 +83,8 @@
               column.cell(row) === "initiate_coq_control" ||
               column.cell(row) === "view_control" ||
               column.cell(row) === "sts_recipient_vessel_control" ||
+              column.cell(row) === "sts_document_upload_control" ||
+              column.cell(row) === "document_view_control" ||
               column.cell(row) === "view_coq_certs_control" ||
               column.cell(row) === "discharge_onspec_control" ||
               column.cell(row) === "discharge_offspec_control" ||
@@ -142,11 +144,31 @@
 
               <button
                 mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'sts_document_upload_control'"
+                (click)="uploadDocument(row)"
+              >
+                Upload Documents
+              </button>
+
+              <button
+                mat-flat-button
                 class="bg-[#eeec09] font-medium view-button"
                 *ngIf="column.cell(row) === 'sts_recipient_vessel_control'"
                 (click)="viewData(row)"
               >
                 View Recipients
+              </button>
+
+              <button
+                mat-flat-button
+                color="accent"
+                class="view-button"
+                *ngIf="column.cell(row) === 'document_view_control'"
+                (click)="viewDocument(row)"
+              >
+                View Documents
               </button>
 
               <button
@@ -342,7 +364,9 @@
                 "
                 (click)="uploadDocument(row)"
               >
-                {{ row?.status === 'Rejected' ? 'Resubmit' : 'Document Upload' }}
+                {{
+                  row?.status === "Rejected" ? "Resubmit" : "Upload Document(s)"
+                }}
               </button>
 
               <button
@@ -370,9 +394,9 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr 
-        [ngStyle]="{'text-align': columnDataAlign}"
-        mat-row 
+      <tr
+        [ngStyle]="{ 'text-align': columnDataAlign }"
+        mat-row
         *matRowDef="let row; columns: displayedColumns"
       ></tr>
       <tr class="mat-row" *matNoDataRow>

@@ -11,6 +11,9 @@ import { IAppDepot } from 'src/app/shared/interfaces/IAppDepot';
 import { IFacility, IFacilityType } from 'src/app/shared/interfaces/IFacility';
 import { IApplicationFormDTO } from 'src/app/shared/interfaces/IApplicationFormDTO';
 import { IVessel } from 'src/app/shared/interfaces/IVessel';
+import { IJettyGroup } from 'src/app/shared/interfaces/IJettyGroup';
+import { IJetty } from 'src/app/shared/interfaces/IJetty';
+import { IProduct } from 'src/app/shared/interfaces/IProduct';
 
 @Component({
   selector: 'app-new-application',
@@ -28,8 +31,11 @@ export class NewApplicationComponent implements OnInit {
   // public tanks: ITank[];
   public appDepots: IAppDepot[];
   public products: IProduct[];
+  public productGroupings: { type: string, products: IProduct[] }[];
   public depots: IDepot[];
-  public jetties: any[];
+  public depotGroupings: { state: string; depots: IDepot[] }[];
+  public jetties: IJetty[];
+  public jettyGroupings: IJettyGroup[];
   // public selectedTanks: ITankDTO[] = [];
   public selectedAppDepots: IAppDepot[] = [];
   public isMobile = false;
@@ -100,7 +106,6 @@ export class NewApplicationComponent implements OnInit {
     });
 
     this.vesselForm.controls['jetty'].valueChanges.subscribe((val) => {
-      console.log('Vessel Form Jetty changes ============== ', val);
       if (val) {
         this.vesselForm.controls['jettyName'].setValue(
           this.jetties.find((el) => el.id === parseInt(val))?.name
@@ -116,12 +121,23 @@ export class NewApplicationComponent implements OnInit {
     this.spinner.open();
     this.libraryService.getAllJetty().subscribe({
       next: (res: any) => {
-        this.jetties = res?.data;
+        this.jettyGroupings = res?.data;
+        this.jetties = [];
+        this.jettyGroupings.forEach((grp) => {
+          let jetties = grp?.jetties;
+          const state = this.states.find(
+            (s) => s.name.toLowerCase() === grp.groupName.toLowerCase()
+          )?.id;
+          if (jetties?.length) {
+            jetties = jetties.map((el) => ({...el, state}));
+            this.jetties.push(...jetties);
+          }
+        });
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
-        console.log(error);
+        console.error(error);
         this.spinner.close();
         this.popUp.open('Something went wrong while fetching jetties', 'error');
         this.cd.markForCheck();
@@ -334,6 +350,30 @@ export class NewApplicationComponent implements OnInit {
             ? 1
             : 0;
         });
+
+        // Group products by type
+        let typeProductObj = {};
+        this.products.forEach((product) => {
+          if (typeProductObj[product.productType]) {
+            typeProductObj[product.productType].push(product);
+          } else {
+            typeProductObj[product.productType] = [];
+            typeProductObj[product.productType].push(product);
+          }
+        })
+        const typeProductEntries = Object.entries(typeProductObj);
+        this.productGroupings = typeProductEntries
+          .map((entry) => {
+            return { type: entry[0], products: (entry[1] as IProduct[]) }
+          })
+          .sort(
+            (a, b) => a.type.toLowerCase() < b.type.toLowerCase() 
+              ? -1 
+              : a.type.toLowerCase() > b.type.toLowerCase()
+              ? 1
+              : 0
+          );
+
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -356,6 +396,30 @@ export class NewApplicationComponent implements OnInit {
             ? 1
             : 0;
         });
+
+        // Group depots by state
+        let stateDepotObj = {};
+        this.depots.forEach((depot) => {
+          if (stateDepotObj[depot.state]) {
+            stateDepotObj[depot.state].push(depot);
+          } else {
+            stateDepotObj[depot.state] = [];
+            stateDepotObj[depot.state].push(depot);
+          }
+        })
+        const stateDepotEntries = Object.entries(stateDepotObj);
+        this.depotGroupings = stateDepotEntries
+          .map((entry) => {
+            return { state: entry[0], depots: (entry[1] as IDepot[]) }
+          })
+          .sort(
+            (a, b) => a.state.toLowerCase() < b.state.toLowerCase() 
+              ? -1 
+              : a.state.toLowerCase() > b.state.toLowerCase()
+              ? 1
+              : 0
+          );
+
         this.spinner.close();
         this.cd.markForCheck();
       },
@@ -456,6 +520,7 @@ export interface ILGA {
   name: string;
   stateId: number;
 }
+
 export interface ITank {
   id: number;
   name: string;
@@ -471,11 +536,6 @@ export interface ITankDTO {
   product?: string;
   facilityId: number;
   // applicationId?: string;
-}
-
-export interface IProduct {
-  id: number;
-  name: string;
 }
 
 export interface IApplicationType {
@@ -498,6 +558,7 @@ export interface IDepot {
   name: string;
   stateId: number;
   capacity: number;
-  state: IState;
+  state: string;
   stateName: string;
+  [key: string]: any;
 }

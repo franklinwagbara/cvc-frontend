@@ -10,16 +10,21 @@
           [type]="entry[1]?.inputType || 'text'"
           class="form-control"
           [ngClass]="{'is-invalid': form.get(entry[0])?.touched && form.get(entry[0])?.invalid}"
+          [placeholder]="entry[1].placeholder"
         />
       </ng-container>
       <ng-container *ngIf="entry[1]?.select">
         <select 
           [name]="entry[0]" 
           [formControlName]="entry[0]"
+          class="form-control"
           [ngClass]="{'is-invalid': form.get(entry[0])?.touched && form.get(entry[0])?.invalid}"
+          [selectedIndex]="data.formType === 'Edit' && isNumber(entry[1].value) ? entry[1]?.value : -1"
         >
-          <option value="">-- Select an option --</option>
-          <option [value]="val" *ngFor="let val of entry[1]?.selectData">{{ val | uppercase }}</option>
+          <option value="" [selected]="!entry[1].value">-- Select an option --</option>
+          <option [value]="val.id" *ngFor="let val of entry[1]?.selectData">
+            {{ val.name }}
+          </option>
         </select>
       </ng-container>
       <small class="invalid-feedback">
