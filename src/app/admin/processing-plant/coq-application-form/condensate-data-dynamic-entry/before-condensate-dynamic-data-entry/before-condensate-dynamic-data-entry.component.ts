@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getForm } from '../../forms';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { Subscription } from 'rxjs';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-before-condensate-dynamic-data-entry',
@@ -37,17 +37,18 @@ export class BeforeCondensateDynamicDataEntryComponent implements OnDestroy {
   private initForm() {
     this.form = getForm('Condensate', 'Dynamic', 'before');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {
     this.allSubscriptions.add(
       this.form.statusChanges.subscribe((o) => {
+        console.log('testing...', this.form, 0);
         if (o == 'VALID')
           this.onCompleted.emit({
             state: 'initial',

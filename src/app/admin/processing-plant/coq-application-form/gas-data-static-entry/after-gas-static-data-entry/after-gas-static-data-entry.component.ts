@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { IDataEntryResult } from '../../liquid-data-dynamic-entry/before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-after-gas-static-data-entry',
@@ -31,12 +31,12 @@ export class AfterGasStaticDataEntryComponent {
   private initForm() {
     this.form = getForm('Gas', 'Static', 'after');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {

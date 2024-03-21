@@ -6,7 +6,7 @@
   <div class="form-details-container">
     <!-- Liquid Gas Form-->
     <div class="form-wrapper">
-      <app-page-title />
+      <app-page-title [ProductName]="selectedProduct?.name.toUpperCase()" />
 
       <hr class="w-full" />
       <hr class="w-full" />
@@ -87,7 +87,139 @@
           </div>
         </mat-step>
 
-        <mat-step
+        <mat-step label="Measurement System">
+          <mat-stepper #dynamicMeasurement>
+            <ng-template matStepperIcon="done">
+              <mat-icon>check</mat-icon>
+            </ng-template>
+
+            <mat-step label="Dynamic Measurement">
+              <mat-vertical-stepper
+                class="pl-3 pr-2"
+                linear
+                #dynamicMeasurementStepper
+              >
+                <ng-template matStepperIcon="done">
+                  <mat-icon>check</mat-icon>
+                </ng-template>
+
+                <mat-step
+                  [stepControl]="meterTypeSelection"
+                  label="Select Meter Type"
+                >
+                  <mat-form-field>
+                    <mat-label>Select Meter Type</mat-label>
+                    <mat-select [formControl]="meterTypeSelection">
+                      <mat-option *ngFor="let mo of meterTypes" [value]="mo.id">
+                        {{ mo.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div class="text-right">
+                    <button
+                      mat-raised-button
+                      matStepperNext
+                      color="primary"
+                      (click)="onStepFromMeterType()"
+                      [disabled]="!meterTypeSelection?.valid"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </mat-step>
+
+                <mat-step
+                  label="Data Entry Section"
+                  #dataEntryWrapper
+                  [completed]="ppContext.isCompletedDataEntryObs | async"
+                >
+                  <app-data-entry-form
+                    [isGas]="isGasProduct"
+                    [nextStep]="staticMeasurement"
+                    [selectedMeasurementSystem]="'Dynamic'"
+                    [selectedProduct]="selectedProduct"
+                    [selectedMeterType]="selectedMeterType"
+                    [selectedDipMethod]="selectedDipMethod"
+                  />
+
+                  <button
+                    [disabled]="!(ppContext.isCompletedDataEntryObs | async)"
+                    mat-raised-button
+                    (click)="gotoStaticMeasurement()"
+                    color="primary"
+                  >
+                    Continue
+                  </button>
+                </mat-step>
+              </mat-vertical-stepper>
+            </mat-step>
+
+            <mat-step label="Static Measurement" #staticMeasurement>
+              <mat-vertical-stepper
+                class="pl-3 pr-2"
+                linear
+                #staticMeasurementStepper
+              >
+                <ng-template matStepperIcon="done">
+                  <mat-icon>check</mat-icon>
+                </ng-template>
+
+                <mat-step
+                  [stepControl]="dipMethodSelection"
+                  label="Select Measurement Method"
+                >
+                  <mat-form-field>
+                    <mat-label>Select Measurement Method</mat-label>
+                    <mat-select [formControl]="dipMethodSelection">
+                      <mat-option *ngFor="let mo of dipMethods" [value]="mo.id">
+                        {{ mo.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <div class="text-right">
+                    <button
+                      mat-raised-button
+                      matStepperNext
+                      color="primary"
+                      (click)="onStepFromMeterType()"
+                      [disabled]="!dipMethodSelection?.valid"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </mat-step>
+
+                <mat-step
+                  label="Data Entry Section"
+                  #dataEntryWrapper
+                  [completed]="ppContext.isCompletedDataEntryObs | async"
+                >
+                  <app-data-entry-form
+                    [isGas]="isGasProduct"
+                    [nextStep]="ullageStep"
+                    [selectedMeasurementSystem]="'Static'"
+                    [selectedProduct]="selectedProduct"
+                    [selectedMeterType]="selectedMeterType"
+                    [selectedDipMethod]="selectedDipMethod"
+                  />
+
+                  <button
+                    [disabled]="!(ppContext.isCompletedDataEntryObs | async)"
+                    mat-raised-button
+                    (click)="gotoUllageInfo()"
+                    color="primary"
+                  >
+                    Continue
+                  </button>
+                </mat-step>
+              </mat-vertical-stepper>
+            </mat-step>
+          </mat-stepper>
+        </mat-step>
+
+        <!-- <mat-step
           [stepControl]="measurementSelection"
           label="Select Measurement System"
         >
@@ -111,8 +243,8 @@
               Continue
             </button>
           </div>
-        </mat-step>
-
+        </mat-step> -->
+        <!--
         <mat-step label="Tank / Meter Type / Dip Method Selection">
           <mat-stepper #tankInfoStepper linear>
             <mat-step
@@ -174,16 +306,31 @@
           >
             Continue
           </button>
-        </mat-step>
+        </mat-step> -->
 
         <mat-step
           [stepControl]="getActiveProcDetailsForm"
           [label]="'Truck Ullage Details Entry'"
+          #ullageStep
         >
           <app-processing-details-liquid
-            *ngIf="!isGasProduct && getDetailsForm"
+            *ngIf="
+              selectedProduct?.productType == PRODUCT_TYPE.LIQUID &&
+              getDetailsForm
+            "
           />
-          <app-processing-details-gas *ngIf="isGasProduct && getDetailsForm" />
+          <app-processing-details-gas
+            *ngIf="
+              selectedProduct?.productType == PRODUCT_TYPE.GAS && getDetailsForm
+            "
+          />
+
+          <app-processing-details-condensate
+            *ngIf="
+              selectedProduct?.productType == PRODUCT_TYPE.CONDENSATE &&
+              getDetailsForm
+            "
+          />
 
           <div class="text-right">
             <button

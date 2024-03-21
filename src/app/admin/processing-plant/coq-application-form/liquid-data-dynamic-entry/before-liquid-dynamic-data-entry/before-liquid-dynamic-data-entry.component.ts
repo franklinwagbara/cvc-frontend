@@ -8,8 +8,10 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { getForm } from '../../forms';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { Subscription } from 'rxjs';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 @Component({
   selector: 'app-before-liquid-dynamic-data-entry',
@@ -35,14 +37,15 @@ export class BeforeLiquidDynamicDataEntryComponent implements OnDestroy {
   }
 
   private initForm() {
-    this.form = getForm('Liquid', 'Dynamic', 'before');
+    debugger;
+    this.form = getForm(ProductType.LIQUID, MeasurementType.DYNAMIC, 'before');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {

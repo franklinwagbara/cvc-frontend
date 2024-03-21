@@ -6,10 +6,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { Subscription } from 'rxjs';
 import { IDataEntryResult } from '../before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 @Component({
   selector: 'app-after-liquid-dynamic-data-entry',
@@ -35,19 +37,20 @@ export class AfterLiquidDynamicDataEntryComponent implements OnDestroy {
   }
 
   private initForm() {
-    this.form = getForm('Liquid', 'Dynamic', 'after');
+    this.form = getForm(ProductType.LIQUID, MeasurementType.DYNAMIC, 'after');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {
     this.allSubscriptions.add(
       this.form.statusChanges.subscribe((o) => {
+        debugger;
         if (o == 'VALID')
           this.onCompleted.emit({
             state: 'final',

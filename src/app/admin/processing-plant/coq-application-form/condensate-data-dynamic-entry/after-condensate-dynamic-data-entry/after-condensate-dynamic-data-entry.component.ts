@@ -6,10 +6,10 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { Subscription } from 'rxjs';
 import { IDataEntryResult } from '../before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-after-condensate-dynamic-data-entry',
@@ -37,12 +37,12 @@ export class AfterCondensateDynamicDataEntryComponent implements OnDestroy {
   private initForm() {
     this.form = getForm('Condensate', 'Dynamic', 'after');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {

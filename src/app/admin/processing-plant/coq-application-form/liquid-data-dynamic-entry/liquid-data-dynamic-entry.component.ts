@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { IDataEntryResult } from './before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { MatStep } from '@angular/material/stepper';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-liquid-data-dynamic-entry',
@@ -20,7 +20,7 @@ export class LiquidDataDynamicEntryComponent {
   }
 
   public onCompleted(output: IDataEntryResult) {
-    // debugger;
+    debugger;
     if (output.state == 'initial') {
       this.isInitialCompleted = true;
       this.ppContext.addLiquidDynamicBatchReading(output.formValue, true);
@@ -31,8 +31,9 @@ export class LiquidDataDynamicEntryComponent {
   }
 
   public onCompleteEntry() {
-    this.batchStepper?.select();
+    debugger;
     this.ppContext.isCompletedDataEntry$.next(true);
     this.isShow = false;
+    this.batchStepper?.select();
   }
 }

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProcessingPlantContextService } from './processing-plant-context.service';
+import { ProcessingPlantContextService } from './ProcessingPlantContextService';
 
 describe('ProcessingPlantContextService', () => {
   let service: ProcessingPlantContextService;

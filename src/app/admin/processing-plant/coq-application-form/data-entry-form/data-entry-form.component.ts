@@ -18,7 +18,6 @@ import { LiquidDataStaticEntryComponent } from '../liquid-data-static-entry/liqu
 import { GasDataDynamicEntryComponent } from '../gas-data-dynamic-entry/gas-data-dynamic-entry.component';
 import { LiquidDataDynamicEntryComponent } from '../liquid-data-dynamic-entry/liquid-data-dynamic-entry.component';
 import { METER_COL_MAPPINGS, TANK_COL_MAPPINGS } from '../../colMappings';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { BatchService } from 'src/app/shared/services/batch.service';
 import { SpinnerService } from 'src/app/shared/services/spinner.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
@@ -27,6 +26,8 @@ import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 import { CondensateDataStaticEntryComponent } from '../condensate-data-static-entry/condensate-data-static-entry.component';
 import { CondensateDataDynamicEntryComponent } from '../condensate-data-dynamic-entry/condensate-data-dynamic-entry.component';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-data-entry-form',
@@ -35,7 +36,8 @@ import { CondensateDataDynamicEntryComponent } from '../condensate-data-dynamic-
 })
 export class DataEntryFormComponent implements OnInit, OnDestroy {
   @Input() isGas: boolean;
-  @Input() productType: 'Gas' | 'Liquid' | 'Condensate';
+  @Input() nextStep: MatStep;
+  // @Input() productType: ProductType;
   @Input() selectedMeasurementSystem: MeasurementSystem;
   @Input() selectedProduct: IProduct;
   @Input() selectedMeterType: any;
@@ -87,22 +89,22 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
   public setUpDataEntry() {
     this.dataEntryContainer = this.viewContainerRef;
     debugger;
-    if (this.selectedMeasurementSystem == 'Static') {
-      if (this.productType === 'Gas') {
+    if (this.selectedMeasurementSystem == MeasurementType.STATIC) {
+      if (this.selectedProduct.productType === ProductType.GAS) {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           GasDataStaticEntryComponent
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else if (this.productType === 'Liquid') {
+      } else if (this.selectedProduct.productType === ProductType.LIQUID) {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           LiquidDataStaticEntryComponent
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else if (this.productType === 'Condensate') {
+      } else if (this.selectedProduct.productType === ProductType.CONDENSATE) {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           CondensateDataStaticEntryComponent
@@ -111,7 +113,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
         component.instance.batchStepper = this.batchStepper;
       }
     } else {
-      if (this.productType === 'Gas') {
+      if (this.selectedProduct.productType === ProductType.GAS) {
         this.dataEntryContainer.clear();
 
         let component = this.dataEntryContainer.createComponent(
@@ -119,7 +121,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else if (this.productType === 'Liquid') {
+      } else if (this.selectedProduct.productType === ProductType.LIQUID) {
         if (!this.dataEntryContainer) return;
 
         this.dataEntryContainer.clear();
@@ -129,7 +131,7 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
         );
 
         component.instance.batchStepper = this.batchStepper;
-      } else if (this.productType === 'Condensate') {
+      } else if (this.selectedProduct.productType === ProductType.CONDENSATE) {
         this.dataEntryContainer.clear();
         let component = this.dataEntryContainer.createComponent(
           CondensateDataDynamicEntryComponent
@@ -139,7 +141,9 @@ export class DataEntryFormComponent implements OnInit, OnDestroy {
       }
     }
     this.cd.markForCheck();
-    (this.dataEntryContainer.element.nativeElement as HTMLElement).scrollIntoView(true);
+    (
+      this.dataEntryContainer.element.nativeElement as HTMLElement
+    ).scrollIntoView(true);
   }
 
   private initSubscriptions() {

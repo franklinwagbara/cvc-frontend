@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { IDataEntryResult } from '../../condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 @Component({
   selector: 'app-after-condensate-static-data-entry',
@@ -38,14 +40,18 @@ export class AfterCondensateStaticDataEntryComponent
   }
 
   private initForm() {
-    this.form = getForm('Condensate', 'Static', 'after');
+    this.form = getForm(
+      ProductType.CONDENSATE,
+      MeasurementType.STATIC,
+      'after'
+    );
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {

@@ -58,8 +58,10 @@ import { GasDataStaticEntryComponent } from './gas-data-static-entry/gas-data-st
 import { ExtractPayload } from './helpers/ExtractPayload';
 import { ProcessingPlantCOQService } from 'src/app/shared/services/processing-plant-coq/processing-plant-coq.service';
 import { IPayloadParams, ISubmitDocument } from './helpers/Types';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { GenericService } from 'src/app/shared/services';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProcessingDetailsCondensateComponent } from './processing-details-condensate/processing-details-condensate.component';
 
 @Component({
   selector: 'app-coq-application-pp-form',
@@ -76,6 +78,8 @@ export class CoqApplicationPPFormComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   private allSubscriptions = new Subscription();
+
+  public readonly PRODUCT_TYPE = ProductType;
 
   depotSelection = new FormControl('', Validators.required);
   plantSelection = new FormControl('', Validators.required);
@@ -95,17 +99,17 @@ export class CoqApplicationPPFormComponent
   meterTypes: IMeterType[] = null;
   dipMethods: IDipMethod[] = null;
 
-  public get getMeterTypeDipForm() {
-    return this.selectedMeasurement == 'Dynamic'
-      ? this.meterTypeSelection
-      : this.dipMethodSelection;
-  }
+  // public get getMeterTypeDipForm() {
+  //   return this.selectedMeasurement == 'Dynamic'
+  //     ? this.meterTypeSelection
+  //     : this.dipMethodSelection;
+  // }
 
-  public get getMeterTypeDipItems() {
-    return this.selectedMeasurement == 'Dynamic'
-      ? this.meterTypes
-      : this.dipMethods;
-  }
+  // public get getMeterTypeDipItems() {
+  //   return this.selectedMeasurement == 'Dynamic'
+  //     ? this.meterTypes
+  //     : this.dipMethods;
+  // }
 
   plantColMappings = PLANT_COL_MAPPINGS;
   productColMappings = PRODUCT_COL_MAPPINGS;
@@ -153,6 +157,8 @@ export class CoqApplicationPPFormComponent
   @ViewChild('coqstepper') coqStepper: MatStepper;
   @ViewChild('tankInfoStepper') tankInfoStepper: MatStepper;
   @ViewChild('dataEntryWrapper') dataEntryWrapper: MatStep;
+  @ViewChild('staticMeasurement') staticMeasurement: MatStep;
+  @ViewChild('ullageStep') ullageStep: MatStep;
 
   @ViewChildren(LiquidDataDynamicEntryComponent)
   LiquidDataDynamicViews: QueryList<LiquidDataDynamicEntryComponent>;
@@ -171,6 +177,9 @@ export class CoqApplicationPPFormComponent
 
   @ViewChild(ProcessingDetailsLiquidComponent)
   ProcessingDetailsLiquidView: ProcessingDetailsLiquidComponent;
+
+  @ViewChild(ProcessingDetailsCondensateComponent)
+  ProcessingDetailsCondensateView: ProcessingDetailsCondensateComponent;
 
   documents$ = new BehaviorSubject<any[]>([]);
 
@@ -256,6 +265,14 @@ export class CoqApplicationPPFormComponent
     this.subscribeMeterTypeSelection();
 
     this.cd.markForCheck();
+  }
+
+  public gotoStaticMeasurement() {
+    this.staticMeasurement?.select();
+  }
+
+  public gotoUllageInfo() {
+    this.ullageStep?.select();
   }
 
   public onStepFromMeterType() {
@@ -608,7 +625,7 @@ export class CoqApplicationPPFormComponent
     this.spinner.show('Submitting CoQ Application...');
 
     this.procPlantCoQService
-      .createCoQ(payload, this.isGasProduct, this.selectedMeasurement)
+      .createCoQ(payload, this.selectedProduct.productType)
       .subscribe({
         next: (res: any) => {
           this.isSubmitting = false;
@@ -633,11 +650,7 @@ export class CoqApplicationPPFormComponent
           }
           this.cd.markForCheck();
           setTimeout(() => {
-            this.router.navigate([
-              'admin',
-              'coq',
-              'coq-applications-by-depot',
-            ]);
+            this.router.navigate(['admin', 'coq', 'coq-applications-by-depot']);
           }, 2400);
         },
         error: (error: unknown) => {
@@ -665,27 +678,33 @@ export class CoqApplicationPPFormComponent
       });
     });
 
-    //todo: revisit this gas product payload
-    if (this.isGasProduct) {
-    } else {
-      const payloadParams: IPayloadParams = {
-        identifiers: {
-          isGas: this.isGasProduct,
-          plantId: this.selectedPlant?.id ?? 0,
-          productId: this.selectedProduct?.id ?? 0,
-          measurementSystem: this.selectedMeasurement,
-          meterTypeId: this.selectedMeterType?.id ?? 0,
-          dipMethodId: this.selectedDipMethod?.id ?? 0,
-        },
-        processingDetails: this.activeProcessingDetailsForm.value,
-        documents: submitDocuments,
-        readings: this.ppContext.LSBatchReadings$.value,
-      };
+    let staticBatchReadings;
+    let dynamicBatchReading;
 
-      return new ExtractPayload(payloadParams).extract();
+    if (this.selectedProduct.productType == ProductType.LIQUID) {
+      staticBatchReadings = this.ppContext.LSBatchReadings$.value;
+      dynamicBatchReading = this.ppContext.LDBatchReadings$.value;
+    } else if (this.selectedProduct.productType == ProductType.GAS) {
+    } else if (this.selectedProduct.productType == ProductType.CONDENSATE) {
+      staticBatchReadings = this.ppContext.CSBatchReadings$.value;
+      dynamicBatchReading = this.ppContext.CDBatchReadings$.value;
     }
 
-    return null;
+    const payloadParams: IPayloadParams = {
+      identifiers: {
+        plantId: this.selectedPlant?.id ?? 0,
+        productId: this.selectedProduct?.id ?? 0,
+        productType: this.selectedProduct?.productType,
+        meterTypeId: this.selectedMeterType?.id ?? 0,
+        dipMethodId: this.selectedDipMethod?.id ?? 0,
+      },
+      processingDetails: this.activeProcessingDetailsForm.value,
+      documents: submitDocuments,
+      staticReadings: staticBatchReadings,
+      dynamicReadings: dynamicBatchReading,
+    };
+
+    return new ExtractPayload(payloadParams).extract();
   }
 
   restoreReviewData(): void {
@@ -769,12 +788,16 @@ export class CoqApplicationPPFormComponent
 
   public get getActiveProcDetailsForm() {
     this.activeProcessingDetailsForm = this.getProcViewChildForms();
+    console.log('form value: ', this.activeProcessingDetailsForm);
     return this.activeProcessingDetailsForm;
   }
 
   public getProcViewChildForms() {
-    return (this.ProcessingDetailsGasView ?? this.ProcessingDetailsLiquidView)
-      ?.form;
+    return (
+      this.ProcessingDetailsGasView ??
+      this.ProcessingDetailsLiquidView ??
+      this.ProcessingDetailsCondensateView
+    )?.form;
   }
 
   public get isDynamicSystem() {
@@ -796,7 +819,7 @@ export class CoqApplicationPPFormComponent
   public getForm = (status: 'before' | 'after') => {
     return (
       getForm(
-        this.selectedProduct?.productType == 'Gas' ? 'Gas' : 'Liquid',
+        this.selectedProduct?.productType,
         this.selectedMeasurement,
         status
       ) ?? null
@@ -804,11 +827,7 @@ export class CoqApplicationPPFormComponent
   };
 
   public get getDetailsForm() {
-    return (
-      getDetailsForm(
-        this.selectedProduct?.productType == 'Gas' ? 'Gas' : 'Liquid'
-      ) ?? null
-    );
+    return getDetailsForm(this.selectedProduct?.productType) ?? null;
   }
 
   @HostListener('keydown', ['$event'])

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { IDataEntryResult } from '../condensate-data-dynamic-entry/before-condensate-dynamic-data-entry/before-condensate-dynamic-data-entry.component';
 import { MatStep } from '@angular/material/stepper';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 
 @Component({
   selector: 'app-condensate-data-static-entry',
@@ -23,10 +23,10 @@ export class CondensateDataStaticEntryComponent {
     debugger;
     if (output.state == 'initial') {
       this.isInitialCompleted = true;
-      this.ppContext.addLiquidStaticBatchReading(output.formValue, true);
+      this.ppContext.addCondensateStaticBatchReading(output.formValue, true);
     } else {
       this.isFinalCompleted = true;
-      this.ppContext.addLiquidStaticBatchReading(output.formValue, false);
+      this.ppContext.addCondensateStaticBatchReading(output.formValue, false);
     }
   }
 

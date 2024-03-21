@@ -1,33 +1,28 @@
-import { IProduct } from 'src/app/company/apply/new-application/new-application.component';
-import { ExtractGasDynamicPayload } from './ExtractGasDynamicPayload';
-import { ExtractGasStaticPayload } from './ExtractGasStaticPayload';
-import { ExtractLiquidDynamicPayload } from './ExtractLiquidDynamicPayload';
-import { ExtractLiquidStaticPayload } from './ExtractLiquidStaticPayload';
+import { ExtractCondensatePayload } from './ExtractCondensatePayload';
+import { ExtractGasPayload } from './ExtractGasPayload';
+import { ExtractLiquidPayload } from './ExtractLiquidPayload';
 import { IExtractPayload, ExtractPayloadResult } from './IExtractPayload';
-import { IPayloadParams, MeasurementSystem } from './Types';
+import { IPayloadParams } from './Types';
+import { ProductType } from 'src/app/shared/constants/productType';
 
 export class ExtractPayload {
   private _payloadParams: IPayloadParams;
-  private _isGas: boolean;
-  private measurementSystem: MeasurementSystem;
+  private _productType: ProductType;
 
   constructor(payloadParams: IPayloadParams) {
     this._payloadParams = payloadParams;
-    this._isGas = payloadParams.identifiers.isGas;
-    this.measurementSystem = payloadParams.identifiers.measurementSystem;
+    this._productType = payloadParams.identifiers.productType;
   }
 
   public extract(): ExtractPayloadResult {
     let ExtractPayload: IExtractPayload;
 
-    if (!this._isGas && this.measurementSystem == 'Dynamic')
-      ExtractPayload = new ExtractLiquidDynamicPayload(this._payloadParams);
-    else if (!this._isGas && this.measurementSystem == 'Static')
-      ExtractPayload = new ExtractLiquidStaticPayload(this._payloadParams);
-    else if (this._isGas && this.measurementSystem == 'Dynamic')
-      ExtractPayload = new ExtractGasDynamicPayload(this._payloadParams);
-    else if (this._isGas && this.measurementSystem == 'Static')
-      ExtractPayload = new ExtractGasStaticPayload(this._payloadParams);
+    if (this._productType == ProductType.LIQUID)
+      ExtractPayload = new ExtractLiquidPayload(this._payloadParams);
+    else if (this._productType == ProductType.GAS)
+      ExtractPayload = new ExtractGasPayload(this._payloadParams);
+    else if (this._productType == ProductType.CONDENSATE)
+      ExtractPayload = new ExtractCondensatePayload(this._payloadParams);
 
     return ExtractPayload.extract();
   }

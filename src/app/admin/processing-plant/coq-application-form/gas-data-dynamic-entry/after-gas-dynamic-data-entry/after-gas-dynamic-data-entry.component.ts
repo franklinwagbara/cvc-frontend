@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Output, SimpleChanges } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { IDataEntryResult } from '../../liquid-data-dynamic-entry/before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 @Component({
   selector: 'app-after-gas-dynamic-data-entry',
@@ -29,14 +31,14 @@ export class AfterGasDynamicDataEntryComponent {
   }
 
   private initForm() {
-    this.form = getForm('Gas', 'Dynamic', 'after');
+    this.form = getForm(ProductType.GAS, MeasurementType.DYNAMIC, 'after');
 
-    this.form.controls['id'].setValue(
-      this.ppContext.selectedTank$.value?.plantTankId
-    );
-    this.form.controls['tank'].setValue(
-      this.ppContext.selectedTank$.value?.tankName
-    );
+    // this.form.controls['id'].setValue(
+    //   this.ppContext.selectedTank$.value?.plantTankId
+    // );
+    // this.form.controls['tank'].setValue(
+    //   this.ppContext.selectedTank$.value?.tankName
+    // );
   }
 
   private subscribeFormCompletion() {

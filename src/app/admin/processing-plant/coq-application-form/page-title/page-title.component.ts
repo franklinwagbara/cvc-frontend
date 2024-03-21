@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class PageTitleComponent {
   @Input() isGasProduct = true;
+  @Input() ProductName: string;
 }

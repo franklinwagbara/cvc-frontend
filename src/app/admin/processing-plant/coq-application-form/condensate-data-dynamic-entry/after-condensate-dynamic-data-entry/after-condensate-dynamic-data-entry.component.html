@@ -11,120 +11,19 @@
 
   <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
     <div class="md:col-span-3 form-group">
-      <label for="coq-condensate-product-readingM"
+      <label for="coq-condensate-product-mReadingBbl"
         >READING(m) <sup class="text-red-700">*</sup></label
       >
       <input
         type="number"
-        name="readingM"
-        formControlName="readingM"
-        id="coq-condensate-product-readingM"
+        name="mReadingBbl"
+        formControlName="mReadingBbl"
+        id="coq-condensate-product-mReadingBbl"
         class="form-field form-control"
         [ngClass]="{
           'is-invalid':
-            form?.controls['readingM'].touched &&
-            form?.controls['readingM'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-condensate-product-temperature"
-        >TANK TEMP (<sup class="text-red-700">o</sup>C)
-        <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="temperature"
-        formControlName="temperature"
-        id="coq-condensate-product-temperature"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['temperature'].touched &&
-            form?.controls['temperature'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-condensate-product-density"
-        >DENSITY(Kg/m<sup>3</sup>) <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="density"
-        formControlName="density"
-        id="coq-condensate-product-density"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['density'].touched &&
-            form?.controls['density'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3">
-      <label for="coq-condensateproduct-meterFactor"
-        >METER FACTOR<sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="meterFactor"
-        formControlName="meterFactor"
-        id="coq-condensateproduct-meterFactor"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['meterFactor'].touched &&
-            form?.controls['meterFactor'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-condensate-product-ctl"
-        >CTL <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        formControlName="ctl"
-        id="coq-condensate-product-ctl"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['ctl'].touched && form?.controls['ctl'].invalid
-        }"
-      />
-    </div>
-    <div class="md:col-span-3">
-      <label for="coq-condensate-product-cpl"
-        >CPL <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="cpl"
-        formControlName="cpl"
-        id="coq-condensate-product-cpl"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['cpl'].touched && form?.controls['cpl'].invalid
-        }"
-      />
-    </div>
-
-    <div class="md:col-span-3">
-      <label for="coq-condensate-product-wtAir"
-        >WTAIR <sup class="text-red-700">*</sup></label
-      >
-      <input
-        type="number"
-        name="wtAir"
-        formControlName="wtAir"
-        id="coq-condensate-product-wtAir"
-        class="form-field form-control"
-        [ngClass]="{
-          'is-invalid':
-            form?.controls['wtAir'].touched && form?.controls['wtAir'].invalid
+            form?.controls['mReadingBbl'].touched &&
+            form?.controls['mReadingBbl'].invalid
         }"
       />
     </div>

@@ -38,21 +38,23 @@ export const getDetailsForm = (
 
 let fb = new FormBuilder();
 
-const LIQUID_DYNAMIC_FORM = (status?: 'before' | 'after') =>
-  fb.group({
-    id: [''],
-    tank: [''],
-    status: [status || '', [Validators.required]],
-    batch: [''],
-    initialReadingM: ['', [Validators.required]],
-    finalReadingM: ['', [Validators.required]],
-    temperature: ['', [Validators.required]],
-    density: ['', [Validators.required]],
-    meterFactor: ['', [Validators.required]],
-    ctl: ['', [Validators.required]],
-    cpl: ['', [Validators.required]],
-    wtAir: ['', [Validators.required]],
-  });
+const LIQUID_DYNAMIC_FORM = (status?: 'before' | 'after') => {
+  if (status == 'before')
+    return fb.group({
+      meterId: [''],
+      temperature: ['', [Validators.required]],
+      density: ['', [Validators.required]],
+      meterFactor: ['', [Validators.required]],
+      ctl: ['', [Validators.required]],
+      cpl: ['', [Validators.required]],
+      wtAir: ['', [Validators.required]],
+      mCube: ['', [Validators.required]],
+    });
+  else
+    return fb.group({
+      mCube: ['', [Validators.required]],
+    });
+};
 
 const LIQUID_STATIC_FORM = (status: 'before' | 'after') =>
   fb.group({
@@ -108,35 +110,40 @@ const GAS_STATIC_FORM = (status: 'before' | 'after') =>
     vapourFactor: ['', [Validators.required]],
   });
 
-const CONDENSATE_DYNAMIC_FORM = (status: 'before' | 'after') =>
-  fb.group({
-    meterId: [''],
-    // tank: [''],
-    status: [status || '', [Validators.required]],
-    batch: [''],
-    readingM: ['', [Validators.required]],
-    temperature: ['', [Validators.required]],
-    density: ['', [Validators.required]],
-    meterFactor: ['', [Validators.required]],
-    ctl: ['', [Validators.required]],
-    cpl: ['', [Validators.required]],
-    wtAir: ['', [Validators.required]],
-  });
+const CONDENSATE_DYNAMIC_FORM = (status: 'before' | 'after') => {
+  if (status == 'before')
+    return fb.group({
+      meterId: [''],
+      temperature: ['', [Validators.required]],
+      pressure: ['', [Validators.required]],
+      meterFactor: ['', [Validators.required]],
+      ctl: ['', [Validators.required]],
+      cpl: ['', [Validators.required]],
+      apiAt60: ['', [Validators.required]],
+      vcf: ['', [Validators.required]],
+      bsw: ['', [Validators.required]],
+      grossLtBblFactor: ['', [Validators.required]],
+      mReadingBbl: ['', [Validators.required]],
+    });
+  else
+    return fb.group({
+      mReadingBbl: ['', [Validators.required]],
+    });
+};
 
 const CONDENSATE_STATIC_FORM = (status: 'before' | 'after') =>
   fb.group({
     tankId: [''],
-    // tank: [''],
-    status: [status || '', [Validators.required]],
     measurementType: ['static', [Validators.required]],
-    readingM: ['', [Validators.required]],
-    temperature: ['', [Validators.required]],
-    density: ['', [Validators.required]],
-    specificGravityObs: ['', [Validators.required]],
-    gov: ['', [Validators.required]],
-    barrelsAtTankTables: ['', [Validators.required]],
-    volumeCorrectionFactor: ['', [Validators.required]],
-    wtAir: ['', [Validators.required]],
+    ullage: ['', [Validators.required]],
+    tankTemp: ['', [Validators.required]],
+    tov: ['', [Validators.required]],
+    bsw: ['', [Validators.required]],
+    waterGuage: ['', [Validators.required]],
+    obsvWater: ['', [Validators.required]],
+    apiAt60: ['', [Validators.required]],
+    vcf: ['', [Validators.required]],
+    ltBblFactor: ['', [Validators.required]],
   });
 
 const PROCESSING_DETAILS_LIQUID_FORM = fb.group({
@@ -166,26 +173,28 @@ const PROCESSING_DETAILS_GAS_FORM = fb.group({
 });
 
 const PROCESSING_DETAILS_CONDENSATE_FORM = fb.group({
-  plantId: ['', [Validators.required]],
-  productId: ['', [Validators.required]],
-  measurementSystem: ['', [Validators.required]],
+  // plantId: ['', [Validators.required]],
+  // productId: ['', [Validators.required]],
+  // measurementSystem: ['', [Validators.required]],
+  // meterTypeId: ['', [Validators.required]],
+  // dipMethodId: ['', [Validators.required]],
   startTime: ['', [Validators.required, Validators.max]],
   endTime: ['', [Validators.required]],
-  price: ['', [Validators.required]],
-  deliveredLongTonsAir: ['', [Validators.required]],
-  deliveredMTAir: ['', [Validators.required]],
-  deliveredMTVac: ['', [Validators.required]],
-  deliveredUsBarrelsAt15Degree: ['', [Validators.required]],
-  deliveredMCubeAt15Degree: ['', [Validators.required]],
-  prevWTAir: ['', [Validators.required]],
-  prevUsBarrelsAt15Degree: ['', [Validators.required]],
   consignorName: ['', [Validators.required]],
   consignee: ['', [Validators.required]],
-  shipFigure: ['', [Validators.required]],
-  // shoreFigure: ['', [Validators.required]],
-  shipmentNo: ['', [Validators.required]],
-  destination: ['', [Validators.required]],
   terminal: ['', [Validators.required]],
-  // tankerName: ['', [Validators.required]],
-  dipMethodId: ['', [Validators.required]],
+  destination: ['', [Validators.required]],
+  shipmentNo: ['', [Validators.required]],
+  shipFigure: ['', [Validators.required]],
+  price: ['', [Validators.required]],
+  averageBsw: ['', [Validators.required]],
+  apiGravity: ['', [Validators.required]],
+  location: ['', [Validators.required]],
+  // deliveredLongTonsAir: ['', [Validators.required]],
+  // deliveredMTAir: ['', [Validators.required]],
+  // deliveredMTVac: ['', [Validators.required]],
+  // deliveredUsBarrelsAt15Degree: ['', [Validators.required]],
+  // deliveredMCubeAt15Degree: ['', [Validators.required]],
+  // prevWTAir: ['', [Validators.required]],
+  // prevUsBarrelsAt15Degree: ['', [Validators.required]],
 });

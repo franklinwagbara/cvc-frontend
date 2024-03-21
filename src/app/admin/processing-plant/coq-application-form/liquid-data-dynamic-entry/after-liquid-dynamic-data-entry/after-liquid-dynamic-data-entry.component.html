@@ -9,23 +9,24 @@
 
   <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9">
     <div class="md:col-span-3 form-group">
-      <label for="coq-liquid-product-readingM"
-        >READING(m) <sup class="text-red-700">*</sup></label
+      <label for="coq-liquid-product-mCube"
+        >READING(m<sup class="text-red-700">3</sup>)<sup class="text-red-700"
+          >*</sup
+        ></label
       >
       <input
         type="number"
-        name="readingM"
-        formControlName="readingM"
-        id="coq-liquid-product-readingM"
+        name="mCube"
+        formControlName="mCube"
+        id="coq-liquid-product-mCube"
         class="form-field form-control"
         [ngClass]="{
           'is-invalid':
-            form?.controls['readingM'].touched &&
-            form?.controls['readingM'].invalid
+            form?.controls['mCube'].touched && form?.controls['mCube'].invalid
         }"
       />
     </div>
-    <div class="md:col-span-3">
+    <!-- <div class="md:col-span-3">
       <label for="coq-liquid-product-temperature"
         >TANK TEMP (<sup class="text-red-700">o</sup>C)
         <sup class="text-red-700">*</sup></label
@@ -125,6 +126,6 @@
             form?.controls['wtAir'].touched && form?.controls['wtAir'].invalid
         }"
       />
-    </div>
+    </div> -->
   </div>
 </form>

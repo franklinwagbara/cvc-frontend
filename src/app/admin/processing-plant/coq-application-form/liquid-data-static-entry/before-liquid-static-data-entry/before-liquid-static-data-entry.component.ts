@@ -8,9 +8,11 @@ import {
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
 import { getForm } from '../../forms';
 import { IDataEntryResult } from '../../liquid-data-dynamic-entry/before-liquid-dynamic-data-entry/before-liquid-dynamic-data-entry.component';
+import { ProcessingPlantContextService } from 'src/app/shared/services/processing-plant-context/processing-plant-context.service';
+import { ProductType } from 'src/app/shared/constants/productType';
+import { MeasurementType } from 'src/app/shared/constants/measurement-type';
 
 @Component({
   selector: 'app-before-liquid-static-data-entry',
@@ -36,7 +38,7 @@ export class BeforeLiquidStaticDataEntryComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    this.form = getForm('Liquid', 'Static', 'before');
+    this.form = getForm(ProductType.LIQUID, MeasurementType.STATIC, 'before');
 
     this.form.controls['id'].setValue(
       this.ppContext.selectedTank$.value?.plantTankId
