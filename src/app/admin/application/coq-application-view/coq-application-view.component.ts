@@ -1,4 +1,9 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -16,7 +21,6 @@ import { PaymentService } from 'src/app/shared/services/payment.service';
 import { PopupService } from 'src/app/shared/services/popup.service';
 import { Util } from 'src/app/shared/lib/Util';
 import { CoQData } from '../../coq-application-form/coq-application-form.component';
-
 
 @Component({
   selector: 'app-coq-application-view',
@@ -48,7 +52,6 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   isProcessingPlant: boolean;
   showFloatingBackBtn = false;
   showFloatingStaffActions = false;
-
 
   isIMG = Util.isIMG;
   isPDF = Util.isPDF;
@@ -112,7 +115,7 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
           (element2 as HTMLElement).style.left = '0px';
         }
       }
-    }
+    };
     document.addEventListener('scroll', scrollListener);
   }
 
@@ -157,6 +160,7 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
   }
 
   getApplication() {
+    debugger;
     console.log('isPPCOQ =============> ', this.isPPCOQ);
     this.loading = true;
     (!this.isPPCOQ
@@ -171,13 +175,13 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
         } else if (res.success) {
           this.application = res.data.coq;
           this.tanksList = res.data.tankList;
-          this.documents = (res.data.docs as any[]);
+          this.documents = res.data.docs as any[];
           this.appHistories = res.data.appHistories;
           this.appLoaded = true;
         }
         this.isProcessingPlant = this.isPPCOQ;
         console.log('isPPCOQ =========> ', this.isPPCOQ);
-        
+
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
@@ -215,29 +219,29 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
 
     const coqData: CoQData[] = this.tanksList.map((el: any) => {
       let beforeReading = el?.tankMeasurement.find((r: any) => {
-        return r?.measurementType === 'Before'
+        return r?.measurementType === 'Before';
       });
-      beforeReading = { 
-        ...beforeReading, 
-        id: el?.tankId, 
-        tank: el?.tankName, 
-        status: 'before' 
+      beforeReading = {
+        ...beforeReading,
+        id: el?.tankId,
+        tank: el?.tankName,
+        status: 'before',
       };
       let afterReading = el?.tankMeasurement.find((r: any) => {
-        return r?.measurementType === 'After'
+        return r?.measurementType === 'After';
       });
-      afterReading = { 
-        ...afterReading, 
-        id: el?.tankId, 
-        tank: el?.tankName, 
-        status: 'after' 
+      afterReading = {
+        ...afterReading,
+        id: el?.tankId,
+        tank: el?.tankName,
+        status: 'after',
       };
       delete beforeReading.tankName;
       delete beforeReading.measurementType;
       delete afterReading.tankName;
       delete afterReading.measurementType;
       return { before: beforeReading, after: afterReading };
-    })
+    });
 
     const operationConfiguration = {
       approve: {
@@ -314,7 +318,7 @@ export class CoqApplicationViewComponent implements OnInit, AfterViewInit {
     const operationConfiguration = {
       appHistory: {
         data: {
-         appHistory: this.appHistories,
+          appHistory: this.appHistories,
         },
       },
       schedules: {

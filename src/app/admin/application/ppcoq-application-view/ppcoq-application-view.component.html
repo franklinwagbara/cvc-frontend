@@ -1,16 +1,13 @@
 <div class="view-application-container">
   <ng-container *ngIf="appLoaded && showFloatingStaffActions">
-    <div 
-      class="fixed top-[70px] right-[20px] z-50" 
-      *ngIf="isStaffDesk"
-    >
+    <div class="fixed top-[70px] right-[20px] z-50" *ngIf="isStaffDesk">
       <button
         mat-raised-button
         class="bg-green-500 text-white"
         (click)="action('approve')"
       >
-        {{ isFAD ? 'Accept' : 'Approve' }}
-      </button>&nbsp;&nbsp;
+        {{ isFAD ? "Accept" : "Approve" }}</button
+      >&nbsp;&nbsp;
       <button mat-raised-button color="warn" (click)="action('sendBack')">
         Send Back
       </button>
@@ -18,31 +15,35 @@
   </ng-container>
 
   <ng-container *ngIf="showFloatingBackBtn">
-    <button 
+    <button
       (click)="location.back()"
       class="fixed top-[70px] z-50 text-white bg-slate-500 p-2 pb-3 font-bold"
-      style="border-radius: 4px; font-size: small;"
+      style="border-radius: 4px; font-size: small"
     >
-      <mat-icon class="pt-2">keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to View All
+      <mat-icon class="pt-2">keyboard_backspace</mat-icon>&nbsp;&nbsp;Back to
+      View All
     </button>
   </ng-container>
 
   <div class="flex justify-between">
-    <button 
+    <button
       id="back-to-view-all-btn"
-      (click)="location.back()" 
+      (click)="location.back()"
       class="my-4"
-      [ngClass]="{'hidden': showFloatingBackBtn, 'flex': !showFloatingBackBtn}"
+      [ngClass]="{ hidden: showFloatingBackBtn, flex: !showFloatingBackBtn }"
       mat-button
     >
       <mat-icon>keyboard_backspace</mat-icon>&nbsp;Back to View All
     </button>
 
     <ng-container *ngIf="appLoaded">
-      <div 
-        id="staff-actions-container" 
+      <div
+        id="staff-actions-container"
         class="actions"
-        [ngClass]="{'hidden': showFloatingStaffActions, 'flex': !showFloatingStaffActions}"
+        [ngClass]="{
+          hidden: showFloatingStaffActions,
+          flex: !showFloatingStaffActions
+        }"
         *ngIf="isStaffDesk"
       >
         <button
@@ -50,7 +51,7 @@
           class="bg-green-500 text-white"
           (click)="action('approve')"
         >
-          {{ isFAD ? 'Accept' : 'Approve' }}
+          {{ isFAD ? "Accept" : "Approve" }}
         </button>
         <button mat-raised-button color="warn" (click)="action('sendBack')">
           Send Back
@@ -65,11 +66,15 @@
       {{ application?.reference }}
     </h2>
 
-
     <div class="content !overflow-x-auto">
       <div class="application-view flex-1">
         <app-ppcoq-application-view-table
-          
+          [application]="application"
+          [appId]="PPCOQId"
+          [appSource]="appSource"
+          [tankList]="tanksList"
+          [isCoqProcessor]="false"
+          [isProcessingPlant]="true"
         ></app-ppcoq-application-view-table>
       </div>
       <div class="application-controls">
@@ -78,7 +83,7 @@
             <mat-panel-title> CURRENT DESK </mat-panel-title>
           </mat-expansion-panel-header>
           <p>
-            {{ application?.currentDesk }}
+            {{ application?.currentDesk ?? application?.currentDeskName }}
           </p>
         </mat-expansion-panel>
 
@@ -121,10 +126,7 @@
             <mat-panel-title> UPLOADED DOCUMENTS </mat-panel-title>
           </mat-expansion-panel-header>
           <div *ngIf="documents?.length; else noInfo" class="card-list">
-            <div 
-              class="card-item" 
-              *ngFor="let doc of documents"
-            >
+            <div class="card-item" *ngFor="let doc of documents">
               <div class="item-title">
                 <a [href]="doc?.docSource" target="_blank">
                   <img
@@ -140,10 +142,7 @@
                   />
 
                   <img
-                    *ngIf="
-                      !isIMG(doc?.docSource) &&
-                      !isPDF(doc?.docSource)
-                    "
+                    *ngIf="!isIMG(doc?.docSource) && !isPDF(doc?.docSource)"
                     src="../../../../assets/image/otherFileType.png"
                     alt="open file"
                   />
@@ -170,8 +169,8 @@
 
   <ng-template #noData>
     <div class="flex justify-center items-center">
-      <div 
-        *ngIf="!loading" 
+      <div
+        *ngIf="!loading"
         class="border-4 p-12 font-bold border-red-300 bg-red-200 text-center"
       >
         Application Details Unavailable

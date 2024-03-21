@@ -51,11 +51,11 @@ import { PpcoqApplicationViewComponent } from '../application/ppcoq-application-
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { 
-    path: 'dashboard', 
-    component: AdminComponent, 
+  {
+    path: 'dashboard',
+    component: AdminComponent,
     pathMatch: 'full',
-    title: 'Staff Dashboard | CVC & CoQ Portal'
+    title: 'Staff Dashboard | CVC & CoQ Portal',
   },
   {
     path: 'applications',
@@ -66,38 +66,38 @@ const routes: Routes = [
     path: 'applications/noa-applications',
     component: ApplicationComponent,
     pathMatch: 'full',
-    title: 'NoA Applications | CVC & CoQ Portal'
+    title: 'NoA Applications | CVC & CoQ Portal',
   },
   {
     path: 'applications/sts-applications',
     component: StsApplicationsComponent,
     pathMatch: 'full',
-    title: 'Ship-to-Ship Applications | CVC & CoQ Portal'
+    title: 'Ship-to-Ship Applications | CVC & CoQ Portal',
   },
   {
     path: 'applications/noa-applications/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    title: 'NoA Application View | CVC & CoQ Portal'
+    title: 'NoA Application View | CVC & CoQ Portal',
   },
   {
     path: 'applications/coq-applications',
     component: AllCoqApplicationsComponent,
     pathMatch: 'full',
-    title: 'All CoQ Applications | CVC & CoQ Portal'
+    title: 'All CoQ Applications | CVC & CoQ Portal',
   },
   {
     path: 'applications/coq-applications/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    title: 'CoQ Application View | CVC & CoQ Portal'
+    title: 'CoQ Application View | CVC & CoQ Portal',
   },
   {
     path: 'applications/ppcoq-applications/:id',
     component: PpcoqApplicationViewComponent,
     pathMatch: 'full',
     canActivate: [ComingSoonGuard],
-    title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal'
+    title: 'CoQ Application View - Processing Plant | CVC & CoQ Portal',
   },
   {
     path: 'settings',
@@ -109,89 +109,89 @@ const routes: Routes = [
     component: AllStaffComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Staff Configuration | CVC & CoQ Portal'
+    title: 'Staff Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/modules',
     component: ModulesSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Modules Configuration | CVC & CoQ Portal'
+    title: 'Modules Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/application-stage-docs',
     component: AppStageDocsComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Application Document Configuration | CVC & CoQ Portal'
+    title: 'Application Document Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/field-zone-office',
     component: FieldZonalOfficeComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Field/Zonal Office | CVC & CoQ Portal'
+    title: 'Field/Zonal Office | CVC & CoQ Portal',
   },
   {
     path: 'settings/branches',
     component: BranchSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Branches Configuration | CVC & CoQ Portal'
+    title: 'Branches Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/jetty',
     component: JettySettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Jetty Configuration | CVC & CoQ Portal'
+    title: 'Jetty Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/phasedocuments',
     component: PhasedocumentsComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Phase Documents Configuration | CVC & CoQ Portal'
+    title: 'Phase Documents Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/application-process',
     component: AppProcessComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Application Process Configuration | CVC & CoQ Portal'
+    title: 'Application Process Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/field-officer-depot',
     component: FieldOfficerDepotSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Field Officer to Depot Configuration | CVC & CoQ Portal'
+    title: 'Field Officer to Depot Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/field-officer-jetty',
     component: FieldOfficerJettySettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Field Officer to Jetty Configuration | CVC & CoQ Portal'
+    title: 'Field Officer to Jetty Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/nominated-surveyors',
     component: NominatedSurveyorSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Nominated Surveyors Configuration | CVC & CoQ Portal'
+    title: 'Nominated Surveyors Configuration | CVC & CoQ Portal',
   },
-  { 
-    path: 'desk', 
-    component: MyDeskComponent, 
+  {
+    path: 'desk',
+    component: MyDeskComponent,
     pathMatch: 'full',
-    title: 'Desk | CVC & CoQ Portal'
+    title: 'Desk | CVC & CoQ Portal',
   },
   {
     path: 'desk/view-application/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
-    title: 'Desk - NoA Application View | CVC & CoQ Portal'
+    title: 'Desk - NoA Application View | CVC & CoQ Portal',
   },
   {
     path: 'view-application/:id',
@@ -202,14 +202,13 @@ const routes: Routes = [
     path: 'desk/view-coq-application/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
-    title: 'Desk - CoQ Application View | CVC & CoQ Portal'
+    title: 'Desk - CoQ Application View | CVC & CoQ Portal',
   },
   {
     path: 'desk/view-ppcoq-application/:id',
-    component: CoqApplicationViewComponent,
+    component: PpcoqApplicationViewComponent,
     pathMatch: 'full',
-    canActivate: [ComingSoonGuard],
-    title: 'Desk - Processing Plant CoQ Application View | CVC & CoQ Portal'
+    title: 'Desk - Processing Plant CoQ Application View | CVC & CoQ Portal',
   },
   {
     path: 'vessel-clearance',
@@ -221,20 +220,20 @@ const routes: Routes = [
     component: NoaApplicationsByJettyComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
-    title: 'Vessel Clearance - Approved NoA | CVC & CoQ Portal'
+    title: 'Vessel Clearance - Approved NoA | CVC & CoQ Portal',
   },
   {
     path: 'vessel-clearance/noa-applications-by-jetty-officer/:id',
     component: ViewApplicationComponent,
     pathMatch: 'full',
     canActivate: [FieldOfficerGuard],
-    title: 'Vessel Clearance - Approved NoA View | CVC & CoQ Portal'
+    title: 'Vessel Clearance - Approved NoA View | CVC & CoQ Portal',
   },
   {
     path: 'view-application-in-full/:id',
     component: ViewApplicationInFullComponent,
     pathMatch: 'full',
-    title: 'Full Application Details | CVC & CoQ Portal'
+    title: 'Full Application Details | CVC & CoQ Portal',
   },
   {
     path: 'reports',
@@ -246,27 +245,27 @@ const routes: Routes = [
     component: ApplicationReportComponent,
     pathMatch: 'full',
     title: 'Application Report | CVC & CoQ Portal',
-    canActivate: [ComingSoonGuard]
+    canActivate: [ComingSoonGuard],
   },
   {
     path: 'reports/clearance-report',
     component: ApplicationReportComponent,
     pathMatch: 'full',
     title: 'Clearance Report | CVC & CoQ Portal',
-    canActivate: [ComingSoonGuard]
+    canActivate: [ComingSoonGuard],
   },
   {
     path: 'reports/payment-report',
     component: PaymentReportComponent,
     pathMatch: 'full',
     title: 'Payment Report | CVC & CoQ Portal',
-    canActivate: [ComingSoonGuard]
+    canActivate: [ComingSoonGuard],
   },
   {
     path: 'certificates',
     component: CertificatesComponent,
     pathMatch: 'full',
-    title: 'Approvals | CVC & CoQ Portal'
+    title: 'Approvals | CVC & CoQ Portal',
   },
   {
     path: 'view-schedule/:id',
@@ -278,66 +277,66 @@ const routes: Routes = [
     component: AppFeeComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'App Fees Configuration | CVC & CoQ Portal'
+    title: 'App Fees Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/app-depots',
     component: AppDepotComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Application Depots | CVC & CoQ Portal'
+    title: 'Application Depots | CVC & CoQ Portal',
   },
-  { 
-    path: 'payments', 
-    redirectTo: 'payments/all-payments', 
-    pathMatch: 'full' 
+  {
+    path: 'payments',
+    redirectTo: 'payments/all-payments',
+    pathMatch: 'full',
   },
   {
     path: 'payments/all-payments',
     component: PaymentComponent,
     pathMatch: 'full',
     title: 'Payments | CVC & CoQ Portal',
-    canActivate: [ComingSoonGuard]
+    canActivate: [ComingSoonGuard],
   },
-  { 
-    path: 'payment/:id', 
-    component: ViewPaymentComponent, 
-    pathMatch: 'full' 
+  {
+    path: 'payment/:id',
+    component: ViewPaymentComponent,
+    pathMatch: 'full',
   },
   {
     path: 'settings/roles',
     component: RolesComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Roles Configuration | CVC & CoQ Portal'
+    title: 'Roles Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/products',
     component: ProductsComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Products Configuration | CVC & CoQ Portal'
+    title: 'Products Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/email-config',
     component: EmailConfigComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Email Configuration | CVC & CoQ Portal'
+    title: 'Email Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/meter-types',
     component: MeterTypeSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Meter Types Configuration | CVC & CoQ Portal'
+    title: 'Meter Types Configuration | CVC & CoQ Portal',
   },
   {
     path: 'settings/dip-method',
     component: DipMethodSettingComponent,
     pathMatch: 'full',
     canActivate: [SuperadminGuard],
-    title: 'Dip Method Configuration | CVC & CoQ Portal'
+    title: 'Dip Method Configuration | CVC & CoQ Portal',
   },
   {
     path: 'coq',
@@ -349,14 +348,14 @@ const routes: Routes = [
     component: CoqApplicationsByDepotComponent,
     pathMatch: 'full',
     canActivate: [DssriCoqGuard],
-    title: 'Depot-Filtered CoQ Applications | CVC & CoQ Portal'
+    title: 'Depot-Filtered CoQ Applications | CVC & CoQ Portal',
   },
   {
     path: 'coq/coq-applications-by-depot/:id',
     component: CoqApplicationViewComponent,
     pathMatch: 'full',
     canActivate: [DssriCoqGuard],
-    title: 'Depot-Filtered CoQ Application View | CVC & CoQ Portal'
+    title: 'Depot-Filtered CoQ Application View | CVC & CoQ Portal',
   },
   {
     path: 'coq/coq-applications-by-depot/:coqId/edit-application',
@@ -370,7 +369,7 @@ const routes: Routes = [
     component: CoqApplicationFormComponent,
     pathMatch: 'full',
     canActivate: [DssriCoqGuard],
-    title: 'Apply for Depot CoQ | CVC & CoQ Portal'
+    title: 'Apply for Depot CoQ | CVC & CoQ Portal',
   },
   {
     path: 'all-approvals',
@@ -382,14 +381,14 @@ const routes: Routes = [
     component: AllCoqCertificatesComponent,
     pathMatch: 'full',
     canActivate: [AdminGuard],
-    title: 'All CoQ Certificates | CVC & CoQ Portal'
+    title: 'All CoQ Certificates | CVC & CoQ Portal',
   },
   {
     path: 'all-approvals/noa-clearances',
     component: AllNoaClearancesComponent,
     pathMatch: 'full',
     canActivate: [AdminGuard],
-    title: 'All NoA Clearances | CVC & CoQ Portal'
+    title: 'All NoA Clearances | CVC & CoQ Portal',
   },
   {
     path: 'processing-plant/certificate-of-quantity/new-application',
@@ -399,15 +398,15 @@ const routes: Routes = [
     data: {
       type: ApplicationTerm.PROCESSINGPLANT,
     },
-    title: 'Apply for Processing Plant CoQ | CVC & CoQ Portal'
+    title: 'Apply for Processing Plant CoQ | CVC & CoQ Portal',
   },
   {
     path: 'processing-plant/certificate-of-quantity/applications',
     component: AllPpcoqApplicationsComponent,
     pathMatch: 'full',
     canActivate: [HppitiCoqGuard],
-    title: 'Processing Plant CoQ Applications | CVC & CoQ Portal'
-  }
+    title: 'Processing Plant CoQ Applications | CVC & CoQ Portal',
+  },
 ];
 
 @NgModule({

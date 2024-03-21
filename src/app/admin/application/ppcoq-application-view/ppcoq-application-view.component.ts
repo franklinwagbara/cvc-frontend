@@ -19,7 +19,7 @@ import { SpinnerService } from 'src/app/shared/services/spinner.service';
 @Component({
   selector: 'app-ppcoq-application-view',
   templateUrl: './ppcoq-application-view.component.html',
-  styleUrls: ['./ppcoq-application-view.component.css']
+  styleUrls: ['./ppcoq-application-view.component.scss'],
 })
 export class PpcoqApplicationViewComponent {
   public application: any;
@@ -46,7 +46,6 @@ export class PpcoqApplicationViewComponent {
   showFloatingBackBtn = false;
   showFloatingStaffActions = false;
 
-
   isIMG = Util.isIMG;
   isPDF = Util.isPDF;
 
@@ -61,10 +60,12 @@ export class PpcoqApplicationViewComponent {
     public location: Location,
     private paymentService: PaymentService,
     private popUp: PopupService,
-    private router: Router,
+    private router: Router
   ) {
     this.route.queryParams.subscribe((params) => {
       this.spinner.show('Loading application...');
+      this.isPPCOQ = params['isPPCOQ'] === 'true';
+      this.PPCOQId = parseInt(params['PPCOQId']);
       this.appSource = params['appSource'];
       this.getApplication();
     });
@@ -102,7 +103,7 @@ export class PpcoqApplicationViewComponent {
           (element2 as HTMLElement).style.left = '0px';
         }
       }
-    }
+    };
     document.addEventListener('scroll', scrollListener);
   }
 
@@ -148,15 +149,16 @@ export class PpcoqApplicationViewComponent {
 
   getApplication() {
     this.loading = true;
-    
+
     this.coqService.viewPPCoqApplication(this.PPCOQId).subscribe({
       next: (res) => {
         this.loading = false;
+
         if (res.success) {
           this.application = res.data;
           this.appLoaded = true;
         }
-        
+
         this.progressBar.close();
         this.spinner.close();
         this.cd.markForCheck();
@@ -184,6 +186,8 @@ export class PpcoqApplicationViewComponent {
           application: this.application,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
+          isPPCOQ: this.isPPCOQ,
+          PPCOQId: this.PPCOQId,
         },
         form: ApproveFormComponent,
       },
@@ -192,6 +196,8 @@ export class PpcoqApplicationViewComponent {
           application: this.application,
           isFO: this.isFO,
           isCOQProcessor: this.isCOQProcessor,
+          isPPCOQ: this.isPPCOQ,
+          PPCOQId: this.PPCOQId,
         },
         form: SendBackFormComponent,
       },
@@ -224,7 +230,7 @@ export class PpcoqApplicationViewComponent {
     const operationConfiguration = {
       appHistory: {
         data: {
-         appHistory: this.appHistories,
+          appHistory: this.appHistories,
         },
       },
       schedules: {
@@ -255,5 +261,4 @@ export class PpcoqApplicationViewComponent {
       },
     });
   }
-
 }

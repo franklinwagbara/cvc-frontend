@@ -69,7 +69,7 @@ export class MyDeskComponent implements OnInit {
   public coqKeysMappedToHeaders = COQ_KEYS_MAPPED_TO_HEADERS;
   public PPCoqKeysMappedToHeaders = PP_COQ_KEYS_MAPPED_TO_HEADERS;
   public dnKeysMappedToHeaders = DN_KEYS_MAPPED_TO_HEADERS;
-  public rejectedCoQKeysMappedToHeaders = REJECTED_COQ_KEYS_MAPPED_TO_HEADERS
+  public rejectedCoQKeysMappedToHeaders = REJECTED_COQ_KEYS_MAPPED_TO_HEADERS;
 
   constructor(
     private adminService: AdminService,
@@ -97,10 +97,9 @@ export class MyDeskComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show('Loading desk...');
 
-    (
-      this.isDssriFieldOfficer
-        ? this.applicationService.viewApplicationByDepot()
-        : this.applicationService.getApplicationsOnDesk()
+    (this.isDssriFieldOfficer
+      ? this.applicationService.viewApplicationByDepot()
+      : this.applicationService.getApplicationsOnDesk()
     ).subscribe({
       next: (res) => {
         if (res.success) {
@@ -110,7 +109,7 @@ export class MyDeskComponent implements OnInit {
             this.processingPlantCOQs = res.data?.processingPlantCOQ;
           } else {
             this.appType$.next('NOA');
-            
+
             if (this.isDssriFieldOfficer) {
               this.clearedNoaApps = res.data?.clearedNOAs;
               this.rejectedCoQs = res.data?.rejectedCoQs;
@@ -119,22 +118,22 @@ export class MyDeskComponent implements OnInit {
             }
           }
           if (this.isDssriFieldOfficer) {
-            this.clearedNoaApps = this.clearedNoaApps
-              ?.filter((app) => app.status === 'Completed')
+            this.clearedNoaApps = this.clearedNoaApps?.filter(
+              (app) => app.status === 'Completed'
+            );
           }
           this.clearedNoaApps$.next(this.clearedNoaApps);
         } else {
-          this.appType$.next((this.isDssriFieldOfficer || !this.isCoQProcessor) ? 'NOA' : 'COQ');
+          this.appType$.next(
+            this.isDssriFieldOfficer || !this.isCoQProcessor ? 'NOA' : 'COQ'
+          );
         }
         this.spinner.close();
         this.cd.markForCheck();
       },
       error: (error: unknown) => {
         console.error(error);
-        this.popUp.open(
-          'Something went wrong while retrieving data.',
-          'error'
-        );
+        this.popUp.open('Something went wrong while retrieving data.', 'error');
 
         this.spinner.close();
       },
@@ -157,17 +156,27 @@ export class MyDeskComponent implements OnInit {
   }
 
   onViewData(event: any, type?: 'PPCOQ' | 'COQ') {
+    debugger;
     if (this.appType$.value === AppType.COQ || this.isFAD) {
       if (type === 'PPCOQ') {
-        this.router.navigate([
-          '/admin/desk/view-ppcoq-application/', 
-          event.processingPlantCOQId,
-        ])
+        this.router.navigate(
+          ['/admin/desk/view-ppcoq-application/', event.processingPlantCOQId],
+          {
+            queryParams: {
+              id: event.appId ?? event.processingPlantCOQId,
+              appSource: AppSource.MyDesk,
+              depotId: event.depotId,
+              coqId: event.id,
+              isPPCOQ: true,
+              PPCOQId: event.processingPlantCOQId,
+            },
+          }
+        );
       } else {
         this.router.navigate(
           [
             '/admin/desk/view-coq-application/',
-            event.id ?? event.processingPlantCOQId
+            event.id ?? event.processingPlantCOQId,
           ],
           {
             queryParams: {
@@ -182,7 +191,8 @@ export class MyDeskComponent implements OnInit {
         );
       }
     } else if (
-      this.isDssriFieldOfficer || this.appType$.value === AppType.NOA
+      this.isDssriFieldOfficer ||
+      this.appType$.value === AppType.NOA
     ) {
       this.router.navigate([`/admin/desk/view-application/${event.id}`], {
         queryParams: { id: event.id, appSource: AppSource.MyDesk },
@@ -196,9 +206,9 @@ export class MyDeskComponent implements OnInit {
 
   onResubmitCoQ(event: any) {
     this.router.navigate([
-      'admin/coq/coq-applications-by-depot/', 
-      event.id, 
-      'edit-application'
+      'admin/coq/coq-applications-by-depot/',
+      event.id,
+      'edit-application',
     ]);
   }
 

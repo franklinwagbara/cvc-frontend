@@ -37,6 +37,7 @@ export class ApproveFormComponent implements OnInit {
   public isLoading = false;
 
   public isPPCOQ = false;
+  public PPCOQId: number;
 
   constructor(
     public dialogRef: MatDialogRef<ApproveFormComponent>,
@@ -61,6 +62,7 @@ export class ApproveFormComponent implements OnInit {
     this.coqId = data.data.coqId;
     this.isCOQProcessor = auth.isCOQProcessor;
     this.isPPCOQ = data.data.isPPCOQ;
+    this.PPCOQId = data.data.PPCOQId;
   }
 
   ngOnInit(): void {
@@ -116,7 +118,7 @@ export class ApproveFormComponent implements OnInit {
         if (res.success) {
           const fadPredicate = this.isFAD
             ? 'Application accepted successfully'
-            : 'Application passed successfully!'
+            : 'Application passed successfully!';
           this.popup.open(
             this.isApprover
               ? 'Application approved successfully!'
@@ -169,7 +171,7 @@ export class ApproveFormComponent implements OnInit {
     this.progressBarService.open();
     this.isLoading = true;
     const model = {
-      applicationId: this.coqId,
+      applicationId: this.isPPCOQ ? this.PPCOQId : this.coqId,
       action: ApplicationActionType.Approve,
       comment: this.form.controls['comment'].value,
     };
